@@ -28,6 +28,7 @@ module.exports = {
     'react/prop-types': 'off', // props의 타입체크를 처리에 proptypes가 아닌 typescript 사용
     '@typescript-eslint/no-var-requires': 'off', // require문 사용하도록 off 속성 켜기
     'import/no-extraneous-dependencies': ['error', { devDependencies: true }], // 테스트 또는 개발환경을 구성하는 파일에서는 devDependency 사용을 허용
+    'import/prefer-default-export': 'off', // export default 가 아닌 default 없이 export 할 수 있도록
     'react/function-component-definition': [
       // 함수형 컴포넌트 선언방식
       2,
