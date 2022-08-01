@@ -3,7 +3,7 @@ import { useSetRecoilState } from 'recoil';
 import { User } from '@/interfaces/User';
 import { userState } from '@/recoil/atoms/user';
 
-const UseSetRecoilUser = (user: User | null) => {
+const useSetRecoilUser = (user: User | null) => {
   const setUser = useSetRecoilState(userState);
   if (user) {
     setUser(user);
@@ -12,4 +12,4 @@ const UseSetRecoilUser = (user: User | null) => {
   }
 };
 
-export default UseSetRecoilUser;
+export default useSetRecoilUser;

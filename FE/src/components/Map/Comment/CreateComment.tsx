@@ -7,7 +7,7 @@ import GlobalModal from '@/components/common/GlobalModal';
 import Text from '@/components/common/Text';
 import ModalContent from '@/components/ModalContent';
 import { SUCCESS_POST_COMMENT } from '@/constants/code';
-import { UseGetMapId } from '@/hooks/UseGetMapId';
+import { useGetMapId } from '@/hooks/useGetMapId';
 import theme from '@/styles/theme';
 
 interface CreateCommentProps {
@@ -16,7 +16,7 @@ interface CreateCommentProps {
 }
 
 const CreateComment = ({ placeId, placeDetailRefetch }: CreateCommentProps) => {
-  const mapId = UseGetMapId();
+  const mapId = useGetMapId();
   const [comment, setComment] = useState('');
   const [isModal, setIsModal] = useState(false);
   const [modalText, setModalText] = useState({
