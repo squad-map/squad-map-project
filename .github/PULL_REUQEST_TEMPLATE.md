@@ -1,11 +1,3 @@
----
-name: Feature Request
-about: Suggest new Feature Request for this project
-title: "[FE | BE] {ISSUE_TITLE}"
-labels: ''
-assignees: ''
----
-
 ## 🤷‍♂️ Description
 
 <!-- 구현하고자 하는 기능에 대해 작성해 주세요. -->
