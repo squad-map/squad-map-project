@@ -1,17 +1,31 @@
 import { ThemeProvider } from '@emotion/react';
 import * as ReactDOM from 'react-dom/client';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { RecoilRoot } from 'recoil';
 
 import App from '@/App';
-import GlobalStyle from '@/styles/GlobalStyles';
+import GlobalStyle from '@/styles/GlobalStyle';
 import theme from '@/styles/theme';
+
+if (process.env.NODE_ENV === 'development') {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require
+  const { worker } = require('./mocks/browsers');
+  worker.start();
+}
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
+export const queryClient = new QueryClient();
+
 root.render(
-  <ThemeProvider theme={theme}>
-    <App />
-    <GlobalStyle />
-  </ThemeProvider>
+  <QueryClientProvider client={queryClient}>
+    <ThemeProvider theme={theme}>
+      <RecoilRoot>
+        <GlobalStyle />
+        <App />
+      </RecoilRoot>
+    </ThemeProvider>
+  </QueryClientProvider>
 );
