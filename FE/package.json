@@ -1,0 +1,68 @@
+{
+  "name": "FE",
+  "version": "1.0.0",
+  "description": "squad map project",
+  "main": "index.js",
+  "author": "Muffin",
+  "license": "MIT",
+  "dependencies": {
+		"@emotion/react": "^11.9.3",
+    	"@emotion/styled": "^11.9.3",
+		"react": "^18.1.0",
+		"react-dom": "^18.1.0",
+		"react-query": "^3.39.1",
+		"react-router-dom": "^6.3.0",
+		"recoil": "^0.7.3"
+	},
+  "devDependencies": {
+		"@types/react": "^18.0.12",
+		"@types/react-dom": "^18.0.5",
+		"typescript": "^4.7.3",
+		"style-loader": "^3.3.1",
+
+		"@babel/cli": "^7.17.10",
+		"@babel/core": "^7.18.2",
+		"@babel/preset-env": "^7.18.2",
+		"@babel/preset-react": "^7.17.12",
+		"@babel/preset-typescript": "^7.17.12",
+
+		"cross-env": "^7.0.3",
+		"dotenv": "^16.0.1",
+
+		"prettier": "^2.6.2",
+		"@typescript-eslint/eslint-plugin": "^5.27.0",
+		"@typescript-eslint/parser": "^5.27.0",
+		"eslint": "^8.17.0",
+		"eslint-config-airbnb": "^19.0.4",
+		"eslint-config-airbnb-typescript": "^17.0.0",
+		"eslint-plugin-import": "^2.26.0",
+		"eslint-plugin-jsx-a11y": "^6.5.1",
+		"eslint-plugin-react": "^7.30.0",
+		"eslint-plugin-react-hooks": "^4.5.0",
+		"eslint-plugin-prettier": "^4.0.0",
+		"eslint-config-prettier": "^8.5.0",
+		"eslint-import-resolver-typescript": "^2.7.1",
+
+		"@pmmmwh/react-refresh-webpack-plugin": "^0.5.7",
+		"react-refresh": "^0.13.0",
+		"webpack": "^5.73.0",
+		"webpack-cli": "^4.9.2",
+		"webpack-bundle-analyzer": "^4.5.0",
+		"webpack-dev-server": "^4.9.2",
+		"webpack-merge": "^5.8.0",
+		"babel-loader": "^8.2.5",
+		"css-loader": "^6.7.1",
+		"terser-webpack-plugin": "^5.3.3",
+		"tsconfig-paths-webpack-plugin": "^3.5.2",
+		"css-minimizer-webpack-plugin": "^4.0.0",
+		"html-webpack-plugin": "^5.5.0",
+		"mini-css-extract-plugin": "^2.6.0"
+	},
+  "scripts": {
+		"dev": "cross-env NODE_ENV=development webpack serve --config config/webpack.dev.js --progress",
+		"build": "cross-env NODE_ENV=production webpack --config config/webpack.prod.js --progress"
+	},
+	"msw": {
+		"workerDirectory": "public"
+	}
+}
