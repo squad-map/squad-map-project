@@ -11,7 +11,7 @@ import GlobalModal from '@/components/common/GlobalModal';
 import Icon from '@/components/common/Icon';
 import Text from '@/components/common/Text';
 import { SUCCESS_GET_CATEGORIES } from '@/constants/code';
-import { UseGetMapId } from '@/hooks/UseGetMapId';
+import { useGetMapId } from '@/hooks/useGetMapId';
 import theme from '@/styles/theme';
 import { CategoryType, MapHeaderType } from '@/types/map';
 
@@ -21,7 +21,7 @@ interface HeaderProps {
 }
 
 const Header = ({ headerData, refetchMap }: HeaderProps) => {
-  const mapId = UseGetMapId();
+  const mapId = useGetMapId();
   const [isCategoryModal, setIsCategoryModal] = useState(false);
   const [isModifyCategoryModal, setIsModifyCategoryModal] = useState(false);
   const [clickedCategory, setClickedCategory] = useState({

@@ -6,7 +6,7 @@ import { userState } from '@/recoil/atoms/user';
 import { getCookie, setCookie, removeCookie } from '@/utils/cookie';
 import { getErrorMessage } from '@/utils/util';
 
-export const UseLogin = () => {
+export const useLogin = () => {
   const setUser = useSetRecoilState(userState);
   const navigate = useNavigate();
 

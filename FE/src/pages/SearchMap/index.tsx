@@ -7,7 +7,7 @@ import Header from '@/components/Map/Header';
 import SearchPlace from '@/components/SearchMap/SearchPlace';
 import { SUCCESS_GET_DETAIL_MAP } from '@/constants/code';
 import { defaultCoords } from '@/constants/map';
-import { UseGetMapId } from '@/hooks/UseGetMapId';
+import { useGetMapId } from '@/hooks/useGetMapId';
 import { SearchPlaceType } from '@/interfaces/SearchPlace';
 import { CategorizedPlaces, PlaceType } from '@/types/map';
 import { unicodeToEmoji } from '@/utils/util';
@@ -15,7 +15,7 @@ import { unicodeToEmoji } from '@/utils/util';
 const { kakao } = window;
 
 const SearchMap = () => {
-  const mapId = UseGetMapId();
+  const mapId = useGetMapId();
   const [placeInfos, setPlaceInfos] = useState<PlaceType[]>([]);
 
   const { data: mapData } = useQuery(['Map'], () => getMapDetailInfo(mapId));

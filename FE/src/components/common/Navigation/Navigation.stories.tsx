@@ -3,7 +3,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import Navigation from './index';
 
-import UseSetRecoilUser from '@/hooks/UseSetRecoillUser';
+import useSetRecoilUser from '@/hooks/useSetRecoillUser';
 
 export default {
   title: 'common/Navigation',
@@ -15,13 +15,13 @@ export default {
 } as ComponentMeta<typeof Navigation>;
 
 const LoggedInNavigationTemplate: ComponentStory<typeof Navigation> = args => {
-  UseSetRecoilUser({ member_id: 1, nickname: 'muffin1', profileImageUrl: '' });
+  useSetRecoilUser({ member_id: 1, nickname: 'muffin1', profileImageUrl: '' });
 
   return <Navigation {...args} />;
 };
 
 const LoggedOutNavigationTemplate: ComponentStory<typeof Navigation> = args => {
-  UseSetRecoilUser(null);
+  useSetRecoilUser(null);
 
   return <Navigation {...args} />;
 };
