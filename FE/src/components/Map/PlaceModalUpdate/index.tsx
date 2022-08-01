@@ -7,7 +7,7 @@ import GlobalModal from '@/components/common/GlobalModal';
 import Text from '@/components/common/Text';
 import ModalContent from '@/components/ModalContent';
 import { SUCCESS_PATCH_PLACE } from '@/constants/code';
-import { UseGetMapId } from '@/hooks/UseGetMapId';
+import { useGetMapId } from '@/hooks/useGetMapId';
 import { PlaceDetail } from '@/interfaces/Place';
 import theme from '@/styles/theme';
 import { CategoryType } from '@/types/map';
@@ -29,7 +29,7 @@ const PlaceModalUpdate = ({
     (category: CategoryType) => category.category_id === placeInfo.category_id
   ) as CategoryType;
 
-  const mapId = UseGetMapId();
+  const mapId = useGetMapId();
   const [updateForm, setUpdateForm] = useState({
     id: 0,
     story: placeInfo.story,

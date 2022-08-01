@@ -10,13 +10,13 @@ import KakaoMap from '@/components/KaKaoMap';
 import Header from '@/components/Map/Header';
 import Infos from '@/components/Map/Infos';
 import { SUCCESS_GET_DETAIL_MAP } from '@/constants/code';
-import { UseGetMapId } from '@/hooks/UseGetMapId';
+import { useGetMapId } from '@/hooks/useGetMapId';
 import theme from '@/styles/theme';
 import { CategorizedPlaces, MapUserType, PlaceType } from '@/types/map';
 import { unicodeToEmoji } from '@/utils/util';
 
 const Map = () => {
-  const mapId = UseGetMapId();
+  const mapId = useGetMapId();
   const [userProfile, setUserProfile] = useState<MapUserType>({
     host_id: 0,
     host_nickname: '',

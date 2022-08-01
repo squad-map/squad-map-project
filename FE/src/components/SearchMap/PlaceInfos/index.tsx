@@ -9,12 +9,12 @@ import Card from '@/components/common/Card';
 import GlobalModal from '@/components/common/GlobalModal';
 import Text from '@/components/common/Text';
 import { SUCCESS_GET_CATEGORIES } from '@/constants/code';
-import { UseGetMapId } from '@/hooks/UseGetMapId';
+import { useGetMapId } from '@/hooks/useGetMapId';
 import theme from '@/styles/theme';
 import { PlaceType } from '@/types/map';
 
 const PlaceInfos = ({ placeInfos }: { placeInfos: PlaceType[] }) => {
-  const mapId = UseGetMapId();
+  const mapId = useGetMapId();
   const [isOpenGlobalModal, setIsOpenGlobalModal] = useState(false);
   const [placeInfo, setPlaceInfo] = useState<PlaceType>();
 

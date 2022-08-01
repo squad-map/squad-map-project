@@ -2,12 +2,12 @@ import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import LoadingSpinner from '@/components/common/LoadingSpinner';
-import { UseLogin } from '@/hooks/UseLogin';
+import { useLogin } from '@/hooks/useLogin';
 import { getErrorMessage } from '@/utils/util';
 
 const Callback = () => {
   const location = useLocation();
-  const SNSLogin = UseLogin();
+  const SNSLogin = useLogin();
 
   useEffect(() => {
     try {

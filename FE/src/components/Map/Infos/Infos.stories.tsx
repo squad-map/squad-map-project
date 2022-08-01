@@ -6,7 +6,7 @@ import Infos from './index';
 import { GET_MAP_CAEGORIES_DATA } from '@/constants/category';
 import { categorized_places } from '@/constants/dummyData';
 import { API_URL } from '@/constants/url';
-import UseSetRecoilUser from '@/hooks/UseSetRecoillUser';
+import useSetRecoilUser from '@/hooks/useSetRecoillUser';
 
 export default {
   title: 'components/Map/Infos',
@@ -38,12 +38,12 @@ export default {
 } as ComponentMeta<typeof Infos>;
 
 const MapHostInfosTemplate: ComponentStory<typeof Infos> = args => {
-  UseSetRecoilUser({ member_id: 1, nickname: 'muffin1', profileImageUrl: '' });
+  useSetRecoilUser({ member_id: 1, nickname: 'muffin1', profileImageUrl: '' });
   return <Infos {...args} />;
 };
 
 const MapReadInfosTemplate: ComponentStory<typeof Infos> = args => {
-  UseSetRecoilUser(null);
+  useSetRecoilUser(null);
   return <Infos {...args} />;
 };
 

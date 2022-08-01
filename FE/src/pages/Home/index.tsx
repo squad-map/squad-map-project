@@ -13,7 +13,7 @@ import Text from '@/components/common/Text';
 import GridCards from '@/components/GridCards';
 import Item from '@/components/Item';
 import useAllMaps from '@/hooks/query/useAllMaps';
-import useDebounce from '@/hooks/UseDebounce';
+import useDebounce from '@/hooks/useDebounce';
 import { MapType } from '@/interfaces/Map';
 import { userState } from '@/recoil/atoms/user';
 import theme from '@/styles/theme';

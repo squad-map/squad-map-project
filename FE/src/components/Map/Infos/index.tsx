@@ -20,7 +20,7 @@ import {
   SUCCESS_GET_CATEGORIES,
   SUCCESS_GET_PLACE,
 } from '@/constants/code';
-import { UseGetMapId } from '@/hooks/UseGetMapId';
+import { useGetMapId } from '@/hooks/useGetMapId';
 import { userState } from '@/recoil/atoms/user';
 import theme from '@/styles/theme';
 import { CategorizedPlaces, MapUserType, PlaceType } from '@/types/map';
@@ -38,7 +38,7 @@ const Infos = ({
   userProfile,
   refetchMap,
 }: InfosProps) => {
-  const mapId = UseGetMapId();
+  const mapId = useGetMapId();
   const [modalParams, setModalParams] = useState({ type: 'GET', placeId: 0 });
   const [isOpenComment, setIsOpenCommentModal] = useState(false);
   const [isOpenUpdateModal, setIsOpenUpdateModal] = useState(false);

@@ -4,7 +4,7 @@ import Item from './index';
 
 import Card from '@/components/common/Card';
 import { myPageMapsData } from '@/constants/dummyData';
-import UseSetRecoilUser from '@/hooks/UseSetRecoillUser';
+import useSetRecoilUser from '@/hooks/useSetRecoillUser';
 
 export default {
   title: 'components/MyPage/Item',
@@ -22,7 +22,7 @@ export default {
 } as ComponentMeta<typeof Item>;
 
 const MapHostItem: ComponentStory<typeof Item> = args => {
-  UseSetRecoilUser({ member_id: 1, nickname: 'muffin1', profileImageUrl: '' });
+  useSetRecoilUser({ member_id: 1, nickname: 'muffin1', profileImageUrl: '' });
   return (
     <Card size="large">
       <Item {...args} />
@@ -31,7 +31,7 @@ const MapHostItem: ComponentStory<typeof Item> = args => {
 };
 
 const MapReadItem: ComponentStory<typeof Item> = args => {
-  UseSetRecoilUser({ member_id: 2, nickname: 'muffin2', profileImageUrl: '' });
+  useSetRecoilUser({ member_id: 2, nickname: 'muffin2', profileImageUrl: '' });
   return (
     <Card size="large">
       <Item {...args} />

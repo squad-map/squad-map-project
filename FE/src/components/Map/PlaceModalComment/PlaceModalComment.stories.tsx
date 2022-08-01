@@ -4,7 +4,7 @@ import { ComponentMeta, ComponentStory } from '@storybook/react';
 import PlaceModalComment from './index';
 
 import GlobalModal from '@/components/common/GlobalModal';
-import UseSetRecoilUser from '@/hooks/UseSetRecoillUser';
+import useSetRecoilUser from '@/hooks/useSetRecoillUser';
 
 export default {
   title: 'components/Map/PlaceModalComment',
@@ -42,7 +42,7 @@ export default {
 const MapHostPlaceModalCommentTemplate: ComponentStory<
   typeof PlaceModalComment
 > = args => {
-  UseSetRecoilUser({ member_id: 1, nickname: 'muffin1', profileImageUrl: '' });
+  useSetRecoilUser({ member_id: 1, nickname: 'muffin1', profileImageUrl: '' });
   return (
     <GlobalModal size="large" handleCancelClick={action('Cancel clicked')}>
       <PlaceModalComment {...args} />
@@ -53,7 +53,7 @@ const MapHostPlaceModalCommentTemplate: ComponentStory<
 const MapReadPlaceModalCommentTemplate: ComponentStory<
   typeof PlaceModalComment
 > = args => {
-  UseSetRecoilUser({ member_id: 2, nickname: 'muffin2', profileImageUrl: '' });
+  useSetRecoilUser({ member_id: 2, nickname: 'muffin2', profileImageUrl: '' });
   return (
     <GlobalModal size="large" handleCancelClick={action('Cancel clicked')}>
       <PlaceModalComment {...args} />

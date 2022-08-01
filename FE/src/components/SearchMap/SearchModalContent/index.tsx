@@ -7,7 +7,7 @@ import Button from '@/components/common/Button';
 import Text from '@/components/common/Text';
 import KakaoStaticMap from '@/components/KaKaoMap/KakaoStaticMap';
 import { SUCCESS_POST_PLACE } from '@/constants/code';
-import { UseGetMapId } from '@/hooks/UseGetMapId';
+import { useGetMapId } from '@/hooks/useGetMapId';
 import theme from '@/styles/theme';
 import { CategoryType, PlaceType } from '@/types/map';
 
@@ -20,7 +20,7 @@ const SearchModalContent = ({
   placeInfo,
   mapCategory,
 }: SearchModalContentprops) => {
-  const mapId = UseGetMapId();
+  const mapId = useGetMapId();
   const navigate = useNavigate();
   const [placeForm, setPlaceForm] = useState({
     story: '',

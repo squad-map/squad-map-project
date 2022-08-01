@@ -12,7 +12,7 @@ import {
   SUCCESS_POST_GROUP_MEMBER,
 } from '@/constants/code';
 import { permitKey } from '@/constants/key';
-import UseDebounce from '@/hooks/UseDebounce';
+import useDebounce from '@/hooks/useDebounce';
 import theme from '@/styles/theme';
 import { GroupPostParams } from '@/types/group';
 
@@ -36,7 +36,7 @@ const SearchForm = ({
   const [userNickNames, setUserNickNames] = useState<AuthorityResponse[]>([]);
   const [permission, setPermission] = useState('READ');
   const [searchName, setSearchName] = useState('');
-  const debouncedValue = UseDebounce(searchName, 500);
+  const debouncedValue = useDebounce(searchName, 500);
 
   const [selectedIndex, setSelectedIndex] = useState(0);
 

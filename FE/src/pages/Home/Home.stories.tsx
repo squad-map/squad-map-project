@@ -7,7 +7,7 @@ import {
   GET_GROUP_MAPS_DATA,
   GET_HOME_PUBLIC_MAPS_DATA,
 } from '@/constants/mypage';
-import UseSetRecoilUser from '@/hooks/UseSetRecoillUser';
+import useSetRecoilUser from '@/hooks/useSetRecoillUser';
 
 export default {
   title: 'pages/HomePage',
@@ -31,12 +31,12 @@ export default {
 } as ComponentMeta<typeof HomePage>;
 
 const LoggedInHomeTemplate: ComponentStory<typeof HomePage> = () => {
-  UseSetRecoilUser({ member_id: 1, nickname: 'muffin1', profileImageUrl: '' });
+  useSetRecoilUser({ member_id: 1, nickname: 'muffin1', profileImageUrl: '' });
   return <HomePage />;
 };
 
 const LoggedOuHomeTemplate: ComponentStory<typeof HomePage> = () => {
-  UseSetRecoilUser(null);
+  useSetRecoilUser(null);
   return <HomePage />;
 };
 

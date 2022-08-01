@@ -2,7 +2,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import Header from './index';
 
-import UseSetRecoilUser from '@/hooks/UseSetRecoillUser';
+import useSetRecoilUser from '@/hooks/useSetRecoillUser';
 
 export default {
   title: 'common/Header',
@@ -10,13 +10,13 @@ export default {
 } as ComponentMeta<typeof Header>;
 
 const LoggedInHeaderTemplate: ComponentStory<typeof Header> = () => {
-  UseSetRecoilUser({ member_id: 1, nickname: 'muffin1', profileImageUrl: '' });
+  useSetRecoilUser({ member_id: 1, nickname: 'muffin1', profileImageUrl: '' });
 
   return <Header />;
 };
 
 const LoggedOutHeaderTemplate: ComponentStory<typeof Header> = () => {
-  UseSetRecoilUser(null);
+  useSetRecoilUser(null);
 
   return <Header />;
 };

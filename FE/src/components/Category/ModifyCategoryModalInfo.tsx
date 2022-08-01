@@ -13,7 +13,7 @@ import {
   SUCCESS_PUT_CATEGORY,
 } from '@/constants/code';
 import { CategoryColors } from '@/constants/colors';
-import { UseGetMapId } from '@/hooks/UseGetMapId';
+import { useGetMapId } from '@/hooks/useGetMapId';
 import theme from '@/styles/theme';
 import { CategoryType } from '@/types/map';
 import { checkDuplicateColor, isExistBgColor } from '@/utils/util';
@@ -33,7 +33,7 @@ const ModifyCategoryModalInfo = ({
   refetchMap,
   refetchMapCategories,
 }: ModifyCategoryModalInfoProps) => {
-  const mapId = UseGetMapId();
+  const mapId = useGetMapId();
   const [categoryForm, setCategoryForm] = useState({
     category_id: clickedCategory.category_id,
     category_name: clickedCategory.category_name,
