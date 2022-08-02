@@ -19,5 +19,8 @@ module.exports = {
         }
       }
     };
-  }
+  },
+  features: {
+    interactionsDebugger: true,
+  },
 };
