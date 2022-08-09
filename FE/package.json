@@ -14,6 +14,7 @@
 		"react-dom": "^18.1.0",
 		"react-query": "^4.0.0",
 		"react-router-dom": "^6.3.0",
+		"react-scripts": "^5.0.1",
 		"recoil": "^0.7.4"
 	},
 	"devDependencies": {
@@ -32,6 +33,7 @@
 		"@storybook/testing-react": "^1.3.0",
 		"@testing-library/jest-dom": "^5.16.4",
 		"@testing-library/react": "^13.3.0",
+		"@types/jest": "^28.1.6",
 		"@types/react": "^18.0.12",
 		"@types/react-dom": "^18.0.5",
 		"@typescript-eslint/eslint-plugin": "^5.27.0",
@@ -69,9 +71,15 @@
 		"dev": "cross-env NODE_ENV=development webpack serve --config config/webpack.dev.js --progress",
 		"build": "cross-env NODE_ENV=production webpack --config config/webpack.prod.js --progress",
 		"storybook": "start-storybook -p 6006 -s public",
-		"test-storybook": "test-storybook"
+		"test-storybook": "test-storybook",
+		"test": "react-scripts test"
 	},
 	"msw": {
 		"workerDirectory": "public"
+	},
+	"jest": {
+		"moduleNameMapper": {
+			"^@/(.*)$": "<rootDir>/src/$1"
+		}
 	}
 }
