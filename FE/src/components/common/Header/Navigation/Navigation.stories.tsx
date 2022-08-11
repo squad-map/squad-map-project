@@ -1,17 +1,29 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { userEvent, within } from '@storybook/testing-library';
 
 import Navigation from './index';
 
 export default {
   title: 'Navigation',
   component: Navigation,
+  menu: true,
 } as ComponentMeta<typeof Navigation>;
 
-const Template: ComponentStory<typeof Navigation> = () => <Navigation />;
+const Template: ComponentStory<typeof Navigation> = args => (
+  <Navigation {...args} />
+);
 
 export const loggedInNavigation = Template.bind({});
 
 export const loggedOutNavigation = Template.bind({});
+
+loggedInNavigation.play = async ({ canvasElement }) => {
+  const canvas = within(canvasElement);
+  const closeButtonElement = await canvas.getByTestId('closeBtn');
+
+  await userEvent.click(closeButtonElement);
+  await canvas.getByTestId('closeBtn');
+};
 
 loggedInNavigation.parameters = {
   docs: {

@@ -1,3 +1,4 @@
+import { keyframes, css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import { flexbox } from '@/styles/mixin';
@@ -12,13 +13,14 @@ export const Text = styled.span`
 export const Divider = styled.div`
   width: 15.25rem;
   height: 1px;
-  color: ${theme.color.lightGray};
+  background-color: ${theme.color.lightGray};
 `;
 
 export const Box = styled.div`
   ${flexbox({ ai: 'center' })}
   gap: 2rem;
-  margin-bottom: 2rem;
+  margin: 2rem 0;
+  cursor: pointer;
 `;
 
 export const CloseWrapper = styled.div`
@@ -31,11 +33,41 @@ export const InnerContainer = styled.section`
   margin-top: 8.25rem;
 `;
 
-export const Container = styled.section`
+const fadeInRight = keyframes`
+    from {
+      opacity: 1;
+      right: 0;
+    }
+    to {
+      opacity: 0;
+      right: -20%;
+    }
+`;
+
+const fadeInLeft = keyframes`
+    from {
+      opacity: 0;
+    } to {
+      opacity: 1;
+      right: 0;
+    }
+`;
+
+export const Container = styled.section<{ menu: boolean }>`
   ${flexbox({ dir: 'column' })}
-  position: relative;
+  position: fixed;
+  top: 0;
+  right: -20%;
   width: 19.5rem;
   height: 100vh;
   padding: 0 2rem;
   background-color: ${theme.color.white};
+  animation: ${props =>
+    props.menu
+      ? css`
+          ${fadeInLeft} 1s forwards
+        `
+      : css`
+          ${fadeInRight} 1s
+        `};
 `;

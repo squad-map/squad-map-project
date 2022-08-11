@@ -18,10 +18,14 @@ export const RightArea = styled.div`
   gap: 2rem;
 `;
 
-export const Container = styled.section`
+export const Wrapper = styled.div`
   ${flexbox({ jc: 'space-between' })}
+  padding: 2rem;
+`;
+
+export const Container = styled.section`
+  position: relative;
   width: 100%;
   height: 18.875rem;
-  padding: 2rem;
   background-color: ${theme.color.lightGreen};
 `;

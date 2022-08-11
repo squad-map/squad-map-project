@@ -3,10 +3,21 @@ import * as S from './Navigation.style';
 import { Icons } from '@/assets/icons';
 import Icon from '@/components/common/Icon';
 
-const Navigation = () => (
-  <S.Container>
+interface INavigationProps {
+  menu: boolean;
+  handleCloseMenu: () => void;
+}
+
+const Navigation = ({ menu, handleCloseMenu }: INavigationProps) => (
+  <S.Container menu={menu}>
     <S.CloseWrapper>
-      <Icon url={Icons.Close} alt="Close Icon" cursor />
+      <Icon
+        data-testid="closeBtn"
+        url={Icons.Close}
+        alt="Close Icon"
+        cursor
+        onClick={() => handleCloseMenu()}
+      />
     </S.CloseWrapper>
     <S.InnerContainer>
       <S.Box>

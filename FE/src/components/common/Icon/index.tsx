@@ -6,6 +6,7 @@ interface IIcon {
   width?: string;
   height?: string;
   cursor?: boolean;
+  onClick?: () => void;
 }
 
 const Icon = ({ url, alt, ...props }: IIcon) => (
