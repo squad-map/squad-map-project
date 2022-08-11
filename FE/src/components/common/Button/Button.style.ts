@@ -69,10 +69,12 @@ const selectTypes = (size: string, color: string) => {
 export const Button = styled.button<{
   size: string;
   color: string;
+  background?: string;
 }>`
   ${inlineFlexbox({ jc: 'center', ai: 'center' })}
   border-radius: 1rem;
-  ${({ size, color }) => selectTypes(size, color)}
+  background: ${props => props.background};
+  ${({ size, color }) => selectTypes(size, color)};
 
   :disabled {
     background-color: #e9ebee;

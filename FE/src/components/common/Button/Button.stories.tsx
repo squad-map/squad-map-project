@@ -2,6 +2,7 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import Button from './index';
 
+import { Icons } from '@/assets/icons';
 import theme from '@/styles/theme';
 
 export default {
@@ -19,6 +20,9 @@ export default {
         options: ['xLarge', 'large', 'xRegular', 'regular', 'small', 'xSmall'],
       },
       defaultValue: 'regular',
+    },
+    background: {
+      defaultValue: `url(${Icons.Plus}) no-repeat right 1rem`,
     },
     color: {
       control: {

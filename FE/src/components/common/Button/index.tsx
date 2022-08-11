@@ -14,6 +14,7 @@ interface IButton {
    * (RGB 16진수 형태로 입력 Ex. #000000)
    */
   color: string;
+  background?: string;
   disabled?: boolean;
   loading?: boolean;
   onClick?: () => void;
