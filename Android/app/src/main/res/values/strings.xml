@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">SquadMap</string>
+    <string name="Home">"모든지도"</string>
+    <string name="category">"카테고리지도"</string>
+    <string name="mymap">"나의 지도"</string>
+    <string name="profile">"프로필"</string>
 </resources>
