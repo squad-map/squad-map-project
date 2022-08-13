@@ -1,12 +1,14 @@
 import * as S from './Icon.style';
 
+import { ButtonClickEventHandler } from '@/types/eventHandler';
+
 interface IIcon {
   url: string;
   alt: string;
   width?: string;
   height?: string;
   cursor?: boolean;
-  onClick?: () => void;
+  onClick?: ButtonClickEventHandler;
 }
 
 const Icon = ({ url, alt, ...props }: IIcon) => (
