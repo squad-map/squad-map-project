@@ -27,4 +27,9 @@ export const Card = styled.div<{ size: string; color: string }>`
   ${({ size }) => selectSize(size)}
   background-color: ${props => props.color};
   border-radius: 1rem;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.7;
+  }
 `;

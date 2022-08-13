@@ -16,4 +16,6 @@ export default {
 
 const Template: ComponentStory<typeof GridCards> = () => <GridCards />;
 
+// 스토리북에서 비동기 처리 필요
+
 export const Default = Template.bind({});
