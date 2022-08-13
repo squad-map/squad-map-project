@@ -2,16 +2,20 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import Modal from '../Modal';
+
 import * as S from './Header.style';
 import Navigation from './Navigation';
 
 import { Images } from '@/assets/images';
 import Button from '@/components/common/Button';
 import Image from '@/components/common/Image';
+import Login from '@/components/Login';
 import theme from '@/styles/theme';
 
 const Header = () => {
   const loggedIn = true;
+  const [openLoginModal, setOpenLoginModal] = useState(false);
   const [menu, setMenu] = useState(false);
   const handleCloseMenu = () => setMenu(false);
   const handleOpenMenu = () => setMenu(true);
@@ -27,6 +31,7 @@ const Header = () => {
             text={loggedIn ? '로그인' : '닉네임'}
             size="regular"
             color={theme.color.brown}
+            onClick={() => setOpenLoginModal(true)}
           />
           <Image
             url={Images.Menu}
@@ -38,6 +43,11 @@ const Header = () => {
         </S.RightArea>
       </S.Wrapper>
       <Navigation menu={menu} handleCloseMenu={handleCloseMenu} />
+      {openLoginModal && (
+        <Modal size="small" handleCancelClick={() => setOpenLoginModal(false)}>
+          <Login />
+        </Modal>
+      )}
     </S.Container>
   );
 };

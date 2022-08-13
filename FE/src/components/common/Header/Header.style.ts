@@ -24,7 +24,7 @@ export const Wrapper = styled.div`
 `;
 
 export const Container = styled.section`
-  position: relative;
+  position: fixed;
   width: 100%;
   height: 18.875rem;
   background-color: ${theme.color.lightGreen};
