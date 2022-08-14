@@ -27,4 +27,23 @@ export default {
 
 const Template: ComponentStory<typeof Card> = args => <Card {...args} />;
 
-export const Default = Template.bind({});
+export const DefaultCard = Template.bind({});
+
+export const MediumCard = Template.bind({});
+MediumCard.args = { ...DefaultCard, size: 'medium' };
+MediumCard.parameters = {
+  docs: {
+    description: {
+      story: `MediumCard는 지도 페이지에서 사용되어집니다.`,
+    },
+  },
+};
+export const LargeCard = Template.bind({});
+LargeCard.args = { ...DefaultCard, size: 'large' };
+LargeCard.parameters = {
+  docs: {
+    description: {
+      story: `LargeCard는 마이페이지에서 사용되어집니다.`,
+    },
+  },
+};

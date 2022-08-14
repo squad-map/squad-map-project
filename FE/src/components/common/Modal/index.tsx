@@ -4,11 +4,10 @@ import * as S from './Modal.style';
 
 import { Icons } from '@/assets/icons';
 import Icon from '@/components/common/Icon';
-import { ButtonClickEventHandler } from '@/types/eventHandler';
 
 interface IModal {
   size: 'small' | 'medium' | 'large';
-  handleCancelClick: ButtonClickEventHandler;
+  handleCancelClick: () => void;
   children: React.ReactNode;
 }
 
@@ -19,6 +18,7 @@ const Modal = ({ size = 'small', handleCancelClick, children }: IModal) =>
       <S.Modal size={size}>
         <S.ModalCloseWrapper>
           <Icon
+            size="medium"
             url={Icons.Close}
             alt="Close Icon"
             onClick={handleCancelClick}
@@ -27,7 +27,6 @@ const Modal = ({ size = 'small', handleCancelClick, children }: IModal) =>
         {children}
       </S.Modal>
     </>,
-    document.querySelector('#modal-root')!
+    document.getElementById('modal-root') as HTMLElement
   );
-
 export default Modal;

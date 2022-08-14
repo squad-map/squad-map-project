@@ -5,7 +5,7 @@ const selectSize = (size: string) => {
   switch (size) {
     case 'xSmall':
       return css`
-        font-size: 1.3rem;
+        font-size: 0.75rem;
         font-weight: 500;
       `;
     case 'small':

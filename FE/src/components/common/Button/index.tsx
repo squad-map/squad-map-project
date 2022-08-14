@@ -2,10 +2,6 @@ import * as S from './Button.style';
 
 interface IButton {
   /**
-   * 버튼 Text
-   */
-  text: string;
-  /**
    * 버튼 type
    */
   size: 'xLarge' | 'large' | 'xRegular' | 'regular' | 'small' | 'xSmall';
@@ -17,18 +13,13 @@ interface IButton {
   background?: string;
   disabled?: boolean;
   loading?: boolean;
+  children: React.ReactNode;
   onClick?: () => void;
 }
 
-const Button = ({
-  text,
-  size = 'regular',
-  color,
-  loading = false,
-  ...props
-}: IButton) => (
+const Button = ({ size = 'regular', color, children, ...props }: IButton) => (
   <S.Button size={size} color={color} {...props}>
-    {loading ? 'Loading' : text}
+    {children}
   </S.Button>
 );
 

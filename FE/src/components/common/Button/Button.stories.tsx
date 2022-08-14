@@ -3,7 +3,10 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import Button from './index';
 
 import { Icons } from '@/assets/icons';
+import Text from '@/components/common/Text';
 import theme from '@/styles/theme';
+
+const imageUrl = `url(${Icons.Plus}) no-repeat right 1rem`;
 
 export default {
   title: 'Button',
@@ -11,8 +14,8 @@ export default {
   disabled: false,
   loading: false,
   argTypes: {
-    text: {
-      defaultValue: 'regular',
+    children: {
+      defaultValue: <Text size="regular" text="REGULAR" color="#FFFFFF" />,
     },
     size: {
       control: {
@@ -21,9 +24,9 @@ export default {
       },
       defaultValue: 'regular',
     },
-    background: {
-      defaultValue: `url(${Icons.Plus}) no-repeat right 1rem`,
-    },
+    // background: {
+    //   defaultValue: `url(${Icons.Plus}) no-repeat right 1rem`,
+    // },
     color: {
       control: {
         type: 'select',
@@ -66,49 +69,70 @@ export const Default = Template.bind({});
 
 export const xLargeButton = () => (
   <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-    <Button size="xLarge" color="#BCBCBC" text="카카오맵으로 보기" />
-    <Button size="xLarge" color="#191A1C" text="등록하기" />
-    <Button size="xLarge" color="#3F3F3F" text="취소하기" />
+    <Button size="xLarge" color="#BCBCBC">
+      <Text size="regular" text="카카오맵으로 보기" color="#191A1C" />
+    </Button>
+    <Button size="xLarge" color="#191A1C">
+      <Text size="regular" text="등록하기" color="#FFFFFF" />
+    </Button>
+    <Button size="xLarge" color="#3F3F3F">
+      <Text size="regular" text="취소하기" color="#FFFFFF" />
+    </Button>
   </div>
 );
 
 export const largeButton = () => (
   <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-    <Button size="large" color="#191A1C" text="Github 계정으로 로그인" />
-    <Button size="large" color="#17CE5F" text="Naver 계정으로 로그인" />
-    <Button size="large" color="#BEE59A" text="나만의 지도 만들기" />
+    <Button size="large" color="#191A1C">
+      <Text size="regular" text="Github 계정으로 로그인" color="#FFFFFF" />
+    </Button>
+    <Button size="large" color="#17CE5F">
+      <Text size="regular" text="Naver 계정으로 로그인" color="#000000" />
+    </Button>
+    <Button size="large" color="#BEE59A" background={imageUrl}>
+      <Text size="regular" text="나만의 지도 만들기" color="#000000" />
+    </Button>
   </div>
 );
 
 export const xRegularButton = () => (
   <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-    <Button size="xRegular" color="#FF0000" text="카테고리 1" />
-    <Button size="xRegular" color="#0000FF" text="카테고리 2" />
-    <Button size="xRegular" color="#F3B778" text="로그인" />
+    <Button size="xRegular" color="#FF0000">
+      <Text size="regular" text="카테고리1" color="#000000" />
+    </Button>
+    <Button size="xRegular" color="#0000FF">
+      <Text size="regular" text="카테고리2" color="#000000" />
+    </Button>
+    <Button size="xRegular" color="#F3B778">
+      <Text size="regular" text="로그인" color="#000000" />
+    </Button>
   </div>
 );
 
 export const regularButton = () => (
   <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-    <Button size="regular" color="#191A1C" text="검색" />
+    <Button size="regular" color="#191A1C">
+      <Text size="regular" text="검색" color="#FFFFFF" />
+    </Button>
   </div>
 );
 
 export const smallButton = () => (
   <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-    <Button size="small" color="#191A1C" text="선택하기" />
-    <Button
-      {...Default.args}
-      size="small"
-      color="#191A1C"
-      text="카테고리 추가"
-    />
+    <Button size="small" color="#191A1C">
+      <Text size="regular" text="선택하기" color="#FFFFFF" />
+    </Button>
+    <Button {...Default.args} size="small" color="#191A1C">
+      <Text size="regular" text="검색" color="#FFFFFF" />
+    </Button>
   </div>
 );
 
 export const xSmallButton = () => (
   <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-    <Button size="xSmall" color="#FF0000" text="카테고리" />
+    <Button size="xSmall" color="#FF0000">
+      <Text size="xSmall" text="검색" color="#000000" />
+    </Button>
   </div>
 );
 

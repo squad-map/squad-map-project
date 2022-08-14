@@ -18,9 +18,9 @@ export default {
 
 const Template: ComponentStory<typeof Modal> = args => <Modal {...args} />;
 
-export const Default = Template.bind({});
+export const DefaultModal = Template.bind({});
 
-Default.parameters = {
+DefaultModal.parameters = {
   docs: {
     description: {
       story: '`Default(small) size의 팝업 형태입니다.`',

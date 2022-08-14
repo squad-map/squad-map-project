@@ -25,7 +25,7 @@ const GridCards = () => {
         mapsData.map((item: IMap) => (
           <Card size="small" key={item.id}>
             <S.Item>
-              <Icon url={Icons.Sample} alt="카드 샘플 이미지" />
+              <Icon size="medium" url={Icons.Sample} alt="카드 샘플 이미지" />
               <S.Title>{item.title}</S.Title>
               <S.Description>
                 {item.emoji}
