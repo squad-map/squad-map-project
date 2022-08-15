@@ -44,7 +44,7 @@ const Header = () => {
             alt="Header Menu"
             data-testid="menuBtn"
             cursor
-            onClick={() => handleOpenMenu()}
+            onClick={handleOpenMenu}
           />
         </S.RightArea>
       </S.Wrapper>

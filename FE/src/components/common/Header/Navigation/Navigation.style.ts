@@ -55,9 +55,8 @@ const fadeInLeft = keyframes`
 
 export const Container = styled.section<{ menu: boolean }>`
   ${flexbox({ dir: 'column' })}
-  display: none;
   position: absolute;
-  opacity: 0;
+  visibility: hidden;
   top: 0;
   right: -20%;
   width: 19.5rem;
@@ -67,9 +66,10 @@ export const Container = styled.section<{ menu: boolean }>`
   animation: ${props =>
     props.menu
       ? css`
-          ${fadeInLeft} 1s forwards
+          ${fadeInLeft} 1s forwards;
+          visibility: visible;
         `
       : css`
-          ${fadeInRight} 1s
+          ${fadeInRight} 1s;
         `};
 `;
