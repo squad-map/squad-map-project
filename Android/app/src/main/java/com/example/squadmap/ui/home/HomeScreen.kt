@@ -20,6 +20,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.rememberNavController
 import com.example.squadmap.data.model.AllMap
+import com.example.squadmap.ui.navigation.SquadMapNavigation
+import com.example.squadmap.ui.navigation.SquadMapRoutAction
 import com.example.squadmap.ui.search.SearchScreen
 import com.example.squadmap.ui.theme.MainGreen
 import com.example.squadmap.ui.theme.SquadMapTheme
@@ -34,12 +36,10 @@ val list = listOf<AllMap>(
 )
 
 @Composable
-fun HomeScreen() {
-    val navGraph = rememberNavController()
-
+fun HomeScreen(routAction: SquadMapRoutAction) {
     Scaffold(
         topBar = {
-            TopAppbar()
+            TopAppbar(routAction)
         }
     ) {
         LazyColumn(
@@ -90,7 +90,7 @@ fun CardView(item: AllMap) {
 }
 
 @Composable
-private fun TopAppbar() {
+private fun TopAppbar(routAction: SquadMapRoutAction) {
     TopAppBar(
         elevation = 4.dp,
         title = {
@@ -103,19 +103,17 @@ private fun TopAppbar() {
             }
         },
         actions = {
-            SearchButton {
-
-            }
+            SearchButton(
+                routAction = routAction,
+                rout = SquadMapNavigation.SEARCH_SCREEN)
         }
     )
 }
-
 
 
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     SquadMapTheme {
-        HomeScreen()
     }
 }

@@ -5,13 +5,16 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
+import com.example.squadmap.ui.navigation.SquadMapNavigation
+import com.example.squadmap.ui.navigation.SquadMapRoutAction
 
 @Composable
 fun SearchButton(
-    onClick: () -> Unit
+    routAction: SquadMapRoutAction,
+    rout: SquadMapNavigation
 ) {
     IconButton(onClick = {
-        onClick()
+        routAction.navToRout(rout)
     }) {
         Icon(imageVector = Icons.Filled.Search, contentDescription ="Search" )
     }

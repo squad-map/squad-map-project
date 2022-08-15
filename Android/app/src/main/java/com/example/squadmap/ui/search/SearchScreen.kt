@@ -9,6 +9,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
@@ -20,11 +21,11 @@ import com.example.squadmap.ui.theme.SquadMapTheme
 
 @Composable
 fun SearchScreen() {
-    Scaffold(
-        modifier = Modifier.fillMaxSize()
-    ) { paddingValues ->
+    Surface(
+        modifier = Modifier.fillMaxWidth().height(90.dp)
+    ) {
         Column(
-            modifier = Modifier.padding(paddingValues).fillMaxWidth().background(MainGreen),
+            modifier = Modifier.fillMaxWidth().height(150.dp).background(MainGreen),
             verticalArrangement = Arrangement.Top
         ) {
             SearchView()
