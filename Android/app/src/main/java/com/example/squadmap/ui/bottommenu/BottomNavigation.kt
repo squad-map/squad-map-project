@@ -23,6 +23,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.squadmap.ui.category.CategoryMapScreen
 import com.example.squadmap.ui.home.HomeScreen
 import com.example.squadmap.ui.mymap.MyMapScreen
+import com.example.squadmap.ui.navigation.SquadMapNavGraph
 import com.example.squadmap.ui.profile.ProfileScreen
 import com.example.squadmap.ui.theme.SquadMapTheme
 
@@ -37,7 +38,7 @@ val items = listOf<BottomNavigation>(
 fun BottomNavigationGraph(navController: NavHostController) {
     NavHost(navController = navController, startDestination = BottomNavigation.Home.screenRoute) {
         composable(BottomNavigation.Home.screenRoute) {
-            HomeScreen()
+            SquadMapNavGraph()
         }
         composable(BottomNavigation.Category.screenRoute) {
             CategoryMapScreen()

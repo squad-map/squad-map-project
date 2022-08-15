@@ -7,6 +7,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -17,9 +18,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.rememberNavController
 import com.example.squadmap.data.model.AllMap
+import com.example.squadmap.ui.navigation.SquadMapNavigation
+import com.example.squadmap.ui.navigation.SquadMapRoutAction
+import com.example.squadmap.ui.search.SearchScreen
 import com.example.squadmap.ui.theme.MainGreen
 import com.example.squadmap.ui.theme.SquadMapTheme
+import com.example.squadmap.ui.utils.SearchButton
 
 val list = listOf<AllMap>(
     AllMap("스쿼드 지도", "로니", 6),
@@ -30,11 +36,10 @@ val list = listOf<AllMap>(
 )
 
 @Composable
-fun HomeScreen() {
-
+fun HomeScreen(routAction: SquadMapRoutAction) {
     Scaffold(
         topBar = {
-            TopAppbar()
+            TopAppbar(routAction)
         }
     ) {
         LazyColumn(
@@ -55,9 +60,9 @@ fun CardView(item: AllMap) {
         modifier = Modifier
             .fillMaxWidth()
             .height(200.dp)
-            .padding(15.dp),
+            .padding(10.dp),
         shape = RoundedCornerShape(50.dp),
-        backgroundColor = Color.Gray
+        backgroundColor = Color(238, 238, 238, 1)
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
@@ -69,19 +74,23 @@ fun CardView(item: AllMap) {
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(top = 10.dp)
             )
-            Spacer(modifier = Modifier.fillMaxWidth().height(20.dp))
+            Spacer(modifier = Modifier
+                .fillMaxWidth()
+                .height(20.dp))
             Text(
                 text = item.host,
                 fontSize = 14.sp,
                 textAlign = TextAlign.Start,
-                modifier = Modifier.fillMaxWidth().padding(start = 20.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 20.dp)
             )
         }
     }
 }
 
 @Composable
-private fun TopAppbar() {
+private fun TopAppbar(routAction: SquadMapRoutAction) {
     TopAppBar(
         elevation = 4.dp,
         title = {
@@ -92,14 +101,19 @@ private fun TopAppbar() {
             IconButton(onClick = {/* Do Something*/ }) {
                 Icon(Icons.Filled.ArrowBack, null)
             }
+        },
+        actions = {
+            SearchButton(
+                routAction = routAction,
+                rout = SquadMapNavigation.SEARCH_SCREEN)
         }
     )
 }
+
 
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     SquadMapTheme {
-        HomeScreen()
     }
 }
