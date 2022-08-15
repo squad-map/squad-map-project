@@ -6,7 +6,11 @@ import Navigation from './index';
 export default {
   title: 'Navigation',
   component: Navigation,
-  menu: true,
+  argTypes: {
+    menu: {
+      defaultValue: true,
+    },
+  },
 } as ComponentMeta<typeof Navigation>;
 
 const Template: ComponentStory<typeof Navigation> = args => (

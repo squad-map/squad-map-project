@@ -3,6 +3,7 @@ import * as S from './Home.style';
 import { Icons } from '@/assets/icons';
 import Button from '@/components/common/Button';
 import Header from '@/components/common/Header';
+import Text from '@/components/common/Text';
 import GridCards from '@/components/GridCards';
 import Input from '@/components/Input';
 import theme from '@/styles/theme';
@@ -26,10 +27,15 @@ export default function HomePage() {
         <S.ButtonWrapper>
           <Button
             size="large"
-            text="나만의 지도 만들기"
             color={theme.color.brown}
             background={`url(${Icons.Plus}) no-repeat right 1rem`}
-          />
+          >
+            <Text
+              size="regular"
+              text="나만의 지도 만들기"
+              color={theme.color.white}
+            />
+          </Button>
         </S.ButtonWrapper>
       </S.Contents>
     </S.Container>

@@ -55,7 +55,9 @@ const fadeInLeft = keyframes`
 
 export const Container = styled.section<{ menu: boolean }>`
   ${flexbox({ dir: 'column' })}
-  position: fixed;
+  display: none;
+  position: absolute;
+  opacity: 0;
   top: 0;
   right: -20%;
   width: 19.5rem;

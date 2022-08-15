@@ -10,6 +10,7 @@ import Navigation from './Navigation';
 import { Images } from '@/assets/images';
 import Button from '@/components/common/Button';
 import Image from '@/components/common/Image';
+import Text from '@/components/common/Text';
 import Login from '@/components/Login';
 import theme from '@/styles/theme';
 
@@ -28,11 +29,16 @@ const Header = () => {
         </Link>
         <S.RightArea>
           <Button
-            text={loggedIn ? '로그인' : '닉네임'}
             size="regular"
             color={theme.color.brown}
             onClick={() => setOpenLoginModal(true)}
-          />
+          >
+            <Text
+              size="regular"
+              text={loggedIn ? '로그인' : '닉네임'}
+              color={theme.color.white}
+            />
+          </Button>
           <Image
             url={Images.Menu}
             alt="Header Menu"
