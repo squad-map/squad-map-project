@@ -1,5 +1,5 @@
 import { ThemeProvider } from '@emotion/react';
-import * as ReactDOM from 'react-dom/client';
+import { createRoot } from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { RecoilRoot } from 'recoil';
 
@@ -13,9 +13,7 @@ if (process.env.NODE_ENV === 'development') {
   worker.start();
 }
 
-const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
-);
+const root = createRoot(document.getElementById('root') as HTMLElement);
 
 export const queryClient = new QueryClient();
 

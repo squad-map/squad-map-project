@@ -1,23 +1,26 @@
 import * as S from './Button.style';
 
-interface ILoginButton {
+interface IButton {
+  /**
+   * 버튼 type
+   */
+  size: 'xLarge' | 'large' | 'xRegular' | 'regular' | 'small' | 'xSmall';
+  /**
+   * color Text
+   * (RGB 16진수 형태로 입력 Ex. #000000)
+   */
+  color: string;
+  background?: string;
+  disabled?: boolean;
+  loading?: boolean;
   children: React.ReactNode;
-  textColor: string;
-  bgColor: string;
+  onClick?: () => void;
 }
 
-export const LoginButton = ({
-  children,
-  textColor,
-  bgColor,
-  ...props
-}: ILoginButton) => (
-  <S.LoginButton
-    type="button"
-    textColor={textColor}
-    bgColor={bgColor}
-    {...props}
-  >
+const Button = ({ size = 'regular', color, children, ...props }: IButton) => (
+  <S.Button size={size} color={color} {...props}>
     {children}
-  </S.LoginButton>
+  </S.Button>
 );
+
+export default Button;
