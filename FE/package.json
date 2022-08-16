@@ -58,6 +58,7 @@
 		"eslint-plugin-react-hooks": "^4.5.0",
 		"html-webpack-plugin": "^5.5.0",
 		"mini-css-extract-plugin": "^2.6.0",
+		"msw-storybook-addon": "^1.6.3",
 		"prettier": "^2.6.2",
 		"react-refresh": "^0.13.0",
 		"style-loader": "^3.3.1",
