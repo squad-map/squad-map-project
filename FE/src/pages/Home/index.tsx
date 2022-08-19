@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 import * as S from './Home.style';
 
 import { Icons } from '@/assets/icons';
@@ -24,19 +26,21 @@ export default function HomePage() {
         <S.GridWrapper>
           <GridCards />
         </S.GridWrapper>
-        <S.ButtonWrapper>
-          <Button
-            size="large"
-            color={theme.color.brown}
-            background={`url(${Icons.Plus}) no-repeat right 1rem`}
-          >
-            <Text
-              size="regular"
-              text="나만의 지도 만들기"
-              color={theme.color.white}
-            />
-          </Button>
-        </S.ButtonWrapper>
+        <Link to="mypage">
+          <S.ButtonWrapper>
+            <Button
+              size="large"
+              color={theme.color.brown}
+              background={`url(${Icons.Plus}) no-repeat right 1rem`}
+            >
+              <Text
+                size="regular"
+                text="나만의 지도 만들기"
+                color={theme.color.white}
+              />
+            </Button>
+          </S.ButtonWrapper>
+        </Link>
       </S.Contents>
     </S.Container>
   );

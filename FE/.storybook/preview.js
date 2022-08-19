@@ -5,6 +5,10 @@ import theme from '@/styles/theme';
 import { RecoilRoot } from 'recoil';
 import { QueryClientProvider } from 'react-query';
 import { queryClient } from '../src';
+import { initialize, mswDecorator } from "msw-storybook-addon";
+
+// MSW 초기화 함수 실행
+initialize();
 
 export const parameters = {
   actions: { argTypesRegex: "^on[A-Z].*" },
@@ -17,6 +21,7 @@ export const parameters = {
 }
 
 export const decorators = [
+  mswDecorator,
   (Story) => (
     <>
      <BrowserRouter>
@@ -30,5 +35,5 @@ export const decorators = [
         </QueryClientProvider>
       </BrowserRouter>
     </>
-  ),
+  )
 ];

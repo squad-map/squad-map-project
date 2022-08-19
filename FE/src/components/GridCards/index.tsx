@@ -1,5 +1,7 @@
 import { useQuery } from 'react-query';
 
+import LoadingSpinner from '../common/LoadingSpinner';
+
 import * as S from './GridCards.style';
 
 import { Icons } from '@/assets/icons';
@@ -21,7 +23,9 @@ const GridCards = () => {
 
   return (
     <S.GridCards>
-      {mapsData &&
+      {loading ? (
+        <LoadingSpinner size="xLarge" />
+      ) : (
         mapsData.map((item: IMap) => (
           <Card size="small" key={item.id}>
             <S.Item>
@@ -34,7 +38,8 @@ const GridCards = () => {
               </S.Description>
             </S.Item>
           </Card>
-        ))}
+        ))
+      )}
     </S.GridCards>
   );
 };
