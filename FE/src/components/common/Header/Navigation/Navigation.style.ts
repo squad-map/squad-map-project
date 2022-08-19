@@ -1,4 +1,3 @@
-import { keyframes, css } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import { flexbox } from '@/styles/mixin';
@@ -33,43 +32,15 @@ export const InnerContainer = styled.section`
   margin-top: 8.25rem;
 `;
 
-const fadeInRight = keyframes`
-    from {
-      opacity: 1;
-      right: 0;
-    }
-    to {
-      opacity: 0;
-      right: -20%;
-    }
-`;
-
-const fadeInLeft = keyframes`
-    from {
-      opacity: 0;
-    } to {
-      opacity: 1;
-      right: 0;
-    }
-`;
-
 export const Container = styled.section<{ menu: boolean }>`
   ${flexbox({ dir: 'column' })}
-  position: absolute;
-  visibility: hidden;
+  position: fixed;
   top: 0;
-  right: -20%;
+  right: 0;
   width: 19.5rem;
-  height: 100vh;
+  height: 100%;
   padding: 0 2rem;
   background-color: ${theme.color.white};
-  animation: ${props =>
-    props.menu
-      ? css`
-          ${fadeInLeft} 1s forwards;
-          visibility: visible;
-        `
-      : css`
-          ${fadeInRight} 1s;
-        `};
+  transform: ${props => (props.menu ? 'translateX(0)' : 'translateX(100%)')};
+  transition: 0.5s;
 `;

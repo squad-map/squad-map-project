@@ -19,6 +19,8 @@ export const Item = styled.div`
 `;
 
 export const GridCards = styled.section`
+  position: relative;
+  margin-top: 1.5rem;
   display: grid;
   grid-template-columns: 15.75rem 15.75rem 15.75rem;
   grid-gap: 1rem;
