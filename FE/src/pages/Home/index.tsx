@@ -1,16 +1,30 @@
+import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
 
 import * as S from './Home.style';
+import Item from './Item';
 
 import { Icons } from '@/assets/icons';
 import Button from '@/components/common/Button';
+import Card from '@/components/common/Card';
 import Header from '@/components/common/Header';
+import LoadingSpinner from '@/components/common/LoadingSpinner';
 import Text from '@/components/common/Text';
 import GridCards from '@/components/GridCards';
 import Input from '@/components/Input';
+import { IMap } from '@/interfaces/IMap';
 import theme from '@/styles/theme';
 
+const getMapsData = async () => {
+  const response = await fetch('/');
+  const maps = await response.json();
+  return maps;
+};
+
 export default function HomePage() {
+  const { data: mapsData, isLoading: loading } = useQuery(['allMaps'], () =>
+    getMapsData()
+  );
   return (
     <S.Container>
       <Header />
@@ -24,7 +38,17 @@ export default function HomePage() {
           />
         </S.SearchInputWrapper>
         <S.GridWrapper>
-          <GridCards />
+          <GridCards size="small">
+            {loading ? (
+              <LoadingSpinner size="xLarge" />
+            ) : (
+              mapsData.map((item: IMap) => (
+                <Card size="small" key={item.id}>
+                  <Item item={item} />
+                </Card>
+              ))
+            )}
+          </GridCards>
         </S.GridWrapper>
         <Link to="mypage">
           <S.ButtonWrapper>
