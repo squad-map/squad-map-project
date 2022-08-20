@@ -57,6 +57,9 @@ export const Text = styled.div<{
   ${({ size }) => selectSize(size)};
   color: ${props => props.color};
   cursor: ${props => props.cursor && 'pointer'};
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
   &:hover {
     text-decoration: ${props => props.hover && 'underline'};
   }

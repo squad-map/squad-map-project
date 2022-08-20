@@ -14,7 +14,11 @@ import Text from '@/components/common/Text';
 import Login from '@/components/Login';
 import theme from '@/styles/theme';
 
-const Header = () => {
+interface HeaderProps {
+  children?: React.ReactNode;
+}
+
+const Header = ({ children }: HeaderProps) => {
   const loggedIn = true;
   const [openLoginModal, setOpenLoginModal] = useState(false);
   const [menu, setMenu] = useState(false);
@@ -54,6 +58,7 @@ const Header = () => {
           <Login />
         </Modal>
       )}
+      {children}
     </S.Container>
   );
 };
