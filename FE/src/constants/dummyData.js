@@ -35,3 +35,72 @@ export const homeMapsData = [
     placeCount: 15,
   },
 ];
+
+export const myPageMapsData = [
+  {
+    id: 1,
+    categories: [
+      { name: '카테고리1', color: 'red' },
+      { name: '카테고리2', color: 'blue' },
+      { name: '카테고리3', color: 'orange' },
+    ],
+    emoji: '💻',
+    title: '노트북하기 좋은 곳',
+    placeCount: 3,
+  },
+  {
+    id: 2,
+    categories: [
+      { name: '카테고리1', color: 'red' },
+      { name: '카테고리2', color: 'blue' },
+      { name: '카테고리3', color: 'orange' },
+    ],
+    emoji: '💻',
+    title: '노트북하기 좋은 곳',
+    placeCount: 3,
+  },
+  {
+    id: 3,
+    categories: [
+      { name: '카테고리1', color: 'red' },
+      { name: '카테고리2', color: 'blue' },
+      { name: '카테고리3', color: 'orange' },
+    ],
+    emoji: '💻',
+    title: '노트북하기 좋은 곳',
+    placeCount: 3,
+  },
+  {
+    id: 4,
+    categories: [
+      { name: '카테고리1', color: 'red' },
+      { name: '카테고리2', color: 'blue' },
+      { name: '카테고리3', color: 'orange' },
+    ],
+    emoji: '💻',
+    title: '노트북하기 좋은 곳',
+    placeCount: 3,
+  },
+  {
+    id: 5,
+    categories: [
+      { name: '카테고리1', color: 'red' },
+      { name: '카테고리2', color: 'blue' },
+      { name: '카테고리3', color: 'orange' },
+    ],
+    emoji: '💻',
+    title: '노트북하기 좋은 곳',
+    placeCount: 3,
+  },
+  {
+    id: 6,
+    categories: [
+      { name: '카테고리1', color: 'red' },
+      { name: '카테고리2', color: 'blue' },
+      { name: '카테고리3', color: 'orange' },
+    ],
+    emoji: '💻',
+    title: '노트북하기 좋은 곳',
+    placeCount: 3,
+  },
+];
