@@ -1,5 +1,6 @@
 import CategoryMap from '@/assets/icons/categoryMap.svg';
 import Close from '@/assets/icons/close.svg';
+import Edit from '@/assets/icons/edit.svg';
 import Error from '@/assets/icons/error.svg';
 import Login from '@/assets/icons/login.svg';
 import Map from '@/assets/icons/map.svg';
@@ -18,4 +19,5 @@ export const Icons = {
   Search,
   Sample,
   Plus,
+  Edit,
 } as const;
