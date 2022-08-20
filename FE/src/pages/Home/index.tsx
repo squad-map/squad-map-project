@@ -43,9 +43,11 @@ export default function HomePage() {
               <LoadingSpinner size="xLarge" />
             ) : (
               mapsData.map((item: IMap) => (
-                <Card size="small" key={item.id}>
-                  <Item item={item} />
-                </Card>
+                <Link to={`/map/${item.id}`}>
+                  <Card size="small" key={item.id}>
+                    <Item item={item} />
+                  </Card>
+                </Link>
               ))
             )}
           </GridCards>
