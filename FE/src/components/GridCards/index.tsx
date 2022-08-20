@@ -1,47 +1,12 @@
-import { useQuery } from 'react-query';
-
-import LoadingSpinner from '../common/LoadingSpinner';
-
 import * as S from './GridCards.style';
 
-import { Icons } from '@/assets/icons';
-import Card from '@/components/common/Card';
-import Icon from '@/components/common/Icon';
-import { IMap } from '@/interfaces/IMap';
+interface GridCardsProps {
+  size: string;
+  children: React.ReactNode;
+}
 
-const getMapsData = async () => {
-  const response = await fetch('/');
-  const maps = await response.json();
-  return maps;
-};
-
-const GridCards = () => {
-  // Loading 처리 필요.
-  const { data: mapsData, isLoading: loading } = useQuery(['allMaps'], () =>
-    getMapsData()
-  );
-
-  return (
-    <S.GridCards>
-      {loading ? (
-        <LoadingSpinner size="xLarge" />
-      ) : (
-        mapsData.map((item: IMap) => (
-          <Card size="small" key={item.id}>
-            <S.Item>
-              <Icon size="medium" url={Icons.Sample} alt="카드 샘플 이미지" />
-              <S.Title>{item.title}</S.Title>
-              <S.Description>
-                {item.emoji}
-                {item.user}
-                {item.placeCount}
-              </S.Description>
-            </S.Item>
-          </Card>
-        ))
-      )}
-    </S.GridCards>
-  );
-};
+const GridCards = ({ size, children }: GridCardsProps) => (
+  <S.GridCards size={size}>{children}</S.GridCards>
+);
 
 export default GridCards;
