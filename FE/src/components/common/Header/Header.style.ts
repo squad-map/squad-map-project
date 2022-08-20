@@ -14,17 +14,16 @@ export const Menu = styled.img`
 `;
 
 export const RightArea = styled.div`
-  ${flexbox({ ai: 'flex-start' })}
+  ${flexbox({ ai: 'center' })}
   gap: 2rem;
 `;
 
 export const Wrapper = styled.div`
-  ${flexbox({ jc: 'space-between' })}
+  ${flexbox({ jc: 'space-between', ai: 'center' })}
   padding: 2rem;
 `;
 
 export const Container = styled.section`
-  position: fixed;
   width: 100%;
   height: 18.875rem;
   background-color: ${theme.color.lightGreen};

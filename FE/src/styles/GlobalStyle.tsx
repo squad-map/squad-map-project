@@ -13,6 +13,7 @@ const style = css`
     font-family: 'Noto Sans KR', sans-serif;
     box-sizing: border-box;
     background-color: #f7f7fc;
+    overflow-x: hidden;
   }
   a {
     color: inherit;
