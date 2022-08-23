@@ -1,6 +1,7 @@
+import { useState } from 'react';
 import { useQuery } from 'react-query';
-import { Link } from 'react-router-dom';
 
+import Form from './Form';
 import Item from './Item';
 import * as S from './MyPage.style';
 
@@ -25,6 +26,16 @@ const MyPage = () => {
   const { data: myPageData, isLoading: loading } = useQuery(['myMaps'], () =>
     getMyPageMapsData()
   );
+  const [onForm, setOnForm] = useState({ create: false, modify: false });
+
+  const handleCreateButton = () => {
+    setOnForm({ ...onForm, create: true });
+  };
+
+  const handleModifyButton = () => {
+    setOnForm({ ...onForm, modify: true });
+  };
+
   return (
     <>
       <Header>
@@ -37,28 +48,30 @@ const MyPage = () => {
           />
         </S.TitleBox>
       </Header>
-      <S.Contents>
-        <S.GridWrapper>
-          <GridCards size="large">
-            {loading ? (
-              <LoadingSpinner size="xLarge" />
-            ) : (
-              myPageData.map((item: IMyMap) => (
-                <Link to={`/map/${item.id}`}>
+      {onForm.create || onForm.modify ? (
+        <Form onForm={onForm} />
+      ) : (
+        <S.Contents>
+          <S.GridWrapper>
+            <GridCards size="large">
+              {loading ? (
+                <LoadingSpinner size="xLarge" />
+              ) : (
+                myPageData.map((item: IMyMap) => (
                   <Card size="large" key={item.id}>
-                    <Item item={item} />
+                    <Item item={item} handleModifyButton={handleModifyButton} />
                   </Card>
-                </Link>
-              ))
-            )}
-          </GridCards>
-        </S.GridWrapper>
-        <Link to="create">
+                ))
+              )}
+            </GridCards>
+          </S.GridWrapper>
+
           <S.ButtonWrapper>
             <Button
               size="large"
               color={theme.color.lightGreen}
               background={`url(${Icons.Plus}) no-repeat right 1rem`}
+              onClick={handleCreateButton}
             >
               <Text
                 size="regular"
@@ -67,8 +80,8 @@ const MyPage = () => {
               />
             </Button>
           </S.ButtonWrapper>
-        </Link>
-      </S.Contents>
+        </S.Contents>
+      )}
     </>
   );
 };

@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import React from 'react';
 
 import * as S from './Item.style';
 
@@ -11,9 +11,10 @@ import { CategoryType } from '@/types/map';
 
 interface ItemProps {
   item: IMyMap;
+  handleModifyButton: (e: React.MouseEvent<HTMLImageElement>) => void;
 }
 
-const Item = ({ item }: ItemProps) => (
+const Item = ({ item, handleModifyButton }: ItemProps) => (
   <S.Item>
     <S.ItemHeader>
       {item.categories.map((category: CategoryType) => (
@@ -23,9 +24,13 @@ const Item = ({ item }: ItemProps) => (
           color={category.color || theme.color.black}
         />
       ))}
-      <Link to="modify">
-        <Icon size="small" url={Icons.Edit} alt="Edit Icon" />
-      </Link>
+
+      <Icon
+        size="small"
+        url={Icons.Edit}
+        alt="Edit Icon"
+        onClick={handleModifyButton}
+      />
     </S.ItemHeader>
     <Text
       text={`${item.emoji} ${item.title}`}
@@ -38,9 +43,8 @@ const Item = ({ item }: ItemProps) => (
         size="xSmall"
         color={theme.color.gray}
       />
-      <Link to="modify">
-        <Text text="수정하기" size="xSmall" color={theme.color.gray} />
-      </Link>
+
+      <Text text="수정하기" size="xSmall" color={theme.color.gray} />
     </S.ItemFooter>
   </S.Item>
 );
