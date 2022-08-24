@@ -7,18 +7,18 @@ endif::[]
 :sectlinks:
 
 [[resources-post]]
-== Post
+== 나만의 지도
 
 [[resources-post-create]]
-=== sample 생성
+=== Map 생성
 
 ==== HTTP request
 
-include::{snippets}/simple_test/get_test_response_test/request-fields.adoc[]
+include::{snippets}/map_test/map_create_test/request-fields.adoc[]
 
-include::{snippets}/simple_test/get_test_response_test/http-request.adoc[]
+include::{snippets}/map_test/map_create_test/http-request.adoc[]
 
 ==== HTTP response
-include::{snippets}/simple_test/get_test_response_test/response-fields.adoc[]
+include::{snippets}/map_test/map_create_test/response-fields.adoc[]
 
-include::{snippets}/simple_test/get_test_response_test/http-response.adoc[]
+include::{snippets}/map_test/map_create_test/http-response.adoc[]
