@@ -1,55 +1,41 @@
 import React, { useRef, useState } from 'react';
 
+import EmailBox from './EmailBox';
 import * as S from './Form.style';
 
-import { Icons } from '@/assets/icons';
 import { Images } from '@/assets/images';
 import Button from '@/components/common/Button';
-import Icon from '@/components/common/Icon';
 import Image from '@/components/common/Image';
 import Text from '@/components/common/Text';
 import Input from '@/components/Input';
+import { IMyMap } from '@/interfaces/IMyMap';
 import theme from '@/styles/theme';
 
 interface FormProps {
-  onForm: { create: boolean; modify: boolean };
+  type: { create: boolean; modify: boolean };
+  myPageData: IMyMap;
 }
 
-const Form = ({ onForm }: FormProps) => {
+const Form = ({ type, myPageData }: FormProps) => {
   const dataId = useRef(1);
-  const [shareForm, setShareForm] = useState(true);
+  const [isShareForm, setIsShareForm] = useState(true);
+
   const [formData, setFormData] = useState({
-    name: '',
-    emoji: '',
+    title: myPageData.title || '',
+    emoji: myPageData.emoji || '',
     share: 'do',
-    emails: [
-      {
-        dataId: dataId.current,
-        component: (
-          <S.EmailBox>
-            <Input
-              width="16rem"
-              height="2.5rem"
-              placeholderText="jinlog9@gmail.com"
-              color={theme.color.placeholder}
-              background={theme.color.inputBackground}
-              type="text"
-            />
-            <Icon
-              size="medium"
-              url={Icons.Minus}
-              alt="이메일 삭제 버튼"
-              data-id={dataId.current}
-              cursor
-            />
-          </S.EmailBox>
-        ),
-      },
-    ],
+    emails: [],
   });
 
-  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, name: e.target.value });
+  const [emailComponent, setEmailComponent] = useState([
+    {
+      dataId: dataId.current,
+      component: <EmailBox dataId={dataId.current} />,
+    },
+  ]);
+
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, title: e.target.value });
   };
 
   const handleEmojiChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -61,47 +47,24 @@ const Form = ({ onForm }: FormProps) => {
     const ImageTarget = e.target as HTMLImageElement;
 
     if (ImageTarget.tagName === 'IMG') {
-      setFormData({
-        ...formData,
-        emails: formData.emails.filter(email =>
-          email.dataId.toString() !== ImageTarget.dataset.id ? email : ''
-        ),
-      });
+      const filteredEmailComponent = emailComponent.filter(email =>
+        email.dataId.toString() !== ImageTarget.dataset.id ? email : ''
+      );
+      setEmailComponent(filteredEmailComponent);
     }
   };
 
   const handleAddEmail = () => {
     dataId.current += 1;
-    const newFormData = {
-      ...formData,
-      emails: [
-        ...formData.emails,
-        {
-          dataId: dataId.current,
-          component: (
-            <S.EmailBox>
-              <Input
-                width="16rem"
-                height="2.5rem"
-                placeholderText="jinlog9@gmail.com"
-                color={theme.color.placeholder}
-                background={theme.color.inputBackground}
-                type="text"
-              />
-              <Icon
-                size="medium"
-                url={Icons.Minus}
-                alt="이메일 삭제 버튼"
-                cursor
-                data-id={dataId.current}
-              />
-            </S.EmailBox>
-          ),
-        },
-      ],
-    };
+    const newEmailComponent = [
+      ...emailComponent,
+      {
+        dataId: dataId.current,
+        component: <EmailBox dataId={dataId.current} />,
+      },
+    ];
 
-    setFormData(newFormData);
+    setEmailComponent(newEmailComponent);
   };
 
   const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -109,35 +72,43 @@ const Form = ({ onForm }: FormProps) => {
     setFormData({ ...formData, share: id });
 
     if (id === 'do') {
-      setShareForm(true);
+      setIsShareForm(true);
     } else {
-      setShareForm(false);
+      setIsShareForm(false);
     }
   };
+
+  const handleCreateButton = () => {};
+  const handleModifyButton = () => {};
+  const handleDeleteButton = () => {};
 
   return (
     <S.Form>
       <S.ColumnBox>
-        <S.Label>지도명</S.Label>
+        <S.Label htmlFor="title">지도명</S.Label>
         <Input
+          id="title"
           width="19rem"
           height="2.5rem"
           placeholderText="코드스쿼드 주변 맛집"
           color={theme.color.placeholder}
           background={theme.color.inputBackground}
           type="text"
-          onChange={handleNameChange}
+          value={formData.title}
+          onChange={handleTitleChange}
         />
       </S.ColumnBox>
       <S.ColumnBox>
-        <S.Label>아이콘</S.Label>
+        <S.Label htmlFor="emoji">이모지</S.Label>
         <Input
+          id="emoji"
           width="19rem"
           height="2.5rem"
           placeholderText="🍖 과 같은 이모지 입력"
           color={theme.color.placeholder}
           background={theme.color.inputBackground}
           type="text"
+          value={formData.emoji}
           onChange={handleEmojiChange}
         />
       </S.ColumnBox>
@@ -172,38 +143,40 @@ const Form = ({ onForm }: FormProps) => {
           </label>
         </S.RadioBox>
       </S.ColumnBox>
-      {shareForm && (
+      {isShareForm && (
         <S.ColumnBox>
           <S.ShareBox onClick={handleMinusEmail}>
-            {formData.emails.map(element => element.component)}
+            {emailComponent.map(element => element.component)}
           </S.ShareBox>
-          <S.EmailBox>
-            <Image
-              url={Images.PlusEmail}
-              alt="Email Plus Button"
-              cursor
-              onClick={handleAddEmail}
-            />
-          </S.EmailBox>
+          <Image
+            url={Images.PlusEmail}
+            alt="Email Plus Button"
+            cursor
+            onClick={handleAddEmail}
+          />
         </S.ColumnBox>
       )}
 
-      {onForm.modify ? (
-        <>
-          <S.ButtonWrapper>
-            <Button size="large" color="#000">
-              <Text text="수정하기" size="xRegular" color="#fff" />
-            </Button>
-          </S.ButtonWrapper>
-          <S.ButtonWrapper>
-            <Button size="large" color="#000">
-              <Text text="삭제하기" size="xRegular" color="#fff" />
-            </Button>
-          </S.ButtonWrapper>
-        </>
+      {type.modify ? (
+        <S.ButtonWrapper>
+          <Button
+            size="regular"
+            color={theme.color.darkBlue}
+            onClick={handleModifyButton}
+          >
+            <Text text="수정하기" size="regular" color="#fff" />
+          </Button>
+          <Button
+            size="regular"
+            color={theme.color.darkRed}
+            onClick={handleDeleteButton}
+          >
+            <Text text="삭제하기" size="regular" color="#fff" />
+          </Button>
+        </S.ButtonWrapper>
       ) : (
         <S.ButtonWrapper>
-          <Button size="large" color="#000">
+          <Button size="large" color="#000" onClick={handleCreateButton}>
             <Text text="생성하기" size="xRegular" color="#fff" />
           </Button>
         </S.ButtonWrapper>

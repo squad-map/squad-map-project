@@ -34,6 +34,8 @@ export const ShareBox = styled.div`
 
 export const ButtonWrapper = styled.div`
   margin-top: 2rem;
+  ${flexbox({ dir: 'row' })}
+  gap: 1rem;
 `;
 
 export const Form = styled.form`

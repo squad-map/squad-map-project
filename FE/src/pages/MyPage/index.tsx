@@ -26,14 +26,16 @@ const MyPage = () => {
   const { data: myPageData, isLoading: loading } = useQuery(['myMaps'], () =>
     getMyPageMapsData()
   );
-  const [onForm, setOnForm] = useState({ create: false, modify: false });
+  const [type, setType] = useState({ create: false, modify: false });
+  const [modifyData, setModifyData] = useState<IMyMap>({} as IMyMap);
 
   const handleCreateButton = () => {
-    setOnForm({ ...onForm, create: true });
+    setType({ ...type, create: true });
   };
 
-  const handleModifyButton = () => {
-    setOnForm({ ...onForm, modify: true });
+  const handleModifyButton = (id: number) => {
+    setType({ ...type, modify: true });
+    setModifyData(myPageData.filter((data: IMyMap) => data.id === id)[0]);
   };
 
   return (
@@ -48,8 +50,8 @@ const MyPage = () => {
           />
         </S.TitleBox>
       </Header>
-      {onForm.create || onForm.modify ? (
-        <Form onForm={onForm} />
+      {type.create || type.modify ? (
+        <Form type={type} myPageData={modifyData} />
       ) : (
         <S.Contents>
           <S.GridWrapper>
@@ -58,8 +60,12 @@ const MyPage = () => {
                 <LoadingSpinner size="xLarge" />
               ) : (
                 myPageData.map((item: IMyMap) => (
-                  <Card size="large" key={item.id}>
-                    <Item item={item} handleModifyButton={handleModifyButton} />
+                  <Card size="large" key={`MyCard-${item.id}`}>
+                    <Item
+                      key={`Item-${item.id}`}
+                      item={item}
+                      handleModifyButton={() => handleModifyButton(item.id)}
+                    />
                   </Card>
                 ))
               )}
