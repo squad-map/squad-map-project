@@ -1,0 +1,24 @@
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+= sample rest docs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+[[resources-post]]
+== Post
+
+[[resources-post-create]]
+=== sample 생성
+
+==== HTTP request
+
+include::{snippets}/simple_test/get_test_response_test/request-fields.adoc[]
+
+include::{snippets}/simple_test/get_test_response_test/http-request.adoc[]
+
+==== HTTP response
+include::{snippets}/simple_test/get_test_response_test/response-fields.adoc[]
+
+include::{snippets}/simple_test/get_test_response_test/http-response.adoc[]
