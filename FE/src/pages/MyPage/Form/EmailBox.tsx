@@ -7,9 +7,10 @@ import theme from '@/styles/theme';
 
 interface EmailBoxProps {
   dataId: number;
+  handleEmailChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const EmailBox = ({ dataId }: EmailBoxProps) => (
+const EmailBox = ({ dataId, handleEmailChange }: EmailBoxProps) => (
   <S.EmailBox key={`Email-${dataId}`}>
     <Input
       width="16rem"
@@ -18,6 +19,7 @@ const EmailBox = ({ dataId }: EmailBoxProps) => (
       color={theme.color.placeholder}
       background={theme.color.inputBackground}
       type="text"
+      onChange={handleEmailChange}
     />
     <Icon
       size="medium"

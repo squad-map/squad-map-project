@@ -10,6 +10,7 @@ import Text from '@/components/common/Text';
 import Input from '@/components/Input';
 import { IMyMap } from '@/interfaces/IMyMap';
 import theme from '@/styles/theme';
+import { ButtonClickEventHandler } from '@/types/eventHandler';
 
 interface FormProps {
   type: { create: boolean; modify: boolean };
@@ -24,13 +25,22 @@ const Form = ({ type, myPageData }: FormProps) => {
     title: myPageData.title || '',
     emoji: myPageData.emoji || '',
     share: 'do',
-    emails: [],
+    emails: [] as string[],
   });
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, emails: [...formData.emails, e.target.value] });
+  };
 
   const [emailComponent, setEmailComponent] = useState([
     {
       dataId: dataId.current,
-      component: <EmailBox dataId={dataId.current} />,
+      component: (
+        <EmailBox
+          dataId={dataId.current}
+          handleEmailChange={handleEmailChange}
+        />
+      ),
     },
   ]);
 
@@ -60,7 +70,12 @@ const Form = ({ type, myPageData }: FormProps) => {
       ...emailComponent,
       {
         dataId: dataId.current,
-        component: <EmailBox dataId={dataId.current} />,
+        component: (
+          <EmailBox
+            dataId={dataId.current}
+            handleEmailChange={handleEmailChange}
+          />
+        ),
       },
     ];
 
@@ -78,7 +93,10 @@ const Form = ({ type, myPageData }: FormProps) => {
     }
   };
 
-  const handleCreateButton = () => {};
+  const handleCreateButton = (e: ButtonClickEventHandler) => {
+    // e.preventDefault();
+    console.log(formData);
+  };
   const handleModifyButton = () => {};
   const handleDeleteButton = () => {};
 
