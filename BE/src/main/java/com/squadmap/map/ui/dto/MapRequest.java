@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MapCreateRequest {
+public class MapRequest {
 
     private String mapName;
     private Boolean isPrivate;

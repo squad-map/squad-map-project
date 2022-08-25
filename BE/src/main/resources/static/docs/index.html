@@ -445,9 +445,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#resources-post">Post</a>
+<li><a href="#resources-post">나만의 지도</a>
 <ul class="sectlevel2">
-<li><a href="#resources-post-create">sample 생성</a></li>
+<li><a href="#resources-post-create">Map 생성</a></li>
 </ul>
 </li>
 </ul>
@@ -455,10 +455,10 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="resources-post"><a class="link" href="#resources-post">Post</a></h2>
+<h2 id="resources-post"><a class="link" href="#resources-post">나만의 지도</a></h2>
 <div class="sectionbody">
 <div class="sect2">
-<h3 id="resources-post-create"><a class="link" href="#resources-post-create">sample 생성</a></h3>
+<h3 id="resources-post-create"><a class="link" href="#resources-post-create">Map 생성</a></h3>
 <div class="sect3">
 <h4 id="_http_request"><a class="link" href="#_http_request">HTTP request</a></h4>
 <table class="tableblock frame-all grid-all stretch">
@@ -476,28 +476,28 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>mapName</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">아이디</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>nickName</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">닉네임</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>isPrivate</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">접근 권한</p></td>
 </tr>
 </tbody>
 </table>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /users HTTP/1.1
-Accept: application/json
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /map HTTP/1.1
+Accept: application/json, application/javascript, text/javascript, text/json
 Content-Type: application/json
-Host: localhost:53668
-Content-Length: 37
+Host: localhost:54494
+Content-Length: 52
 
 {
-  "nickName" : "Ron2",
-  "id" : 1
+  "mapName" : "first map",
+  "isPrivate" : false
 }</code></pre>
 </div>
 </div>
@@ -519,30 +519,24 @@ Content-Length: 37
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>mapId</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">아이디</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>nickName</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">닉네임</p></td>
 </tr>
 </tbody>
 </table>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 201 Created
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Wed, 24 Aug 2022 07:05:33 GMT
+Date: Wed, 24 Aug 2022 15:56:24 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
-Content-Length: 37
+Content-Length: 17
 
 {
-  "id" : 1,
-  "nickName" : "Ron2"
+  "mapId" : 1
 }</code></pre>
 </div>
 </div>
@@ -554,7 +548,7 @@ Content-Length: 37
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-08-24 16:04:24 +0900
+Last updated 2022-08-25 00:41:39 +0900
 </div>
 </div>
 </body>

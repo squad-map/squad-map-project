@@ -7,4 +7,8 @@ public interface MapService {
 
     @Transactional
     Long create(String mapName, Boolean isPrivate, Long memberId);
+
+    @Transactional
+    void update(Long memberId, Long mapId, String mapName, Boolean isPrivate);
+
 }

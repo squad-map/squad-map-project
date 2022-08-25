@@ -28,6 +28,11 @@ public class Map {
         return new Map(null, name, isPrivate, memberId);
     }
 
+    public void update(String updateName, Boolean isPrivate) {
+        this.name = updateName;
+        this.isPrivate = isPrivate;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -40,4 +45,6 @@ public class Map {
     public int hashCode() {
         return Objects.hash(id);
     }
+
+
 }
