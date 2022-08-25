@@ -4,6 +4,7 @@ import com.squadmap.map.application.MapService;
 import com.squadmap.map.ui.dto.MapRequest;
 import com.squadmap.map.ui.dto.MapCreateResponse;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.common.reflection.XMember;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +26,7 @@ public class MapController {
 
     @PostMapping("/map/{mapId}")
     public void updateMap(@PathVariable Long mapId, @RequestBody MapRequest mapRequest) {
-
+        Long memeberId = 1L;
+        mapService.update(memeberId, mapId, mapRequest.getMapName(), mapRequest.getIsPrivate());
     }
 }
