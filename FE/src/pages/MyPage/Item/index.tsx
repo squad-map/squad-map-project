@@ -19,6 +19,7 @@ const Item = ({ item, handleModifyButton }: ItemProps) => (
     <S.ItemHeader>
       {item.categories.map((category: CategoryType) => (
         <Text
+          key={`${category.name}`}
           text={category.name || ''}
           size="small"
           color={category.color || theme.color.black}

@@ -1,8 +1,10 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useMutation, useQueryClient } from 'react-query';
 
 import EmailBox from './EmailBox';
 import * as S from './Form.style';
 
+import { postMypage, patchMypage } from '@/apis/mypage';
 import { Images } from '@/assets/images';
 import Button from '@/components/common/Button';
 import Image from '@/components/common/Image';
@@ -10,7 +12,7 @@ import Text from '@/components/common/Text';
 import Input from '@/components/Input';
 import { IMyMap } from '@/interfaces/IMyMap';
 import theme from '@/styles/theme';
-import { ButtonClickEventHandler } from '@/types/eventHandler';
+import { MypagePostParams } from '@/types/mypage';
 
 interface FormProps {
   type: { create: boolean; modify: boolean };
@@ -18,6 +20,7 @@ interface FormProps {
 }
 
 const Form = ({ type, myPageData }: FormProps) => {
+  const queryClient = useQueryClient();
   const dataId = useRef(1);
   const [isShareForm, setIsShareForm] = useState(true);
 
@@ -28,21 +31,37 @@ const Form = ({ type, myPageData }: FormProps) => {
     emails: [] as string[],
   });
 
+  const fetchPostMypage = useMutation(postMypage, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('mypageData');
+    },
+  });
+
+  const fetchPatchMypage = useMutation(
+    ({
+      patchId,
+      mypageRequestBody,
+    }: {
+      patchId: number;
+      mypageRequestBody: MypagePostParams;
+    }) => patchMypage(patchId, mypageRequestBody),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries('mypageData');
+      },
+    }
+  );
+
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, emails: [...formData.emails, e.target.value] });
   };
 
-  const [emailComponent, setEmailComponent] = useState([
+  const [emailComponent, setEmailComponent] = useState<
     {
-      dataId: dataId.current,
-      component: (
-        <EmailBox
-          dataId={dataId.current}
-          handleEmailChange={handleEmailChange}
-        />
-      ),
-    },
-  ]);
+      dataId: number;
+      component: React.ReactNode;
+    }[]
+  >([]);
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, title: e.target.value });
@@ -72,6 +91,7 @@ const Form = ({ type, myPageData }: FormProps) => {
         dataId: dataId.current,
         component: (
           <EmailBox
+            key={dataId.current}
             dataId={dataId.current}
             handleEmailChange={handleEmailChange}
           />
@@ -93,12 +113,37 @@ const Form = ({ type, myPageData }: FormProps) => {
     }
   };
 
-  const handleCreateButton = (e: ButtonClickEventHandler) => {
-    // e.preventDefault();
-    console.log(formData);
+  const handleSubmit = async (
+    e: React.SyntheticEvent<HTMLFormElement>,
+    patchId?: number
+  ) => {
+    e.preventDefault();
+    const newMypage = {
+      title: formData.title,
+      emoji: formData.emoji,
+      emails: formData.emails,
+    };
+
+    if (patchId) {
+      fetchPatchMypage.mutate({ patchId, newMypage });
+    } else {
+      fetchPostMypage.mutate(newMypage);
+    }
   };
-  const handleModifyButton = () => {};
-  const handleDeleteButton = () => {};
+
+  useEffect(() => {
+    if (fetchPostMypage.isSuccess) {
+      // 성공적인 팝업창 보여주기.
+      // url 이동.
+    }
+  }, [fetchPostMypage]);
+
+  useEffect(() => {
+    if (fetchPatchMypage.isSuccess) {
+      // 성공적인 팝업창 보여주기.
+      // url 이동.
+    }
+  }, [fetchPatchMypage]);
 
   return (
     <S.Form>
@@ -178,23 +223,29 @@ const Form = ({ type, myPageData }: FormProps) => {
       {type.modify ? (
         <S.ButtonWrapper>
           <Button
+            type="submit"
             size="regular"
             color={theme.color.darkBlue}
-            onClick={handleModifyButton}
+            onClick={(e: React.SyntheticEvent<HTMLFormElement>) =>
+              handleSubmit(e, myPageData.id)
+            }
           >
             <Text text="수정하기" size="regular" color="#fff" />
           </Button>
-          <Button
-            size="regular"
-            color={theme.color.darkRed}
-            onClick={handleDeleteButton}
-          >
+          <Button size="regular" color={theme.color.darkRed}>
             <Text text="삭제하기" size="regular" color="#fff" />
           </Button>
         </S.ButtonWrapper>
       ) : (
         <S.ButtonWrapper>
-          <Button size="large" color="#000" onClick={handleCreateButton}>
+          <Button
+            type="submit"
+            size="large"
+            color="#000"
+            onClick={(e: React.SyntheticEvent<HTMLFormElement>) =>
+              handleSubmit(e)
+            }
+          >
             <Text text="생성하기" size="xRegular" color="#fff" />
           </Button>
         </S.ButtonWrapper>
