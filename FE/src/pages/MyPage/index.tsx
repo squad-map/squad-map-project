@@ -44,7 +44,7 @@ const MyPage = () => {
               <LoadingSpinner size="xLarge" />
             ) : (
               myPageData.map((item: IMyMap) => (
-                <Link to={`/map/${item.id}`}>
+                <Link to={`/mymap/${item.id}`}>
                   <Card size="large" key={item.id}>
                     <Item item={item} />
                   </Card>

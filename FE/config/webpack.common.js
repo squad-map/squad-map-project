@@ -8,6 +8,8 @@ const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const isDevelopment = process.env.NODE_ENV === 'development';
 dotenv.config({ path: path.join(__dirname, '../env', '.env') });
 
+const MAP_API_KEY = process.env.SQUAD_MAP_CLIENT_ID;
+
 module.exports = {
   context: __dirname,
   entry: '../src/index.tsx',
@@ -45,6 +47,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: '../public/index.html',
+      mapApiUrl: `https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${MAP_API_KEY}`,
     }),
     isDevelopment && new ReactRefreshWebpackPlugin(),
   ].filter(Boolean),
