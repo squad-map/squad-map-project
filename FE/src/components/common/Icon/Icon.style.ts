@@ -29,5 +29,5 @@ export const Icon = styled.img<{
 }>`
   ${({ size }) => selectSize(size)};
   display: block;
-  cursor: ${props => (props.cursor ? 'pointer' : '')};
+  cursor: ${props => props.cursor && 'pointer'};
 `;

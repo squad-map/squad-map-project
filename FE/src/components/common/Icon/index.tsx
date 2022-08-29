@@ -5,7 +5,7 @@ interface IIcon {
   url: string;
   alt: string;
   cursor?: boolean;
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLImageElement>) => void;
 }
 
 const Icon = ({ size, url, alt, ...props }: IIcon) => (

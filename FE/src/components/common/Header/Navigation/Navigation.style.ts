@@ -33,14 +33,27 @@ export const InnerContainer = styled.section`
 `;
 
 export const Container = styled.section<{ menu: boolean }>`
-  ${flexbox({ dir: 'column' })}
+  ${flexbox({ dir: 'column', jc: 'flex-end', ai: 'flex-end' })}
   position: fixed;
   top: 0;
   right: 0;
   width: 19.5rem;
-  height: 100%;
   padding: 0 2rem;
   background-color: ${theme.color.white};
   transform: ${props => (props.menu ? 'translateX(0)' : 'translateX(100%)')};
   transition: 0.5s;
+  z-index: 1000;
+
+  /* ::after {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    content: '';
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: yellow;
+  } */
 `;
