@@ -1,4 +1,4 @@
-package com.squadmap.category.intergration;
+package com.squadmap.category.integration;
 
 import com.squadmap.category.application.CategoryService;
 import org.junit.jupiter.api.Test;

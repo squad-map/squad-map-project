@@ -1,10 +1,9 @@
-package com.squadmap.map.intergration;
+package com.squadmap.map.integration;
 
 import com.squadmap.map.application.MapService;
 import com.squadmap.map.domain.Map;
 import com.squadmap.map.infrastructure.MapRepository;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
