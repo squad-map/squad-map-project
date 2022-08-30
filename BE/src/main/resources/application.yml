@@ -1,5 +1,8 @@
 spring:
 
+  config:
+    import: properties/auth.yml
+
   sql:
     init:
       mode: always
@@ -23,3 +26,7 @@ spring:
         show_sql: true
         format_sql: true
 
+
+github:
+  client_id:
+  client_secret:
