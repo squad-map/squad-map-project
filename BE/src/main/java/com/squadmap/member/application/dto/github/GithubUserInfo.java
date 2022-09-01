@@ -1,4 +1,4 @@
-package com.squadmap.member.application.dto;
+package com.squadmap.member.application.dto.github;
 
 import lombok.Getter;
 

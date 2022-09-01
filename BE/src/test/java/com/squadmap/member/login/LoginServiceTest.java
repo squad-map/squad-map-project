@@ -4,19 +4,17 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.junit.jupiter.api.Test;
-import org.springframework.web.util.UriComponentsBuilder;
+import org.springframework.http.HttpHeaders;
 
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.http.HttpClient;
-import java.net.http.HttpHeaders;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 
 import static java.net.http.HttpRequest.*;
-import static java.net.http.HttpResponse.*;
+import static java.net.http.HttpResponse.BodyHandlers;
 
 class LoginServiceTest {
 
@@ -42,7 +40,7 @@ class LoginServiceTest {
                 .header("Content-Type", "application/json;charset=UTF-8")
                 .POST(bodyPublisher)
                 .build();
-
+        String contentType = HttpHeaders.CONTENT_TYPE;
         HttpResponse<String> send = httpClient.send(httpRequest, BodyHandlers.ofString());
         String body = send.body();
 

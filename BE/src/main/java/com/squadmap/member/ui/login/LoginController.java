@@ -1,7 +1,6 @@
 package com.squadmap.member.ui.login;
 
 import com.squadmap.member.application.LoginService;
-import com.squadmap.member.application.dto.GithubToken;
 import com.squadmap.member.ui.login.dto.GithubLogin;
 import com.squadmap.member.ui.login.dto.LoginResponse;
 import lombok.RequiredArgsConstructor;

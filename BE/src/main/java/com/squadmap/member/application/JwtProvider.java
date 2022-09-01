@@ -26,13 +26,13 @@ public class JwtProvider {
                 .build();
     }
 
-    public String generateAccessToken(String memberId) {
+    public String generateAccessToken(Long memberId) {
         return generateToken(memberId,
                 jwtProperties.getAccessTokenSubject(),
                 jwtProperties.getAccessExpireTime());
     }
 
-    public String generateRefreshToken(String memberId) {
+    public String generateRefreshToken(Long memberId) {
         return generateToken(memberId,
                 jwtProperties.getRefreshTokenSubject(),
                 jwtProperties.getRefreshExpireTime());
@@ -47,14 +47,14 @@ public class JwtProvider {
         }
     }
 
-    private String generateToken(String memberId, String subject, Long expireTime) {
+    private String generateToken(Long memberId, String subject, Long expireTime) {
         long now = System.currentTimeMillis();
         Date expiration = new Date(now + expireTime);
 
         return Jwts.builder()
                 .setIssuer(jwtProperties.getIssuer())
                 .setSubject(subject)
-                .setAudience(memberId)
+                .setAudience(String.valueOf(memberId))
                 .setExpiration(expiration)
                 .signWith(secretKey)
                 .compact();

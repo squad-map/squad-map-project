@@ -1,14 +1,16 @@
-package com.squadmap.member.application.dto;
+package com.squadmap.member.application;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+
 @RequiredArgsConstructor
 @Getter
-public class GithubRequest {
+public class OauthProperty {
 
     private final String clientId;
     private final String clientSecret;
-    private final String code;
+    private final String accessTokenUri;
+    private final String userInfoUri;
 
 }
