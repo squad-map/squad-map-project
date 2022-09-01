@@ -6,6 +6,7 @@ import com.squadmap.member.application.dto.naver.NaverRequest;
 import com.squadmap.member.application.dto.naver.NaverToken;
 import com.squadmap.member.application.dto.naver.NaverUserInfo;
 import com.squadmap.member.application.dto.naver.NaverUserProfileResponse;
+import com.squadmap.member.application.properties.OauthProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -19,14 +20,14 @@ import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 
 @RequiredArgsConstructor
-@Component
+@Component("naver")
 public class NaverProvider implements OauthProvider {
 
     private final HttpClient httpClient;
     private final ObjectMapper objectMapper;
 
     @Override
-    public MemberInfo oauth(String code, String state, OauthProperty oauthProperty) {
+    public MemberInfo oauth(String code, String state, OauthProperties.OauthProperty oauthProperty) {
         NaverToken naverToken = null;
         NaverUserInfo naverUserInfo = null;
         try {
@@ -39,7 +40,7 @@ public class NaverProvider implements OauthProvider {
         return new MemberInfo(naverUserInfo.getNickname(), naverUserInfo.getProfileImage());
     }
 
-    private NaverToken accessNaver(String code, String state, OauthProperty oauthProperty) throws IOException, InterruptedException {
+    private NaverToken accessNaver(String code, String state, OauthProperties.OauthProperty oauthProperty) throws IOException, InterruptedException {
         URI uri = URI.create(oauthProperty.getAccessTokenUri());
 
         NaverRequest naverRequest = new NaverRequest(oauthProperty.getClientId(),
@@ -63,7 +64,7 @@ public class NaverProvider implements OauthProvider {
 
     }
 
-    private NaverUserInfo getUserInfo(NaverToken naverToken, OauthProperty oauthProperty) throws IOException, InterruptedException {
+    private NaverUserInfo getUserInfo(NaverToken naverToken, OauthProperties.OauthProperty oauthProperty) throws IOException, InterruptedException {
         URI uri = URI.create(oauthProperty.getUserInfoUri());
 
         HttpRequest httpRequest = HttpRequest.newBuilder(uri)

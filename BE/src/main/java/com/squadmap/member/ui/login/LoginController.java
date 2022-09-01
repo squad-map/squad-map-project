@@ -1,9 +1,11 @@
 package com.squadmap.member.ui.login;
 
 import com.squadmap.member.application.LoginService;
+import com.squadmap.member.application.dto.LoginInfo;
 import com.squadmap.member.ui.login.dto.GithubLogin;
 import com.squadmap.member.ui.login.dto.LoginResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -14,12 +16,11 @@ public class LoginController {
 
     private final LoginService loginService;
 
-    @PostMapping("/login/github")
-    public LoginResponse loginGithub(@RequestBody GithubLogin githubLogin) {
+    @PostMapping("/login/{provider}")
+    public LoginResponse loginGithub(@PathVariable String provider, @RequestBody GithubLogin githubLogin) {
 
-//        GithubToken githubToken = loginService.accessGithub(githubLogin.getCode());
-//        System.out.println(githubLogin.getRedirectUri());
-//        System.out.println(githubToken.getAccessToken());
-        return new LoginResponse("access token", "refresh token");
+        LoginInfo login = loginService.login(provider, githubLogin.getCode(), "");
+
+        return new LoginResponse(login.getTokens().getAccessToken(), login.getTokens().getRefreshToken());
     }
 }

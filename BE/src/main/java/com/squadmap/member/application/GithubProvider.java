@@ -5,6 +5,7 @@ import com.squadmap.member.application.dto.*;
 import com.squadmap.member.application.dto.github.GithubRequest;
 import com.squadmap.member.application.dto.github.GithubToken;
 import com.squadmap.member.application.dto.github.GithubUserInfo;
+import com.squadmap.member.application.properties.OauthProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -20,14 +21,14 @@ import java.nio.charset.StandardCharsets;
 import static java.net.http.HttpRequest.newBuilder;
 
 @RequiredArgsConstructor
-@Component
+@Component("github")
 public class GithubProvider implements OauthProvider {
 
     private final ObjectMapper objectMapper;
     private final HttpClient httpClient;
 
     @Override
-    public MemberInfo oauth(String code, String state, OauthProperty oauthProperty) {
+    public MemberInfo oauth(String code, String state, OauthProperties.OauthProperty oauthProperty) {
 
         GithubToken githubToken = null;
         GithubUserInfo githubUserInfo = null;
@@ -41,7 +42,7 @@ public class GithubProvider implements OauthProvider {
         return new MemberInfo(githubUserInfo.getLogin(), githubUserInfo.getAvatarUrl());
     }
 
-    private GithubToken accessGithub(String code, OauthProperty oauthProperty) throws IOException, InterruptedException {
+    private GithubToken accessGithub(String code, OauthProperties.OauthProperty oauthProperty) throws IOException, InterruptedException {
         URI uri = URI.create(oauthProperty.getAccessTokenUri());
 
         String value = objectMapper.writeValueAsString(new GithubRequest(oauthProperty.getClientId(), oauthProperty.getClientSecret(), code));
@@ -62,7 +63,7 @@ public class GithubProvider implements OauthProvider {
         return objectMapper.readValue(response.body(), GithubToken.class);
     }
 
-    private GithubUserInfo getUserInfo(GithubToken githubToken, OauthProperty oauthProperty) throws IOException, InterruptedException {
+    private GithubUserInfo getUserInfo(GithubToken githubToken, OauthProperties.OauthProperty oauthProperty) throws IOException, InterruptedException {
         URI uri = URI.create(oauthProperty.getUserInfoUri());
 
         HttpRequest httpRequest = newBuilder(uri).GET()
