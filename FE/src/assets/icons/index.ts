@@ -1,3 +1,4 @@
+import ArrowBack from '@/assets/icons/arrowBack.svg';
 import CategoryMap from '@/assets/icons/categoryMap.svg';
 import Close from '@/assets/icons/close.svg';
 import Edit from '@/assets/icons/edit.svg';
@@ -10,6 +11,7 @@ import Sample from '@/assets/icons/sample.svg';
 import Search from '@/assets/icons/search.svg';
 
 export const Icons = {
+  ArrowBack,
   CategoryMap,
   Close,
   Error,
