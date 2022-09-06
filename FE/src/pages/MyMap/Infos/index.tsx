@@ -37,7 +37,11 @@ const Infos = ({ infoData }: InfosProps) =>
               <S.ItemCategory>
                 {map.categories &&
                   map.categories.map((category: CategoryType) => (
-                    <Button size="xSmall" color={category.color}>
+                    <Button
+                      size="xSmall"
+                      color={category.color}
+                      key={`categoryButton-${category.name}`}
+                    >
                       <Text
                         size="xSmall"
                         text={category.name}

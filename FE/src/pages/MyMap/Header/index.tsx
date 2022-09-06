@@ -32,7 +32,7 @@ const Header = ({ headerData }: HeaderProps) => {
         </S.BackComponent>
         {headerData.categories &&
           headerData.categories.map((category: CategoryType) => (
-            <Button size="regular" color={category.color}>
+            <Button size="regular" color={category.color} key={category.name}>
               <Text
                 size="regular"
                 text={category.name}

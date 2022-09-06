@@ -33,17 +33,6 @@ const MyMap = () => {
 
   const mapRef = useRef<HTMLElement | null | any>(null);
 
-  const markerClickHandler = (markers: any, infos: any, idx: number) => {
-    const marker = markers[idx];
-    const info = infos[idx];
-
-    if (info.getMap()) {
-      info.close();
-    } else {
-      info.open(mapRef.current, marker);
-    }
-  };
-
   useEffect(() => {
     if (typeof myLocation !== 'string')
       mapRef.current = new naver.maps.Map('map', {
@@ -67,7 +56,7 @@ const MyMap = () => {
             map: mapRef.current,
             icon: {
               content: [
-                `<img src=${Icons.Map} alt="" class="fill-${map.color}" />`,
+                `<img id=marker-${map.id} src=${Icons.Map} alt="" class="fill-${map.color}" />`,
               ].join(''),
               size: new naver.maps.Size(38, 58),
               scaledSize: new naver.maps.Size(25, 34),
@@ -76,18 +65,16 @@ const MyMap = () => {
           })
       );
 
-      const infos = myMapData.maps.map((map: MapType) => {
-        const $modal = ReactDOMServer.renderToStaticMarkup(<Modal map={map} />);
+      const infos = myMapData.maps.map((map: MapType) => (
+        <Modal id={`Modal-${map.id}`} map={map} />
+      ));
 
-        return new naver.maps.InfoWindow({
-          content: $modal,
-        });
-      });
-
+      // 마커 위에 infos 달아주기.
+      // 위 markers를 만들어줄때 content 영역에 심어두기?
       for (let i = 0; i < markers.length; i += 1) {
-        naver.maps.Event.addListener(markers[i], 'click', () =>
-          markerClickHandler(markers, infos, i)
-        );
+        naver.maps.Event.addListener(markers[i], 'click', () => {
+          // infos
+        });
       }
     }
   }, [myLocation, myMapData]);

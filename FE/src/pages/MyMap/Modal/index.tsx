@@ -6,6 +6,7 @@ import theme from '@/styles/theme';
 import { MapType } from '@/types/map';
 
 interface ModalProps {
+  id: string;
   map: MapType;
 }
 
@@ -17,10 +18,11 @@ const Modal = ({ map }: ModalProps) => {
   return (
     <>
       <button
+        id={`button-${map.id}`}
         type="button"
         className={css({
-          width: '120px',
-          height: '80px',
+          minWidth: '7.5rem',
+          minHeight: '5rem',
           padding: '1rem',
           color: theme.color.lightGray,
           cursor: 'pointer',
@@ -28,7 +30,6 @@ const Modal = ({ map }: ModalProps) => {
             opacity: 0.8,
           },
         })}
-        onClick={() => setOpenDetailModal(true)}
       >
         {map.address}
       </button>
