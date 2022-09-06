@@ -1,32 +1,36 @@
 import ReactDom from 'react-dom';
 
-import * as S from './Modal.style';
+import * as S from './GlobalModal.style';
 
 import { Icons } from '@/assets/icons';
 import Icon from '@/components/common/Icon';
 
-interface IModal {
+interface IGlobalModal {
   size: 'small' | 'medium' | 'large';
   handleCancelClick: () => void;
   children: React.ReactNode;
 }
 
-const Modal = ({ size = 'small', handleCancelClick, children }: IModal) =>
+const GlobalModal = ({
+  size = 'small',
+  handleCancelClick,
+  children,
+}: IGlobalModal) =>
   ReactDom.createPortal(
     <>
-      <S.ModalOverlay />
-      <S.Modal size={size}>
-        <S.ModalCloseWrapper>
+      <S.GlobalModalOverlay />
+      <S.GlobalModal size={size}>
+        <S.GlobalModalCloseWrapper>
           <Icon
             size="medium"
             url={Icons.Close}
             alt="Close Icon"
             onClick={handleCancelClick}
           />
-        </S.ModalCloseWrapper>
+        </S.GlobalModalCloseWrapper>
         {children}
-      </S.Modal>
+      </S.GlobalModal>
     </>,
-    document.getElementById('modal-root') as HTMLElement
+    document.getElementById('globalModal-root') as HTMLElement
   );
-export default Modal;
+export default GlobalModal;
