@@ -1,10 +1,10 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import Modal from './index';
+import GlobalModal from './index';
 
 export default {
-  title: 'Modal',
-  component: Modal,
+  title: 'GlobalModal',
+  component: GlobalModal,
   argTypes: {
     size: {
       control: {
@@ -14,13 +14,15 @@ export default {
       defaultValue: 'small',
     },
   },
-} as ComponentMeta<typeof Modal>;
+} as ComponentMeta<typeof GlobalModal>;
 
-const Template: ComponentStory<typeof Modal> = args => <Modal {...args} />;
+const Template: ComponentStory<typeof GlobalModal> = args => (
+  <GlobalModal {...args} />
+);
 
-export const DefaultModal = Template.bind({});
+export const DefaultGlobalModal = Template.bind({});
 
-DefaultModal.parameters = {
+DefaultGlobalModal.parameters = {
   docs: {
     description: {
       story: '`Default(small) size의 팝업 형태입니다.`',
