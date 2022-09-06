@@ -1,11 +1,19 @@
 import { useEffect, useState, useRef } from 'react';
+import ReactDOMServer from 'react-dom/server';
 import { useQuery } from 'react-query';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 
+import Header from './Header';
+import Infos from './Infos';
+import Modal from './Modal';
 import * as S from './MyMap.style';
 
 import { Icons } from '@/assets/icons';
-import Icon from '@/components/common/Icon';
+import Button from '@/components/common/Button';
+import Text from '@/components/common/Text';
+import { defaultCoords } from '@/constants/map';
+import theme from '@/styles/theme';
+import { MapType } from '@/types/map';
 
 const getMyMapData = async () => {
   const response = await fetch('/mymap');
@@ -24,13 +32,16 @@ const MyMap = () => {
   >('');
 
   const mapRef = useRef<HTMLElement | null | any>(null);
-  const markerRef = useRef<any | null>(null);
 
-  const markerClickEvent = (marker: any) => {
-    naver.maps.Event.addListener(marker, 'click', (e: any) => {
-      const mapLatLng = new naver.maps.LatLng(37.491583, 127.031352);
-      mapRef.current.panTo(mapLatLng, e?.coord);
-    });
+  const markerClickHandler = (markers: any, infos: any, idx: number) => {
+    const marker = markers[idx];
+    const info = infos[idx];
+
+    if (info.getMap()) {
+      info.close();
+    } else {
+      info.open(mapRef.current, marker);
+    }
   };
 
   useEffect(() => {
@@ -48,31 +59,52 @@ const MyMap = () => {
   }, [mapRef, myLocation]);
 
   useEffect(() => {
-    if (myLocation) {
-      markerRef.current = new naver.maps.Marker({
-        position: new naver.maps.LatLng(37.491581, 127.031352),
-        map: mapRef.current,
-        icon: {
-          content: [`<img src=${Icons.Map} alt="" />`].join(''),
-          size: new naver.maps.Size(38, 58),
-          anchor: new naver.maps.Point(19, 58),
-        },
+    if (myLocation && myMapData) {
+      const markers = myMapData.maps.map(
+        (map: MapType) =>
+          new naver.maps.Marker({
+            position: new naver.maps.LatLng(map.lat, map.lng),
+            map: mapRef.current,
+            icon: {
+              content: [
+                `<img src=${Icons.Map} alt="" class="fill-${map.color}" />`,
+              ].join(''),
+              size: new naver.maps.Size(38, 58),
+              scaledSize: new naver.maps.Size(25, 34),
+              anchor: new naver.maps.Point(19, 58),
+            },
+          })
+      );
+
+      const infos = myMapData.maps.map((map: MapType) => {
+        const $modal = ReactDOMServer.renderToStaticMarkup(<Modal map={map} />);
+
+        return new naver.maps.InfoWindow({
+          content: $modal,
+        });
       });
+
+      for (let i = 0; i < markers.length; i += 1) {
+        naver.maps.Event.addListener(markers[i], 'click', () =>
+          markerClickHandler(markers, infos, i)
+        );
+      }
     }
-  }, [myLocation]);
+  }, [myLocation, myMapData]);
 
   useEffect(() => {
     const success = (position: any) => {
       setMyLocation({
-        // latitude: position.coords.latitude,
-        // longitude: position.coords.longitude,
-        latitude: 37.490812,
-        longitude: 127.033416,
+        latitude: defaultCoords.lat,
+        longitude: defaultCoords.lng,
       });
     };
 
     const error = () => {
-      setMyLocation({ latitude: 37.490812, longitude: 127.033416 });
+      setMyLocation({
+        latitude: defaultCoords.lat,
+        longitude: defaultCoords.lng,
+      });
     };
 
     if (navigator.geolocation) {
@@ -80,7 +112,41 @@ const MyMap = () => {
     }
   }, []);
 
-  return <S.MyMap id="map" style={{ width: '100vw', height: '100vh' }} />;
+  return (
+    <S.MyMap id="map" style={{ width: '100vw', height: '100vh' }}>
+      {myMapData && (
+        <>
+          <Header
+            headerData={{
+              emoji: myMapData.emoji,
+              title: myMapData.title,
+              categories: myMapData.categories,
+            }}
+          />
+          <Infos
+            infoData={{
+              maps: myMapData.maps,
+            }}
+          />
+          <S.RecommendationButtonWrapper>
+            <Link to={`/mymap/search/${myMapData.id}`}>
+              <Button
+                size="large"
+                color={theme.color.brown}
+                background={`url(${Icons.Plus}) no-repeat right 1rem`}
+              >
+                <Text
+                  text="장소 추천하기"
+                  size="large"
+                  color={theme.color.black}
+                />
+              </Button>
+            </Link>
+          </S.RecommendationButtonWrapper>
+        </>
+      )}
+    </S.MyMap>
+  );
 };
 
 export default MyMap;
