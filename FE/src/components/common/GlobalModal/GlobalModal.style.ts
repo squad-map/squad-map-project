@@ -26,7 +26,7 @@ const selectSize = (size: string) => {
   }
 };
 
-export const ModalCloseWrapper = styled.div`
+export const GlobalModalCloseWrapper = styled.div`
   position: absolute;
   top: 1rem;
   right: 2rem;
@@ -36,7 +36,7 @@ export const ModalCloseWrapper = styled.div`
   cursor: pointer;
 `;
 
-export const Modal = styled.section<{ size: string }>`
+export const GlobalModal = styled.section<{ size: string }>`
   ${({ size }) => selectSize(size)}
   ${flexbox({ dir: 'column', ai: 'center' })}
   position: absolute;
@@ -48,7 +48,7 @@ export const Modal = styled.section<{ size: string }>`
   border-radius: 2rem;
 `;
 
-export const ModalOverlay = styled.div`
+export const GlobalModalOverlay = styled.div`
   position: fixed;
   top: 0;
   right: 0;

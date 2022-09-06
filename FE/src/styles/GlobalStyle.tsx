@@ -1,6 +1,7 @@
 import { Global, css } from '@emotion/react';
 
 import './reset.css';
+import './filter.css';
 
 const style = css`
   * {

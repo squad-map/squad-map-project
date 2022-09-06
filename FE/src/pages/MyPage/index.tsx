@@ -1,7 +1,6 @@
-import { useState } from 'react';
 import { useQuery } from 'react-query';
+import { Link } from 'react-router-dom';
 
-import Form from './Form';
 import Item from './Item';
 import * as S from './MyPage.style';
 
@@ -26,18 +25,6 @@ const MyPage = () => {
   const { data: myPageData, isLoading: loading } = useQuery(['myMaps'], () =>
     getMyPageMapsData()
   );
-  const [type, setType] = useState({ create: false, modify: false });
-  const [modifyData, setModifyData] = useState<IMyMap>({} as IMyMap);
-
-  const handleCreateButton = () => {
-    setType({ ...type, create: true });
-  };
-
-  const handleModifyButton = (id: number) => {
-    setType({ ...type, modify: true });
-    setModifyData(myPageData.filter((data: IMyMap) => data.id === id)[0]);
-  };
-
   return (
     <>
       <Header>
@@ -50,34 +37,28 @@ const MyPage = () => {
           />
         </S.TitleBox>
       </Header>
-      {type.create || type.modify ? (
-        <Form type={type} myPageData={modifyData} />
-      ) : (
-        <S.Contents>
-          <S.GridWrapper>
-            <GridCards size="large">
-              {loading ? (
-                <LoadingSpinner size="xLarge" />
-              ) : (
-                myPageData.map((item: IMyMap) => (
-                  <Card size="large" key={`MyCard-${item.id}`}>
-                    <Item
-                      key={`Item-${item.id}`}
-                      item={item}
-                      handleModifyButton={() => handleModifyButton(item.id)}
-                    />
+      <S.Contents>
+        <S.GridWrapper>
+          <GridCards size="large">
+            {loading ? (
+              <LoadingSpinner size="xLarge" />
+            ) : (
+              myPageData.map((item: IMyMap) => (
+                <Link to={`/mymap/${item.id}`}>
+                  <Card size="large" key={item.id}>
+                    <Item item={item} />
                   </Card>
-                ))
-              )}
-            </GridCards>
-          </S.GridWrapper>
-
+                </Link>
+              ))
+            )}
+          </GridCards>
+        </S.GridWrapper>
+        <Link to="create">
           <S.ButtonWrapper>
             <Button
               size="large"
               color={theme.color.lightGreen}
               background={`url(${Icons.Plus}) no-repeat right 1rem`}
-              onClick={handleCreateButton}
             >
               <Text
                 size="regular"
@@ -86,8 +67,8 @@ const MyPage = () => {
               />
             </Button>
           </S.ButtonWrapper>
-        </S.Contents>
-      )}
+        </Link>
+      </S.Contents>
     </>
   );
 };

@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import Modal from '../Modal';
+import GlobalModal from '../GlobalModal';
 
 import * as S from './Header.style';
 import Navigation from './Navigation';
@@ -54,9 +54,12 @@ const Header = ({ children }: HeaderProps) => {
       </S.Wrapper>
       <Navigation menu={menu} handleCloseMenu={handleCloseMenu} />
       {openLoginModal && (
-        <Modal size="small" handleCancelClick={() => setOpenLoginModal(false)}>
+        <GlobalModal
+          size="small"
+          handleCancelClick={() => setOpenLoginModal(false)}
+        >
           <Login />
-        </Modal>
+        </GlobalModal>
       )}
       {children}
     </S.Container>
