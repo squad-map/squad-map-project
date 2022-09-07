@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
 
+import Form from './Form';
 import Item from './Item';
 import * as S from './MyPage.style';
 
@@ -25,6 +27,8 @@ const MyPage = () => {
   const { data: myPageData, isLoading: loading } = useQuery(['myMaps'], () =>
     getMyPageMapsData()
   );
+  const [formType, setFormType] = useState({ isForm: false, type: 'create' });
+
   return (
     <>
       <Header>
@@ -38,36 +42,45 @@ const MyPage = () => {
         </S.TitleBox>
       </Header>
       <S.Contents>
-        <S.GridWrapper>
-          <GridCards size="large">
-            {loading ? (
-              <LoadingSpinner size="xLarge" />
-            ) : (
-              myPageData.map((item: IMyMap) => (
-                <Link to={`/mymap/${item.id}`}>
-                  <Card size="large" key={item.id}>
-                    <Item item={item} />
-                  </Card>
-                </Link>
-              ))
-            )}
-          </GridCards>
-        </S.GridWrapper>
-        <Link to="create">
-          <S.ButtonWrapper>
-            <Button
-              size="large"
-              color={theme.color.lightGreen}
-              background={`url(${Icons.Plus}) no-repeat right 1rem`}
-            >
-              <Text
-                size="regular"
-                text="나만의 지도 만들기"
-                color={theme.color.white}
-              />
-            </Button>
-          </S.ButtonWrapper>
-        </Link>
+        {formType.isForm ? (
+          <Form type={formType.type} myPageData={myPageData} />
+        ) : loading ? (
+          <LoadingSpinner size="xLarge" />
+        ) : (
+          <>
+            <S.GridWrapper>
+              <GridCards size="large">
+                {myPageData.map((item: IMyMap) => (
+                  <Link to={`/mymap/${item.id}`}>
+                    <Card size="large" key={item.id}>
+                      <Item
+                        item={item}
+                        handleModifyButton={e => {
+                          e.preventDefault();
+                          setFormType({ isForm: true, type: 'modify' });
+                        }}
+                      />
+                    </Card>
+                  </Link>
+                ))}
+              </GridCards>
+            </S.GridWrapper>
+            <S.ButtonWrapper>
+              <Button
+                size="large"
+                color={theme.color.lightGreen}
+                background={`url(${Icons.Plus}) no-repeat right 1rem`}
+                onClick={() => setFormType({ isForm: true, type: 'create' })}
+              >
+                <Text
+                  size="regular"
+                  text="나만의 지도 만들기"
+                  color={theme.color.white}
+                />
+              </Button>
+            </S.ButtonWrapper>
+          </>
+        )}
       </S.Contents>
     </>
   );
