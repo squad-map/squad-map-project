@@ -4,6 +4,7 @@ import * as S from './GlobalModal.style';
 
 import { Icons } from '@/assets/icons';
 import Icon from '@/components/common/Icon';
+import Overlay from '@/components/common/Overlay';
 
 interface IGlobalModal {
   size: 'small' | 'medium' | 'large';
@@ -18,7 +19,7 @@ const GlobalModal = ({
 }: IGlobalModal) =>
   ReactDom.createPortal(
     <>
-      <S.GlobalModalOverlay />
+      <Overlay />
       <S.GlobalModal size={size}>
         <S.GlobalModalCloseWrapper>
           <Icon
