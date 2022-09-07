@@ -2,6 +2,7 @@ import { Global, css } from '@emotion/react';
 
 import './reset.css';
 import './filter.css';
+import './map.css';
 
 const style = css`
   * {
