@@ -2,13 +2,12 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import GlobalModal from '../GlobalModal';
-
 import * as S from './Header.style';
 import Navigation from './Navigation';
 
 import { Images } from '@/assets/images';
 import Button from '@/components/common/Button';
+import GlobalModal from '@/components/common/GlobalModal';
 import Image from '@/components/common/Image';
 import Text from '@/components/common/Text';
 import Login from '@/components/Login';
