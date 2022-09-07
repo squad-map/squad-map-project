@@ -37,36 +37,38 @@ export default function HomePage() {
             background={`${theme.color.white} url(${Icons.Search}) no-repeat 1rem`}
           />
         </S.SearchInputWrapper>
-        <S.GridWrapper>
-          <GridCards size="small">
-            {loading ? (
-              <LoadingSpinner size="xLarge" />
-            ) : (
-              mapsData.map((item: IMap) => (
-                <Link to={`/maps/${item.id}`} key={`map-${item.id}`}>
-                  <Card size="small" key={`HomeCard-${item.id}`}>
-                    <Item item={item} key={`Card-${item.id}`} />
-                  </Card>
-                </Link>
-              ))
-            )}
-          </GridCards>
-        </S.GridWrapper>
-        <Link to="mypage">
-          <S.ButtonWrapper>
-            <Button
-              size="large"
-              color={theme.color.brown}
-              background={`url(${Icons.Plus}) no-repeat right 1rem`}
-            >
-              <Text
-                size="regular"
-                text="나만의 지도 만들기"
-                color={theme.color.white}
-              />
-            </Button>
-          </S.ButtonWrapper>
-        </Link>
+        {loading ? (
+          <LoadingSpinner size="xLarge" />
+        ) : (
+          <>
+            <S.GridWrapper>
+              <GridCards size="small">
+                {mapsData.map((item: IMap) => (
+                  <Link to={`/maps/${item.id}`} key={`map-${item.id}`}>
+                    <Card size="small" key={`HomeCard-${item.id}`}>
+                      <Item item={item} key={`Card-${item.id}`} />
+                    </Card>
+                  </Link>
+                ))}
+              </GridCards>
+            </S.GridWrapper>
+            <Link to="mypage">
+              <S.ButtonWrapper>
+                <Button
+                  size="large"
+                  color={theme.color.brown}
+                  background={`url(${Icons.Plus}) no-repeat right 1rem`}
+                >
+                  <Text
+                    size="regular"
+                    text="나만의 지도 만들기"
+                    color={theme.color.white}
+                  />
+                </Button>
+              </S.ButtonWrapper>
+            </Link>
+          </>
+        )}
       </S.Contents>
     </S.Container>
   );
