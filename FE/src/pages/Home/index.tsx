@@ -43,7 +43,7 @@ export default function HomePage() {
               <LoadingSpinner size="xLarge" />
             ) : (
               mapsData.map((item: IMap) => (
-                <Link to={`/map/${item.id}`} key={`map-${item.id}`}>
+                <Link to={`/maps/${item.id}`} key={`map-${item.id}`}>
                   <Card size="small" key={`HomeCard-${item.id}`}>
                     <Item item={item} key={`Card-${item.id}`} />
                   </Card>
