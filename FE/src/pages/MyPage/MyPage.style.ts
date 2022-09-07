@@ -16,7 +16,8 @@ export const ButtonWrapper = styled.div`
 `;
 
 export const Contents = styled.div`
-  ${flexbox({ dir: 'column', ai: 'center' })}
+  height: calc(100vh - 30rem);
+  ${flexbox({ dir: 'column', jc: 'center', ai: 'center' })}
 `;
 
 export const Container = styled.section`

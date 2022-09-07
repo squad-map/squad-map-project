@@ -15,7 +15,7 @@ import theme from '@/styles/theme';
 import { MypagePostParams } from '@/types/mypage';
 
 interface FormProps {
-  type: { create: boolean; modify: boolean };
+  type: string;
   myPageData: IMyMap;
 }
 
@@ -220,7 +220,7 @@ const Form = ({ type, myPageData }: FormProps) => {
         </S.ColumnBox>
       )}
 
-      {type.modify ? (
+      {type === 'modify' ? (
         <S.ButtonWrapper>
           <Button
             type="submit"
