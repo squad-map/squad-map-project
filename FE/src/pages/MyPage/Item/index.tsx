@@ -36,7 +36,7 @@ const Item = ({ item, handleModifyButton }: ItemProps) => (
     <Text
       text={`${item.emoji} ${item.title}`}
       size="xRegularFill"
-      color={theme.color.black}
+      color={theme.color.darkGray}
     />
     <S.ItemFooter>
       <Text
