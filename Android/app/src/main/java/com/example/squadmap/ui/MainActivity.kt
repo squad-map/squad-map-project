@@ -15,14 +15,20 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.rememberNavController
+import com.example.squadmap.common.AppSession
+import com.example.squadmap.data.model.JWT
 import com.example.squadmap.ui.bottommenu.BottomNavigation
 import com.example.squadmap.ui.bottommenu.BottomNavigationBar
 import com.example.squadmap.ui.bottommenu.BottomNavigationGraph
 import com.example.squadmap.ui.theme.SquadMapTheme
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-
-
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject lateinit var appSession: AppSession
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -32,7 +38,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Greeting("Android")
+                    Greeting("Android", appSession.jwt)
                 }
             }
         }
@@ -42,13 +48,13 @@ class MainActivity : ComponentActivity() {
 
 
 @Composable
-fun Greeting(name: String) {
+fun Greeting(name: String, jwt: JWT?) {
     val navController = rememberNavController()
     Scaffold(
         bottomBar = { BottomNavigationBar(navController = navController) }
     ) {
         Box(Modifier.padding(it)){
-            BottomNavigationGraph(navController = navController)
+            BottomNavigationGraph(navController = navController, jwt)
         }
     }
 }
@@ -57,6 +63,6 @@ fun Greeting(name: String) {
 @Composable
 fun DefaultPreview() {
     SquadMapTheme {
-        Greeting("Android")
+        Greeting("Android", null)
     }
 }
