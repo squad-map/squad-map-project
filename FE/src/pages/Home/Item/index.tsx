@@ -1,8 +1,8 @@
 import * as S from './Item.style';
 
-import { Icons } from '@/assets/icons';
-import Icon from '@/components/common/Icon';
+import Text from '@/components/common/Text';
 import { IMap } from '@/interfaces/IMap';
+import theme from '@/styles/theme';
 
 interface ItemProps {
   item: IMap;
@@ -10,13 +10,9 @@ interface ItemProps {
 
 const Item = ({ item }: ItemProps) => (
   <S.Item>
-    <Icon size="medium" url={Icons.Sample} alt="카드 샘플 이미지" />
+    <Text size="xLarge" text={item.emoji} color={theme.color.white} />
     <S.Title>{item.title}</S.Title>
-    <S.Description>
-      {item.emoji}
-      {item.user}
-      {item.placeCount}
-    </S.Description>
+    <S.Description>{item.shareCount}명의 사람들이 공유</S.Description>
   </S.Item>
 );
 

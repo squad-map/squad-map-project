@@ -39,17 +39,21 @@ export const homeMapsData = [
 export const searchMapsData = [
   {
     id: 1,
-    title: '조용하고 집중 잘되는 카페',
-    emoji: '🤫',
-    user: 'muffin',
-    placeCount: 40,
+    title: '버거 맛집',
+    emoji: '🍔',
+    shareCount: 4,
   },
   {
     id: 2,
-    title: '조용하고 집중 잘되는 카페',
-    emoji: '🤫',
-    user: 'muffin',
-    placeCount: 50,
+    title: '바베큐 맛집',
+    emoji: '🥓',
+    shareCount: 5,
+  },
+  {
+    id: 3,
+    title: '고기 맛집',
+    emoji: '🥩',
+    shareCount: 5,
   },
 ];
 
