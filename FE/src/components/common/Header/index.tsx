@@ -32,8 +32,8 @@ const Header = ({ children }: HeaderProps) => {
         </Link>
         <S.RightArea>
           <Button
-            size="regular"
-            color={theme.color.brown}
+            size="small"
+            color={theme.color.transparent}
             onClick={() => setOpenLoginModal(true)}
           >
             <Text

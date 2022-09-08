@@ -4,7 +4,10 @@ const color = {
   black: '#1B1B1B',
   lightBlack: '#191A1C',
   darkGray: '#3F3F3F',
+  navy: '#584CF4',
+  darkNavy: '#534BC3',
   gray: '#777777',
+  clearOrange: '#FFC02E',
   lightGray: '#BCBCBC',
   silver: '#EEEEEE',
   white: '#FFFFFF',
@@ -16,6 +19,7 @@ const color = {
   label: '#6E7191',
   placeholder: '#A0A3BD',
   inputBackground: '#EFF0F6',
+  transparent: 'transparent',
 
   // Category Button colors
 
