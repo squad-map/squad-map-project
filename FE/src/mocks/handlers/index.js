@@ -11,6 +11,7 @@ export const GET_HOME_MAPS = rest.get('/', (req, res, ctx) =>
 
 export const GET_SEARCH_MAPS = rest.get('/maps', (req, res, ctx) => {
   const searchValue = req.url.searchParams.get('searchValue');
+  const type = req.url.searchParams.get('type');
   return res(ctx.status(200), ctx.delay(1000), ctx.json(searchMapsData));
 });
 
