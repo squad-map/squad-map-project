@@ -1,7 +1,5 @@
 import * as S from './Input.style';
 
-// import Icons from '@/assets/icons';
-
 interface IInput {
   id?: string;
   width?: string;

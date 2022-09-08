@@ -12,6 +12,7 @@ export const Input = styled.input<{
   height: ${props => props.height};
   border-radius: 1.3rem;
   padding: 0 2.5rem;
+  border: 1px solid ${theme.color.navy};
   color: ${theme.color.placeholder};
   background: ${props => props.background};
 `;
