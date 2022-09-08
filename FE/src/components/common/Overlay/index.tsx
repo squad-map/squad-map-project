@@ -1,5 +1,11 @@
 import * as S from './Overlay.style';
 
-const Overlay = () => <S.Overlay />;
+interface OverlayProps {
+  handleCancelClick: () => void;
+}
+
+const Overlay = ({ handleCancelClick }: OverlayProps) => (
+  <S.Overlay onClick={handleCancelClick} />
+);
 
 export default Overlay;
