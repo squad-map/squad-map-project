@@ -31,16 +31,11 @@ const MyPage = () => {
 
   return (
     <>
-      <Header>
-        <S.TitleBox>
-          <Icon size="medium" url={Icons.Map} alt="Map Icon" />
-          <Text
-            text="지도 관리"
-            size="xLargeFill"
-            color={theme.color.lightBlack}
-          />
-        </S.TitleBox>
-      </Header>
+      <Header />
+      <S.TitleBox>
+        <Icon size="medium" url={Icons.Map} alt="Map Icon" />
+        <Text text="지도 관리" size="xLargeFill" color={theme.color.navy} />
+      </S.TitleBox>
       <S.Contents>
         {formType.isForm ? (
           <Form type={formType.type} myPageData={myPageData} />
@@ -68,7 +63,7 @@ const MyPage = () => {
             <S.ButtonWrapper>
               <Button
                 size="large"
-                color={theme.color.lightGreen}
+                color={theme.color.navy}
                 background={`url(${Icons.Plus}) no-repeat right 1rem`}
                 onClick={() => setFormType({ isForm: true, type: 'create' })}
               >

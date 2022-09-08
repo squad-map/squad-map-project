@@ -23,7 +23,6 @@ const selectSize = (size: string) => {
 export const GridCards = styled.section<{ size: string }>`
   ${({ size }) => selectSize(size)}
   position: relative;
-  margin-top: 1.5rem;
   display: grid;
   grid-gap: 1rem;
 `;

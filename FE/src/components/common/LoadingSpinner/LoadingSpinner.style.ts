@@ -55,7 +55,7 @@ export const LoadingSpinner = styled.div<{ size: string }>`
   left: 50%;
   border: 2px solid ${({ theme }) => theme.color.grey};
   border-radius: 50%;
-  border-top-color: ${({ theme }) => theme.color.brown};
+  border-top-color: ${({ theme }) => theme.color.navy};
   animation: ${spinnerAnimation} 1s ease infinite;
 
   ${({ size }) => selectSize(size)};
