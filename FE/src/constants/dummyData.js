@@ -36,6 +36,23 @@ export const homeMapsData = [
   },
 ];
 
+export const searchMapsData = [
+  {
+    id: 1,
+    title: '조용하고 집중 잘되는 카페',
+    emoji: '🤫',
+    user: 'muffin',
+    placeCount: 40,
+  },
+  {
+    id: 2,
+    title: '조용하고 집중 잘되는 카페',
+    emoji: '🤫',
+    user: 'muffin',
+    placeCount: 50,
+  },
+];
+
 export const myPageMapsData = [
   {
     id: 1,

@@ -12,6 +12,7 @@ interface IInput {
   background?: string;
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onKeyPress?: (e: React.KeyboardEvent) => void;
 }
 
 const Input = ({
@@ -24,6 +25,7 @@ const Input = ({
   background,
   value,
   onChange,
+  onKeyPress,
 }: IInput) => (
   <S.Input
     id={id}
@@ -35,6 +37,7 @@ const Input = ({
     background={background}
     value={value}
     onChange={onChange}
+    onKeyPress={onKeyPress}
   />
 );
 
