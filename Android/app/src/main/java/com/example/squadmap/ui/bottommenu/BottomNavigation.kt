@@ -20,8 +20,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.squadmap.data.model.JWT
 import com.example.squadmap.ui.category.CategoryMapScreen
 import com.example.squadmap.ui.home.HomeScreen
+import com.example.squadmap.ui.login.LoginScreen
 import com.example.squadmap.ui.mymap.MyMapScreen
 import com.example.squadmap.ui.navigation.SquadMapNavGraph
 import com.example.squadmap.ui.profile.ProfileScreen
@@ -35,7 +37,7 @@ val items = listOf<BottomNavigation>(
 )
 
 @Composable
-fun BottomNavigationGraph(navController: NavHostController) {
+fun BottomNavigationGraph(navController: NavHostController, jwt: JWT?) {
     NavHost(navController = navController, startDestination = BottomNavigation.Home.screenRoute) {
         composable(BottomNavigation.Home.screenRoute) {
             SquadMapNavGraph()
@@ -44,10 +46,18 @@ fun BottomNavigationGraph(navController: NavHostController) {
             CategoryMapScreen()
         }
         composable(BottomNavigation.MyMap.screenRoute) {
-            MyMapScreen()
+            if(jwt != null) {
+                MyMapScreen()
+            } else {
+                LoginScreen()
+            }
         }
         composable(BottomNavigation.Profile.screenRoute) {
-            ProfileScreen()
+            if(jwt != null) {
+                ProfileScreen()
+            } else {
+                LoginScreen()
+            }
         }
     }
 }
