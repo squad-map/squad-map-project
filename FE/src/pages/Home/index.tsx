@@ -16,20 +16,21 @@ import Input from '@/components/Input';
 import { IMap } from '@/interfaces/IMap';
 import theme from '@/styles/theme';
 
-const getMapsData = async (searchValue: string) => {
-  const response = await fetch(`/maps?searchValue=${searchValue}`);
+const getMapsData = async (searchValue: string, type: string) => {
+  const response = await fetch(`/maps?type=${type}&searchValue=${searchValue}`);
   const maps = await response.json();
   return maps;
 };
 
 export default function HomePage() {
   const [searchValue, setSerachValue] = useState('');
+  const [searchType, setSearchType] = useState('all');
 
   const {
     data: mapsData,
     isLoading: loading,
     refetch: refetchMaps,
-  } = useQuery(['allMaps'], () => getMapsData(searchValue));
+  } = useQuery(['allMaps'], () => getMapsData(searchValue, searchType));
 
   const handleSearchInput = ({
     target,
@@ -41,6 +42,11 @@ export default function HomePage() {
     if (e.key === 'Enter') {
       refetchMaps();
     }
+  };
+
+  const handleClickType = (type: string) => {
+    setSearchType(type);
+    refetchMaps();
   };
 
   return (
@@ -58,6 +64,36 @@ export default function HomePage() {
             onKeyPress={handleKeyPress}
           />
         </S.SearchInputWrapper>
+        <S.NavWrapper>
+          <Button
+            size="xSmall"
+            color={searchType === 'all' ? theme.color.navy : theme.color.white}
+            onClick={() => handleClickType('all')}
+          >
+            <Text
+              size="small"
+              text="전체"
+              color={
+                searchType === 'all' ? theme.color.white : theme.color.navy
+              }
+            />
+          </Button>
+          <Button
+            size="xSmall"
+            color={
+              searchType === 'group' ? theme.color.navy : theme.color.white
+            }
+            onClick={() => handleClickType('group')}
+          >
+            <Text
+              size="small"
+              text="그룹별"
+              color={
+                searchType === 'group' ? theme.color.white : theme.color.navy
+              }
+            />
+          </Button>
+        </S.NavWrapper>
         {loading ? (
           <LoadingSpinner size="xLarge" />
         ) : (
@@ -77,7 +113,7 @@ export default function HomePage() {
               <S.ButtonWrapper>
                 <Button
                   size="large"
-                  color={theme.color.brown}
+                  color={theme.color.navy}
                   background={`url(${Icons.Plus}) no-repeat right 1rem`}
                 >
                   <Text
