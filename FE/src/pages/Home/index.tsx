@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
 
@@ -15,16 +16,33 @@ import Input from '@/components/Input';
 import { IMap } from '@/interfaces/IMap';
 import theme from '@/styles/theme';
 
-const getMapsData = async () => {
-  const response = await fetch('/');
+const getMapsData = async (searchValue: string) => {
+  const response = await fetch(`/maps?searchValue=${searchValue}`);
   const maps = await response.json();
   return maps;
 };
 
 export default function HomePage() {
-  const { data: mapsData, isLoading: loading } = useQuery(['allMaps'], () =>
-    getMapsData()
-  );
+  const [searchValue, setSerachValue] = useState('');
+
+  const {
+    data: mapsData,
+    isLoading: loading,
+    refetch: refetchMaps,
+  } = useQuery(['allMaps'], () => getMapsData(searchValue));
+
+  const handleSearchInput = ({
+    target,
+  }: React.ChangeEvent<HTMLInputElement>) => {
+    setSerachValue(target.value);
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      refetchMaps();
+    }
+  };
+
   return (
     <S.Container>
       <Header />
@@ -35,38 +53,43 @@ export default function HomePage() {
             placeholderText="What kind of place are you looking for?"
             color={theme.color.white}
             background={`${theme.color.white} url(${Icons.Search}) no-repeat 1rem`}
+            value={searchValue}
+            onChange={handleSearchInput}
+            onKeyPress={handleKeyPress}
           />
         </S.SearchInputWrapper>
-        <S.GridWrapper>
-          <GridCards size="small">
-            {loading ? (
-              <LoadingSpinner size="xLarge" />
-            ) : (
-              mapsData.map((item: IMap) => (
-                <Link to={`/map/${item.id}`} key={`map-${item.id}`}>
-                  <Card size="small" key={`HomeCard-${item.id}`}>
-                    <Item item={item} key={`Card-${item.id}`} />
-                  </Card>
-                </Link>
-              ))
-            )}
-          </GridCards>
-        </S.GridWrapper>
-        <Link to="mypage">
-          <S.ButtonWrapper>
-            <Button
-              size="large"
-              color={theme.color.brown}
-              background={`url(${Icons.Plus}) no-repeat right 1rem`}
-            >
-              <Text
-                size="regular"
-                text="나만의 지도 만들기"
-                color={theme.color.white}
-              />
-            </Button>
-          </S.ButtonWrapper>
-        </Link>
+        {loading ? (
+          <LoadingSpinner size="xLarge" />
+        ) : (
+          <>
+            <S.GridWrapper>
+              <GridCards size="small">
+                {mapsData.map((item: IMap) => (
+                  <Link to={`/maps/${item.id}`} key={`map-${item.id}`}>
+                    <Card size="small" key={`HomeCard-${item.id}`}>
+                      <Item item={item} key={`Card-${item.id}`} />
+                    </Card>
+                  </Link>
+                ))}
+              </GridCards>
+            </S.GridWrapper>
+            <Link to="mypage">
+              <S.ButtonWrapper>
+                <Button
+                  size="large"
+                  color={theme.color.brown}
+                  background={`url(${Icons.Plus}) no-repeat right 1rem`}
+                >
+                  <Text
+                    size="regular"
+                    text="나만의 지도 만들기"
+                    color={theme.color.white}
+                  />
+                </Button>
+              </S.ButtonWrapper>
+            </Link>
+          </>
+        )}
       </S.Contents>
     </S.Container>
   );

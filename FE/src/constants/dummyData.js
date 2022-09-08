@@ -36,6 +36,27 @@ export const homeMapsData = [
   },
 ];
 
+export const searchMapsData = [
+  {
+    id: 1,
+    title: '버거 맛집',
+    emoji: '🍔',
+    shareCount: 4,
+  },
+  {
+    id: 2,
+    title: '바베큐 맛집',
+    emoji: '🥓',
+    shareCount: 5,
+  },
+  {
+    id: 3,
+    title: '고기 맛집',
+    emoji: '🥩',
+    shareCount: 5,
+  },
+];
+
 export const myPageMapsData = [
   {
     id: 1,
