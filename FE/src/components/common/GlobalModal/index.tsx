@@ -19,8 +19,8 @@ const GlobalModal = ({
 }: IGlobalModal) =>
   ReactDom.createPortal(
     <>
-      <Overlay />
-      <S.GlobalModal size={size}>
+      <Overlay handleCancelClick={handleCancelClick} />
+      <S.GlobalModal size={size} id="modal-wrapper">
         <S.GlobalModalCloseWrapper>
           <Icon
             size="medium"
