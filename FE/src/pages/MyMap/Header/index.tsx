@@ -25,18 +25,22 @@ const Header = ({ headerData }: HeaderProps) => {
         <S.BackComponent onClick={() => navigte(-1)}>
           <Icon size="large" url={Icons.ArrowBack} alt="뒤로가기 버튼 이미지" />
           <Text
-            size="xLargeFill"
+            size="xLarge"
             text={`${headerData.emoji} ${headerData.title}`}
-            color={theme.color.lightBlack}
+            color={theme.color.white}
           />
         </S.BackComponent>
         {headerData.categories &&
           headerData.categories.map((category: CategoryType) => (
-            <Button size="regular" color={category.color} key={category.name}>
+            <Button
+              size="regular"
+              color={theme.color.white}
+              key={category.name}
+            >
               <Text
                 size="regular"
                 text={category.name}
-                color={theme.color.white}
+                color={category.color}
               />
             </Button>
           ))}
