@@ -89,9 +89,6 @@ const MyMap = () => {
             id=button-${map.id}
             type="button"
             class="info-button"
-            onclick="((e) => {
-              const id = e.target.id;
-            })(arguments[0])"
         >${map.address}</button>`,
             zIndex: 999,
             borderWidth: 0,
@@ -144,13 +141,13 @@ const MyMap = () => {
             <Link to={`/mymap/search/${myMapData.id}`}>
               <Button
                 size="large"
-                color={theme.color.brown}
+                color={theme.color.navy}
                 background={`url(${Icons.Plus}) no-repeat right 1rem`}
               >
                 <Text
-                  text="장소 추천하기"
+                  text="장소 추가하기"
                   size="large"
-                  color={theme.color.black}
+                  color={theme.color.white}
                 />
               </Button>
             </Link>

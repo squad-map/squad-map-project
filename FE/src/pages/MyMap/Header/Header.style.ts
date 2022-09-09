@@ -9,7 +9,7 @@ export const BackComponent = styled.div`
   width: 21.25rem;
   height: 4rem;
   padding: 1rem;
-  background-color: ${theme.color.lightGreen};
+  background-color: ${theme.color.navy};
   border-radius: 0 1rem 1rem 0;
   cursor: pointer;
 `;

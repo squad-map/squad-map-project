@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { flexbox } from '@/styles/mixin';
 
 export const ItemCategory = styled.div`
-  ${flexbox({ dir: 'row' })};
+  ${flexbox({ dir: 'row', ai: 'center' })};
   gap: 1rem;
 `;
 
