@@ -1,6 +1,7 @@
 package com.squadmap.member.application;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.squadmap.member.application.dto.*;
 import com.squadmap.member.application.dto.github.GithubRequest;
 import com.squadmap.member.application.dto.github.GithubToken;
@@ -55,12 +56,19 @@ public class GithubProvider implements OauthProvider {
                 .build();
 
         HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
-
+        System.out.println(response.statusCode());
         if (response.statusCode() != 200) {
             throw new IllegalArgumentException();
         }
+        // TODO exceptionHandler 추가
+        GithubToken githubToken = null;
+        try {
+            githubToken = objectMapper.readValue(response.body(), GithubToken.class);
+        } catch (MismatchedInputException e) {
+            throw new RuntimeException();
+        }
 
-        return objectMapper.readValue(response.body(), GithubToken.class);
+        return githubToken;
     }
 
     private GithubUserInfo getUserInfo(GithubToken githubToken, OauthProperties.OauthProperty oauthProperty) throws IOException, InterruptedException {

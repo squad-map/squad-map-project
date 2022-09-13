@@ -19,7 +19,7 @@ public class LoginController {
     @PostMapping("/login/{provider}")
     public LoginResponse loginGithub(@PathVariable String provider, @RequestBody GithubLogin githubLogin) {
 
-        LoginInfo login = loginService.login(provider, githubLogin.getCode(), "");
+        LoginInfo login = loginService.login(provider, githubLogin.getCode(), githubLogin.getState());
 
         return new LoginResponse(login.getTokens().getAccessToken(), login.getTokens().getRefreshToken());
     }

@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 public class GithubLogin {
 
     private String code;
-    private String redirectUri;
+    private String state;
 
 }

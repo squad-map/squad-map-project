@@ -5,7 +5,6 @@ import com.squadmap.member.application.properties.OauthProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
