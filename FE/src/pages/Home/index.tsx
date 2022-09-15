@@ -66,30 +66,30 @@ export default function HomePage() {
         </S.SearchInputWrapper>
         <S.NavWrapper>
           <Button
-            size="xSmall"
+            size="small"
             color={searchType === 'all' ? theme.color.navy : theme.color.white}
             onClick={() => handleClickType('all')}
           >
             <Text
               size="small"
-              text="전체"
+              text="전체 공개 지도"
               color={
                 searchType === 'all' ? theme.color.white : theme.color.navy
               }
             />
           </Button>
           <Button
-            size="xSmall"
+            size="small"
             color={
-              searchType === 'group' ? theme.color.navy : theme.color.white
+              searchType === 'private' ? theme.color.navy : theme.color.white
             }
-            onClick={() => handleClickType('group')}
+            onClick={() => handleClickType('private')}
           >
             <Text
               size="small"
-              text="그룹별"
+              text="내가 포함된 지도"
               color={
-                searchType === 'group' ? theme.color.white : theme.color.navy
+                searchType === 'private' ? theme.color.white : theme.color.navy
               }
             />
           </Button>

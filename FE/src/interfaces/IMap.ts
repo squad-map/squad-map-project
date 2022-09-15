@@ -3,4 +3,5 @@ export interface IMap {
   title: string;
   emoji: string;
   shareCount: number;
+  owner: string;
 }

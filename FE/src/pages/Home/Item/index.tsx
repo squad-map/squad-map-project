@@ -13,6 +13,7 @@ const Item = ({ item }: ItemProps) => (
     <Text size="xLarge" text={item.emoji} color={theme.color.white} />
     <S.Title>{item.title}</S.Title>
     <S.Description>{item.shareCount}명의 사람들이 공유</S.Description>
+    <S.Owner>작성자: {item.owner}</S.Owner>
   </S.Item>
 );
 
