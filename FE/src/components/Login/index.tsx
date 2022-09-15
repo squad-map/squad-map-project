@@ -21,7 +21,7 @@ const NaverLogin = () => {
   const { naver } = window;
   const naverLogin = new naver.LoginWithNaverId({
     clientId: process.env.LOCAL_NAVER_CLIENT_ID,
-    callbackUrl: 'http://localhost:8080/callback/naver',
+    callbackUrl: process.env.LOCAL_NAVER_CALLBACK_URL,
     callbackHandle: true,
     loginButton: { color: 'green', type: 3, height: 60 },
     isPopup: false,
@@ -31,9 +31,9 @@ const NaverLogin = () => {
 
 const Login = () => {
   const isLoggedIn = useIsLoggedIn();
-  console.log(isLoggedIn);
-
   useEffect(() => {
+    if (isLoggedIn) return;
+
     NaverLogin();
   }, []);
 
