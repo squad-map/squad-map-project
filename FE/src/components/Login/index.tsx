@@ -8,6 +8,7 @@ import { Images } from '@/assets/images';
 import Image from '@/components/common/Image';
 import Text from '@/components/common/Text';
 import { githubUrl } from '@/constants/url';
+import { useIsLoggedIn } from '@/hooks/useIsLoggedIn';
 import theme from '@/styles/theme';
 
 declare global {
@@ -19,8 +20,8 @@ declare global {
 const NaverLogin = () => {
   const { naver } = window;
   const naverLogin = new naver.LoginWithNaverId({
-    clientId: process.env.NAVER_CLIENT_ID,
-    callbackUrl: 'http://localhost:8080/callback/',
+    clientId: process.env.LOCAL_NAVER_CLIENT_ID,
+    callbackUrl: 'http://localhost:8080/callback/naver',
     callbackHandle: true,
     loginButton: { color: 'green', type: 3, height: 60 },
     isPopup: false,
@@ -29,6 +30,9 @@ const NaverLogin = () => {
 };
 
 const Login = () => {
+  const isLoggedIn = useIsLoggedIn();
+  console.log(isLoggedIn);
+
   useEffect(() => {
     NaverLogin();
   }, []);

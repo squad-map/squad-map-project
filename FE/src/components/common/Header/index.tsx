@@ -1,6 +1,7 @@
 // Logged In & Logged Out
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 
 import * as S from './Header.style';
 import Navigation from './Navigation';
@@ -11,6 +12,7 @@ import GlobalModal from '@/components/common/GlobalModal';
 import Image from '@/components/common/Image';
 import Text from '@/components/common/Text';
 import Login from '@/components/Login';
+import { userState } from '@/recoil/atoms/user';
 import theme from '@/styles/theme';
 
 interface HeaderProps {
@@ -18,11 +20,11 @@ interface HeaderProps {
 }
 
 const Header = ({ children }: HeaderProps) => {
-  const loggedIn = true;
   const [openLoginModal, setOpenLoginModal] = useState(false);
   const [menu, setMenu] = useState(false);
   const handleCloseMenu = () => setMenu(false);
   const handleOpenMenu = () => setMenu(true);
+  const user = useRecoilValue(userState);
 
   return (
     <S.Container>
@@ -31,17 +33,21 @@ const Header = ({ children }: HeaderProps) => {
           <Image url={Images.Logo} alt="SquadMap Logo" cursor />
         </Link>
         <S.RightArea>
-          <Button
-            size="small"
-            color={theme.color.transparent}
-            onClick={() => setOpenLoginModal(true)}
-          >
+          {user?.nickname ? (
             <Text
               size="regular"
-              text={loggedIn ? '로그인' : '닉네임'}
+              text={user.nickname}
               color={theme.color.white}
             />
-          </Button>
+          ) : (
+            <Button
+              size="small"
+              color={theme.color.transparent}
+              onClick={() => setOpenLoginModal(true)}
+            >
+              <Text size="regular" text="로그인" color={theme.color.white} />
+            </Button>
+          )}
           <Image
             url={Images.Menu}
             alt="Header Menu"

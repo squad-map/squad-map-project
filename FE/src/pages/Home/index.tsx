@@ -97,34 +97,17 @@ export default function HomePage() {
         {loading ? (
           <LoadingSpinner size="xLarge" />
         ) : (
-          <>
-            <S.GridWrapper>
-              <GridCards size="small">
-                {mapsData.map((item: IMap) => (
-                  <Link to={`/maps/${item.id}`} key={`map-${item.id}`}>
-                    <Card size="small" key={`HomeCard-${item.id}`}>
-                      <Item item={item} key={`Card-${item.id}`} />
-                    </Card>
-                  </Link>
-                ))}
-              </GridCards>
-            </S.GridWrapper>
-            <Link to="mypage">
-              <S.ButtonWrapper>
-                <Button
-                  size="large"
-                  color={theme.color.navy}
-                  background={`url(${Icons.Plus}) no-repeat right 1rem`}
-                >
-                  <Text
-                    size="regular"
-                    text="나만의 지도 만들기"
-                    color={theme.color.white}
-                  />
-                </Button>
-              </S.ButtonWrapper>
-            </Link>
-          </>
+          <S.GridWrapper>
+            <GridCards size="small">
+              {mapsData.map((item: IMap) => (
+                <Link to={`/maps/${item.id}`} key={`map-${item.id}`}>
+                  <Card size="small" key={`HomeCard-${item.id}`}>
+                    <Item item={item} key={`Card-${item.id}`} />
+                  </Card>
+                </Link>
+              ))}
+            </GridCards>
+          </S.GridWrapper>
         )}
       </S.Contents>
     </S.Container>

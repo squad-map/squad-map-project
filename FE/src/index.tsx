@@ -1,4 +1,5 @@
 import { ThemeProvider } from '@emotion/react';
+import { CookiesProvider } from 'react-cookie';
 import { createRoot } from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { RecoilRoot } from 'recoil';
@@ -18,12 +19,14 @@ const root = createRoot(document.getElementById('root') as HTMLElement);
 export const queryClient = new QueryClient();
 
 root.render(
-  <QueryClientProvider client={queryClient}>
-    <ThemeProvider theme={theme}>
-      <RecoilRoot>
-        <GlobalStyle />
-        <App />
-      </RecoilRoot>
-    </ThemeProvider>
-  </QueryClientProvider>
+  <CookiesProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider theme={theme}>
+        <RecoilRoot>
+          <GlobalStyle />
+          <App />
+        </RecoilRoot>
+      </ThemeProvider>
+    </QueryClientProvider>
+  </CookiesProvider>
 );
