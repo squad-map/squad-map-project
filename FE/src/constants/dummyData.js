@@ -42,18 +42,21 @@ export const searchMapsData = [
     title: '버거 맛집',
     emoji: '🍔',
     shareCount: 4,
+    owner: 'muffin',
   },
   {
     id: 2,
     title: '바베큐 맛집',
     emoji: '🥓',
     shareCount: 5,
+    owner: 'funny',
   },
   {
     id: 3,
     title: '고기 맛집',
     emoji: '🥩',
     shareCount: 5,
+    owner: 'Ronnie',
   },
 ];
 
