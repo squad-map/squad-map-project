@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Squad Map</title>
-  </head>
-  <script
-  id="navermap"
-  type="text/javascript" 
-  src="<%= htmlWebpackPlugin.options.mapApiUrl %>"
-  defer={false}>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Squad Map</title>
+</head>
+<script id="navermap" type="text/javascript" src="<%= htmlWebpackPlugin.options.mapApiUrl %>" defer={false}>
 </script>
 
-  <body>
-    <div id="root"></div>
-    <div id="globalModal-root"></div>
-  </body>
+<body>
+  <div id="root"></div>
+  <div id="globalModal-root"></div>
+  <script type="text/javascript" src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js"
+    charset="utf-8"></script>
+</body>
+
 </html>

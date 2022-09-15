@@ -4,6 +4,7 @@ const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin'
 const dotenv = require('dotenv');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+const webpack = require('webpack');
 
 const isDevelopment = process.env.NODE_ENV === 'development';
 dotenv.config({ path: path.join(__dirname, '../env', '.env') });
@@ -48,6 +49,9 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: '../public/index.html',
       mapApiUrl: `https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${MAP_API_KEY}`,
+    }),
+    new webpack.DefinePlugin({
+      'process.env': JSON.stringify(process.env),
     }),
     isDevelopment && new ReactRefreshWebpackPlugin(),
   ].filter(Boolean),
