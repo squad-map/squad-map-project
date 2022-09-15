@@ -28,6 +28,7 @@ const Form = ({ type, myPageData }: FormProps) => {
     title: myPageData.title || '',
     emoji: myPageData.emoji || '',
     share: 'do',
+    authority: 'public',
     emails: [] as string[],
   });
 
@@ -113,6 +114,11 @@ const Form = ({ type, myPageData }: FormProps) => {
     }
   };
 
+  const handleAuthorityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id } = e.target;
+    setFormData({ ...formData, authority: id });
+  };
+
   const handleSubmit = async (
     e: React.SyntheticEvent<HTMLFormElement>,
     patchId?: number
@@ -122,6 +128,7 @@ const Form = ({ type, myPageData }: FormProps) => {
       title: formData.title,
       emoji: formData.emoji,
       emails: formData.emails,
+      authority: formData.authority,
     };
 
     if (patchId) {
@@ -135,6 +142,7 @@ const Form = ({ type, myPageData }: FormProps) => {
     if (fetchPostMypage.isSuccess) {
       // 성공적인 팝업창 보여주기.
       // url 이동.
+      window.location.href = '/mypage';
     }
   }, [fetchPostMypage]);
 
@@ -142,6 +150,7 @@ const Form = ({ type, myPageData }: FormProps) => {
     if (fetchPatchMypage.isSuccess) {
       // 성공적인 팝업창 보여주기.
       // url 이동.
+      window.location.href = '/mypage';
     }
   }, [fetchPatchMypage]);
 
@@ -174,6 +183,48 @@ const Form = ({ type, myPageData }: FormProps) => {
           value={formData.emoji}
           onChange={handleEmojiChange}
         />
+      </S.ColumnBox>
+      <S.ColumnBox>
+        <Text
+          text="지도 공개 설정"
+          size="large"
+          color={theme.color.lightGray}
+        />
+        <S.RadioBox>
+          <label htmlFor="public">
+            <input
+              type="radio"
+              name="authority"
+              id="public"
+              value="true"
+              defaultChecked
+              onChange={handleAuthorityChange}
+            />
+            공개
+          </label>
+
+          <label htmlFor="private">
+            <input
+              type="radio"
+              name="authority"
+              id="private"
+              value="false"
+              onChange={handleAuthorityChange}
+            />
+            비공개
+          </label>
+
+          <label htmlFor="group">
+            <input
+              type="radio"
+              name="authority"
+              id="group"
+              value="false"
+              onChange={handleAuthorityChange}
+            />
+            그룹 공개
+          </label>
+        </S.RadioBox>
       </S.ColumnBox>
       <S.ColumnBox>
         <Text

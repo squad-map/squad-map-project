@@ -1,14 +1,13 @@
-import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 
 import { userState } from '@/recoil/atoms/user';
+import { getCookie, setCookie, removeCookie } from '@/utils/cookie';
 import { getErrorMessage } from '@/utils/util';
 
 export const UseLogin = () => {
   const setUser = useSetRecoilState(userState);
   const navigate = useNavigate();
-  const [cookies, setCookie] = useCookies(['access_token', 'refresh_token']);
 
   const SNSLogin = async (params: string, sns: string) => {
     try {
@@ -49,16 +48,12 @@ export const UseLogin = () => {
 };
 
 export const UseSilentRefresh = () => {
-  const [cookies, setCookie, removeCookie] = useCookies([
-    'access_token',
-    'refresh_token',
-  ]);
   const setUser = useSetRecoilState(userState);
   const navigate = useNavigate();
 
   const SilentRefresh = async (fallbackURL = '/') => {
     try {
-      const refreshToken = cookies.refresh_token;
+      const refreshToken = getCookie('refresh_token');
 
       // const response = await fetch(
       //   `${process.env.SQUAD_MAP_OAUTH_URL}/refresh`,
