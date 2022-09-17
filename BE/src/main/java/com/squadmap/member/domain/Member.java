@@ -9,7 +9,6 @@ import javax.persistence.*;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 public class Member {
 
@@ -27,7 +26,10 @@ public class Member {
     @Embedded
     private ResourceServer resourceServer;
 
-    public static Member github(String avatarUrl, String nickName) {
-        return new Member(null, avatarUrl, nickName, null, ResourceServer.GITHUB);
+    public Member(String avatarUrl, String nickName, String email, String resourceServer) {
+        this.avatarUrl = avatarUrl;
+        this.nickName = nickName;
+        this.email = email;
+        this.resourceServer = ResourceServer.valueOf(resourceServer.toUpperCase());
     }
 }

@@ -9,5 +9,6 @@ public class MemberInfo {
 
     private final String nickname;
     private final String avatarUrl;
+    private final String email;
 
 }

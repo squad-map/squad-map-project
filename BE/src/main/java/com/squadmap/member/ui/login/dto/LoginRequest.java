@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class GithubLogin {
+public class LoginRequest {
 
     private String code;
     private String state;

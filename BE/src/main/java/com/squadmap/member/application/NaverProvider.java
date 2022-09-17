@@ -32,8 +32,8 @@ public class NaverProvider implements OauthProvider {
 
     @Override
     public MemberInfo oauth(String code, String state, OauthProperties.OauthProperty oauthProperty) {
-        NaverToken naverToken = null;
-        NaverUserInfo naverUserInfo = null;
+        NaverToken naverToken;
+        NaverUserInfo naverUserInfo;
         try {
             naverToken = accessNaver(code, state, oauthProperty);
             naverUserInfo = getUserInfo(naverToken, oauthProperty);
@@ -42,34 +42,22 @@ public class NaverProvider implements OauthProvider {
             throw new RuntimeException();
         }
 
-        return new MemberInfo(naverUserInfo.getNickname(), naverUserInfo.getProfileImage());
+        return new MemberInfo(naverUserInfo.getNickname(), naverUserInfo.getProfileImage(), naverUserInfo.getEmail());
     }
 
     private NaverToken accessNaver(String code, String state, OauthProperties.OauthProperty oauthProperty) throws IOException, InterruptedException {
-        URI uri = URI.create(oauthProperty.getAccessTokenUri());
         NaverRequest naverRequest = new NaverRequest("authorization_code",
                 oauthProperty.getClientId(),
                 oauthProperty.getClientSecret(),
                 code,
                 state);
 
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        String uriString = UriComponentsBuilder.fromUriString(oauthProperty.getAccessTokenUri())
+                .queryParams(naverRequest.getQueryParams())
+                .build()
+                .toUriString();
 
-        params.put("grant_type", Collections.singletonList("authorization_code"));
-        params.put("client_id", Collections.singletonList(oauthProperty.getClientId()));
-        params.put("client_secret", Collections.singletonList(oauthProperty.getClientSecret()));
-        params.put("code", Collections.singletonList(code));
-        params.put("state", Collections.singletonList(state));
-        String uriString = UriComponentsBuilder.fromUriString(oauthProperty.getAccessTokenUri()).queryParams(params).build().toUriString();
-
-        URI uri1 = URI.create(uriString);
-
-
-        String request = objectMapper.writeValueAsString(naverRequest);
-        System.out.println("request = " + request);
-        HttpRequest.BodyPublisher bodyPublisher = HttpRequest.BodyPublishers.ofString(request, StandardCharsets.UTF_8);
-
-        HttpRequest httpRequest = HttpRequest.newBuilder(uri1)
+        HttpRequest httpRequest = HttpRequest.newBuilder(URI.create(uriString))
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
                 .GET()

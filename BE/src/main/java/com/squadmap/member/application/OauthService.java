@@ -16,8 +16,6 @@ public class OauthService {
     public MemberInfo oauth(String provider, String code, String state) {
 
         OauthProperties.OauthProperty oauthProperty = this.oauthProperties.getOauthProperty(provider);
-        System.out.println("oauthProperty==null = " + oauthProperty==null);
-        System.out.println(oauthProperty.getAccessTokenUri());
         return oauthAdapter.oauth(provider, oauthProperty, code, state);
     }
 }

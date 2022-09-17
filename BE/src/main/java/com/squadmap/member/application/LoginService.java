@@ -27,7 +27,7 @@ public class LoginService {
         MemberInfo memberInfo = oauthService.oauth(provider, code, state);
         Member member = memberRepository.findByNickName(memberInfo.getNickname())
                 .orElseGet(() -> memberRepository
-                        .save(Member.github(memberInfo.getAvatarUrl(), memberInfo.getNickname())));
+                        .save(new Member(memberInfo.getAvatarUrl(), memberInfo.getNickname(), memberInfo.getEmail(), provider)));
 
         return new LoginInfo(
                 member.getId(),

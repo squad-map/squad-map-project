@@ -2,7 +2,7 @@ package com.squadmap.member.acceptance;
 
 import com.squadmap.assured.RestAssuredTest;
 import com.squadmap.category.infrastructure.CategoryRepository;
-import com.squadmap.member.ui.login.dto.GithubLogin;
+import com.squadmap.member.ui.login.dto.LoginRequest;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -32,7 +32,7 @@ class MemberAcceptanceTest extends RestAssuredTest {
         CategoryRepository categoryRepository;
         String code = "";
         String redirectUri = "";
-        GithubLogin githubLogin = new GithubLogin(code, redirectUri);
+        LoginRequest githubLogin = new LoginRequest(code, redirectUri);
 
         String accessToken = "access token";
         String refreshToken = "refresh token";

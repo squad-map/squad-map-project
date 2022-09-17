@@ -31,7 +31,7 @@ public class GithubProvider implements OauthProvider {
     @Override
     public MemberInfo oauth(String code, String state, OauthProperties.OauthProperty oauthProperty) {
 
-        GithubToken githubToken = null;
+        GithubToken githubToken;
         GithubUserInfo githubUserInfo = null;
         try {
             githubToken = accessGithub(code, oauthProperty);
@@ -40,7 +40,7 @@ public class GithubProvider implements OauthProvider {
             e.printStackTrace();
         }
 
-        return new MemberInfo(githubUserInfo.getLogin(), githubUserInfo.getAvatarUrl());
+        return new MemberInfo(githubUserInfo.getLogin(), githubUserInfo.getAvatarUrl(), "temp@email.com");
     }
 
     private GithubToken accessGithub(String code, OauthProperties.OauthProperty oauthProperty) throws IOException, InterruptedException {
@@ -61,7 +61,7 @@ public class GithubProvider implements OauthProvider {
             throw new IllegalArgumentException();
         }
         // TODO exceptionHandler 추가
-        GithubToken githubToken = null;
+        GithubToken githubToken;
         try {
             githubToken = objectMapper.readValue(response.body(), GithubToken.class);
         } catch (MismatchedInputException e) {
