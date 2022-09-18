@@ -35,5 +35,9 @@ public class LoginService {
         );
     }
 
+    public boolean isLoginUser(String token) {
+        return jwtProvider.validateToken(token);
+    }
+
 
 }

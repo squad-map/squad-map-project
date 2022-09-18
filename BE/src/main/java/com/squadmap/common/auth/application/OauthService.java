@@ -18,4 +18,6 @@ public class OauthService {
         OauthProperties.OauthProperty oauthProperty = this.oauthProperties.getOauthProperty(provider);
         return oauthAdapter.oauth(provider, oauthProperty, code, state);
     }
+
+
 }

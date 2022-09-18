@@ -47,6 +47,10 @@ public class JwtProvider {
         }
     }
 
+    public String getAudience(String token) {
+        return jwtParser.parseClaimsJws(token).getBody().getAudience();
+    }
+
     private String generateToken(Long memberId, String subject, Long expireTime) {
         long now = System.currentTimeMillis();
         Date expiration = new Date(now + expireTime);
