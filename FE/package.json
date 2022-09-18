@@ -88,5 +88,6 @@
 		"moduleNameMapper": {
 			"^@/(.*)$": "<rootDir>/src/$1"
 		}
-	}
+	},
+	"homepage": "https://squdmap.netlify.app/"
 }
