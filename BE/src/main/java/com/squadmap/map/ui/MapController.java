@@ -1,5 +1,7 @@
 package com.squadmap.map.ui;
 
+import com.squadmap.common.auth.Login;
+import com.squadmap.common.auth.application.dto.LoginMember;
 import com.squadmap.map.application.MapService;
 import com.squadmap.map.ui.dto.MapRequest;
 import com.squadmap.map.ui.dto.MapCreateResponse;
@@ -16,10 +18,9 @@ public class MapController {
 
     @PostMapping("/map")
     @ResponseStatus(HttpStatus.CREATED)
-    public MapCreateResponse createMap(@RequestBody MapRequest mapCreateRequest) {
-        // mock ID
-        Long memberId = 1L;
-        Long mapId = mapService.create(mapCreateRequest.getMapName(), mapCreateRequest.getIsPrivate(), memberId);
+    public MapCreateResponse createMap(@Login LoginMember loginMember, @RequestBody MapRequest mapCreateRequest) {
+
+        Long mapId = mapService.create(mapCreateRequest.getMapName(), mapCreateRequest.getIsPrivate(), loginMember.getId());
 
         return new MapCreateResponse(mapId);
     }

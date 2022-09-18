@@ -2,7 +2,7 @@ package com.squadmap.member.acceptance;
 
 import com.squadmap.assured.RestAssuredTest;
 import com.squadmap.category.infrastructure.CategoryRepository;
-import com.squadmap.member.ui.login.dto.LoginRequest;
+import com.squadmap.common.auth.ui.dto.LoginRequest;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;

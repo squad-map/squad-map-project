@@ -1,0 +1,21 @@
+package com.squadmap.common.auth.application;
+
+import com.squadmap.common.auth.application.dto.LoginMember;
+import com.squadmap.common.properties.OauthProperties;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+
+import java.util.Map;
+
+@RequiredArgsConstructor
+@Component
+public class OauthAdapter {
+
+    private final Map<String, OauthProvider> oauthProviders;
+
+    public LoginMember oauth(String provider, OauthProperties.OauthProperty oauthProperty, String code, String state) {
+
+        OauthProvider oauthProvider = oauthProviders.get(provider);
+        return oauthProvider.oauth(code, state, oauthProperty);
+    }
+}
