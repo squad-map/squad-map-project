@@ -6,13 +6,11 @@ import com.squadmap.member.application.dto.naver.NaverRequest;
 import com.squadmap.member.application.dto.naver.NaverToken;
 import com.squadmap.member.application.dto.naver.NaverUserInfo;
 import com.squadmap.member.application.dto.naver.NaverUserProfileResponse;
-import com.squadmap.member.application.properties.OauthProperties;
+import com.squadmap.member.config.properties.OauthProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
@@ -21,7 +19,6 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
-import java.util.Collections;
 
 @RequiredArgsConstructor
 @Component("naver")

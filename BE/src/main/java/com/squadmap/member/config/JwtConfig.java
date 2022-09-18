@@ -1,6 +1,6 @@
 package com.squadmap.member.config;
 
-import com.squadmap.member.application.properties.JwtProperties;
+import com.squadmap.member.config.properties.JwtProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;

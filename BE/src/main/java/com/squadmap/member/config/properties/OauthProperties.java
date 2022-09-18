@@ -1,4 +1,4 @@
-package com.squadmap.member.application.properties;
+package com.squadmap.member.config.properties;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,5 @@
 package com.squadmap.member.application;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squadmap.member.application.dto.LoginInfo;
 import com.squadmap.member.application.dto.MemberInfo;
 import com.squadmap.member.application.dto.Tokens;
@@ -9,8 +8,6 @@ import com.squadmap.member.infrastructure.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.net.http.HttpClient;
 
 @Service
 @RequiredArgsConstructor

@@ -2,11 +2,11 @@ package com.squadmap.member.application;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
-import com.squadmap.member.application.dto.*;
+import com.squadmap.member.application.dto.MemberInfo;
 import com.squadmap.member.application.dto.github.GithubRequest;
 import com.squadmap.member.application.dto.github.GithubToken;
 import com.squadmap.member.application.dto.github.GithubUserInfo;
-import com.squadmap.member.application.properties.OauthProperties;
+import com.squadmap.member.config.properties.OauthProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
