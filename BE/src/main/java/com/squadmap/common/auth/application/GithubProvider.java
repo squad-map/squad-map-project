@@ -3,6 +3,7 @@ package com.squadmap.common.auth.application;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
 import com.squadmap.common.auth.application.dto.LoginMember;
+import com.squadmap.common.auth.application.dto.MemberInfo;
 import com.squadmap.common.auth.application.dto.github.GithubRequest;
 import com.squadmap.common.auth.application.dto.github.GithubToken;
 import com.squadmap.common.auth.application.dto.github.GithubUserInfo;
@@ -29,7 +30,7 @@ public class GithubProvider implements OauthProvider {
     private final HttpClient httpClient;
 
     @Override
-    public LoginMember oauth(String code, String state, OauthProperties.OauthProperty oauthProperty) {
+    public MemberInfo oauth(String code, String state, OauthProperties.OauthProperty oauthProperty) {
 
         GithubToken githubToken;
         GithubUserInfo githubUserInfo = null;
@@ -40,7 +41,7 @@ public class GithubProvider implements OauthProvider {
             e.printStackTrace();
         }
 
-        return new LoginMember(githubUserInfo.getLogin(), githubUserInfo.getAvatarUrl(), "temp@email.com");
+        return new MemberInfo(githubUserInfo.getLogin(), githubUserInfo.getAvatarUrl(), "temp@email.com");
     }
 
     private GithubToken accessGithub(String code, OauthProperties.OauthProperty oauthProperty) throws IOException, InterruptedException {

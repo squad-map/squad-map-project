@@ -2,6 +2,7 @@ package com.squadmap.common.auth.application;
 
 import com.squadmap.common.auth.application.dto.LoginInfo;
 import com.squadmap.common.auth.application.dto.LoginMember;
+import com.squadmap.common.auth.application.dto.MemberInfo;
 import com.squadmap.common.auth.application.dto.Tokens;
 import com.squadmap.member.domain.Member;
 import com.squadmap.member.infrastructure.MemberRepository;
@@ -21,10 +22,10 @@ public class LoginService {
     @Transactional
     public LoginInfo login(String provider, String code, String state) {
 
-        LoginMember memberInfo = oauthService.oauth(provider, code, state);
+        MemberInfo memberInfo = oauthService.oauth(provider, code, state);
         Member member = memberRepository.findByNickName(memberInfo.getNickname())
                 .orElseGet(() -> memberRepository
-                        .save(new Member(memberInfo.getAvatarUrl(), memberInfo.getNickname(), memberInfo.getEmail(), provider)));
+                        .save(new Member(memberInfo.getProfileImageUrl(), memberInfo.getNickname(), memberInfo.getEmail(), provider)));
 
         return new LoginInfo(
                 member.getId(),

@@ -18,16 +18,15 @@ public class MapController {
 
     @PostMapping("/map")
     @ResponseStatus(HttpStatus.CREATED)
-    public MapCreateResponse createMap(@Login LoginMember loginMember, @RequestBody MapRequest mapCreateRequest) {
+    public MapCreateResponse createMap(@Login Long memberId, @RequestBody MapRequest mapCreateRequest) {
 
-        Long mapId = mapService.create(mapCreateRequest.getMapName(), mapCreateRequest.getIsPrivate(), loginMember.getId());
+        Long mapId = mapService.create(mapCreateRequest.getMapName(), mapCreateRequest.getIsPrivate(), memberId);
 
         return new MapCreateResponse(mapId);
     }
 
     @PostMapping("/map/{mapId}")
-    public void updateMap(@PathVariable Long mapId, @RequestBody MapRequest mapRequest) {
-        Long memeberId = 1L;
-        mapService.update(memeberId, mapId, mapRequest.getMapName(), mapRequest.getIsPrivate());
+    public void updateMap(@Login Long memberId, @PathVariable Long mapId, @RequestBody MapRequest mapRequest) {
+        mapService.update(memberId, mapId, mapRequest.getMapName(), mapRequest.getIsPrivate());
     }
 }

@@ -2,6 +2,7 @@ package com.squadmap.common.auth.application;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.squadmap.common.auth.application.dto.LoginMember;
+import com.squadmap.common.auth.application.dto.MemberInfo;
 import com.squadmap.common.auth.application.dto.naver.NaverRequest;
 import com.squadmap.common.auth.application.dto.naver.NaverToken;
 import com.squadmap.common.auth.application.dto.naver.NaverUserInfo;
@@ -24,11 +25,13 @@ import java.nio.charset.StandardCharsets;
 @Component("naver")
 public class NaverProvider implements OauthProvider {
 
+    private static final String ACCESS_TOKEN_GRANT_TYPE = "authorization_code";
+
     private final HttpClient httpClient;
     private final ObjectMapper objectMapper;
 
     @Override
-    public LoginMember oauth(String code, String state, OauthProperties.OauthProperty oauthProperty) {
+    public MemberInfo oauth(String code, String state, OauthProperties.OauthProperty oauthProperty) {
         NaverToken naverToken;
         NaverUserInfo naverUserInfo;
         try {
@@ -39,11 +42,11 @@ public class NaverProvider implements OauthProvider {
             throw new RuntimeException();
         }
 
-        return new LoginMember(naverUserInfo.getNickname(), naverUserInfo.getProfileImage(), naverUserInfo.getEmail());
+        return new MemberInfo(naverUserInfo.getNickname(), naverUserInfo.getProfileImage(), naverUserInfo.getEmail());
     }
 
     private NaverToken accessNaver(String code, String state, OauthProperties.OauthProperty oauthProperty) throws IOException, InterruptedException {
-        NaverRequest naverRequest = new NaverRequest("authorization_code",
+        NaverRequest naverRequest = new NaverRequest(ACCESS_TOKEN_GRANT_TYPE,
                 oauthProperty.getClientId(),
                 oauthProperty.getClientSecret(),
                 code,

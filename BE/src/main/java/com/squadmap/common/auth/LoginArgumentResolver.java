@@ -27,6 +27,6 @@ public class LoginArgumentResolver implements HandlerMethodArgumentResolver {
         HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
         String token = Optional.ofNullable(AuthExtractor.extract(request))
                 .orElseThrow(RuntimeException::new);
-        return jwtProvider.getAudience(token);
+        return Long.parseLong(jwtProvider.getAudience(token));
     }
 }
