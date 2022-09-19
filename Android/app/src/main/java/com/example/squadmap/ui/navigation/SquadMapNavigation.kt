@@ -8,7 +8,9 @@ enum class SquadMapNavigation(val route: String) {
     SEARCH_SCREEN("SEARCH"),
     STORE_LIST("STORE_LIST"),
     MAP_VIEW("MAP_VIEW"),
-    WEB("WEB")
+    WEB("WEB"),
+    MY_MAP( "MY_MAP"),
+    PROFILE("PROFILE")
 }
 
 

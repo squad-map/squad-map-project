@@ -1,22 +1,24 @@
 package com.example.squadmap.ui.store
 
 import android.graphics.Color.parseColor
-import android.view.View
-import androidx.compose.foundation.background
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.InteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.rememberNavController
+import com.example.squadmap.R
 import com.example.squadmap.data.model.CategoryInfo
 import com.example.squadmap.data.model.StoreInfo
 import com.example.squadmap.ui.navigation.SquadMapNavigation
@@ -70,16 +72,47 @@ private val list = listOf<StoreInfo>(
 fun StoreListView(
     routAction: SquadMapRoutAction
 ) {
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(15.dp)
+    Box(modifier = Modifier.fillMaxSize()) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(15.dp)
+        ) {
+            items(
+                items = list,
+                itemContent = { item ->
+                    StoreItem(item = item, routAction)
+                }
+            )
+        }
+        Column {
+            Spacer(modifier = Modifier
+                .fillMaxWidth()
+                .height(700.dp))
+            MapButton(routAction = routAction)
+        }
+    }
+    
+}
+
+@Composable
+fun MapButton(routAction: SquadMapRoutAction) {
+    Button(
+        onClick = { routAction.navToRout(SquadMapNavigation.MAP_VIEW)},
+        colors = ButtonDefaults.outlinedButtonColors(
+            backgroundColor = Color.White
+        ),
+        modifier = Modifier.padding(horizontal = 120.dp)
     ) {
-        items(
-            items = list,
-            itemContent = { item ->
-                StoreItem(item = item, routAction)
-            }
+        Image(
+            painter = painterResource(id = R.drawable.ic_my_map),
+            contentDescription = "지도",
+            modifier = Modifier.padding(start = 7.dp)
+        )
+        Text(
+            text = "지도 열기",
+            color = Color.Gray,
+            modifier = Modifier.padding(start = 5.dp, end = 7.dp)
         )
     }
 }
@@ -87,12 +120,12 @@ fun StoreListView(
 @Composable
 fun StoreItem(item: StoreInfo, routAction: SquadMapRoutAction) {
     Surface(
-        modifier = Modifier.
-        fillMaxWidth().
-        padding(5.dp).
-        clickable {
-                  routAction.navToRout(SquadMapNavigation.WEB)
-        },
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(5.dp)
+            .clickable {
+                routAction.navToRout(SquadMapNavigation.WEB)
+            },
         color = Color.White,
         elevation = 10.dp
     ) {
@@ -108,7 +141,9 @@ fun StoreItem(item: StoreInfo, routAction: SquadMapRoutAction) {
                 Text(
                     text = item.category.name,
                     color = Color(parseColor(item.category.color)),
-                    modifier = Modifier.padding(end = 10.dp,top = 10.dp).fillMaxWidth(),
+                    modifier = Modifier
+                        .padding(end = 10.dp, top = 10.dp)
+                        .fillMaxWidth(),
                     fontWeight = FontWeight.Bold,
                     fontSize = 12.sp,
                     textAlign = TextAlign.End
@@ -135,6 +170,6 @@ fun StoreItem(item: StoreInfo, routAction: SquadMapRoutAction) {
 @Composable
 fun DefaultPreview() {
     SquadMapTheme {
-
+        StoreListView(routAction = SquadMapRoutAction(rememberNavController()))
     }
 }

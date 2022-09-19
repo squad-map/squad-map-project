@@ -16,6 +16,7 @@ import com.example.squadmap.common.AppSession
 import com.example.squadmap.data.model.JWT
 import com.example.squadmap.ui.bottommenu.*
 import com.example.squadmap.ui.login.LoginScreen
+import com.example.squadmap.ui.navigation.SquadMapNavGraph
 import com.example.squadmap.ui.navigation.SquadMapNavigation
 import com.example.squadmap.ui.navigation.SquadMapRoutAction
 import com.example.squadmap.ui.theme.SquadMapTheme
@@ -53,14 +54,18 @@ fun SquadMapApp(jwt: JWT?) {
         bottomBar = {
             val navBackStackEntry by navController.currentBackStackEntryAsState()
             when(navBackStackEntry?.destination?.route) {
-                HOME, MY_MAP, PROFILE -> {
+                SquadMapNavigation.HOME.route, SquadMapNavigation.MY_MAP.route, SquadMapNavigation.PROFILE.route -> {
+                    logger("${navBackStackEntry?.destination?.route}")
                     BottomNavigationBar(navController = navController)
+                }
+                else -> {
+                    logger("${navBackStackEntry?.destination?.route}")
                 }
             }
         }
     ) {
         Box(Modifier.padding(it)){
-            BottomNavigationGraph(navController = navController, jwt)
+            SquadMapNavGraph(navController = navController, jwt = jwt)
         }
     }
 }
