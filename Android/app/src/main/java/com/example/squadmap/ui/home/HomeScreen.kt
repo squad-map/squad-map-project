@@ -1,5 +1,6 @@
 package com.example.squadmap.ui.home
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -25,10 +26,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.rememberNavController
 import com.example.squadmap.R
 import com.example.squadmap.data.model.AllMap
+import com.example.squadmap.data.model.CategoryInfo
+import com.example.squadmap.data.model.StoreInfo
 import com.example.squadmap.ui.navigation.SquadMapNavigation
 import com.example.squadmap.ui.navigation.SquadMapRoutAction
+import com.example.squadmap.ui.store.StoreItem
 import com.example.squadmap.ui.theme.Main
 import com.example.squadmap.ui.theme.SquadMapTheme
 import com.example.squadmap.ui.utils.SearchButton
@@ -78,13 +83,13 @@ fun HomeScreen(routAction: SquadMapRoutAction) {
                     mapList.value = getMapList(selectedType.value)
                 }
             )
-            GridListView(paddingValue = paddingValue, mapList.value)
+            GridListView(paddingValue = paddingValue,list = mapList.value, routAction = routAction)
         }
     }
 }
 
 @Composable
-fun GridListView(paddingValue : PaddingValues, list: List<AllMap>) {
+fun GridListView(paddingValue : PaddingValues, list: List<AllMap>, routAction: SquadMapRoutAction) {
     LazyVerticalGrid(
         modifier = Modifier
             .padding(paddingValue)
@@ -92,19 +97,25 @@ fun GridListView(paddingValue : PaddingValues, list: List<AllMap>) {
             .fillMaxWidth(),
         columns = GridCells.Adaptive(minSize = 190.dp)
     ) {
-        items(items = list, itemContent = { item ->
-            CardView(item = item)
-        })
+        items(items = list,
+            itemContent = { item ->
+            CardView(item = item, routAction = routAction)
+        }
+        )
     }
 }
 
 @Composable
-fun CardView(item: AllMap) {
+fun CardView(
+    item: AllMap,
+    routAction: SquadMapRoutAction
+) {
     Card(
         modifier = Modifier
             .width(200.dp)
             .height(200.dp)
-            .padding(10.dp),
+            .padding(10.dp)
+            .clickable { routAction.navToRout(SquadMapNavigation.STORE_LIST) },
         shape = RoundedCornerShape(50.dp),
         backgroundColor = Color.White,
         elevation = 10.dp
@@ -164,8 +175,6 @@ private fun TopAppbar(routAction: SquadMapRoutAction) {
 @Composable
 fun DefaultPreview() {
     SquadMapTheme {
-        mapList.forEach {
-            CardView(item = it)
-        }
+
     }
 }

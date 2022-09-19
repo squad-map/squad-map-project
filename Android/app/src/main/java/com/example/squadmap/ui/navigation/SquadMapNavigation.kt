@@ -4,7 +4,11 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 
 enum class SquadMapNavigation(val route: String) {
-    HOME("HOME"), SEARCH_SCREEN("SEARCH")
+    HOME("HOME"),
+    SEARCH_SCREEN("SEARCH"),
+    STORE_LIST("STORE_LIST"),
+    MAP_VIEW("MAP_VIEW"),
+    WEB("WEB")
 }
 
 
@@ -14,7 +18,6 @@ class SquadMapRoutAction(navHostController: NavHostController) {
             popUpTo(navHostController.graph.findStartDestination().id) {
                 saveState = true
             }
-
             launchSingleTop = true
             restoreState = true
         }
