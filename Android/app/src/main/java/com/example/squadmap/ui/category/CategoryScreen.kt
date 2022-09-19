@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.squadmap.ui.theme.MainGreen
+import com.example.squadmap.ui.theme.Main
 import com.example.squadmap.ui.theme.SquadMapTheme
 
 @Composable
@@ -34,7 +34,7 @@ private fun TopAppbar() {
         title = {
             Text("SquarMap")
         },
-        backgroundColor = MainGreen,
+        backgroundColor = Main,
         navigationIcon = {
             IconButton(onClick = {/* Do Something*/ }) {
                 Icon(Icons.Filled.ArrowBack, null)

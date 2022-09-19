@@ -2,37 +2,42 @@ package com.example.squadmap.ui.home
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.compose.rememberNavController
 import com.example.squadmap.data.model.AllMap
 import com.example.squadmap.ui.navigation.SquadMapNavigation
 import com.example.squadmap.ui.navigation.SquadMapRoutAction
-import com.example.squadmap.ui.search.SearchScreen
-import com.example.squadmap.ui.theme.MainGreen
+import com.example.squadmap.ui.theme.Main
 import com.example.squadmap.ui.theme.SquadMapTheme
 import com.example.squadmap.ui.utils.SearchButton
 
 val list = listOf<AllMap>(
-    AllMap("스쿼드 지도", "로니", 6),
-    AllMap("스쿼드 지도", "로니", 6),
-    AllMap("스쿼드 지도", "로니", 6),
-    AllMap("스쿼드 지도", "로니", 6),
-    AllMap("스쿼드 지도", "로니", 6)
+    AllMap("1F389", "스쿼드 지도", "로니", 6),
+    AllMap("1F389", "스쿼드 지도", "로니", 6),
+    AllMap("1F389", "스쿼드 지도", "로니", 6),
+    AllMap("1F389", "스쿼드 지도", "로니", 6),
+    AllMap("1F389", "스쿼드 지도", "로니", 6),
+    AllMap("1F389", "스쿼드 지도", "로니", 6),
+    AllMap("1F389", "스쿼드 지도", "로니", 6),
+    AllMap("1F389", "스쿼드 지도", "로니", 6),
+    AllMap("1F389", "스쿼드 지도", "로니", 6),
+    AllMap("1F389", "스쿼드 지도", "로니", 6)
 )
 
 @Composable
@@ -41,16 +46,31 @@ fun HomeScreen(routAction: SquadMapRoutAction) {
         topBar = {
             TopAppbar(routAction)
         }
-    ) {
-        LazyColumn(
-            modifier = Modifier
-                .padding(it)
-                .fillMaxSize()
-        ) {
-            items(items = list, itemContent = { item ->
-                CardView(item = item)
-            })
+    ) { paddingValue ->
+        Column {
+            Text(
+                text = "전체 공개 지도",
+                modifier = Modifier.padding(start = 16.dp, top = 20.dp),
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
+            )
+            GridListView(paddingValue = paddingValue)
         }
+    }
+}
+
+@Composable
+fun GridListView(paddingValue : PaddingValues) {
+    LazyVerticalGrid(
+        modifier = Modifier
+            .padding(paddingValue)
+            .padding(top = 10.dp)
+            .fillMaxWidth(),
+        columns = GridCells.Adaptive(minSize = 190.dp)
+    ) {
+        items(items = list, itemContent = { item ->
+            CardView(item = item)
+        })
     }
 }
 
@@ -58,32 +78,41 @@ fun HomeScreen(routAction: SquadMapRoutAction) {
 fun CardView(item: AllMap) {
     Card(
         modifier = Modifier
-            .fillMaxWidth()
+            .width(200.dp)
             .height(200.dp)
             .padding(10.dp),
         shape = RoundedCornerShape(50.dp),
-        backgroundColor = Color(238, 238, 238, 1)
+        backgroundColor = Color.White,
+        elevation = 20.dp
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
+                text = String(Character.toChars(item.emoji.toLong(16).toInt())),
+                fontSize = 40.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(top = 20.dp)
+            )
+            Text(
                 text = item.title,
-                fontSize = 25.sp,
+                fontSize = 15.sp,
                 fontWeight = FontWeight.Bold,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(top = 10.dp)
             )
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .height(20.dp))
+            Text(
+                text = "${item.shareCount}명과 공유",
+                fontSize = 12.sp,
+                modifier = Modifier.padding(top = 10.dp),
+                fontWeight = FontWeight.Light
+            )
             Text(
                 text = item.host,
-                fontSize = 14.sp,
-                textAlign = TextAlign.Start,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 20.dp)
+                fontSize = 12.sp,
+                textAlign = TextAlign.End,
+                color = Color.Gray,
+                modifier = Modifier.padding(top = 10.dp)
             )
         }
     }
@@ -96,16 +125,12 @@ private fun TopAppbar(routAction: SquadMapRoutAction) {
         title = {
             Text("SquarMap")
         },
-        backgroundColor = MainGreen,
-        navigationIcon = {
-            IconButton(onClick = {/* Do Something*/ }) {
-                Icon(Icons.Filled.ArrowBack, null)
-            }
-        },
+        backgroundColor = Main,
         actions = {
             SearchButton(
                 routAction = routAction,
-                rout = SquadMapNavigation.SEARCH_SCREEN)
+                rout = SquadMapNavigation.SEARCH_SCREEN
+            )
         }
     )
 }
@@ -115,5 +140,8 @@ private fun TopAppbar(routAction: SquadMapRoutAction) {
 @Composable
 fun DefaultPreview() {
     SquadMapTheme {
+        list.forEach {
+            CardView(item = it)
+        }
     }
 }

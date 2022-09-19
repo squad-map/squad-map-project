@@ -31,29 +31,33 @@ import com.example.squadmap.ui.theme.SquadMapTheme
 
 val items = listOf<BottomNavigation>(
     BottomNavigation.Home,
-    BottomNavigation.Category,
+//    BottomNavigation.Category,
     BottomNavigation.MyMap,
     BottomNavigation.Profile
 )
 
 @Composable
 fun BottomNavigationGraph(navController: NavHostController, jwt: JWT?) {
-    NavHost(navController = navController, startDestination = BottomNavigation.Home.screenRoute) {
+    NavHost(
+        navController = navController,
+        startDestination = BottomNavigation.Home.screenRoute,
+        modifier = Modifier
+    ) {
         composable(BottomNavigation.Home.screenRoute) {
             SquadMapNavGraph()
         }
-        composable(BottomNavigation.Category.screenRoute) {
-            CategoryMapScreen()
-        }
+//        composable(BottomNavigation.Category.screenRoute) {
+//            CategoryMapScreen()
+//        }
         composable(BottomNavigation.MyMap.screenRoute) {
-            if(jwt != null) {
+            if (jwt != null) {
                 MyMapScreen()
             } else {
                 LoginScreen()
             }
         }
         composable(BottomNavigation.Profile.screenRoute) {
-            if(jwt != null) {
+            if (jwt != null) {
                 ProfileScreen()
             } else {
                 LoginScreen()

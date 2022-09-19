@@ -7,17 +7,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.Gray
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.rememberNavController
 import com.example.squadmap.common.AppSession
 import com.example.squadmap.data.model.JWT
-import com.example.squadmap.ui.bottommenu.BottomNavigation
 import com.example.squadmap.ui.bottommenu.BottomNavigationBar
 import com.example.squadmap.ui.bottommenu.BottomNavigationGraph
 import com.example.squadmap.ui.theme.SquadMapTheme
@@ -38,7 +31,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    Greeting("Android", appSession.jwt)
+                    SquadMapApp(appSession.jwt)
                 }
             }
         }
@@ -48,7 +41,7 @@ class MainActivity : ComponentActivity() {
 
 
 @Composable
-fun Greeting(name: String, jwt: JWT?) {
+fun SquadMapApp(jwt: JWT?) {
     val navController = rememberNavController()
     Scaffold(
         bottomBar = { BottomNavigationBar(navController = navController) }
@@ -63,6 +56,6 @@ fun Greeting(name: String, jwt: JWT?) {
 @Composable
 fun DefaultPreview() {
     SquadMapTheme {
-        Greeting("Android", null)
+        SquadMapApp(null)
     }
 }
