@@ -16,17 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.compose.rememberNavController
-import com.example.squadmap.data.model.JWT
-import com.example.squadmap.ui.category.CategoryMapScreen
-import com.example.squadmap.ui.home.HomeScreen
-import com.example.squadmap.ui.login.LoginScreen
-import com.example.squadmap.ui.mymap.MyMapScreen
-import com.example.squadmap.ui.navigation.SquadMapNavGraph
-import com.example.squadmap.ui.profile.ProfileScreen
 import com.example.squadmap.ui.theme.SquadMapTheme
 
 val items = listOf<BottomNavigation>(
@@ -35,36 +25,6 @@ val items = listOf<BottomNavigation>(
     BottomNavigation.MyMap,
     BottomNavigation.Profile
 )
-
-@Composable
-fun BottomNavigationGraph(navController: NavHostController, jwt: JWT?) {
-    NavHost(
-        navController = navController,
-        startDestination = BottomNavigation.Home.screenRoute,
-        modifier = Modifier
-    ) {
-        composable(BottomNavigation.Home.screenRoute) {
-            SquadMapNavGraph()
-        }
-//        composable(BottomNavigation.Category.screenRoute) {
-//            CategoryMapScreen()
-//        }
-        composable(BottomNavigation.MyMap.screenRoute) {
-            if (jwt != null) {
-                MyMapScreen()
-            } else {
-                LoginScreen()
-            }
-        }
-        composable(BottomNavigation.Profile.screenRoute) {
-            if (jwt != null) {
-                ProfileScreen()
-            } else {
-                LoginScreen()
-            }
-        }
-    }
-}
 
 @Composable
 fun BottomNavigationBar(navController: NavHostController) {

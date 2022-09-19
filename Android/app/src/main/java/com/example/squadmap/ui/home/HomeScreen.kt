@@ -1,33 +1,44 @@
 package com.example.squadmap.ui.home
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.rememberNavController
+import com.example.squadmap.R
 import com.example.squadmap.data.model.AllMap
+import com.example.squadmap.data.model.CategoryInfo
+import com.example.squadmap.data.model.StoreInfo
 import com.example.squadmap.ui.navigation.SquadMapNavigation
 import com.example.squadmap.ui.navigation.SquadMapRoutAction
+import com.example.squadmap.ui.store.StoreItem
 import com.example.squadmap.ui.theme.Main
 import com.example.squadmap.ui.theme.SquadMapTheme
 import com.example.squadmap.ui.utils.SearchButton
 
-val list = listOf<AllMap>(
+val mapList = listOf<AllMap>(
     AllMap("1F389", "스쿼드 지도", "로니", 6),
     AllMap("1F389", "스쿼드 지도", "로니", 6),
     AllMap("1F389", "스쿼드 지도", "로니", 6),
@@ -40,27 +51,45 @@ val list = listOf<AllMap>(
     AllMap("1F389", "스쿼드 지도", "로니", 6)
 )
 
+val groupMapList = listOf<AllMap>(
+    AllMap("1F389", "스쿼드 지도", "머핀", 6),
+    AllMap("1F389", "스쿼드 지도", "퍼니", 6),
+)
+
+fun getMapList(selectedType: MapType?) = when(selectedType) {
+    MapType.GROUP -> {
+        groupMapList
+    }
+    else -> {
+        mapList
+    }
+}
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun HomeScreen(routAction: SquadMapRoutAction) {
+    val selectedType: MutableState<MapType?> = mutableStateOf(MapType.OPEN)
+    val mapList = mutableStateOf(mapList)
     Scaffold(
         topBar = {
             TopAppbar(routAction)
         }
     ) { paddingValue ->
         Column {
-            Text(
-                text = "전체 공개 지도",
-                modifier = Modifier.padding(start = 16.dp, top = 20.dp),
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold
+            ChipGroup(
+                types = getAllMapTypes(),
+                selectedType = selectedType.value,
+                onSelectedChanged = {
+                    selectedType.value = getMapType(it)
+                    mapList.value = getMapList(selectedType.value)
+                }
             )
-            GridListView(paddingValue = paddingValue)
+            GridListView(paddingValue = paddingValue,list = mapList.value, routAction = routAction)
         }
     }
 }
 
 @Composable
-fun GridListView(paddingValue : PaddingValues) {
+fun GridListView(paddingValue : PaddingValues, list: List<AllMap>, routAction: SquadMapRoutAction) {
     LazyVerticalGrid(
         modifier = Modifier
             .padding(paddingValue)
@@ -68,22 +97,28 @@ fun GridListView(paddingValue : PaddingValues) {
             .fillMaxWidth(),
         columns = GridCells.Adaptive(minSize = 190.dp)
     ) {
-        items(items = list, itemContent = { item ->
-            CardView(item = item)
-        })
+        items(items = list,
+            itemContent = { item ->
+            CardView(item = item, routAction = routAction)
+        }
+        )
     }
 }
 
 @Composable
-fun CardView(item: AllMap) {
+fun CardView(
+    item: AllMap,
+    routAction: SquadMapRoutAction
+) {
     Card(
         modifier = Modifier
             .width(200.dp)
             .height(200.dp)
-            .padding(10.dp),
+            .padding(10.dp)
+            .clickable { routAction.navToRout(SquadMapNavigation.STORE_LIST) },
         shape = RoundedCornerShape(50.dp),
         backgroundColor = Color.White,
-        elevation = 20.dp
+        elevation = 10.dp
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
@@ -140,8 +175,6 @@ private fun TopAppbar(routAction: SquadMapRoutAction) {
 @Composable
 fun DefaultPreview() {
     SquadMapTheme {
-        list.forEach {
-            CardView(item = it)
-        }
+
     }
 }
