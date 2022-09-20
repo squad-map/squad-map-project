@@ -9,6 +9,7 @@ export const Item = styled.div`
 
 export const ItemHeader = styled.header`
   ${flexbox({ jc: 'space-between' })}
+  margin-top: 1rem;
 `;
 
 export const ItemFooter = styled.footer`

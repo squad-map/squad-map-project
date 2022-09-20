@@ -9,6 +9,7 @@ import Button from '@/components/common/Button';
 import Icon from '@/components/common/Icon';
 import Text from '@/components/common/Text';
 import Input from '@/components/Input';
+import { CategoryColors } from '@/constants/colors';
 import theme from '@/styles/theme';
 
 const CategoryModalInfo = ({ headerData }: HeaderProps) => {
@@ -18,8 +19,6 @@ const CategoryModalInfo = ({ headerData }: HeaderProps) => {
     color: '',
   });
 
-  const [isColorPopup, setIsColorPopup] = useState(false);
-
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCategoryFormData({ ...categoryFormData, title: e.target.value });
   };
@@ -28,26 +27,34 @@ const CategoryModalInfo = ({ headerData }: HeaderProps) => {
     setCategoryFormData({ ...categoryFormData, description: e.target.value });
   };
 
-  const handleColorChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value === '') e.target.value = '#';
-    setCategoryFormData({ ...categoryFormData, color: e.target.value });
+  const handleColorClick = (color: string) => {
+    setCategoryFormData({ ...categoryFormData, color });
   };
 
-  const handleColorPopup = () => {
-    setIsColorPopup(true);
+  const checkDupliCateColor = (color: string) => {
+    const existColors = headerData.categories.map(category => category.color);
+    if (existColors.includes(color)) return true;
+    return false;
   };
 
-  const handleRandomBgColor = () => {
-    // TODO: 10가지 색상 정한 후 randomColor 해당 컬러중 랜덤으로 돌리도록 리팩토링
-    const randomColor = new Array(3).fill(0).reduce((prev: string) => {
-      // eslint-disable-next-line no-param-reassign
-      prev += Math.floor(Math.random() * 127 + 128)
-        .toString(16)
-        .toUpperCase();
-      return prev;
-    }, '#');
+  const isExistTitle = () => {
+    const existTitle = headerData.categories.map(category => category.name);
+    if (existTitle.includes(categoryFormData.title)) return true;
+    return false;
+  };
 
-    setCategoryFormData({ ...categoryFormData, color: randomColor });
+  const isExistBgColor = () => {
+    const existColors = headerData.categories.map(category => category.color);
+    if (existColors.includes(categoryFormData.color)) return true;
+    return false;
+  };
+
+  const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (isExistTitle() || isExistBgColor()) {
+      // 간단한 popup창 띄우기.
+    }
+    // 통과되면 카테고리 생성 api 호출.
   };
 
   return (
@@ -57,7 +64,7 @@ const CategoryModalInfo = ({ headerData }: HeaderProps) => {
           {headerData.title}
           <br />
         </S.Title>
-        <S.SubTitle>카테고리 현재 목록</S.SubTitle>
+        <S.SubTitle>사용중인 카테고리 현재 목록</S.SubTitle>
       </S.Header>
       <S.Buttons>
         {headerData.categories.map(category => (
@@ -92,6 +99,13 @@ const CategoryModalInfo = ({ headerData }: HeaderProps) => {
             value={categoryFormData.title}
             onChange={handleTitleChange}
           />
+          {isExistTitle() && (
+            <Text
+              text="중복되는 카테고리 이름입니다."
+              size="xSmall"
+              color={theme.color.red}
+            />
+          )}
         </S.ColumnBox>
         <S.ColumnBox>
           <S.Label htmlFor="description">카테고리 설명</S.Label>
@@ -109,26 +123,28 @@ const CategoryModalInfo = ({ headerData }: HeaderProps) => {
         <S.ColumnBox>
           <S.Label htmlFor="color">카테고리 색상</S.Label>
           <S.ColorBox>
-            <input
-              id="color"
-              width="15rem"
-              height="2.5rem"
-              placeholder="배경색상"
-              color={theme.color.placeholder}
-              type="text"
-              value={categoryFormData.color}
-              onClick={handleColorPopup}
-              onChange={handleColorChange}
-              maxLength={7}
-            />
-            <S.RefreshButton type="button" onClick={handleRandomBgColor}>
-              <Icon size="small" url={Icons.Refresh} alt="배경 랜덤 색상" />
-            </S.RefreshButton>
+            {CategoryColors.map(
+              color =>
+                !checkDupliCateColor(color) && (
+                  <S.ColorCircle
+                    type="button"
+                    color={color}
+                    onClick={() => handleColorClick(color)}
+                  />
+                )
+            )}
           </S.ColorBox>
         </S.ColumnBox>
 
         <S.ButtonBox>
-          <Button type="submit" size="regular" color={theme.color.black}>
+          <Button
+            type="submit"
+            size="regular"
+            color={theme.color.black}
+            onClick={(e: React.SyntheticEvent<HTMLFormElement>) =>
+              handleSubmit(e)
+            }
+          >
             <Text
               text="카테고리 생성"
               size="regular"

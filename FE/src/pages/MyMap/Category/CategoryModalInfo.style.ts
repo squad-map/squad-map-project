@@ -35,22 +35,22 @@ export const Label = styled.label`
   font-size: ${theme.fontSize.sm};
 `;
 
-export const RefreshButton = styled.button`
-  position: absolute;
-  right: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
+export const ColorCircle = styled.button`
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background-color: ${props => props.color};
   cursor: pointer;
-  background-color: ${theme.color.transparent};
+  &:hover {
+    opacity: 0.8;
+  }
 `;
 
 export const ColorBox = styled.div`
-  ${flexbox({ ai: 'center' })}
-  height: 2rem;
-  border: 1px solid ${theme.color.navy};
+  ${flexbox({})}
+  flex-wrap: wrap;
+  gap: 0.5rem;
   border-radius: 1rem;
-  padding: 1rem;
-  position: relative;
 `;
 
 export const ButtonBox = styled.div`

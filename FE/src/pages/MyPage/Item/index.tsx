@@ -17,11 +17,10 @@ const Item = ({ item, handleModifyButton }: ItemProps) => (
   <S.Item>
     <S.ItemHeader>
       <Text
-        text={`카테고리 개수 : ${item.categories.length}개`}
-        size="small"
-        color={theme.color.gray}
+        text={`${item.emoji} ${item.title}`}
+        size="xRegularFill"
+        color={theme.color.darkGray}
       />
-
       <Icon
         size="small"
         url={Icons.Edit}
@@ -29,19 +28,12 @@ const Item = ({ item, handleModifyButton }: ItemProps) => (
         onClick={handleModifyButton}
       />
     </S.ItemHeader>
-    <Text
-      text={`${item.emoji} ${item.title}`}
-      size="xRegularFill"
-      color={theme.color.darkGray}
-    />
     <S.ItemFooter>
       <Text
         text={`${item.placeCount}개의장소`}
         size="xSmall"
         color={theme.color.gray}
       />
-
-      <Text text="수정하기" size="xSmall" color={theme.color.gray} />
     </S.ItemFooter>
   </S.Item>
 );
