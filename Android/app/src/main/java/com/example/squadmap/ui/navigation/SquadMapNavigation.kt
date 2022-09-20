@@ -10,7 +10,8 @@ enum class SquadMapNavigation(val route: String) {
     MAP_VIEW("MAP_VIEW"),
     WEB("WEB"),
     MY_MAP( "MY_MAP"),
-    PROFILE("PROFILE")
+    PROFILE("PROFILE"),
+    GITHUB_LOGIN("GITHUB_LOGIN")
 }
 
 
