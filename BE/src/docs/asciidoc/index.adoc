@@ -1,0 +1,24 @@
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+= sample rest docs
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+[[resources-post]]
+== 나만의 지도
+
+[[resources-post-create]]
+=== Map 생성
+
+==== HTTP request
+
+include::{snippets}/map_test/map_create_test/request-fields.adoc[]
+
+include::{snippets}/map_test/map_create_test/http-request.adoc[]
+
+==== HTTP response
+include::{snippets}/map_test/map_create_test/response-fields.adoc[]
+
+include::{snippets}/map_test/map_create_test/http-response.adoc[]
