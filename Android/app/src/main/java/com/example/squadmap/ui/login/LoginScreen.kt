@@ -12,11 +12,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.rememberNavController
+import com.example.squadmap.ui.navigation.SquadMapNavigation
+import com.example.squadmap.ui.navigation.SquadMapRoutAction
 import com.example.squadmap.ui.theme.Main
 import com.example.squadmap.ui.theme.SquadMapTheme
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(routAction: SquadMapRoutAction) {
     Scaffold(
         topBar = {
             TopAppbar()
@@ -35,15 +38,15 @@ fun LoginScreen() {
                 fontWeight = FontWeight.Bold
             )
             Spacer(modifier = Modifier.height(20.dp))
-            NaverLoginButton()
+            NaverLoginButton(routAction)
             Spacer(modifier = Modifier.height(10.dp))
-            GithubLoginButton()
+            GithubLoginButton(routAction)
         }
     }
 }
 
 @Composable
-private fun NaverLoginButton() {
+private fun NaverLoginButton(routAction: SquadMapRoutAction) {
     Button(
         onClick = { /*TODO*/ },
         modifier = Modifier.width(160.dp),
@@ -57,9 +60,11 @@ private fun NaverLoginButton() {
 }
 
 @Composable
-private fun GithubLoginButton() {
+private fun GithubLoginButton(routAction: SquadMapRoutAction) {
     Button(
-        onClick = { /*TODO*/ },
+        onClick = {
+                  routAction.navToRout(SquadMapNavigation.GITHUB_LOGIN)
+        },
         modifier = Modifier.width(160.dp),
         colors = ButtonDefaults.buttonColors(Color.Black)
     ) {
@@ -90,6 +95,6 @@ private fun TopAppbar() {
 @Composable
 fun DefaultPreview() {
     SquadMapTheme {
-        LoginScreen()
+        LoginScreen(SquadMapRoutAction(rememberNavController()))
     }
 }

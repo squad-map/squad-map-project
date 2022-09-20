@@ -20,6 +20,10 @@ android {
 
         buildConfigField "String", "NAVER_MAP_ID", properties["naverMapId"]
         buildConfigField "String", "NAVER_MAP_KEY", properties["naverMapKey"]
+        buildConfigField "String", "GITHUB_LOGIN_ID", properties["githubLoginId"]
+        buildConfigField "String", "GITHUB_LOGIN_KEY", properties["githubLoginKey"]
+        buildConfigField "String", "NAVER_LOGIN_ID", properties["naverLoginId"]
+        buildConfigField "String", "NAVER_LOGIN_KEY", properties["naverLoginKey"]
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {

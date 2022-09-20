@@ -5,6 +5,7 @@ import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.squadmap.BuildConfig
 import com.example.squadmap.data.model.JWT
 import com.example.squadmap.ui.bottommenu.BottomNavigation
 import com.example.squadmap.ui.home.HomeScreen
@@ -14,6 +15,7 @@ import com.example.squadmap.ui.mymap.MyMapScreen
 import com.example.squadmap.ui.profile.ProfileScreen
 import com.example.squadmap.ui.search.SearchScreen
 import com.example.squadmap.ui.store.StoreListView
+import com.example.squadmap.ui.web.GithubLoginWebView
 import com.example.squadmap.ui.web.StoreWebView
 
 @Composable
@@ -35,20 +37,26 @@ fun SquadMapNavGraph(navController: NavHostController, startRoute: String = Bott
             StoreMapScreen(routAction = routeAction)
         }
         composable(SquadMapNavigation.WEB.route) {
-            StoreWebView()
+            StoreWebView("")
         }
+        composable(SquadMapNavigation.GITHUB_LOGIN.route) {
+            GithubLoginWebView(url = "http://github.com/login/oauth/authorize?client_id=" +
+                    BuildConfig.GITHUB_LOGIN_ID +
+                    "&redirect_uri=http://localhost:3000/login/github/callback&response_type=code")
+        }
+
         composable(BottomNavigation.MyMap.screenRoute) {
             if (jwt != null) {
                 MyMapScreen()
             } else {
-                LoginScreen()
+                LoginScreen(routeAction)
             }
         }
         composable(BottomNavigation.Profile.screenRoute) {
             if (jwt != null) {
                 ProfileScreen()
             } else {
-                LoginScreen()
+                LoginScreen(routeAction)
             }
         }
     }
