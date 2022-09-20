@@ -2,6 +2,7 @@ package com.example.squadmap.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -10,11 +11,13 @@ import com.example.squadmap.data.model.JWT
 import com.example.squadmap.ui.bottommenu.BottomNavigation
 import com.example.squadmap.ui.home.HomeScreen
 import com.example.squadmap.ui.login.LoginScreen
+import com.example.squadmap.ui.map.MapViewModel
 import com.example.squadmap.ui.map.StoreMapScreen
 import com.example.squadmap.ui.mymap.MyMapScreen
 import com.example.squadmap.ui.profile.ProfileScreen
 import com.example.squadmap.ui.search.SearchScreen
-import com.example.squadmap.ui.store.StoreListView
+import com.example.squadmap.ui.map.store.StoreListView
+import com.example.squadmap.ui.utils.logger
 import com.example.squadmap.ui.web.GithubLoginWebView
 import com.example.squadmap.ui.web.StoreWebView
 
@@ -31,10 +34,18 @@ fun SquadMapNavGraph(navController: NavHostController, startRoute: String = Bott
             SearchScreen()
         }
         composable(SquadMapNavigation.STORE_LIST.route) {
-            StoreListView(routAction = routeAction)
+            val mapViewModel = hiltViewModel<MapViewModel>(
+                navController.getBackStackEntry(startRoute)
+            )
+            logger("STORE_LIST : ${mapViewModel.hashCode()}")
+            StoreListView(routAction = routeAction, mapViewModel = mapViewModel)
         }
         composable(SquadMapNavigation.MAP_VIEW.route) {
-            StoreMapScreen(routAction = routeAction)
+            val mapViewModel = hiltViewModel<MapViewModel>(
+                navController.getBackStackEntry(startRoute)
+            )
+            logger("MAP_VIEW : ${mapViewModel.hashCode()}")
+            StoreMapScreen(routAction = routeAction, mapViewModel = mapViewModel)
         }
         composable(SquadMapNavigation.WEB.route) {
             StoreWebView("")
