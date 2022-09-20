@@ -17,7 +17,7 @@ interface InfosProps {
       {
         id: number;
         title: string;
-        categories: CategoryType[];
+        category: CategoryType;
         address: string;
         description: string;
       }
@@ -43,20 +43,17 @@ const Infos = ({ infoData }: InfosProps) => {
             >
               <S.Item>
                 <S.ItemCategory>
-                  {map.categories &&
-                    map.categories.map((category: CategoryType) => (
-                      <Button
-                        size="xSmall"
-                        color={category.color}
-                        key={`categoryButton-${category.name}`}
-                      >
-                        <Text
-                          size="xSmall"
-                          text={category.name}
-                          color={theme.color.white}
-                        />
-                      </Button>
-                    ))}
+                  <Button
+                    size="xSmall"
+                    color={map.category.color}
+                    key={`categoryButton-${map.category.name}`}
+                  >
+                    <Text
+                      size="xSmall"
+                      text={map.category.name}
+                      color={theme.color.white}
+                    />
+                  </Button>
                   <Icon
                     size="small"
                     url={Icons.More}

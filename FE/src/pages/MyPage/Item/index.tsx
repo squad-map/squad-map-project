@@ -7,7 +7,6 @@ import Icon from '@/components/common/Icon';
 import Text from '@/components/common/Text';
 import { IMyMap } from '@/interfaces/IMyMap';
 import theme from '@/styles/theme';
-import { CategoryType } from '@/types/map';
 
 interface ItemProps {
   item: IMyMap;
@@ -17,14 +16,11 @@ interface ItemProps {
 const Item = ({ item, handleModifyButton }: ItemProps) => (
   <S.Item>
     <S.ItemHeader>
-      {item.categories.map((category: CategoryType) => (
-        <Text
-          key={`${category.name}`}
-          text={category.name || ''}
-          size="small"
-          color={category.color || theme.color.black}
-        />
-      ))}
+      <Text
+        text={`카테고리 개수 : ${item.categories.length}개`}
+        size="small"
+        color={theme.color.gray}
+      />
 
       <Icon
         size="small"

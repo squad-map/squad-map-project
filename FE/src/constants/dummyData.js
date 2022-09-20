@@ -144,10 +144,7 @@ export const myMapsData = {
     {
       id: 1000,
       title: '롯데월드',
-      categories: [
-        { name: '카테고리1', color: 'red' },
-        { name: '카테고리2', color: 'blue' },
-      ],
+      category: { name: '카테고리1', color: 'red' },
       color: 'yellow',
       lat: 37.491583,
       lng: 127.031352,
@@ -157,10 +154,7 @@ export const myMapsData = {
     {
       id: 1001,
       title: '롯데월드2',
-      categories: [
-        { name: '카테고리3', color: 'green' },
-        { name: '카테고리4', color: 'orange' },
-      ],
+      category: { name: '카테고리3', color: 'green' },
       color: 'blue',
       lat: 37.490792,
       lng: 127.032602,
