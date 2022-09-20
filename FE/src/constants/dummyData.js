@@ -64,8 +64,8 @@ export const myPageMapsData = [
   {
     id: 1,
     categories: [
-      { name: '카테고리1', color: 'red' },
-      { name: '카테고리2', color: 'blue' },
+      { name: '카테고리1', color: '#FF0000' },
+      { name: '카테고리2', color: '#0000FF' },
       { name: '카테고리3', color: 'orange' },
     ],
     emoji: '💻',
@@ -75,8 +75,8 @@ export const myPageMapsData = [
   {
     id: 2,
     categories: [
-      { name: '카테고리1', color: 'red' },
-      { name: '카테고리2', color: 'blue' },
+      { name: '카테고리1', color: '#FF0000' },
+      { name: '카테고리2', color: '#0000FF' },
       { name: '카테고리3', color: 'orange' },
     ],
     emoji: '💻',
@@ -86,8 +86,8 @@ export const myPageMapsData = [
   {
     id: 3,
     categories: [
-      { name: '카테고리1', color: 'red' },
-      { name: '카테고리2', color: 'blue' },
+      { name: '카테고리1', color: '#FF0000' },
+      { name: '카테고리2', color: '#0000FF' },
       { name: '카테고리3', color: 'orange' },
     ],
     emoji: '💻',
@@ -97,8 +97,8 @@ export const myPageMapsData = [
   {
     id: 4,
     categories: [
-      { name: '카테고리1', color: 'red' },
-      { name: '카테고리2', color: 'blue' },
+      { name: '카테고리1', color: '#FF0000' },
+      { name: '카테고리2', color: '#0000FF' },
       { name: '카테고리3', color: 'orange' },
     ],
     emoji: '💻',
@@ -108,8 +108,8 @@ export const myPageMapsData = [
   {
     id: 5,
     categories: [
-      { name: '카테고리1', color: 'red' },
-      { name: '카테고리2', color: 'blue' },
+      { name: '카테고리1', color: '#FF0000' },
+      { name: '카테고리2', color: '#0000FF' },
       { name: '카테고리3', color: 'orange' },
     ],
     emoji: '💻',
@@ -119,8 +119,8 @@ export const myPageMapsData = [
   {
     id: 6,
     categories: [
-      { name: '카테고리1', color: 'red' },
-      { name: '카테고리2', color: 'blue' },
+      { name: '카테고리1', color: '#FF0000' },
+      { name: '카테고리2', color: '#0000FF' },
       { name: '카테고리3', color: 'orange' },
     ],
     emoji: '💻',
@@ -137,14 +137,14 @@ export const myMapsData = {
   title: '놀이동산',
   emoji: '🏞',
   categories: [
-    { name: '카테고리1', color: 'red' },
-    { name: '카테고리2', color: 'blue' },
+    { name: '카테고리1', color: '#FF0000' },
+    { name: '카테고리2', color: '#0000FF' },
   ],
   maps: [
     {
       id: 1000,
       title: '롯데월드',
-      category: { name: '카테고리1', color: 'red' },
+      category: { name: '카테고리1', color: '#FF0000' },
       color: 'yellow',
       lat: 37.491583,
       lng: 127.031352,
@@ -154,8 +154,8 @@ export const myMapsData = {
     {
       id: 1001,
       title: '롯데월드2',
-      category: { name: '카테고리3', color: 'green' },
-      color: 'blue',
+      category: { name: '카테고리3', color: '#0000FF' },
+      color: '#0000FF',
       lat: 37.490792,
       lng: 127.032602,
       address: '서울 송파구 올림픽로 240',
