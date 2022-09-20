@@ -3,7 +3,7 @@ package com.example.squadmap.ui.web
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import androidx.compose.runtime.Composable
-import com.example.squadmap.ui.utils.logger
+import com.example.squadmap.common.logger
 import com.google.accompanist.web.AccompanistWebViewClient
 import com.google.accompanist.web.WebView
 import com.google.accompanist.web.rememberWebViewState

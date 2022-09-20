@@ -1,4 +1,4 @@
-package com.example.squadmap.ui.utils
+package com.example.squadmap.common
 
 import android.util.Log
 

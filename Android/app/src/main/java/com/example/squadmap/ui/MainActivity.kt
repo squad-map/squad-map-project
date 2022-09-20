@@ -1,7 +1,6 @@
 package com.example.squadmap.ui
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -15,12 +14,10 @@ import androidx.navigation.compose.rememberNavController
 import com.example.squadmap.common.AppSession
 import com.example.squadmap.data.model.JWT
 import com.example.squadmap.ui.bottommenu.*
-import com.example.squadmap.ui.login.LoginScreen
 import com.example.squadmap.ui.navigation.SquadMapNavGraph
 import com.example.squadmap.ui.navigation.SquadMapNavigation
-import com.example.squadmap.ui.navigation.SquadMapRoutAction
 import com.example.squadmap.ui.theme.SquadMapTheme
-import com.example.squadmap.ui.utils.logger
+import com.example.squadmap.common.logger
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
