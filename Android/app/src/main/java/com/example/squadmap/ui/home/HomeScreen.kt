@@ -21,7 +21,7 @@ import com.example.squadmap.ui.navigation.SquadMapNavigation
 import com.example.squadmap.ui.navigation.SquadMapRoutAction
 import com.example.squadmap.ui.theme.Main
 import com.example.squadmap.ui.theme.SquadMapTheme
-import com.example.squadmap.ui.utils.SearchButton
+import com.example.squadmap.ui.search.SearchButton
 
 val mapList = listOf<AllMap>(
     AllMap("1F389", "스쿼드 지도", "로니", 6),

@@ -1,4 +1,4 @@
-package com.example.squadmap.ui.utils
+package com.example.squadmap.ui.search
 
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton

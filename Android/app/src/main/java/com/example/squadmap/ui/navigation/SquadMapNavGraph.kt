@@ -17,7 +17,7 @@ import com.example.squadmap.ui.mymap.MyMapScreen
 import com.example.squadmap.ui.profile.ProfileScreen
 import com.example.squadmap.ui.search.SearchScreen
 import com.example.squadmap.ui.map.store.StoreListView
-import com.example.squadmap.ui.utils.logger
+import com.example.squadmap.common.logger
 import com.example.squadmap.ui.web.GithubLoginWebView
 import com.example.squadmap.ui.web.StoreWebView
 
@@ -37,14 +37,12 @@ fun SquadMapNavGraph(navController: NavHostController, startRoute: String = Bott
             val mapViewModel = hiltViewModel<MapViewModel>(
                 navController.getBackStackEntry(startRoute)
             )
-            logger("STORE_LIST : ${mapViewModel.hashCode()}")
             StoreListView(routAction = routeAction, mapViewModel = mapViewModel)
         }
         composable(SquadMapNavigation.MAP_VIEW.route) {
             val mapViewModel = hiltViewModel<MapViewModel>(
                 navController.getBackStackEntry(startRoute)
             )
-            logger("MAP_VIEW : ${mapViewModel.hashCode()}")
             StoreMapScreen(routAction = routeAction, mapViewModel = mapViewModel)
         }
         composable(SquadMapNavigation.WEB.route) {
