@@ -8,6 +8,7 @@ const MyPage = lazy(() => import('@/pages/MyPage'));
 const HomePage = lazy(() => import('@/pages/Home'));
 const MapsPage = lazy(() => import('@/pages/Maps'));
 const MyMapPage = lazy(() => import('@/pages/MyMap'));
+const SearchMapPage = lazy(() => import('@/pages/SearchMap'));
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
             <Route path="/maps/:id" element={<MapsPage />} />
             <Route path="/mypage" element={<MyPage />} />
             <Route path="/mymap/:id" element={<MyMapPage />} />
+            <Route path="/mymap/search/:id" element={<SearchMapPage />} />
           </Route>
           <Route path="/callback/:provider" element={<Callback />} />
         </Routes>

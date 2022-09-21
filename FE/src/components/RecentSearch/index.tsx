@@ -1,17 +1,23 @@
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useResetRecoilState } from 'recoil';
 
 import * as S from './RecentSearch.style';
 
+import Button from '@/components/common/Button';
 import Text from '@/components/common/Text';
-import { searchState } from '@/recoil/atoms/search';
+import { searchplaceState } from '@/recoil/atoms/searchplace';
 import theme from '@/styles/theme';
 
 const RecentSearch = () => {
-  const searchData = useRecoilValue(searchState);
+  const searchData = useRecoilValue(searchplaceState);
+  const resetInit = useResetRecoilState(searchplaceState);
+
+  const handleSearchAllRemove = () => {
+    resetInit();
+  };
 
   return (
     <S.RecentSearch>
-      <S.RecentSearchWrapper>
+      <S.RecentSearchInner>
         <Text text="최근검색어" size="xRegularFill" color={theme.color.black} />
         <S.Divider />
         <S.Content>
@@ -27,19 +33,25 @@ const RecentSearch = () => {
               />
             ))}
         </S.Content>
-      </S.RecentSearchWrapper>
+      </S.RecentSearchInner>
       <S.Bottom>
-        <Text
-          text="전체삭제"
-          size="regular"
-          color={theme.color.lightBlack}
-          cursor
-          hover
-        />
+        <Button
+          size="xSmall"
+          color={theme.color.transparent}
+          onClick={handleSearchAllRemove}
+        >
+          <Text
+            text="전체삭제"
+            size="regular"
+            color={theme.color.white}
+            cursor
+            hover
+          />
+        </Button>
         <Text
           text="최근검색어 끄기"
           size="regular"
-          color={theme.color.lightBlack}
+          color={theme.color.white}
           cursor
           hover
         />

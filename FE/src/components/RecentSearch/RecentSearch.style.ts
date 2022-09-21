@@ -22,11 +22,11 @@ export const Bottom = styled.div`
   padding: 1rem;
   position: absolute;
   bottom: 0;
-  border-top: 1px solid ${theme.color.gray};
-  background-color: ${theme.color.lightGray};
+  border-top: 1px solid ${theme.color.navy};
+  background-color: ${theme.color.darkNavy};
 `;
 
-export const RecentSearchWrapper = styled.div`
+export const RecentSearchInner = styled.div`
   padding: 2.5rem;
 `;
 
@@ -34,5 +34,9 @@ export const RecentSearch = styled.section`
   width: 30rem;
   height: 37.5rem;
   position: relative;
+  border-radius: 1rem;
+  margin-top: 1rem;
+  overflow: hidden;
   background-color: ${theme.color.white};
+  z-index: 1000;
 `;

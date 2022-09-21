@@ -18,8 +18,8 @@ export const MapHeader = styled.header`
   ${flexbox({ dir: 'row', ai: 'center' })}
   gap: 1rem;
   width: 50%;
-  margin-top: 2rem;
   height: 4rem;
   position: absolute;
+  top: 2rem;
   z-index: 999;
 `;
