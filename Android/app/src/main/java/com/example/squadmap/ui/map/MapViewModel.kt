@@ -1,11 +1,17 @@
 package com.example.squadmap.ui.map
 
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import com.example.squadmap.data.model.CategoryInfo
 import com.example.squadmap.data.model.MapInfo
 import com.example.squadmap.data.model.StoreInfo
 import com.naver.maps.geometry.LatLng
+import com.naver.maps.map.CameraPosition
+import com.naver.maps.map.compose.CameraPositionState
+import com.naver.maps.map.compose.MapUiSettings
+import com.naver.maps.map.compose.rememberCameraPositionState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -67,6 +73,12 @@ class MapViewModel @Inject constructor(): ViewModel() {
         "Muffine",
         list
     )
+
+    val mapUiSettings by mutableStateOf(
+        MapUiSettings(
+                isLocationButtonEnabled = false
+            )
+        )
 
     val cameraLatLongState = mutableStateOf(LatLng(mapInfo.store[0].lat, mapInfo.store[0].long))
 

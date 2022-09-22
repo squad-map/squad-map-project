@@ -16,59 +16,38 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.rememberNavController
 import com.example.squadmap.data.model.AllMap
-import com.example.squadmap.ui.navigation.SquadMapNavigation
-import com.example.squadmap.ui.navigation.SquadMapRoutAction
-import com.example.squadmap.ui.theme.Main
+import com.example.squadmap.ui.TopAppbar
+import com.example.squadmap.ui.common.navigation.SquadMapNavigation
+import com.example.squadmap.ui.common.navigation.SquadMapRoutAction
 import com.example.squadmap.ui.theme.SquadMapTheme
-import com.example.squadmap.ui.search.SearchButton
 
-val mapList = listOf<AllMap>(
-    AllMap("1F389", "스쿼드 지도", "로니", 6),
-    AllMap("1F389", "스쿼드 지도", "로니", 6),
-    AllMap("1F389", "스쿼드 지도", "로니", 6),
-    AllMap("1F389", "스쿼드 지도", "로니", 6),
-    AllMap("1F389", "스쿼드 지도", "로니", 6),
-    AllMap("1F389", "스쿼드 지도", "로니", 6),
-    AllMap("1F389", "스쿼드 지도", "로니", 6),
-    AllMap("1F389", "스쿼드 지도", "로니", 6),
-    AllMap("1F389", "스쿼드 지도", "로니", 6),
-    AllMap("1F389", "스쿼드 지도", "로니", 6)
-)
-
-val groupMapList = listOf<AllMap>(
-    AllMap("1F389", "스쿼드 지도", "머핀", 6),
-    AllMap("1F389", "스쿼드 지도", "퍼니", 6),
-)
-
-fun getMapList(selectedType: MapType?) = when(selectedType) {
-    MapType.GROUP -> {
-        groupMapList
-    }
-    else -> {
-        mapList
-    }
-}
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun HomeScreen(routAction: SquadMapRoutAction) {
-    val selectedType: MutableState<MapType?> = mutableStateOf(MapType.OPEN)
-    val mapList = mutableStateOf(mapList)
+fun HomeScreen(
+    routAction: SquadMapRoutAction,
+    homeViewModel: HomeViewModel = viewModel()
+) {
     Scaffold(
         topBar = {
-            TopAppbar(routAction)
+            TopAppbar(
+                routAction = routAction,
+                isSearchVisible = true,
+                isAddVisible = false
+            )
         }
     ) { paddingValue ->
         Column {
             ChipGroup(
                 types = getAllMapTypes(),
-                selectedType = selectedType.value,
+                selectedType = homeViewModel.selectedTypeState.value,
                 onSelectedChanged = {
-                    selectedType.value = getMapType(it)
-                    mapList.value = getMapList(selectedType.value)
+                    homeViewModel.selectedTypeState.value = getMapType(it)
+                    homeViewModel.mapListState.value = homeViewModel.getMapList(homeViewModel.selectedTypeState.value)
                 }
             )
-            GridListView(paddingValue = paddingValue,list = mapList.value, routAction = routAction)
+            GridListView(paddingValue = paddingValue,list = homeViewModel.mapListState.value, routAction = routAction)
         }
     }
 }
@@ -103,7 +82,8 @@ fun CardView(
             .clickable { routAction.navToRout(SquadMapNavigation.STORE_LIST) },
         shape = RoundedCornerShape(50.dp),
         backgroundColor = Color.White,
-        elevation = 10.dp
+        elevation = 10.dp,
+
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
@@ -138,28 +118,10 @@ fun CardView(
     }
 }
 
-@Composable
-private fun TopAppbar(routAction: SquadMapRoutAction) {
-    TopAppBar(
-        elevation = 4.dp,
-        title = {
-            Text("SquarMap")
-        },
-        backgroundColor = Main,
-        actions = {
-            SearchButton(
-                routAction = routAction,
-                rout = SquadMapNavigation.SEARCH_SCREEN
-            )
-        }
-    )
-}
-
-
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     SquadMapTheme {
-
+        HomeScreen(routAction = SquadMapRoutAction(rememberNavController()))
     }
 }

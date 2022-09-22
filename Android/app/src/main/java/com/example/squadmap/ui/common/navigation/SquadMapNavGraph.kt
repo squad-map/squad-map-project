@@ -1,4 +1,4 @@
-package com.example.squadmap.ui.navigation
+package com.example.squadmap.ui.common.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -8,7 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.squadmap.BuildConfig
 import com.example.squadmap.data.model.JWT
-import com.example.squadmap.ui.bottommenu.BottomNavigation
+import com.example.squadmap.ui.common.bottommenu.BottomNavigation
 import com.example.squadmap.ui.home.HomeScreen
 import com.example.squadmap.ui.login.LoginScreen
 import com.example.squadmap.ui.map.MapViewModel
@@ -17,7 +17,9 @@ import com.example.squadmap.ui.mymap.MyMapScreen
 import com.example.squadmap.ui.profile.ProfileScreen
 import com.example.squadmap.ui.search.SearchScreen
 import com.example.squadmap.ui.map.store.StoreListView
-import com.example.squadmap.common.logger
+import com.example.squadmap.ui.addstore.AddStoreViewModel
+import com.example.squadmap.ui.addstore.StoreSearchScreen
+import com.example.squadmap.ui.home.HomeViewModel
 import com.example.squadmap.ui.web.GithubLoginWebView
 import com.example.squadmap.ui.web.StoreWebView
 
@@ -28,7 +30,8 @@ fun SquadMapNavGraph(navController: NavHostController, startRoute: String = Bott
     }
     NavHost(navController = navController, startDestination = startRoute) {
         composable(SquadMapNavigation.HOME.route) {
-            HomeScreen(routeAction)
+            val viewModel = hiltViewModel<HomeViewModel>()
+            HomeScreen(routeAction, viewModel)
         }
         composable(SquadMapNavigation.SEARCH_SCREEN.route) {
             SearchScreen()
@@ -53,7 +56,10 @@ fun SquadMapNavGraph(navController: NavHostController, startRoute: String = Bott
                     BuildConfig.GITHUB_LOGIN_ID +
                     "&redirect_uri=http://localhost:3000/login/github/callback&response_type=code")
         }
-
+        composable(SquadMapNavigation.SEARCH_STORE_FOR_ADD.route) { backStackEntry ->
+            val viewModel : AddStoreViewModel = hiltViewModel(backStackEntry)
+            StoreSearchScreen(viewModel = viewModel)
+        }
         composable(BottomNavigation.MyMap.screenRoute) {
             if (jwt != null) {
                 MyMapScreen()
@@ -68,5 +74,6 @@ fun SquadMapNavGraph(navController: NavHostController, startRoute: String = Bott
                 LoginScreen(routeAction)
             }
         }
+
     }
 }

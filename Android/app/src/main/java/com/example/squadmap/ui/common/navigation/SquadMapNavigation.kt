@@ -1,4 +1,4 @@
-package com.example.squadmap.ui.navigation
+package com.example.squadmap.ui.common.navigation
 
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
@@ -11,7 +11,8 @@ enum class SquadMapNavigation(val route: String) {
     WEB("WEB"),
     MY_MAP( "MY_MAP"),
     PROFILE("PROFILE"),
-    GITHUB_LOGIN("GITHUB_LOGIN")
+    GITHUB_LOGIN("GITHUB_LOGIN"),
+    SEARCH_STORE_FOR_ADD("SEARCH_STORE_FOR_ADD")
 }
 
 

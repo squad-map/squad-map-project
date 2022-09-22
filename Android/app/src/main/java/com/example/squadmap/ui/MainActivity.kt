@@ -13,9 +13,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.squadmap.common.AppSession
 import com.example.squadmap.data.model.JWT
-import com.example.squadmap.ui.bottommenu.*
-import com.example.squadmap.ui.navigation.SquadMapNavGraph
-import com.example.squadmap.ui.navigation.SquadMapNavigation
+import com.example.squadmap.ui.common.bottommenu.*
+import com.example.squadmap.ui.common.navigation.SquadMapNavGraph
+import com.example.squadmap.ui.common.navigation.SquadMapNavigation
 import com.example.squadmap.ui.theme.SquadMapTheme
 import com.example.squadmap.common.logger
 import dagger.hilt.android.AndroidEntryPoint

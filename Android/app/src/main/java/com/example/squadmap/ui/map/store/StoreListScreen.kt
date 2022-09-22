@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -20,11 +21,11 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.example.squadmap.R
-import com.example.squadmap.data.model.CategoryInfo
 import com.example.squadmap.data.model.StoreInfo
+import com.example.squadmap.ui.TopAppbar
+import com.example.squadmap.ui.common.navigation.SquadMapNavigation
+import com.example.squadmap.ui.common.navigation.SquadMapRoutAction
 import com.example.squadmap.ui.map.MapViewModel
-import com.example.squadmap.ui.navigation.SquadMapNavigation
-import com.example.squadmap.ui.navigation.SquadMapRoutAction
 import com.example.squadmap.ui.theme.SquadMapTheme
 
 @Composable
@@ -32,10 +33,22 @@ fun StoreListView(
     routAction: SquadMapRoutAction,
     mapViewModel : MapViewModel = viewModel()
 ) {
+    Scaffold(
+        topBar = {
+            TopAppbar(
+                routAction = routAction,
+                title = "등록된 매장",
+                isSearchVisible = true,
+                isAddVisible = true
+            )
+        }
+    ) {
+
+    }
     Box(modifier = Modifier.fillMaxSize()) {
         LazyColumn(
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxSize()
                 .padding(15.dp)
         ) {
             items(
@@ -45,14 +58,15 @@ fun StoreListView(
                 }
             )
         }
-        Column {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
             Spacer(modifier = Modifier
                 .fillMaxWidth()
                 .height(700.dp))
             MapButton(routAction = routAction)
         }
     }
-    
 }
 
 @Composable
@@ -62,7 +76,6 @@ fun MapButton(routAction: SquadMapRoutAction) {
         colors = ButtonDefaults.outlinedButtonColors(
             backgroundColor = Color.White
         ),
-        modifier = Modifier.padding(horizontal = 120.dp),
         shape = CircleShape
     ) {
         Image(
@@ -125,7 +138,6 @@ fun StoreItem(item: StoreInfo, routAction: SquadMapRoutAction) {
         }
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable
