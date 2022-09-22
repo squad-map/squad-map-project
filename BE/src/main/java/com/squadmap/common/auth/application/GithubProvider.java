@@ -57,7 +57,6 @@ public class GithubProvider implements OauthProvider {
                 .build();
 
         HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
-        System.out.println(response.statusCode());
         if (response.statusCode() != 200) {
             throw new IllegalArgumentException();
         }
@@ -66,7 +65,7 @@ public class GithubProvider implements OauthProvider {
         try {
             githubToken = objectMapper.readValue(response.body(), GithubToken.class);
         } catch (MismatchedInputException e) {
-            throw new RuntimeException();
+            throw new RuntimeException(e);
         }
 
         return githubToken;

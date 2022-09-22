@@ -23,9 +23,9 @@ public class CategoryServiceImpl implements CategoryService{
         Map map = mapRepository.findById(mapId)
                 .orElseThrow(NoSuchElementException::new);
 
-        if (isDuplicateName(name, map)) {
-            throw new IllegalArgumentException();
-        }
+//        if (isDuplicateName(name, map)) {
+//            throw new IllegalArgumentException();
+//        }
 
         Category saved = categoryRepository.save(Category.of(name, color, map));
         return saved.getId();

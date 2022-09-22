@@ -20,33 +20,27 @@ class LoginServiceTest {
 
     @Test
     void test() throws IOException, InterruptedException {
-
-        URI uri = URI.create("https://github.com/login/oauth/access_token");
-        HttpClient httpClient = HttpClient.newBuilder().build();
-
-        GithubProperties githubProperties = new GithubProperties("",
-                "",
-                "");
-
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        String value = objectMapper.writeValueAsString(githubProperties);
-
-        System.out.println("value = " + value);
-
-        BodyPublisher bodyPublisher = BodyPublishers.ofString(value, StandardCharsets.UTF_8);
-
-        HttpRequest httpRequest = newBuilder().uri(uri)
-                .header("Content-Type", "application/json;charset=UTF-8")
-                .POST(bodyPublisher)
-                .build();
-        String contentType = HttpHeaders.CONTENT_TYPE;
-        HttpResponse<String> send = httpClient.send(httpRequest, BodyHandlers.ofString());
-        String body = send.body();
-
-        int i = send.statusCode();
-        System.out.println("i = " + i);
-        System.out.println("body = " + body);
+//
+//        URI uri = URI.create("https://github.com/login/oauth/access_token");
+//        HttpClient httpClient = HttpClient.newBuilder().build();
+//
+//
+//        ObjectMapper objectMapper = new ObjectMapper();
+//
+//
+//        BodyPublisher bodyPublisher = BodyPublishers.ofString(value, StandardCharsets.UTF_8);
+//
+//        HttpRequest httpRequest = newBuilder().uri(uri)
+//                .header("Content-Type", "application/json;charset=UTF-8")
+//                .POST(bodyPublisher)
+//                .build();
+//        String contentType = HttpHeaders.CONTENT_TYPE;
+//        HttpResponse<String> send = httpClient.send(httpRequest, BodyHandlers.ofString());
+//        String body = send.body();
+//
+//        int i = send.statusCode();
+//        System.out.println("i = " + i);
+//        System.out.println("body = " + body);
 
     }
 

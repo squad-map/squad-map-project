@@ -3,6 +3,7 @@ package com.squadmap.category.acceptance;
 import com.squadmap.assured.RestAssuredTest;
 import com.squadmap.category.ui.dto.CategoryRequest;
 import io.restassured.http.ContentType;
+import io.restassured.mapper.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
@@ -25,13 +26,13 @@ public class CategoryAcceptanceTest extends RestAssuredTest {
       mapId : Long
      */
     private static final Snippet CREATE_REQUEST_FIELDS = requestFields(
-            fieldWithPath("categoryName").type(JsonFieldType.STRING).description("카테고리 이름"),
+            fieldWithPath("category_name").type(JsonFieldType.STRING).description("카테고리 이름"),
             fieldWithPath("color").type(JsonFieldType.STRING).description("색상 코드"),
-            fieldWithPath("mapId").type(JsonFieldType.NUMBER).description("카테고리를 생성할 지도 아이디")
+            fieldWithPath("map_id").type(JsonFieldType.NUMBER).description("카테고리를 생성할 지도 아이디")
     );
 
     private static final Snippet CREATE_RESPONSE_FIELDS = responseFields(
-            fieldWithPath("categoryId").type(JsonFieldType.NUMBER).description("카테고리 아이디")
+            fieldWithPath("category_id").type(JsonFieldType.NUMBER).description("카테고리 아이디")
     );
 
 
@@ -53,7 +54,7 @@ public class CategoryAcceptanceTest extends RestAssuredTest {
         .when().post("/categories")
 
         .then().statusCode(HttpStatus.CREATED.value())
-                .body("categoryId", equalTo(1));
+                .body("category_id", equalTo(3));
     }
 
 }
