@@ -58,7 +58,7 @@ fun SquadMapNavGraph(navController: NavHostController, startRoute: String = Bott
         }
         composable(SquadMapNavigation.SEARCH_STORE_FOR_ADD.route) { backStackEntry ->
             val viewModel : AddStoreViewModel = hiltViewModel(backStackEntry)
-            StoreSearchScreen(viewModel = viewModel)
+            StoreSearchScreen(routAction = routeAction, viewModel = viewModel)
         }
         composable(BottomNavigation.MyMap.screenRoute) {
             if (jwt != null) {

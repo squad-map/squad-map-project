@@ -6,5 +6,6 @@ data class StoreInfo(
     val address: String,
     val lat: Double,
     val long: Double,
-    val description: String
+    val description: String,
+    val link: String
 )

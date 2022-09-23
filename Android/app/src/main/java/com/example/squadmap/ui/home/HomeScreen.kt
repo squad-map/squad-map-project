@@ -83,7 +83,6 @@ fun CardView(
         shape = RoundedCornerShape(50.dp),
         backgroundColor = Color.White,
         elevation = 10.dp,
-
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally

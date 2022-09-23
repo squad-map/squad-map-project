@@ -29,7 +29,8 @@ class MapViewModel @Inject constructor(): ViewModel() {
             "서울 마포구 잔다리로",
             37.632600,
             127.024612,
-            "맛있는카페"
+            "맛있는카페",
+            "https://map.naver.com/v5/search/%ED%85%8C%EC%9D%BC%EB%9F%AC%20%EC%BB%A4%ED%94%BC/place/35848993?placePath=%3Fentry=pll%26from=nx%26fromNxList=true&c=14128591.3474239,4516590.1649631,15,0,0,0,dh"
         ),
         StoreInfo(
             "테일러커피",
@@ -41,7 +42,8 @@ class MapViewModel @Inject constructor(): ViewModel() {
             "서울 마포구 잔다리로",
             37.522600,
             127.024612,
-            "맛있는카페"
+            "맛있는카페",
+            "https://map.naver.com/v5/search/%ED%85%8C%EC%9D%BC%EB%9F%AC%20%EC%BB%A4%ED%94%BC/place/35848993?placePath=%3Fentry=pll%26from=nx%26fromNxList=true&c=14128591.3474239,4516590.1649631,15,0,0,0,dh"
         ),
         StoreInfo(
             "테일러커피",
@@ -53,7 +55,8 @@ class MapViewModel @Inject constructor(): ViewModel() {
             "서울 마포구 잔다리로",
             36.532600,
             126.024612,
-            "맛있는카페"
+            "맛있는카페",
+            "https://map.naver.com/v5/search/%ED%85%8C%EC%9D%BC%EB%9F%AC%20%EC%BB%A4%ED%94%BC/place/35848993?placePath=%3Fentry=pll%26from=nx%26fromNxList=true&c=14128591.3474239,4516590.1649631,15,0,0,0,dh"
         ),
         StoreInfo(
             "테일러커피",
@@ -65,7 +68,8 @@ class MapViewModel @Inject constructor(): ViewModel() {
             "서울 마포구 잔다리로",
             37.532600,
             127.124612,
-            "맛있는카페"
+            "맛있는카페",
+            "https://map.naver.com/v5/search/%ED%85%8C%EC%9D%BC%EB%9F%AC%20%EC%BB%A4%ED%94%BC/place/35848993?placePath=%3Fentry=pll%26from=nx%26fromNxList=true&c=14128591.3474239,4516590.1649631,15,0,0,0,dh"
         )
     )
 

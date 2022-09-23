@@ -8,6 +8,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,11 +20,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.example.squadmap.R
 import com.example.squadmap.data.model.StoreInfo
 import com.example.squadmap.ui.TopAppbar
+import com.example.squadmap.ui.common.NavigationButton
 import com.example.squadmap.ui.common.navigation.SquadMapNavigation
 import com.example.squadmap.ui.common.navigation.SquadMapRoutAction
 import com.example.squadmap.ui.map.MapViewModel
@@ -31,7 +35,7 @@ import com.example.squadmap.ui.theme.SquadMapTheme
 @Composable
 fun StoreListView(
     routAction: SquadMapRoutAction,
-    mapViewModel : MapViewModel = viewModel()
+    mapViewModel : MapViewModel = hiltViewModel()
 ) {
     Scaffold(
         topBar = {
@@ -39,32 +43,38 @@ fun StoreListView(
                 routAction = routAction,
                 title = "등록된 매장",
                 isSearchVisible = true,
-                isAddVisible = true
-            )
-        }
-    ) {
-
-    }
-    Box(modifier = Modifier.fillMaxSize()) {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(15.dp)
-        ) {
-            items(
-                items = mapViewModel.mapInfo.store,
-                itemContent = { item ->
-                    StoreItem(item = item, routAction)
+                isAddVisible = true,
+                navigationIcon = {
+                    NavigationButton(icon = Icons.Filled.ArrowBack) {
+                        routAction.back
+                    }
                 }
             )
         }
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Box(
+            modifier = Modifier.fillMaxSize()
         ) {
-            Spacer(modifier = Modifier
-                .fillMaxWidth()
-                .height(700.dp))
-            MapButton(routAction = routAction)
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(15.dp)
+            ) {
+                items(
+                    items = mapViewModel.mapInfo.store,
+                    itemContent = { item ->
+                        StoreItem(item = item, routAction)
+                    }
+                )
+            }
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                Spacer(modifier = Modifier
+                    .fillMaxWidth()
+                    .height(700.dp))
+                MapButton(routAction = routAction)
+            }
         }
     }
 }
@@ -141,8 +151,10 @@ fun StoreItem(item: StoreInfo, routAction: SquadMapRoutAction) {
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
+fun StoreListPreview() {
     SquadMapTheme {
-        StoreListView(routAction = SquadMapRoutAction(rememberNavController()))
+        StoreListView(
+            routAction = SquadMapRoutAction(rememberNavController())
+        )
     }
 }

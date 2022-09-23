@@ -7,9 +7,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.rememberNavController
 import com.example.squadmap.ui.common.AddButton
+import com.example.squadmap.ui.common.SearchButton
 import com.example.squadmap.ui.common.navigation.SquadMapNavigation
 import com.example.squadmap.ui.common.navigation.SquadMapRoutAction
-import com.example.squadmap.ui.common.SearchButton
 import com.example.squadmap.ui.theme.Main
 import com.example.squadmap.ui.theme.SquadMapTheme
 
@@ -18,7 +18,8 @@ fun TopAppbar(
     routAction: SquadMapRoutAction,
     title: String = "SquarMap",
     isSearchVisible: Boolean,
-    isAddVisible: Boolean
+    isAddVisible: Boolean,
+    navigationIcon: @Composable (() -> Unit)? = null
 ) {
     TopAppBar(
         elevation = 4.dp,
@@ -33,7 +34,8 @@ fun TopAppbar(
             if(isSearchVisible) {
                 SearchButton { routAction.navToRout(SquadMapNavigation.SEARCH_SCREEN) }
             }
-        }
+        },
+        navigationIcon = navigationIcon
     )
 }
 
@@ -44,7 +46,7 @@ fun AppbarPreview() {
         TopAppbar(
             routAction = SquadMapRoutAction(rememberNavController()),
             isSearchVisible = true,
-            isAddVisible = false
+            isAddVisible = false,
         )
     }
 }

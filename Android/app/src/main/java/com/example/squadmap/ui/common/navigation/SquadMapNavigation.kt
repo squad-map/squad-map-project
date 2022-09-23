@@ -26,4 +26,7 @@ class SquadMapRoutAction(navHostController: NavHostController) {
             restoreState = true
         }
     }
+    val back = {
+        navHostController.popBackStack()
+    }
 }

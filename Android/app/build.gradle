@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'com.google.dagger.hilt.android'
     id 'kotlin-kapt'
+    id 'org.jetbrains.kotlin.plugin.serialization'
 }
 
 Properties properties = new Properties()
@@ -24,6 +25,8 @@ android {
         buildConfigField "String", "GITHUB_LOGIN_KEY", properties["githubLoginKey"]
         buildConfigField "String", "NAVER_LOGIN_ID", properties["naverLoginId"]
         buildConfigField "String", "NAVER_LOGIN_KEY", properties["naverLoginKey"]
+        buildConfigField "String", "NAVER_SEARCH_ID", properties["naverSerchId"]
+        buildConfigField "String", "NAVER_SEARCH_KEY", properties["naverSearchKey"]
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -79,11 +82,11 @@ dependencies {
 
     // hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
-    implementation "androidx.hilt:hilt-navigation-compose:1.0.0"
+    implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
 
     // webView
-    implementation "com.google.accompanist:accompanist-webview:0.25.1"
+    implementation 'com.google.accompanist:accompanist-webview:0.25.1'
 
     // naver map
     implementation 'io.github.fornewid:naver-map-compose:1.1.8'
@@ -93,4 +96,19 @@ dependencies {
 
     // FusedLocationSource를 사용하려면 play-services-location 의존성도 추가해야 합니다.
     implementation 'com.google.android.gms:play-services-location:20.0.0'
+
+    // Retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0'
+
+    // OkHttp
+    implementation 'com.squareup.okhttp3:okhttp:4.10.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
+
+    // Serialization
+    implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0'
+
+    // Coroutine
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
 }
