@@ -15,10 +15,18 @@ enum class SquadMapNavigation(val route: String) {
     SEARCH_STORE_FOR_ADD("SEARCH_STORE_FOR_ADD")
 }
 
-
 class SquadMapRoutAction(navHostController: NavHostController) {
     val navToRout: (SquadMapNavigation) -> Unit = { rout ->
         navHostController.navigate(rout.route) {
+            popUpTo(navHostController.graph.findStartDestination().id) {
+                saveState = true
+            }
+            launchSingleTop = true
+            restoreState = true
+        }
+    }
+    val navToWebView: (SquadMapNavigation, String) -> Unit = { rout, url ->
+        navHostController.navigate("${rout.route}/$url") {
             popUpTo(navHostController.graph.findStartDestination().id) {
                 saveState = true
             }

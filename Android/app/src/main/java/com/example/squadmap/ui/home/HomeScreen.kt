@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -18,11 +19,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
+import com.example.squadmap.common.logger
 import com.example.squadmap.data.model.AllMap
 import com.example.squadmap.ui.TopAppbar
 import com.example.squadmap.ui.common.navigation.SquadMapNavigation
 import com.example.squadmap.ui.common.navigation.SquadMapRoutAction
 import com.example.squadmap.ui.theme.SquadMapTheme
+import kotlin.math.log
 
 @Composable
 fun HomeScreen(
@@ -44,16 +47,21 @@ fun HomeScreen(
                 selectedType = homeViewModel.selectedTypeState.value,
                 onSelectedChanged = {
                     homeViewModel.selectedTypeState.value = getMapType(it)
-                    homeViewModel.mapListState.value = homeViewModel.getMapList(homeViewModel.selectedTypeState.value)
+                    homeViewModel.mapListState.value =
+                        homeViewModel.getMapList(homeViewModel.selectedTypeState.value)
                 }
             )
-            GridListView(paddingValue = paddingValue,list = homeViewModel.mapListState.value, routAction = routAction)
+            GridListView(
+                paddingValue = paddingValue,
+                list = homeViewModel.mapListState.value,
+                routAction = routAction
+            )
         }
     }
 }
 
 @Composable
-fun GridListView(paddingValue : PaddingValues, list: List<AllMap>, routAction: SquadMapRoutAction) {
+fun GridListView(paddingValue: PaddingValues, list: List<AllMap>, routAction: SquadMapRoutAction) {
     LazyVerticalGrid(
         modifier = Modifier
             .padding(paddingValue)
@@ -63,8 +71,8 @@ fun GridListView(paddingValue : PaddingValues, list: List<AllMap>, routAction: S
     ) {
         items(items = list,
             itemContent = { item ->
-            CardView(item = item, routAction = routAction)
-        }
+                CardView(item = item, routAction = routAction)
+            }
         )
     }
 }

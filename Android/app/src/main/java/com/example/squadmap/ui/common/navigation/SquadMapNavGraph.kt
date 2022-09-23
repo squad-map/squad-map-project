@@ -4,8 +4,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.example.squadmap.BuildConfig
 import com.example.squadmap.data.model.JWT
 import com.example.squadmap.ui.common.bottommenu.BottomNavigation
@@ -48,8 +50,16 @@ fun SquadMapNavGraph(navController: NavHostController, startRoute: String = Bott
             )
             StoreMapScreen(routAction = routeAction, mapViewModel = mapViewModel)
         }
-        composable(SquadMapNavigation.WEB.route) {
-            StoreWebView("")
+        composable(
+            route = "${SquadMapNavigation.WEB.route}/{url}",
+            arguments = listOf(
+                navArgument("url") {
+                    type = NavType.StringType
+                }
+            )
+        ) { backStackEntry ->
+            val url = backStackEntry.arguments?.getString("url").orEmpty()
+            StoreWebView(url)
         }
         composable(SquadMapNavigation.GITHUB_LOGIN.route) {
             GithubLoginWebView(url = "http://github.com/login/oauth/authorize?client_id=" +
