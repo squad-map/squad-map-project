@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useSetRecoilState } from 'recoil';
 
 import PlaceInfos from '../PlaceInfos';
@@ -12,10 +12,17 @@ import { ISearchPlace } from '@/interfaces/ISearchPlace';
 import { searchplaceState } from '@/recoil/atoms/searchplace';
 import theme from '@/styles/theme';
 
-const SearchPlace = () => {
-  const [placeInfos, setPlaceInfos] = useState<ISearchPlace[]>([]);
-  const [onPlaceInfos, setOnPlaceInfos] = useState(false);
+interface SearchPlaceProps {
+  searchAddressToCoordinate: (address: string) => any;
+  placeInfos: ISearchPlace[];
+}
+
+const SearchPlace = ({
+  searchAddressToCoordinate,
+  placeInfos,
+}: SearchPlaceProps) => {
   const [searchValue, setSerachValue] = useState('');
+  const [onPlaceInfos, setOnPlaceInfos] = useState(false);
   const [onRecentSearch, setOnRecentSearch] = useState(false);
 
   const setSearchPlace = useSetRecoilState(searchplaceState);
@@ -27,56 +34,15 @@ const SearchPlace = () => {
   };
 
   const handleSubmit = () => {
-    // naver api 요청
-    const dummyDatas = [
-      {
-        id: 1,
-        title: 'test',
-        address: 'guro',
-        description: 'des',
-      },
-      {
-        id: 2,
-        title: 'test3',
-        address: 'guro3',
-        description: 'des2',
-      },
-      {
-        id: 3,
-        title: 'sadfasf',
-        address: 'hahahaha',
-        description: 'des23333',
-      },
-      {
-        id: 4,
-        title: 'sadfasf',
-        address: 'hahahaha',
-        description: 'des23333',
-      },
-      {
-        id: 5,
-        title: 'sadfasf',
-        address: 'hahahaha',
-        description: 'des23333',
-      },
-      {
-        id: 6,
-        title: 'sadfasf',
-        address: 'hahahaha',
-        description: 'des23333',
-      },
-      {
-        id: 7,
-        title: 'sadfasf',
-        address: 'hahahaha',
-        description: 'des23333',
-      },
-    ];
-    setPlaceInfos(dummyDatas);
+    if (searchValue === '') return;
+    searchAddressToCoordinate(searchValue);
     setOnPlaceInfos(true);
+    setOnRecentSearch(false);
+
+    // 성공 시의 response 처리
+
     setSearchPlace(searchPlace => [...searchPlace, searchValue]);
     setSerachValue('');
-    setOnRecentSearch(false);
   };
 
   const handleFocus = () => {

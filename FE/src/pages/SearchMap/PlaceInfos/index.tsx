@@ -6,25 +6,17 @@ import Button from '@/components/common/Button';
 import Card from '@/components/common/Card';
 import GlobalModal from '@/components/common/GlobalModal';
 import Text from '@/components/common/Text';
+import { ISearchPlace } from '@/interfaces/ISearchPlace';
 import theme from '@/styles/theme';
 
-interface PlaceInfosProps {
-  placeInfos: {
-    id: number;
-    title: string;
-    address: string;
-    description: string;
-  }[];
-}
-
-const PlaceInfos = ({ placeInfos }: PlaceInfosProps) => {
+const PlaceInfos = ({ placeInfos }: { placeInfos: ISearchPlace[] }) => {
   const [isOpenGlobalModal, setIsOpenGlobalModal] = useState(false);
 
   return (
     placeInfos && (
       <S.PlaceInfos>
         {placeInfos.map &&
-          placeInfos.map(map => (
+          placeInfos.map((map: ISearchPlace) => (
             <Card
               size="large"
               key={`InfoCard-${map.id}`}
@@ -33,17 +25,17 @@ const PlaceInfos = ({ placeInfos }: PlaceInfosProps) => {
               <S.Item>
                 <Text
                   size="xRegular"
-                  text={map.title}
+                  text={map.place_name}
                   color={theme.color.lightGreen}
                 />
                 <Text
                   size="small"
-                  text={map.address}
+                  text={map.address_name}
                   color={theme.color.gray}
                 />
                 <Text
                   size="small"
-                  text={map.description}
+                  text={map.category_name}
                   color={theme.color.lightGray}
                 />
                 <Button

@@ -9,7 +9,7 @@ const webpack = require('webpack');
 const isDevelopment = process.env.NODE_ENV === 'development';
 dotenv.config({ path: path.join(__dirname, '../env', '.env') });
 
-const MAP_API_KEY = process.env.SQUAD_MAP_CLIENT_ID;
+const { SQUAD_KAKAO_MAP_KEY } = process.env;
 
 module.exports = {
   context: __dirname,
@@ -48,7 +48,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: '../public/index.html',
-      mapApiUrl: `https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${MAP_API_KEY}`,
+      mapApiUrl: `//dapi.kakao.com/v2/maps/sdk.js?appkey=${SQUAD_KAKAO_MAP_KEY}&libraries=services`,
     }),
     new webpack.DefinePlugin({
       'process.env': JSON.stringify(process.env),
