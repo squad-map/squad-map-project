@@ -1,7 +1,7 @@
-package com.example.squadmap.ui.bottommenu
+package com.example.squadmap.ui.common.bottommenu
 
 import com.example.squadmap.R
-import com.example.squadmap.ui.navigation.SquadMapNavigation
+import com.example.squadmap.ui.common.navigation.SquadMapNavigation
 
 sealed class BottomNavigation(
     val title: Int, val icon: Int, val screenRoute: String

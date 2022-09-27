@@ -1,4 +1,4 @@
-package com.example.squadmap.ui.bottommenu
+package com.example.squadmap.ui.common.bottommenu
 
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
@@ -19,9 +19,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.squadmap.ui.theme.SquadMapTheme
 
-val items = listOf<BottomNavigation>(
+val items = listOf(
     BottomNavigation.Home,
-//    BottomNavigation.Category,
     BottomNavigation.MyMap,
     BottomNavigation.Profile
 )

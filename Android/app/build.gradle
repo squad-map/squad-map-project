@@ -3,13 +3,15 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'com.google.dagger.hilt.android'
     id 'kotlin-kapt'
+    id 'org.jetbrains.kotlin.plugin.serialization'
 }
 
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
+def kakao_sdk_key = properties.getProperty("kakaoMap")
 
 android {
-    compileSdk 33
+    compileSdk 32
 
     defaultConfig {
         applicationId "com.example.squadmap"
@@ -18,13 +20,14 @@ android {
         versionCode 1
         versionName "1.0"
 
-        buildConfigField "String", "NAVER_MAP_ID", properties["naverMapId"]
-        buildConfigField "String", "NAVER_MAP_KEY", properties["naverMapKey"]
         buildConfigField "String", "GITHUB_LOGIN_ID", properties["githubLoginId"]
         buildConfigField "String", "GITHUB_LOGIN_KEY", properties["githubLoginKey"]
         buildConfigField "String", "NAVER_LOGIN_ID", properties["naverLoginId"]
         buildConfigField "String", "NAVER_LOGIN_KEY", properties["naverLoginKey"]
+        buildConfigField "String", "NAVER_SEARCH_ID", properties["naverSerchId"]
+        buildConfigField "String", "NAVER_SEARCH_KEY", properties["naverSearchKey"]
 
+        manifestPlaceholders = [kakaoSdkKey: kakao_sdk_key]
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary true
@@ -59,12 +62,12 @@ android {
 
 dependencies {
 
-    implementation 'androidx.core:core-ktx:1.9.0'
+    implementation 'androidx.core:core-ktx:1.8.0'
     implementation "androidx.compose.ui:ui:$compose_version"
     implementation "androidx.compose.material:material:$compose_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.5.1'
-    implementation 'androidx.activity:activity-compose:1.5.1'
+    implementation 'androidx.activity:activity-compose:1.5.0'
     implementation 'androidx.compose.ui:ui-text:1.2.1'
     implementation 'androidx.compose.foundation:foundation:1.2.1'
     testImplementation 'junit:junit:4.13.2'
@@ -79,18 +82,27 @@ dependencies {
 
     // hilt
     implementation "com.google.dagger:hilt-android:$hilt_version"
-    implementation "androidx.hilt:hilt-navigation-compose:1.0.0"
+    implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
 
     // webView
-    implementation "com.google.accompanist:accompanist-webview:0.25.1"
+    implementation 'com.google.accompanist:accompanist-webview:0.25.1'
 
-    // naver map
-    implementation 'io.github.fornewid:naver-map-compose:1.1.8'
+    // Retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+    implementation 'com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0'
 
-    // NAVER Map Android SDK 최신 버전도 포함해야 합니다.
-    implementation 'com.naver.maps:map-sdk:3.15.0'
+    // OkHttp
+    implementation 'com.squareup.okhttp3:okhttp:4.10.0'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.10.0'
 
-    // FusedLocationSource를 사용하려면 play-services-location 의존성도 추가해야 합니다.
-    implementation 'com.google.android.gms:play-services-location:20.0.0'
+    // Serialization
+    implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0'
+
+    // Coroutine
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
+
+    // 카카오맵
+    implementation files('libs/libDaumMapAndroid.jar')
 }

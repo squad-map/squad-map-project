@@ -6,82 +6,107 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.example.squadmap.R
 import com.example.squadmap.common.logger
-import com.example.squadmap.data.model.CategoryInfo
 import com.example.squadmap.data.model.StoreInfo
-import com.example.squadmap.ui.navigation.SquadMapNavigation
-import com.example.squadmap.ui.navigation.SquadMapRoutAction
-import com.example.squadmap.ui.search.SearchScreen
+import com.example.squadmap.ui.common.FloatingAddButton
+import com.example.squadmap.ui.common.navigation.SquadMapNavigation
+import com.example.squadmap.ui.common.navigation.SquadMapRoutAction
 import com.example.squadmap.ui.theme.SquadMapTheme
-import com.naver.maps.geometry.LatLng
-import com.naver.maps.map.CameraPosition
-import com.naver.maps.map.CameraUpdate
-import com.naver.maps.map.compose.*
+import net.daum.mf.map.api.MapPoint
 
-@OptIn(ExperimentalNaverMapApi::class)
+
+@Composable
+private fun MapViewScreen(
+    latitude: String,
+    longitude: String,
+    viewModel: MapViewModel
+) {
+    AndroidView(
+        factory = { context ->
+            viewModel.setMapView(context)
+        }, modifier = Modifier
+            .fillMaxSize()
+    ) { mapView ->
+        mapView.setMapCenterPoint(
+            MapPoint.mapPointWithGeoCoord(
+                latitude.toDouble(),
+                longitude.toDouble()
+            ), true
+        )
+        mapView.setZoomLevel(7, true)
+    }
+}
+
 @Composable
 fun StoreMapScreen(
     routAction: SquadMapRoutAction,
-    mapViewModel: MapViewModel = viewModel()
+    mapViewModel: MapViewModel = hiltViewModel()
 ) {
-    val mapUiSettings by remember {
-        mutableStateOf(
-            MapUiSettings(
-                isLocationButtonEnabled = false
-            )
+    Box {
+        MapViewScreen(
+            latitude = mapViewModel.mapInfo.store[0].lat.toString(),
+            longitude = mapViewModel.mapInfo.store[0].long.toString(),
+            viewModel = mapViewModel
+        )
+        MapUiComponent(
+            routAction = routAction,
+            mapViewModel = mapViewModel
         )
     }
-    val cameraPositionState: CameraPositionState = rememberCameraPositionState {
-        // 카메라 초기 위치를 설정합니다.
-        position = CameraPosition(mapViewModel.cameraLatLongState.value, 10.0)
-    }
-    Box {
-        NaverMap(
-            uiSettings = mapUiSettings,
-            modifier = Modifier.fillMaxSize(),
-            cameraPositionState = cameraPositionState
+}
+
+@Composable
+fun MapUiComponent(
+    routAction: SquadMapRoutAction,
+    mapViewModel: MapViewModel,
+) {
+    Column(
+        modifier = Modifier
+            .padding(start = 20.dp, top = 20.dp)
+            .fillMaxWidth()
+    ) {
+        MapScreenTopComponent(
+            routAction = routAction,
+            owner = mapViewModel.mapInfo.owner
+        )
+        Spacer(modifier = Modifier.height(560.dp))
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(end = 10.dp),
+            horizontalArrangement = Arrangement.End,
+            verticalAlignment = Alignment.Bottom
         ) {
-            mapViewModel.mapInfo.store.forEach {
-                Marker(
-                    state = MarkerState(LatLng(it.lat, it.long)),
-                    iconTintColor = Color(parseColor(it.category.color))
-                )
-            }
-        }
-        Column(
-            modifier = Modifier.padding(start = 20.dp, top = 20.dp)
-        ) {
-            MapScreenTopComponent(
-                routAction = routAction,
-                owner = mapViewModel.mapInfo.owner
-            )
-            Spacer(modifier = Modifier.height(590.dp))
-            StoreList(
-                onClick = { lat, long ->
-                    val cameraUpdate = CameraUpdate.scrollTo(LatLng(lat, long))
-                    cameraPositionState.move(cameraUpdate)
-                },
-                stores = mapViewModel.mapInfo.store
+            FloatingAddButton(
+                onClick = { routAction.navToRout(SquadMapNavigation.SEARCH_STORE_FOR_ADD) }
             )
         }
+        Spacer(modifier = Modifier.height(10.dp))
+        StoreList(
+            onClick = { lat, long ->
+                mapViewModel.setPoint(lat, long)
+            },
+            stores = mapViewModel.mapInfo.store
+        )
     }
 }
 
@@ -131,7 +156,7 @@ fun CardStoreItem(
                 Text(
                     text = storeInfo.category.name,
                     color = Color(parseColor(storeInfo.category.color)),
-                    modifier = Modifier.padding(start = 95.dp, end = 10.dp, top = 15.dp),
+                    modifier = Modifier.padding(start = 90.dp, end = 10.dp, top = 15.dp),
                     fontSize = 12.sp
                 )
             }
@@ -168,7 +193,7 @@ fun Owner(name: String) {
         color = Color.White,
         modifier = Modifier
             .wrapContentSize()
-            .padding(start = 10.dp, top = 5.dp, end = 10.dp, bottom = 5.dp),
+            .padding(start = 15.dp, top = 5.dp, end = 15.dp, bottom = 5.dp),
     ) {
         Text(
             text = name,
@@ -204,21 +229,13 @@ fun MapBackButton(routAction: SquadMapRoutAction) {
 @Composable
 fun DefaultPreview() {
     SquadMapTheme {
-        CardStoreItem(
-            storeInfo = StoreInfo(
-                "테일러커피",
-                CategoryInfo(
-                    "카페",
-                    "#ff0000",
-                    "카페"
-                ),
-                "서울 마포구 잔다리로",
-                37.532600,
-                127.124612,
-                "맛있는카페"
+        Surface(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            StoreMapScreen(
+                routAction = SquadMapRoutAction(rememberNavController()),
+                mapViewModel = hiltViewModel()
             )
-        ) { lat, long ->
-            logger("$lat, $long")
         }
     }
 }
