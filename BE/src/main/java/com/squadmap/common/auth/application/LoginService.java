@@ -23,14 +23,14 @@ public class LoginService {
     public LoginInfo login(String provider, String code, String state) {
 
         MemberInfo memberInfo = oauthService.oauth(provider, code, state);
-        Member member = memberRepository.findByNickName(memberInfo.getNickname())
+        Member member = memberRepository.findByEmail(memberInfo.getEmail())
                 .orElseGet(() -> memberRepository
                         .save(new Member(memberInfo.getProfileImageUrl(), memberInfo.getNickname(), memberInfo.getEmail(), provider)));
 
         return new LoginInfo(
                 member.getId(),
-                member.getNickName(),
-                member.getAvatarUrl(),
+                member.getNickname(),
+                member.getProfileImage(),
                 new Tokens(jwtProvider.generateAccessToken(member.getId()),
                 jwtProvider.generateRefreshToken(member.getId()))
         );

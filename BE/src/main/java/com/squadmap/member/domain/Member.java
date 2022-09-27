@@ -16,9 +16,9 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String avatarUrl;
+    private String profileImage;
 
-    private String nickName;
+    private String nickname;
 
     private String email;
 
@@ -26,9 +26,9 @@ public class Member {
     @Embedded
     private ResourceServer resourceServer;
 
-    public Member(String avatarUrl, String nickName, String email, String resourceServer) {
-        this.avatarUrl = avatarUrl;
-        this.nickName = nickName;
+    public Member(String profileImage, String nickname, String email, String resourceServer) {
+        this.profileImage = profileImage;
+        this.nickname = nickname;
         this.email = email;
         this.resourceServer = ResourceServer.valueOf(resourceServer.toUpperCase());
     }
