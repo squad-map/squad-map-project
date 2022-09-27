@@ -8,7 +8,10 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.Card
+import androidx.compose.material.Icon
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -17,6 +20,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.rememberNavController
 import com.example.squadmap.R
@@ -26,48 +31,53 @@ import com.example.squadmap.ui.common.FloatingAddButton
 import com.example.squadmap.ui.common.navigation.SquadMapNavigation
 import com.example.squadmap.ui.common.navigation.SquadMapRoutAction
 import com.example.squadmap.ui.theme.SquadMapTheme
-import com.naver.maps.geometry.LatLng
-import com.naver.maps.map.CameraPosition
-import com.naver.maps.map.CameraUpdate
-import com.naver.maps.map.compose.*
+import net.daum.mf.map.api.MapPoint
 
-@OptIn(ExperimentalNaverMapApi::class)
+
+@Composable
+private fun MapViewScreen(
+    latitude: String,
+    longitude: String,
+    viewModel: MapViewModel
+) {
+    AndroidView(
+        factory = { context ->
+            viewModel.setMapView(context)
+        }, modifier = Modifier
+            .fillMaxSize()
+    ) { mapView ->
+        mapView.setMapCenterPoint(
+            MapPoint.mapPointWithGeoCoord(
+                latitude.toDouble(),
+                longitude.toDouble()
+            ), true
+        )
+        mapView.setZoomLevel(7, true)
+    }
+}
+
 @Composable
 fun StoreMapScreen(
     routAction: SquadMapRoutAction,
-    mapViewModel: MapViewModel = viewModel()
+    mapViewModel: MapViewModel = hiltViewModel()
 ) {
-    val cameraPositionState: CameraPositionState = rememberCameraPositionState {
-        // 카메라 초기 위치를 설정합니다.
-        position = CameraPosition(mapViewModel.cameraLatLongState.value, 10.0)
-    }
     Box {
-        NaverMap(
-            uiSettings = mapViewModel.mapUiSettings,
-            modifier = Modifier.fillMaxSize(),
-            cameraPositionState = cameraPositionState
-        ) {
-            mapViewModel.mapInfo.store.forEach {
-                Marker(
-                    state = MarkerState(LatLng(it.lat, it.long)),
-                    iconTintColor = Color(parseColor(it.category.color))
-                )
-            }
-        }
+        MapViewScreen(
+            latitude = mapViewModel.mapInfo.store[0].lat.toString(),
+            longitude = mapViewModel.mapInfo.store[0].long.toString(),
+            viewModel = mapViewModel
+        )
         MapUiComponent(
             routAction = routAction,
-            mapViewModel = mapViewModel,
-            cameraPositionState = cameraPositionState
+            mapViewModel = mapViewModel
         )
     }
 }
 
-@OptIn(ExperimentalNaverMapApi::class)
 @Composable
 fun MapUiComponent(
     routAction: SquadMapRoutAction,
     mapViewModel: MapViewModel,
-    cameraPositionState: CameraPositionState
 ) {
     Column(
         modifier = Modifier
@@ -80,7 +90,9 @@ fun MapUiComponent(
         )
         Spacer(modifier = Modifier.height(560.dp))
         Row(
-            modifier = Modifier.fillMaxWidth().padding(end = 10.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(end = 10.dp),
             horizontalArrangement = Arrangement.End,
             verticalAlignment = Alignment.Bottom
         ) {
@@ -91,8 +103,7 @@ fun MapUiComponent(
         Spacer(modifier = Modifier.height(10.dp))
         StoreList(
             onClick = { lat, long ->
-                val cameraUpdate = CameraUpdate.scrollTo(LatLng(lat, long))
-                cameraPositionState.move(cameraUpdate)
+                mapViewModel.setPoint(lat, long)
             },
             stores = mapViewModel.mapInfo.store
         )
@@ -218,17 +229,12 @@ fun MapBackButton(routAction: SquadMapRoutAction) {
 @Composable
 fun DefaultPreview() {
     SquadMapTheme {
-        Box(
-            modifier = Modifier.width(600.dp).height(300.dp)
+        Surface(
+            modifier = Modifier.fillMaxSize()
         ) {
-            Text(
-                text = "지도",
-                modifier = Modifier.fillMaxSize()
-            )
-            MapUiComponent(
+            StoreMapScreen(
                 routAction = SquadMapRoutAction(rememberNavController()),
-                mapViewModel = viewModel(),
-                cameraPositionState = rememberCameraPositionState()
+                mapViewModel = hiltViewModel()
             )
         }
     }

@@ -1,6 +1,5 @@
 package com.example.squadmap.ui.addstore
 
-import android.text.Html
 import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -10,32 +9,34 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.compose.rememberNavController
+import androidx.compose.ui.viewinterop.AndroidView
+import com.example.squadmap.R
 import com.example.squadmap.common.logger
 import com.example.squadmap.data.model.ResultStore
-import com.example.squadmap.data.model.StoreSearchData
 import com.example.squadmap.ui.TopAppbar
 import com.example.squadmap.ui.common.NavigationButton
 import com.example.squadmap.ui.common.UiState
 import com.example.squadmap.ui.common.navigation.SquadMapNavigation
 import com.example.squadmap.ui.common.navigation.SquadMapRoutAction
-import com.example.squadmap.ui.theme.Gray
 import com.example.squadmap.ui.theme.Main
 import com.example.squadmap.ui.theme.SquadMapTheme
-import kotlinx.coroutines.flow.collect
+import net.daum.mf.map.api.MapPoint
+import net.daum.mf.map.api.MapView
 
 // 검색 버튼 달기
+
+
 @Composable
 fun StoreSearchScreen(
     routAction: SquadMapRoutAction,
@@ -93,7 +94,9 @@ fun StoreSearchScreen(
                 )
                 Button(
                     shape = RoundedCornerShape(30),
-                    modifier = Modifier.width(80.dp).height(60.dp),
+                    modifier = Modifier
+                        .width(80.dp)
+                        .height(60.dp),
                     enabled = viewModel.query.value != "",
                     onClick = { viewModel.search() },
                     colors = ButtonDefaults.buttonColors(backgroundColor = Color(Main.value))
@@ -190,7 +193,9 @@ private fun DefaultPreview() {
 //        )
         Button(
             shape = RoundedCornerShape(30),
-            modifier = Modifier.width(80.dp).height(50.dp),
+            modifier = Modifier
+                .width(80.dp)
+                .height(50.dp),
             enabled = true,
             onClick = { logger("") },
             colors = ButtonDefaults.buttonColors(backgroundColor = Color(Main.value))

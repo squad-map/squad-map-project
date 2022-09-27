@@ -55,5 +55,3 @@ class AddStoreViewModel @Inject constructor(
         }
     }
 }
-
-

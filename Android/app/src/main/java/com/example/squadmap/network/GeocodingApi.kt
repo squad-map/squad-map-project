@@ -8,11 +8,11 @@ import retrofit2.http.Query
 
 interface GeocodingApi {
 
-    @GET("/map-geocode/v2/geocode")
-    fun getCoordinate(
-        @Header("X-NCP-APIGW-API-KEY-ID") id: String = BuildConfig.NAVER_MAP_ID,
-        @Header("X-NCP-APIGW-API-KEY") key: String = BuildConfig.NAVER_SEARCH_KEY,
-        @Query("query") query: String
-    ): GeocodingResponse
+//    @GET("/map-geocode/v2/geocode")
+//    fun getCoordinate(
+//        @Header("X-NCP-APIGW-API-KEY-ID") id: String = BuildConfig.NAVER_MAP_ID,
+//        @Header("X-NCP-APIGW-API-KEY") key: String = BuildConfig.NAVER_SEARCH_KEY,
+//        @Query("query") query: String
+//    ): GeocodingResponse
 
 }

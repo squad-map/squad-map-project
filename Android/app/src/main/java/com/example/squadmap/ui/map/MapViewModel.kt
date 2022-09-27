@@ -1,18 +1,19 @@
 package com.example.squadmap.ui.map
 
+import android.content.Context
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.example.squadmap.data.model.CategoryInfo
 import com.example.squadmap.data.model.MapInfo
 import com.example.squadmap.data.model.StoreInfo
-import com.naver.maps.geometry.LatLng
-import com.naver.maps.map.CameraPosition
-import com.naver.maps.map.compose.CameraPositionState
-import com.naver.maps.map.compose.MapUiSettings
-import com.naver.maps.map.compose.rememberCameraPositionState
+import com.example.squadmap.ui.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import net.daum.mf.map.api.MapPOIItem
+import net.daum.mf.map.api.MapPoint
+import net.daum.mf.map.api.MapView
 import javax.inject.Inject
 
 @HiltViewModel
@@ -78,12 +79,35 @@ class MapViewModel @Inject constructor(): ViewModel() {
         list
     )
 
-    val mapUiSettings by mutableStateOf(
-        MapUiSettings(
-                isLocationButtonEnabled = false
-            )
-        )
+    var mapViewState = mutableStateOf<UiState<MapView>>(UiState.Loading)
 
-    val cameraLatLongState = mutableStateOf(LatLng(mapInfo.store[0].lat, mapInfo.store[0].long))
+    fun setMapView(context: Context): MapView {
+        val mapView = MapView(context)
+        mapViewState.value = UiState.Success(mapView)
+        setMarker()
+        return mapView
+    }
+
+    private fun setMarker() {
+        list.forEach {
+            val marker = MapPOIItem()
+            marker.itemName = it.title
+            marker.tag = 0
+            marker.mapPoint = MapPoint.mapPointWithGeoCoord(it.lat, it.long)
+            marker.markerType = MapPOIItem.MarkerType.BluePin // 기본으로 제공하는 BluePin 마커 모양.
+            marker.selectedMarkerType = MapPOIItem.MarkerType.RedPin // 마커를 클릭했을때, 기본으로 제공하는 RedPin 마커 모양.
+
+            mapViewState.value._data?.addPOIItem(marker)
+        }
+    }
+
+    fun setPoint(lat: Double, long: Double) {
+        mapViewState.value._data?.setMapCenterPoint(
+            MapPoint.mapPointWithGeoCoord(
+                lat,
+                long
+            ), true
+        )
+    }
 
 }

@@ -3,8 +3,12 @@ package com.example.squadmap.ui
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -12,14 +16,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.squadmap.common.AppSession
+import com.example.squadmap.common.logger
 import com.example.squadmap.data.model.JWT
-import com.example.squadmap.ui.common.bottommenu.*
+import com.example.squadmap.ui.common.bottommenu.BottomNavigationBar
 import com.example.squadmap.ui.common.navigation.SquadMapNavGraph
 import com.example.squadmap.ui.common.navigation.SquadMapNavigation
 import com.example.squadmap.ui.theme.SquadMapTheme
-import com.example.squadmap.common.logger
+import com.kakao.util.maps.helper.Utility
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
+
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -39,10 +45,10 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+        val keyHash = Utility.getKeyHash(this)
+        logger("keyHash : $keyHash")
     }
 }
-
-
 
 @Composable
 fun SquadMapApp(jwt: JWT?) {
