@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.example.squadmap.R
 import com.example.squadmap.common.logger
-import com.example.squadmap.data.model.ResultStore
+import com.example.squadmap.data.model.StoreSearchData
 import com.example.squadmap.ui.TopAppbar
 import com.example.squadmap.ui.common.NavigationButton
 import com.example.squadmap.ui.common.UiState
@@ -136,7 +136,7 @@ fun StoreSearchScreen(
 }
 
 @Composable
-fun SearchResults(item: ResultStore, routAction: SquadMapRoutAction) {
+fun SearchResults(item: StoreSearchData, routAction: SquadMapRoutAction) {
     Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -149,7 +149,7 @@ fun SearchResults(item: ResultStore, routAction: SquadMapRoutAction) {
     ) {
         Column {
             Text(
-                text = item.title.replace("<b>", "").replace("</b>",""),
+                text = item.name.replace("<b>", "").replace("</b>",""),
                 color = Color.Black,
                 fontWeight = FontWeight.Bold,
                 fontSize = 15.sp,
@@ -174,7 +174,7 @@ fun SearchResults(item: ResultStore, routAction: SquadMapRoutAction) {
                 fontSize = 11.sp
             )
             Text(
-                text = item.description,
+                text = item.category,
                 color = Color.Gray,
                 modifier = Modifier.padding(start = 10.dp, top = 5.dp, bottom = 10.dp),
                 fontSize = 11.sp

@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.squadmap.common.logger
-import com.example.squadmap.data.model.ResultStore
 import com.example.squadmap.data.model.StoreSearchData
 import com.example.squadmap.data.repository.StoreSearchRepository
 import com.example.squadmap.ui.common.UiState
@@ -25,7 +24,7 @@ class AddStoreViewModel @Inject constructor(
     private val _query = mutableStateOf("")
     val query: State<String> = _query
 
-    private val _searchResult = MutableStateFlow<UiState<List<ResultStore>>>((UiState.Loading))
+    private val _searchResult = MutableStateFlow<UiState<List<StoreSearchData>>>((UiState.Loading))
     val searchResult = _searchResult.asStateFlow()
 
     fun updateQuery(newValue: String) {
@@ -38,19 +37,20 @@ class AddStoreViewModel @Inject constructor(
     fun search() {
         viewModelScope.launch {
             kotlin.runCatching {
-                storeSearchRepository.getSearchResult(query = query.value, start = currentPage)
+                storeSearchRepository.getSearchResult(query = query.value)
             }.onFailure { e ->
                 _searchResult.value = UiState.Error("${e.message} 에러")
+                logger("${e.message}")
             }.onSuccess { data ->
 //                if(currentPage >= data.total) return@launch
-                val list = mutableListOf<ResultStore>()
+                val list = mutableListOf<StoreSearchData>()
                 _searchResult.value._data?.let {
                     list.addAll(it)
                 }
-                list.addAll(data.items)
+                list.addAll(data)
                 logger("$list")
                 _searchResult.value = UiState.Success(list)
-                currentPage += data.items.size
+                currentPage += data.size
             }
         }
     }
