@@ -1,63 +1,89 @@
 package com.example.squadmap.data.dto
 
 
-import com.example.squadmap.data.model.ResultStore
+import com.example.squadmap.data.model.Coordinate
 import com.example.squadmap.data.model.StoreSearchData
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class StoreSearchResultDTO(
-    @SerialName("display")
-    val display: Int?,
-    @SerialName("items")
-    val items: List<Item?> = emptyList(),
-    @SerialName("lastBuildDate")
-    val lastBuildDate: String?,
-    @SerialName("start")
-    val start: Int?,
-    @SerialName("total")
-    val total: Int?
+    @SerialName("documents")
+    val documents: List<Document?>?,
+    @SerialName("meta")
+    val meta: Meta?
 )
 
 @Serializable
-data class Item(
-    @SerialName("address")
-    val address: String?,
-    @SerialName("category")
-    val category: String?,
-    @SerialName("description")
-    val description: String?,
-    @SerialName("link")
-    val link: String?,
-    @SerialName("mapx")
-    val mapx: String?,
-    @SerialName("mapy")
-    val mapy: String?,
-    @SerialName("roadAddress")
-    val roadAddress: String?,
-    @SerialName("telephone")
-    val telephone: String?,
-    @SerialName("title")
-    val title: String?
+data class Meta(
+    @SerialName("is_end")
+    val isEnd: Boolean?,
+    @SerialName("pageable_count")
+    val pageableCount: Int?,
+    @SerialName("same_name")
+    val sameName: SameName?,
+    @SerialName("total_count")
+    val totalCount: Int?
 )
 
-fun StoreSearchResultDTO.toStoreSearchData(): StoreSearchData {
-    return StoreSearchData(
-        items = this.items.mapNotNull { it?.toResultStore() },
-        start = requireNotNull(start),
-        total = requireNotNull(total)
-    )
+@Serializable
+data class SameName(
+    @SerialName("keyword")
+    val keyword: String?,
+    @SerialName("region")
+    val region: List<String?>?,
+    @SerialName("selected_region")
+    val selectedRegion: String?
+)
+
+@Serializable
+data class Document(
+    @SerialName("address_name")
+    val addressName: String?,
+    @SerialName("category_group_code")
+    val categoryGroupCode: String?,
+    @SerialName("category_group_name")
+    val categoryGroupName: String?,
+    @SerialName("category_name")
+    val categoryName: String?,
+    @SerialName("distance")
+    val distance: String?,
+    @SerialName("id")
+    val id: String?,
+    @SerialName("phone")
+    val phone: String?,
+    @SerialName("place_name")
+    val placeName: String?,
+    @SerialName("place_url")
+    val placeUrl: String?,
+    @SerialName("road_address_name")
+    val roadAddressName: String?,
+    @SerialName("x")
+    val x: String?,
+    @SerialName("y")
+    val y: String?
+)
+
+fun StoreSearchResultDTO.getCoordinate(): Coordinate {
+    val long = documents?.get(0)?.let { it.x?.toDouble() }
+    val lat = documents?.get(0)?.let { it.y?.toDouble() }
+    return Coordinate(requireNotNull(long), requireNotNull(lat))
 }
 
-fun Item.toResultStore(): ResultStore {
-    return ResultStore(
-        address.orEmpty(),
-        category.orEmpty(),
-        description.orEmpty(),
-        link.orEmpty(),
-        roadAddress.orEmpty(),
-        telephone.orEmpty(),
-        requireNotNull(title)
+fun StoreSearchResultDTO.toStoreSearch(): List<StoreSearchData> {
+    return documents?.mapNotNull { it?.toStoreSearchData() }.orEmpty()
+}
+
+fun Document.toStoreSearchData(): StoreSearchData {
+    return StoreSearchData(
+        addressName.orEmpty(),
+        categoryName.orEmpty(),
+        placeUrl.orEmpty(),
+        roadAddressName.orEmpty(),
+        phone.orEmpty(),
+        requireNotNull(placeName),
+        x?.toDouble() ?: 0.0,
+        y?.toDouble() ?: 0.0
     )
 }
+// 카카오 검색에 맞게 변경하기
