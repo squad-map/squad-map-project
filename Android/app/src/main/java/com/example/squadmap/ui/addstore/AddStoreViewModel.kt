@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.squadmap.common.logger
-import com.example.squadmap.data.model.StoreSearchData
+import com.example.squadmap.data.model.ResultStore
 import com.example.squadmap.data.repository.StoreSearchRepository
 import com.example.squadmap.ui.common.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,10 +24,13 @@ class AddStoreViewModel @Inject constructor(
     private val _query = mutableStateOf("")
     val query: State<String> = _query
 
-    private val _searchResult = MutableStateFlow<UiState<List<StoreSearchData>>>((UiState.Loading))
+    private val _isEnd = mutableStateOf(false)
+    val isEnd: State<Boolean> = _isEnd
+
+    private val _searchResult = MutableStateFlow<UiState<List<ResultStore>>>((UiState.Loading))
     val searchResult = _searchResult.asStateFlow()
 
-    private val _addStore = MutableStateFlow<UiState<StoreSearchData>>(UiState.Loading)
+    private val _addStore = MutableStateFlow<UiState<ResultStore>>(UiState.Loading)
     val addStore = _addStore.asStateFlow()
 
     fun updateQuery(newValue: String) {
@@ -40,25 +43,25 @@ class AddStoreViewModel @Inject constructor(
     fun search() {
         viewModelScope.launch {
             kotlin.runCatching {
-                storeSearchRepository.getSearchResult(query = query.value)
+                storeSearchRepository.getSearchResult(query = query.value, page = currentPage)
             }.onFailure { e ->
                 _searchResult.value = UiState.Error("${e.message} 에러")
                 logger("${e.message}")
             }.onSuccess { data ->
-//                if(currentPage >= data.total) return@launch
-                val list = mutableListOf<StoreSearchData>()
+                _isEnd.value = data.isEnd
+                val list = mutableListOf<ResultStore>()
                 _searchResult.value._data?.let {
                     list.addAll(it)
                 }
-                list.addAll(data)
-                logger("$list")
+                list.addAll(data.items)
+                logger("${list.size}")
                 _searchResult.value = UiState.Success(list)
-                currentPage += data.size
+                currentPage++
             }
         }
     }
 
-    fun setAddStoreInfo(store: StoreSearchData) {
+    fun setAddStoreInfo(store: ResultStore) {
         _addStore.value = UiState.Success(store)
     }
 

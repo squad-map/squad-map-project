@@ -12,7 +12,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
 
 ):ViewModel() {
-    private val mapList = listOf<AllMap>(
+    private val mapList = listOf(
         AllMap("1F389", "스쿼드 지도", "로니", 6),
         AllMap("1F389", "스쿼드 지도", "로니", 6),
         AllMap("1F389", "스쿼드 지도", "로니", 6),
@@ -25,7 +25,7 @@ class HomeViewModel @Inject constructor(
         AllMap("1F389", "스쿼드 지도", "로니", 6)
     )
 
-    private val groupMapList = listOf<AllMap>(
+    private val groupMapList = listOf(
         AllMap("1F389", "스쿼드 지도", "머핀", 6),
         AllMap("1F389", "스쿼드 지도", "퍼니", 6),
     )

@@ -34,10 +34,11 @@ import net.daum.mf.map.api.MapPoint
 
 
 @Composable
-private fun MapViewScreen(
+fun MapViewScreen(
     latitude: String,
     longitude: String,
-    viewModel: MapViewModel
+    viewModel: MapViewModel,
+    zoomLevel: Int = 4
 ) {
     AndroidView(
         factory = { context ->
@@ -51,7 +52,7 @@ private fun MapViewScreen(
                 longitude.toDouble()
             ), true
         )
-        mapView.setZoomLevel(4, true)
+        mapView.setZoomLevel(zoomLevel, true)
     }
 }
 

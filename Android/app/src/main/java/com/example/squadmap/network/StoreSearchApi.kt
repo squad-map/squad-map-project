@@ -11,6 +11,8 @@ interface StoreSearchApi {
     @GET("/v2/local/search/keyword.json")
     suspend fun getSearchResult(
         @Header("Authorization") key: String = "KakaoAK ${BuildConfig.KAKAO_REST_KEY}",
+        @Query("page") page: Int,
+        @Query("size") size: Int = 15,
         @Query("query") query: String,
     ): StoreSearchResultDTO
 

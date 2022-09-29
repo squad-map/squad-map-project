@@ -1,7 +1,7 @@
 package com.example.squadmap.data.dto
 
 
-import com.example.squadmap.data.model.Coordinate
+import com.example.squadmap.data.model.ResultStore
 import com.example.squadmap.data.model.StoreSearchData
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -64,18 +64,15 @@ data class Document(
     val y: String?
 )
 
-fun StoreSearchResultDTO.getCoordinate(): Coordinate {
-    val long = documents?.get(0)?.let { it.x?.toDouble() }
-    val lat = documents?.get(0)?.let { it.y?.toDouble() }
-    return Coordinate(requireNotNull(long), requireNotNull(lat))
-}
-
-fun StoreSearchResultDTO.toStoreSearch(): List<StoreSearchData> {
-    return documents?.mapNotNull { it?.toStoreSearchData() }.orEmpty()
-}
-
-fun Document.toStoreSearchData(): StoreSearchData {
+fun StoreSearchResultDTO.toStoreSearch(): StoreSearchData {
     return StoreSearchData(
+        documents?.mapNotNull { it?.toStoreSearchData() }.orEmpty(),
+        requireNotNull(meta?.isEnd)
+    )
+}
+
+fun Document.toStoreSearchData(): ResultStore {
+    return ResultStore(
         addressName.orEmpty(),
         categoryName.orEmpty(),
         placeUrl.orEmpty(),
@@ -86,4 +83,3 @@ fun Document.toStoreSearchData(): StoreSearchData {
         y?.toDouble() ?: 0.0
     )
 }
-// 카카오 검색에 맞게 변경하기
