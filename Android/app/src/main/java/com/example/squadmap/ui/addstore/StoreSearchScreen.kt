@@ -12,22 +12,16 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.rememberNavController
-import com.example.squadmap.R
-import com.example.squadmap.common.logger
-import com.example.squadmap.data.model.StoreSearchData
+import com.example.squadmap.data.model.ResultStore
 import com.example.squadmap.ui.TopAppbar
 import com.example.squadmap.ui.common.NavigationButton
 import com.example.squadmap.ui.common.UiState
@@ -35,8 +29,6 @@ import com.example.squadmap.ui.common.navigation.SquadMapNavigation
 import com.example.squadmap.ui.common.navigation.SquadMapRoutAction
 import com.example.squadmap.ui.theme.Main
 import com.example.squadmap.ui.theme.SquadMapTheme
-import net.daum.mf.map.api.MapPoint
-import net.daum.mf.map.api.MapView
 
 @Composable
 fun StoreSearchScreen(
@@ -45,6 +37,8 @@ fun StoreSearchScreen(
 ) {
     val result = viewModel.searchResult.collectAsState().value
     val addStoreInfo = viewModel.addStore.collectAsState().value
+    val isEnd = viewModel.isEnd.value
+
     Scaffold(
         topBar = {
             TopAppbar(
@@ -131,7 +125,10 @@ fun StoreSearchScreen(
                 when (result) {
                     is UiState.Success -> {
                         LazyColumn {
-                            items(result.data) { item ->
+                            itemsIndexed(result.data) { index, item ->
+                                if(index == result.data.size - 5 && !isEnd) {
+                                    viewModel.search()
+                                }
                                 SearchResults(
                                     item = item,
                                     routAction = routAction,
@@ -175,7 +172,7 @@ fun StoreSearchScreen(
 
 @Composable
 fun StoreInfo(
-    item: StoreSearchData? = null
+    item: ResultStore? = null
 ) {
     if(item == null) {
         Text(
@@ -238,7 +235,7 @@ fun SearchButton(
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun SearchResults(
-    item: StoreSearchData,
+    item: ResultStore,
     routAction: SquadMapRoutAction,
     onClick: () -> Unit
 ) {

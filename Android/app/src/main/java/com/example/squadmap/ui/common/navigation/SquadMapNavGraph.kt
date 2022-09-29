@@ -20,6 +20,7 @@ import com.example.squadmap.ui.profile.ProfileScreen
 import com.example.squadmap.ui.search.SearchScreen
 import com.example.squadmap.ui.map.store.StoreListView
 import com.example.squadmap.ui.addstore.AddStoreViewModel
+import com.example.squadmap.ui.addstore.StoreDescriptionScreen
 import com.example.squadmap.ui.addstore.StoreSearchScreen
 import com.example.squadmap.ui.home.HomeViewModel
 import com.example.squadmap.ui.web.GithubLoginWebView
@@ -69,6 +70,10 @@ fun SquadMapNavGraph(navController: NavHostController, startRoute: String = Bott
         composable(SquadMapNavigation.SEARCH_STORE_FOR_ADD.route) { backStackEntry ->
             val viewModel : AddStoreViewModel = hiltViewModel(backStackEntry)
             StoreSearchScreen(routAction = routeAction, viewModel = viewModel)
+        }
+        composable(SquadMapNavigation.ADD_STORE_DESCRIPTION.route) { backStackEntry ->
+            val viewModel : AddStoreViewModel = hiltViewModel(backStackEntry)
+            StoreDescriptionScreen(routAction = routeAction, viewModel = viewModel)
         }
         composable(BottomNavigation.MyMap.screenRoute) {
             if (jwt != null) {

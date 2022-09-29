@@ -7,7 +7,7 @@ class StoreSearchDataSourceImpl @Inject constructor(
     private val api: StoreSearchApi
 ) : StoreSearchDataSource {
 
-    override suspend fun getSearchResult(query: String) =
-        api.getSearchResult(query = query)
+    override suspend fun getSearchResult(query: String, page: Int) =
+        api.getSearchResult(query = query, page = page)
 
 }

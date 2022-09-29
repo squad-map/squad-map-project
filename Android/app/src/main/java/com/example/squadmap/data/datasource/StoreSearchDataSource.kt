@@ -5,5 +5,6 @@ import retrofit2.http.Query
 
 interface StoreSearchDataSource {
 
-    suspend fun getSearchResult(query: String): StoreSearchResultDTO
+    suspend fun getSearchResult(query: String, page: Int): StoreSearchResultDTO
+
 }

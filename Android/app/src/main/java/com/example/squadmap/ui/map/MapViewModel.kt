@@ -74,9 +74,22 @@ class MapViewModel @Inject constructor(): ViewModel() {
         )
     )
 
+    private val categories = listOf(
+        CategoryInfo(
+            "카페",
+            "#ff0000",
+            "카페"
+        ),
+        CategoryInfo(
+            "카페",
+            "#ff3388",
+            "식당"
+        )
+    )
     val mapInfo = MapInfo(
         "Muffine",
-        list
+        list,
+        categories
     )
 
     var mapViewState = mutableStateOf<UiState<MapView>>(UiState.Loading)
