@@ -20,6 +20,7 @@ export const PlaceInfos = styled.section`
   position: absolute;
   right: 0;
   overflow-y: scroll;
+  z-index: 1000;
   &::-webkit-scrollbar {
     display: none;
   }

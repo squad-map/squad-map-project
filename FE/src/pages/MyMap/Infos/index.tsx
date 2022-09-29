@@ -8,24 +8,10 @@ import Card from '@/components/common/Card';
 import GlobalModal from '@/components/common/GlobalModal';
 import Icon from '@/components/common/Icon';
 import Text from '@/components/common/Text';
+import { ISearchPlace } from '@/interfaces/ISearchPlace';
 import theme from '@/styles/theme';
-import { CategoryType } from '@/types/map';
 
-interface InfosProps {
-  infoData: {
-    maps: [
-      {
-        id: number;
-        title: string;
-        category: CategoryType;
-        address: string;
-        description: string;
-      }
-    ];
-  };
-}
-
-const Infos = ({ infoData }: InfosProps) => {
+const Infos = ({ infoData }: { infoData: ISearchPlace[] }) => {
   const [isOpenGlobalModal, setIsOpenGlobalModal] = useState(false);
 
   return (
@@ -34,23 +20,23 @@ const Infos = ({ infoData }: InfosProps) => {
         <Button size="large" color={theme.color.navy}>
           <Text size="large" text="🍞 Muffin" color={theme.color.white} />
         </Button>
-        {infoData.maps &&
-          infoData.maps.map(map => (
+        {infoData &&
+          infoData.map((data: ISearchPlace) => (
             <Card
               size="large"
-              key={`InfoCard-${map.id}`}
+              key={`InfoCard-${data.id}`}
               color={theme.color.white}
             >
               <S.Item>
                 <S.ItemCategory>
                   <Button
                     size="xSmall"
-                    color={map.category.color}
-                    key={`categoryButton-${map.category.name}`}
+                    color={data.category_color}
+                    key={`categoryButton-${data.category_name}`}
                   >
                     <Text
                       size="xSmall"
-                      text={map.category.name}
+                      text={data.category_name}
                       color={theme.color.white}
                     />
                   </Button>
@@ -63,17 +49,17 @@ const Infos = ({ infoData }: InfosProps) => {
                 </S.ItemCategory>
                 <Text
                   size="xRegular"
-                  text={map.title}
+                  text={data.place_name}
                   color={theme.color.lightGreen}
                 />
                 <Text
                   size="small"
-                  text={map.address}
+                  text={data.address_name}
                   color={theme.color.gray}
                 />
                 <Text
                   size="small"
-                  text={map.description}
+                  text={data.place_url}
                   color={theme.color.lightGray}
                 />
               </S.Item>

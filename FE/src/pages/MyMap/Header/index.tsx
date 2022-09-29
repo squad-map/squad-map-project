@@ -17,7 +17,7 @@ export interface HeaderProps {
   headerData: {
     emoji: string;
     title: string;
-    categories: [{ name: string; color: string }];
+    categories: { name: string; color: string }[];
   };
 }
 

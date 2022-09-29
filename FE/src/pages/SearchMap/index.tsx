@@ -1,17 +1,22 @@
-import { useEffect, useState, useRef } from 'react';
+import { useState } from 'react';
 
 import * as S from './SearchMap.style';
 import SearchPlace from './SearchPlace';
 
-import { defaultCoords } from '@/constants/map';
+import { KakaoMap } from '@/components/KaKaoMap';
+import { ISearchPlace } from '@/interfaces/ISearchPlace';
 import Header from '@/pages/MyMap/Header';
 
-const SearchMap = () => {
-  const mapRef = useRef<HTMLElement | null | any>(null);
+declare global {
+  interface Window {
+    kakao: any;
+  }
+}
 
-  const [myLocation, setMyLocation] = useState<
-    { latitude: number; longitude: number } | string
-  >('');
+const { kakao } = window;
+
+const SearchMap = () => {
+  const [placeInfos, setPlaceInfos] = useState<ISearchPlace[]>([]);
 
   // myMapData를 Client에서 가지고 있어야 한다. 그래야 라우팅이 변경되어도 해당 데이터를 가져올 수 있기 때문.
   const myMapData = {
@@ -24,44 +29,26 @@ const SearchMap = () => {
     ],
   };
 
-  useEffect(() => {
-    const success = (position: any) => {
-      setMyLocation({
-        latitude: defaultCoords.lat,
-        longitude: defaultCoords.lng,
-      });
-    };
-
-    const error = () => {
-      setMyLocation({
-        latitude: defaultCoords.lat,
-        longitude: defaultCoords.lng,
-      });
-    };
-
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(success, error);
+  const placesSearchCallBack = (data: any, status: string) => {
+    if (status === kakao.maps.services.Status.OK) {
+      setPlaceInfos(data);
     }
-  }, []);
+    if (status === kakao.maps.services.Status.ZERO_RESULT) {
+      // 검색 결과가 존재하지 않습니다.
+    } else if (status === kakao.maps.services.Status.ERROR) {
+      // 검색 결과 중 오류가 발생했습니다.
+    }
+  };
 
-  useEffect(() => {
-    if (typeof myLocation !== 'string')
-      mapRef.current = new naver.maps.Map('map', {
-        center: new naver.maps.LatLng(
-          myLocation.latitude,
-          myLocation.longitude
-        ),
-        zoomControl: true,
-        zoomControlOptions: {
-          position: naver.maps.Position.LEFT_CENTER,
-        },
-      });
-  }, [myLocation]);
+  const searchAddressToCoordinate = (address: string) => {
+    const kakaoSearchService = new kakao.maps.services.Places();
+    kakaoSearchService.keywordSearch(address, placesSearchCallBack);
+  };
 
   return (
-    <S.SearchMap id="map" style={{ width: '100vw', height: '100vh' }}>
+    <S.SearchMap>
       {myMapData && (
-        <>
+        <KakaoMap placeInfos={placeInfos}>
           <Header
             headerData={{
               emoji: myMapData.emoji,
@@ -69,8 +56,11 @@ const SearchMap = () => {
               categories: myMapData.categories,
             }}
           />
-          <SearchPlace />
-        </>
+          <SearchPlace
+            searchAddressToCoordinate={searchAddressToCoordinate}
+            placeInfos={placeInfos}
+          />
+        </KakaoMap>
       )}
     </S.SearchMap>
   );
