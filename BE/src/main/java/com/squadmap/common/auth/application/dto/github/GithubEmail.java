@@ -1,13 +1,14 @@
 package com.squadmap.common.auth.application.dto.github;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class GithubEmail {
 
-    private final String email;
-    private final boolean primary;
+    private String email;
+    private boolean primary;
 
 }

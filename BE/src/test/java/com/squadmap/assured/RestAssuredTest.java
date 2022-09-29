@@ -2,6 +2,7 @@ package com.squadmap.assured;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.squadmap.common.auth.application.JwtProvider;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.config.ObjectMapperConfig;
@@ -9,6 +10,7 @@ import io.restassured.config.RestAssuredConfig;
 import io.restassured.specification.RequestSpecification;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.restdocs.RestDocumentationContextProvider;
@@ -25,6 +27,8 @@ public class RestAssuredTest {
     protected static final String DEFAULT_RESTDOC_PATH = "{class_name}/{method_name}";
 
     protected RequestSpecification specification;
+
+
 
     @LocalServerPort
     int port;

@@ -2,20 +2,17 @@ package com.squadmap.auth.acceptance;
 
 import com.squadmap.assured.RestAssuredTest;
 import com.squadmap.auth.OauthMockProvider;
-import com.squadmap.common.auth.application.dto.github.GithubRequest;
 import com.squadmap.common.auth.ui.dto.LoginRequest;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.restdocs.snippet.Snippet;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 
 import java.io.IOException;
 
@@ -53,7 +50,7 @@ class OauthAcceptanceTest extends RestAssuredTest {
     @DisplayName("정상적인 github authorization_code로 로그인을 요청한다면, 토큰과 유저정보를 반환한다.")
     void githubLoginTest() {
 
-        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, LOGIN_REQUEST_FIELDS))
+        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, LOGIN_REQUEST_FIELDS, LOGIN_RESPONSE_FIELDS))
                 .accept(ContentType.JSON)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(new LoginRequest("github_authorization_code", null))

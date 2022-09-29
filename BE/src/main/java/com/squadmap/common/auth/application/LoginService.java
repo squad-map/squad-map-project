@@ -7,12 +7,14 @@ import com.squadmap.common.auth.application.dto.Tokens;
 import com.squadmap.member.domain.Member;
 import com.squadmap.member.infrastructure.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Slf4j
 public class LoginService {
 
     private final OauthService oauthService;
