@@ -1,5 +1,6 @@
 export interface ISearchPlace {
   address_name: string;
+  category_color: string;
   category_group_code: string;
   category_group_name: string;
   category_name: string;

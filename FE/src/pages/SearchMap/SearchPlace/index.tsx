@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 
 import PlaceInfos from '../PlaceInfos';
 
@@ -25,6 +25,7 @@ const SearchPlace = ({
   const [onPlaceInfos, setOnPlaceInfos] = useState(false);
   const [onRecentSearch, setOnRecentSearch] = useState(false);
 
+  const searchData = useRecoilValue(searchplaceState);
   const setSearchPlace = useSetRecoilState(searchplaceState);
 
   const handleSearchInput = ({
@@ -35,13 +36,14 @@ const SearchPlace = ({
 
   const handleSubmit = () => {
     if (searchValue === '') return;
+
     searchAddressToCoordinate(searchValue);
     setOnPlaceInfos(true);
     setOnRecentSearch(false);
 
-    // 성공 시의 response 처리
-
-    setSearchPlace(searchPlace => [...searchPlace, searchValue]);
+    if (!searchData.includes(searchValue)) {
+      setSearchPlace(searchPlace => [...searchPlace, searchValue]);
+    }
     setSerachValue('');
   };
 

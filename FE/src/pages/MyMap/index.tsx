@@ -11,14 +11,6 @@ import Text from '@/components/common/Text';
 import { KakaoMap } from '@/components/KaKaoMap';
 import theme from '@/styles/theme';
 
-declare global {
-  interface Window {
-    kakao: any;
-  }
-}
-
-const { kakao } = window;
-
 const getMyMapData = async () => {
   const response = await fetch('/mymap');
   const myMapData = await response.json();
@@ -34,7 +26,7 @@ const MyMap = () => {
     // eslint-disable-next-line react/jsx-no-useless-fragment
     <>
       {myMapData ? (
-        <KakaoMap myMapData={myMapData.maps}>
+        <KakaoMap placeInfos={myMapData.maps}>
           <Header
             headerData={{
               emoji: myMapData.emoji,
@@ -42,11 +34,7 @@ const MyMap = () => {
               categories: myMapData.categories,
             }}
           />
-          <Infos
-            infoData={{
-              maps: myMapData.maps,
-            }}
-          />
+          <Infos infoData={myMapData.maps} />
           <S.RecommendationButtonWrapper>
             <Link to={`/mymap/search/${myMapData.id}`}>
               <Button
@@ -64,7 +52,7 @@ const MyMap = () => {
           </S.RecommendationButtonWrapper>
         </KakaoMap>
       ) : (
-        <div>isLoading</div>
+        <div>${loading}</div>
       )}
     </>
   );
