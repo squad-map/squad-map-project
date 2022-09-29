@@ -6,7 +6,7 @@ export type CategoryType = {
 export type MapType = {
   id: number;
   title: string;
-  categories: CategoryType[];
+  category: CategoryType[];
   address: string;
   description: string;
   lat: number;

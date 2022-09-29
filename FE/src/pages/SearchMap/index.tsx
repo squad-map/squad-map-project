@@ -22,7 +22,7 @@ const SearchMap = () => {
     id: 1,
     title: '놀이동산',
     emoji: '🏞',
-    categories: [
+    category: [
       { name: '카테고리1', color: '#FF0000' },
       { name: '카테고리2', color: '#0000FF' },
     ],
@@ -31,6 +31,7 @@ const SearchMap = () => {
   const placesSearchCallBack = (data: any, status: string) => {
     if (status === kakao.maps.services.Status.OK) {
       // 검색 목록과 마커를 표출합니다 (보류)
+      // displayPlaces(data);
       setPlaceInfos(data);
     }
     if (status === kakao.maps.services.Status.ZERO_RESULT) {
@@ -47,23 +48,21 @@ const SearchMap = () => {
 
   return (
     <S.SearchMap>
-      <KakaoMap>
-        {myMapData && (
-          <>
-            <Header
-              headerData={{
-                emoji: myMapData.emoji,
-                title: myMapData.title,
-                categories: myMapData.categories,
-              }}
-            />
-            <SearchPlace
-              searchAddressToCoordinate={searchAddressToCoordinate}
-              placeInfos={placeInfos}
-            />
-          </>
-        )}
-      </KakaoMap>
+      {myMapData && (
+        <KakaoMap>
+          <Header
+            headerData={{
+              emoji: myMapData.emoji,
+              title: myMapData.title,
+              categories: myMapData.category,
+            }}
+          />
+          <SearchPlace
+            searchAddressToCoordinate={searchAddressToCoordinate}
+            placeInfos={placeInfos}
+          />
+        </KakaoMap>
+      )}
     </S.SearchMap>
   );
 };

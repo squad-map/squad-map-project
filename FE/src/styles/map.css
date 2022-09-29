@@ -1,6 +1,11 @@
 .info-button {
     min-width: 7.5rem;
-    min-height: 5rem;
+    min-height: 3rem;
+    position: relative;
+    bottom: 2.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding: 1rem;
     border-radius: 1rem;
     color: #777;
