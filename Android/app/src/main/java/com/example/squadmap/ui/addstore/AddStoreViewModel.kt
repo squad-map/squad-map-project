@@ -27,6 +27,9 @@ class AddStoreViewModel @Inject constructor(
     private val _searchResult = MutableStateFlow<UiState<List<StoreSearchData>>>((UiState.Loading))
     val searchResult = _searchResult.asStateFlow()
 
+    private val _addStore = MutableStateFlow<UiState<StoreSearchData>>(UiState.Loading)
+    val addStore = _addStore.asStateFlow()
+
     fun updateQuery(newValue: String) {
         _query.value = newValue
         currentPage = 1
@@ -54,4 +57,9 @@ class AddStoreViewModel @Inject constructor(
             }
         }
     }
+
+    fun setAddStoreInfo(store: StoreSearchData) {
+        _addStore.value = UiState.Success(store)
+    }
+
 }

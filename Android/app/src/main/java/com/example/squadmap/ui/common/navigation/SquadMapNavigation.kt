@@ -12,7 +12,8 @@ enum class SquadMapNavigation(val route: String) {
     MY_MAP( "MY_MAP"),
     PROFILE("PROFILE"),
     GITHUB_LOGIN("GITHUB_LOGIN"),
-    SEARCH_STORE_FOR_ADD("SEARCH_STORE_FOR_ADD")
+    SEARCH_STORE_FOR_ADD("SEARCH_STORE_FOR_ADD"),
+    ADD_STORE_DESCRIPTION("ADD_STORE_DESCRIPTION")
 }
 
 class SquadMapRoutAction(navHostController: NavHostController) {

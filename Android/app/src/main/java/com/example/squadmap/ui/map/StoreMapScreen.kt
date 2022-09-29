@@ -51,7 +51,7 @@ private fun MapViewScreen(
                 longitude.toDouble()
             ), true
         )
-        mapView.setZoomLevel(7, true)
+        mapView.setZoomLevel(4, true)
     }
 }
 
