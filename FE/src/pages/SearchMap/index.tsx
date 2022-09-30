@@ -4,6 +4,7 @@ import * as S from './SearchMap.style';
 import SearchPlace from './SearchPlace';
 
 import { KakaoMap } from '@/components/KaKaoMap';
+import { defaultCoords } from '@/constants/map';
 import { ISearchPlace } from '@/interfaces/ISearchPlace';
 import Header from '@/pages/MyMap/Header';
 
@@ -42,7 +43,9 @@ const SearchMap = () => {
 
   const searchAddressToCoordinate = (address: string) => {
     const kakaoSearchService = new kakao.maps.services.Places();
-    kakaoSearchService.keywordSearch(address, placesSearchCallBack);
+    kakaoSearchService.keywordSearch(address, placesSearchCallBack, {
+      location: new kakao.maps.LatLng(defaultCoords.lat, defaultCoords.lng),
+    });
   };
 
   return (
