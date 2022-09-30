@@ -27,7 +27,7 @@ public class LoginService {
         MemberInfo memberInfo = oauthService.oauth(provider, code, state);
         Member member = memberRepository.findByEmail(memberInfo.getEmail())
                 .orElseGet(() -> memberRepository
-                        .save(new Member(memberInfo.getProfileImageUrl(), memberInfo.getNickname(), memberInfo.getEmail(), provider)));
+                        .save(new Member(memberInfo.getNickname(), memberInfo.getEmail(), memberInfo.getProfileImageUrl(), provider)));
 
         return new LoginInfo(
                 member.getId(),

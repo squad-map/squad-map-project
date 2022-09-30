@@ -7,6 +7,12 @@ endif::[]
 :sectlinks:
 
 [[resources-post]]
+== 로그인
+[[resources-post-create]]
+=== 깃헙 login
+
+
+[[resources-post]]
 == 나만의 지도
 
 [[resources-post-create]]

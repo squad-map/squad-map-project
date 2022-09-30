@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 @Slf4j
 public class AuthInterceptor implements HandlerInterceptor {
+    private static final String AUTH_TOKEN = "AUTH_TOKEN";
 
     private final LoginService loginService;
 
@@ -27,8 +28,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         }
 
         String token = AuthExtractor.extract(request);
-        request.setAttribute("token", token);
-        log.info("===================token ={}",token);
+        request.setAttribute(AUTH_TOKEN, token);
         return loginService.isLoginUser(token);
     }
 

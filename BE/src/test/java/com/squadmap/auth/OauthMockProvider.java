@@ -25,7 +25,7 @@ public class OauthMockProvider {
                 .withHeader(HttpHeaders.AUTHORIZATION, equalTo("bearer gho_fAohD4bQYFak0CccLxZYepg8ZdIRgN3yOWn"))
                 .willReturn(jsonResponse(getResource("mock-body/github_get_emails.json"),200)));
         //naver
-        stubFor(get(urlEqualTo("/oauth2.0/token"))
+        stubFor(get(urlPathEqualTo("/oauth2.0/token"))
                 .willReturn(jsonResponse(getResource("mock-body/naver_get_access_token.json"),200)));
         stubFor(get(urlEqualTo("/v1/nid/me"))
                 .willReturn(jsonResponse(getResource("mock-body/naver_get_user_info.json"),200)));
