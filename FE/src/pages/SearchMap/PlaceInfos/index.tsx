@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+import ModalContent from '../ModalContent';
+
 import * as S from './Infos.style';
 
 import Button from '@/components/common/Button';
@@ -11,6 +13,16 @@ import theme from '@/styles/theme';
 
 const PlaceInfos = ({ placeInfos }: { placeInfos: ISearchPlace[] }) => {
   const [isOpenGlobalModal, setIsOpenGlobalModal] = useState(false);
+  const [placeInfo, setPlaceInfo] = useState<ISearchPlace>();
+
+  const handleClickPlace = (id: string) => {
+    const clickedPlace = placeInfos.find(
+      (place: ISearchPlace) => place.id === id
+    );
+
+    setPlaceInfo(clickedPlace);
+    setIsOpenGlobalModal(true);
+  };
 
   return (
     placeInfos && (
@@ -41,7 +53,7 @@ const PlaceInfos = ({ placeInfos }: { placeInfos: ISearchPlace[] }) => {
                 <Button
                   size="small"
                   color={theme.color.navy}
-                  onClick={() => setIsOpenGlobalModal(true)}
+                  onClick={() => handleClickPlace(map.id)}
                 >
                   <Text
                     size="small"
@@ -57,7 +69,7 @@ const PlaceInfos = ({ placeInfos }: { placeInfos: ISearchPlace[] }) => {
             size="large"
             handleCancelClick={() => setIsOpenGlobalModal(false)}
           >
-            <div>Modal Content 제작 예정</div>
+            <ModalContent placeInfo={placeInfo as ISearchPlace} />
           </GlobalModal>
         )}
       </S.PlaceInfos>
