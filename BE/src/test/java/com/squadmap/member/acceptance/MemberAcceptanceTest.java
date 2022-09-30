@@ -21,8 +21,6 @@ import static org.springframework.restdocs.restassured3.RestAssuredRestDocumenta
 
 class MemberAcceptanceTest extends RestAssuredTest {
 
-    @Autowired
-    protected JwtProvider jwtProvider;
 
     private static final Snippet NICKNAME_UPDATE_REQUEST_FIELDS = requestFields(
             fieldWithPath("nickname").type(JsonFieldType.STRING).description("수정하고자하는 닉네임")

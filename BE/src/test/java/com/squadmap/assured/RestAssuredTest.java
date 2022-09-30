@@ -28,6 +28,8 @@ public class RestAssuredTest {
 
     protected RequestSpecification specification;
 
+    @Autowired
+    protected JwtProvider jwtProvider;
 
 
     @LocalServerPort

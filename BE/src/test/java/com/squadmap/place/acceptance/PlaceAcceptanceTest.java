@@ -33,12 +33,12 @@ class PlaceAcceptanceTest extends RestAssuredTest {
             fieldWithPath("position.x").type(JsonFieldType.NUMBER).description("장소 위도"),
             fieldWithPath("position.y").type(JsonFieldType.NUMBER).description("장소 경도"),
             fieldWithPath("description").type(JsonFieldType.STRING).description("장소에 대한 설명(리뷰)"),
-            fieldWithPath("mapId").type(JsonFieldType.NUMBER).description("장소를 등록할 지도의 아이디"),
-            fieldWithPath("categoryId").type(JsonFieldType.NUMBER).description("장소를 등록할 카테고리의 아이디")
+            fieldWithPath("map_id").type(JsonFieldType.NUMBER).description("장소를 등록할 지도의 아이디"),
+            fieldWithPath("category_id").type(JsonFieldType.NUMBER).description("장소를 등록할 카테고리의 아이디")
     );
 
     private static final Snippet CREATE_RESPONSE_FIELDS = responseFields(
-            fieldWithPath("placeId").type(JsonFieldType.NUMBER).description("장소 아이디")
+            fieldWithPath("place_id").type(JsonFieldType.NUMBER).description("장소 아이디")
     );
 
     @Test
@@ -61,7 +61,7 @@ class PlaceAcceptanceTest extends RestAssuredTest {
                 .when().post("/places")
 
                 .then().statusCode(HttpStatus.CREATED.value())
-                .body("placeId", equalTo(1));
+                .body("place_id", equalTo(1));
 
     }
 }

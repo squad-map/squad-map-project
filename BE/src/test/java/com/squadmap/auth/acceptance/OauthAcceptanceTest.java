@@ -63,7 +63,7 @@ class OauthAcceptanceTest extends RestAssuredTest {
 
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value())
-                .body("member_id", equalTo(2))
+                .body("member_id", notNullValue(Long.TYPE))
                 .body("nickname", equalTo("CMSSKKK"))
                 .body("profile_image", equalTo("https://avatars.githubusercontent.com/u/81129309?v=4"))
                 .body("access_token", notNullValue(String.class))
@@ -71,7 +71,7 @@ class OauthAcceptanceTest extends RestAssuredTest {
     }
 
     @Test
-    @DisplayName("정상적인 github authorization_code로 로그인을 요청한다면, 토큰과 유저정보를 반환한다.")
+    @DisplayName("정상적인 naver authorization_code로 로그인을 요청한다면, 토큰과 유저정보를 반환한다.")
     void naverLoginTest() {
 
         given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, LOGIN_REQUEST_FIELDS, LOGIN_RESPONSE_FIELDS))
@@ -86,7 +86,7 @@ class OauthAcceptanceTest extends RestAssuredTest {
 
                 .then().log().all()
                 .statusCode(HttpStatus.OK.value())
-                .body("member_id", equalTo(2))
+                .body("member_id", notNullValue(Long.TYPE))
                 .body("nickname", equalTo("최민석"))
                 .body("profile_image", equalTo("https://ssl.pstatic.net/static/pwe/address/img_profile.png"))
                 .body("access_token", notNullValue(String.class))
