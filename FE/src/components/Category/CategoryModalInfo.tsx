@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { HeaderProps } from '../Header';
+import { HeaderProps } from '../../pages/MyMap/Header';
 
 import * as S from './CategoryModalInfo.style';
 
@@ -64,7 +64,7 @@ const CategoryModalInfo = ({ headerData }: HeaderProps) => {
           {headerData.title}
           <br />
         </S.Title>
-        <S.SubTitle>사용중인 카테고리 현재 목록</S.SubTitle>
+        <S.SubTitle>지도에서 사용중인 카테고리 현재 목록</S.SubTitle>
       </S.Header>
       <S.Buttons>
         {headerData.categories.map(category => (

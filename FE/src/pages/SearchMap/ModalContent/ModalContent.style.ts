@@ -7,19 +7,18 @@ export const Title = styled.h1`
   font-size: ${theme.fontSize.lg};
 `;
 
-export const SampleMap = styled.div`
-  width: 26.75rem;
-  height: 15.625rem;
-  border-radius: 1rem;
-`;
-
 export const TextArea = styled.textarea`
   width: 26.75rem;
-  height: 10.625rem;
+  height: 13.625rem;
   padding: 1rem;
   border-radius: 1rem;
   background-color: ${theme.color.inputBackground};
   resize: none;
+`;
+
+export const PrevButtonWrapper = styled.div`
+  position: fixed;
+  left: 2rem;
 `;
 
 export const ModalContent = styled.section`
