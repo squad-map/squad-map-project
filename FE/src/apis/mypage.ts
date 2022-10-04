@@ -80,3 +80,9 @@ export const deleteMypage = async (deleteId: number) => {
     throw new Error(`deleteMypage get api fail err: ${err}`);
   }
 };
+
+export const getMyMap = async () => {
+  const response = await fetch('/mymap');
+  const myMapData = await response.json();
+  return myMapData;
+};

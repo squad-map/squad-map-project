@@ -5,21 +5,16 @@ import Header from './Header';
 import Infos from './Infos';
 import * as S from './MyMap.style';
 
+import { getMyMap } from '@/apis/mypage';
 import { Icons } from '@/assets/icons';
 import Button from '@/components/common/Button';
 import Text from '@/components/common/Text';
 import { KakaoMap } from '@/components/KaKaoMap';
 import theme from '@/styles/theme';
 
-const getMyMapData = async () => {
-  const response = await fetch('/mymap');
-  const myMapData = await response.json();
-  return myMapData;
-};
-
 const MyMap = () => {
   const { data: myMapData, isLoading: loading } = useQuery(['myMap'], () =>
-    getMyMapData()
+    getMyMap()
   );
 
   return (

@@ -1,8 +1,10 @@
 import { useState } from 'react';
+import { useQuery } from 'react-query';
 
 import * as S from './SearchMap.style';
 import SearchPlace from './SearchPlace';
 
+import { getMyMap } from '@/apis/mypage';
 import { KakaoMap } from '@/components/KaKaoMap';
 import { defaultCoords } from '@/constants/map';
 import { ISearchPlace } from '@/interfaces/ISearchPlace';
@@ -19,16 +21,9 @@ const { kakao } = window;
 const SearchMap = () => {
   const [placeInfos, setPlaceInfos] = useState<ISearchPlace[]>([]);
 
-  // myMapData를 Client에서 가지고 있어야 한다. 그래야 라우팅이 변경되어도 해당 데이터를 가져올 수 있기 때문.
-  const myMapData = {
-    id: 1,
-    title: '놀이동산',
-    emoji: '🏞',
-    categories: [
-      { name: '카테고리1', color: '#FF0000' },
-      { name: '카테고리2', color: '#0000FF' },
-    ],
-  };
+  const { data: myMapData, isLoading: loading } = useQuery(['myMap'], () =>
+    getMyMap()
+  );
 
   const placesSearchCallBack = (data: any, status: string) => {
     if (status === kakao.maps.services.Status.OK) {
