@@ -1,51 +1,35 @@
-import { useState, useEffect, useRef } from 'react';
+import { useQuery } from 'react-query';
 
-import * as S from './Maps.style';
+import Header from '../MyMap/Header';
+import Infos from '../MyMap/Infos';
 
-import { defaultCoords } from '@/constants/map';
+import { KakaoMap } from '@/components/KaKaoMap';
+
+const getMyMapData = async () => {
+  const response = await fetch('/mymap');
+  const myMapData = await response.json();
+  return myMapData;
+};
 
 const Maps = () => {
-  const [myLocation, setMyLocation] = useState<
-    { latitude: number; longitude: number } | string
-  >('');
+  const { data: myMapData, isLoading: loading } = useQuery(['myMap'], () =>
+    getMyMapData()
+  );
 
-  const mapRef = useRef<HTMLElement | null | any>(null);
-
-  useEffect(() => {
-    const success = (position: any) => {
-      setMyLocation({
-        latitude: defaultCoords.lat,
-        longitude: defaultCoords.lng,
-      });
-    };
-
-    const error = () => {
-      setMyLocation({
-        latitude: defaultCoords.lat,
-        longitude: defaultCoords.lng,
-      });
-    };
-
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(success, error);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (typeof myLocation !== 'string')
-      mapRef.current = new naver.maps.Map('map', {
-        center: new naver.maps.LatLng(
-          myLocation.latitude,
-          myLocation.longitude
-        ),
-        zoomControl: true,
-        zoomControlOptions: {
-          position: naver.maps.Position.LEFT_CENTER,
-        },
-      });
-  }, [myLocation]);
-
-  return <S.Maps id="map" style={{ width: '100vw', height: '100vh' }} />;
+  return (
+    myMapData && (
+      <KakaoMap placeInfos={myMapData.maps}>
+        <Header
+          headerData={{
+            emoji: myMapData.emoji,
+            title: myMapData.title,
+            categories: myMapData.categories,
+          }}
+        />
+        <Infos infoData={myMapData.maps} />
+      </KakaoMap>
+    )
+  );
 };
 
 export default Maps;
