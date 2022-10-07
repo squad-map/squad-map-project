@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+import ModalContent from '../ModalContent';
+
 import * as S from './Infos.style';
 
 import { Icons } from '@/assets/icons';
@@ -13,6 +15,12 @@ import theme from '@/styles/theme';
 
 const Infos = ({ infoData }: { infoData: ISearchPlace[] }) => {
   const [isOpenGlobalModal, setIsOpenGlobalModal] = useState(false);
+  const [clickedPlace, setClickedPlace] = useState<ISearchPlace>();
+
+  const handleClickPlaceInfo = (data: ISearchPlace) => {
+    setClickedPlace(data);
+    setIsOpenGlobalModal(true);
+  };
 
   return (
     infoData && (
@@ -44,7 +52,7 @@ const Infos = ({ infoData }: { infoData: ISearchPlace[] }) => {
                     size="small"
                     url={Icons.More}
                     alt="정보 더보기"
-                    onClick={() => setIsOpenGlobalModal(true)}
+                    onClick={() => handleClickPlaceInfo(data)}
                   />
                 </S.ItemCategory>
                 <Text
@@ -70,7 +78,7 @@ const Infos = ({ infoData }: { infoData: ISearchPlace[] }) => {
             size="large"
             handleCancelClick={() => setIsOpenGlobalModal(false)}
           >
-            <div>Modal Content 제작 예정</div>
+            <ModalContent placeInfo={clickedPlace as ISearchPlace} />
           </GlobalModal>
         )}
       </S.MapInfos>

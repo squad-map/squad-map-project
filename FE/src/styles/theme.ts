@@ -15,6 +15,7 @@ const color = {
   lightGreen: '#BEE59A',
   brown: '#F3B778',
   lightBrown: '#F6C790',
+  yellow: '#FEE401',
   titleActive: '#14142B',
   label: '#6E7191',
   placeholder: '#A0A3BD',
