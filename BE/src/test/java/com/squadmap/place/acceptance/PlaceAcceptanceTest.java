@@ -2,9 +2,10 @@ package com.squadmap.place.acceptance;
 
 import com.squadmap.assured.RestAssuredTest;
 import com.squadmap.place.ui.dto.PlaceRequest;
+import com.squadmap.place.ui.dto.Point;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
-import org.springframework.data.geo.Point;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
@@ -14,6 +15,7 @@ import java.awt.*;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
@@ -50,18 +52,20 @@ class PlaceAcceptanceTest extends RestAssuredTest {
         Long mapId = 1L;
         Long categoryId = 1L;
         Point point = new Point(x, y);
+        String tokenHeader = "Bearer " + jwtProvider.generateAccessToken(1L);
         PlaceRequest placeRequest = new PlaceRequest(placeName, point, description, mapId, categoryId);
 
-        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, CREATE_REQUEST_FIELDS, CREATE_RESPONSE_FIELDS))
+        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, CREATE_REQUEST_FIELDS, CREATE_RESPONSE_FIELDS, AUTHORIZATION_HEADER))
                 .accept(ContentType.JSON)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header(HttpHeaders.AUTHORIZATION, tokenHeader)
                 .body(placeRequest)
                 .log().all()
 
                 .when().post("/places")
 
                 .then().statusCode(HttpStatus.CREATED.value())
-                .body("place_id", equalTo(1));
+                .body("place_id", notNullValue());
 
     }
 }

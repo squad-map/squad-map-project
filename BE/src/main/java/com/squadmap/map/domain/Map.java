@@ -16,21 +16,21 @@ public class Map {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
-    String name;
+    private String name;
 
-    Boolean isPrivate;
+    private boolean fullDisclosure;
 
-    Long memberId;
+    private Long memberId;
 
-    public static Map of(String name, Boolean isPrivate, Long memberId) {
-        return new Map(null, name, isPrivate, memberId);
+    public static Map of(String name, boolean fullDisclosure, Long memberId) {
+        return new Map(null, name, fullDisclosure, memberId);
     }
 
-    public void update(String updateName, Boolean isPrivate) {
+    public void update(String updateName, boolean fullDisclosure) {
         this.name = updateName;
-        this.isPrivate = isPrivate;
+        this.fullDisclosure = fullDisclosure;
     }
 
     @Override

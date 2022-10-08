@@ -27,35 +27,33 @@ class MapServiceTest {
         //given
         Long memberId = 1L;
         String mapName = "first map";
-        Boolean isPrivate = false;
+        Boolean fullDisclosure = false;
 
-        Long expectedId = 1L;
 
         //when
-        Long mapId = mapService.create(mapName, isPrivate, memberId);
+        Long mapId = mapService.create(mapName, fullDisclosure, memberId);
 
         //then
-        assertThat(mapId).isEqualTo(expectedId);
+        assertThat(mapId).isNotNull();
     }
 
     @Test
     @DisplayName("존재하는 지도라면, 지도를 업데이트할 수 있다.")
     void updateTest() {
         Long memberId = 1L;
-        Long mapId = 1L;
         String mapName = "changed map";
-        Boolean isPrivate = true;
+        boolean fullDisclosure = true;
 
-        Map map = mapRepository.save(Map.of("first map", false, memberId));
+        Map map = mapRepository.save(Map.of("my map", false, memberId));
 
-        mapService.update(memberId, mapId, mapName, isPrivate);
+        mapService.update(memberId, map.getId(), mapName, fullDisclosure);
 
-        Map changedMap = mapRepository.findById(mapId)
+        Map changedMap = mapRepository.findById(map.getId())
                 .orElseThrow(NoSuchElementException::new);
 
         assertThat(changedMap).isEqualTo(map);
-        assertThat(changedMap.getIsPrivate()).isTrue();
-        assertThat(changedMap.getMemberId()).isEqualTo(mapId);
+        assertThat(changedMap.isFullDisclosure()).isTrue();
+        assertThat(changedMap.getMemberId()).isEqualTo(memberId);
         assertThat(changedMap.getName()).isEqualTo(mapName);
 
     }

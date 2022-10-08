@@ -1,5 +1,6 @@
 package com.squadmap.place.ui;
 
+import com.squadmap.common.auth.Login;
 import com.squadmap.place.ui.dto.PlaceRequest;
 import com.squadmap.place.ui.dto.PlaceResponse;
 import org.springframework.http.HttpStatus;
@@ -14,7 +15,7 @@ public class PlaceController {
 
     @PostMapping("/places")
     @ResponseStatus(HttpStatus.CREATED)
-    public PlaceResponse create(@RequestBody PlaceRequest placeRequest) {
+    public PlaceResponse create(@Login Long memberId, @RequestBody PlaceRequest placeRequest) {
 
         return new PlaceResponse(1L);
     }

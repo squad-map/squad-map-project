@@ -24,6 +24,6 @@ public class CategoryServiceTest {
         Long categoryId = categoryService.create(name, color, mapId);
 
         //then
-        assertThat(categoryId).isEqualTo(1L);
+        assertThat(categoryId).isNotNull();
     }
 }

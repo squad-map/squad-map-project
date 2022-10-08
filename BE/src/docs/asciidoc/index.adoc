@@ -1,30 +1,57 @@
 ifndef::snippets[]
 :snippets: ./build/generated-snippets
 endif::[]
-= sample rest docs
+= Squad-Map API 명세
 :toc: left
 :toclevels: 2
 :sectlinks:
 
-[[resources-post]]
+[[resources-login]]
 == 로그인
-[[resources-post-create]]
-=== 깃헙 login
+[[login-github]]
+=== Github Login
+==== Request
+include::{snippets}/oauth_acceptance_test/github_login_test/http-request.adoc[]
+include::{snippets}/oauth_acceptance_test/github_login_test/request-fields.adoc[]
+==== Response
+include::{snippets}/oauth_acceptance_test/github_login_test/response-body.adoc[]
+include::{snippets}/oauth_acceptance_test/github_login_test/response-fields.adoc[]
+=== Naver Login
+==== Request
+include::{snippets}/oauth_acceptance_test/naver_login_test/http-request.adoc[]
+include::{snippets}/oauth_acceptance_test/naver_login_test/request-fields.adoc[]
+==== Response
+include::{snippets}/oauth_acceptance_test/naver_login_test/response-body.adoc[]
+include::{snippets}/oauth_acceptance_test/naver_login_test/response-fields.adoc[]
 
 
-[[resources-post]]
+[[resources-map]]
 == 나만의 지도
 
-[[resources-post-create]]
+[[resources-map-create]]
 === Map 생성
 
-==== HTTP request
+==== request
+include::{snippets}/map_acceptance_test/map_create_test/http-request.adoc[]
+include::{snippets}/map_acceptance_test/map_create_test/request-fields.adoc[]
+필수 헤더
+include::{snippets}/map_acceptance_test/map_create_test/request-headers.adoc[]
 
-include::{snippets}/map_test/map_create_test/request-fields.adoc[]
+==== response
+include::{snippets}/map_acceptance_test/map_create_test/http-response.adoc[]
+include::{snippets}/map_acceptance_test/map_create_test/response-fields.adoc[]
 
-include::{snippets}/map_test/map_create_test/http-request.adoc[]
 
-==== HTTP response
-include::{snippets}/map_test/map_create_test/response-fields.adoc[]
+[[resources-map-update]]
+=== Map 정보 변경
 
-include::{snippets}/map_test/map_create_test/http-response.adoc[]
+==== request
+include::{snippets}/map_acceptance_test/map_update_test/path-parameters.adoc[]
+include::{snippets}/map_acceptance_test/map_update_test/http-request.adoc[]
+include::{snippets}/map_acceptance_test/map_update_test/request-fields.adoc[]
+
+필수 헤더
+include::{snippets}/map_acceptance_test/map_update_test/request-headers.adoc[]
+
+==== response
+include::{snippets}/map_acceptance_test/map_update_test/http-response.adoc[]

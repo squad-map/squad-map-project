@@ -36,7 +36,7 @@ class MemberAcceptanceTest extends RestAssuredTest {
         accessToken = "bearer " + accessToken;
         String nickname = "update nickname";
         NicknameUpdateRequest nickNameUpdateRequest = new NicknameUpdateRequest(nickname);
-        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, NICKNAME_UPDATE_REQUEST_FIELDS, NICKNAME_UPDATE_RESPONSE_FIELDS))
+        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, NICKNAME_UPDATE_REQUEST_FIELDS, NICKNAME_UPDATE_RESPONSE_FIELDS, AUTHORIZATION_HEADER))
                 .accept(ContentType.JSON)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header(HttpHeaders.AUTHORIZATION, accessToken)

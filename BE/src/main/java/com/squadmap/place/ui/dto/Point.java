@@ -1,4 +1,4 @@
-package com.squadmap.map.ui.dto;
+package com.squadmap.place.ui.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MapRequest {
+public class Point {
 
-    private String mapName;
-    private Boolean fullDisclosure;
+    private Double x;
+    private Double y;
 
 }

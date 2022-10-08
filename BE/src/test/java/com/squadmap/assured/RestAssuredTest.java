@@ -13,10 +13,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpHeaders;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.restdocs.snippet.Snippet;
 
 
+import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
+import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.documentationConfiguration;
 
@@ -25,6 +29,9 @@ import static org.springframework.restdocs.restassured3.RestAssuredRestDocumenta
 public class RestAssuredTest {
 
     protected static final String DEFAULT_RESTDOC_PATH = "{class_name}/{method_name}";
+
+    protected static final Snippet AUTHORIZATION_HEADER = requestHeaders(
+            headerWithName(HttpHeaders.AUTHORIZATION).description("토큰, 로그인 및 권한 검증"));
 
     protected RequestSpecification specification;
 

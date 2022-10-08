@@ -19,6 +19,6 @@ class MapTest {
         map.update(updateName, true);
 
         assertThat(map.getName()).isEqualTo(updateName);
-        assertThat(map.getIsPrivate()).isTrue();
+        assertThat(map.isFullDisclosure()).isTrue();
     }
 }
