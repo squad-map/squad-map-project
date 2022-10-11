@@ -31,6 +31,8 @@ import com.example.squadmap.ui.common.navigation.SquadMapNavigation
 import com.example.squadmap.ui.common.navigation.SquadMapRoutAction
 import com.example.squadmap.ui.map.MapViewModel
 import com.example.squadmap.ui.theme.SquadMapTheme
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 @Composable
 fun StoreListView(
@@ -108,7 +110,8 @@ fun StoreItem(item: StoreInfo, routAction: SquadMapRoutAction) {
             .fillMaxWidth()
             .padding(5.dp)
             .clickable {
-                routAction.navToRout(SquadMapNavigation.WEB)
+                val link = URLEncoder.encode(item.link, StandardCharsets.UTF_8.toString())
+                routAction.navToWebView(SquadMapNavigation.WEB, link)
             },
         color = Color.White,
         elevation = 10.dp

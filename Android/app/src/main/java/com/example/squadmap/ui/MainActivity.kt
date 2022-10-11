@@ -48,6 +48,7 @@ class MainActivity : ComponentActivity() {
         val keyHash = Utility.getKeyHash(this)
         logger("keyHash : $keyHash")
     }
+
 }
 
 @Composable
