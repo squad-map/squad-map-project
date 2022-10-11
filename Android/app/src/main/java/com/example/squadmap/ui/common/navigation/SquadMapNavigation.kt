@@ -17,6 +17,7 @@ enum class SquadMapNavigation(val route: String) {
 }
 
 class SquadMapRoutAction(navHostController: NavHostController) {
+
     val navToRout: (SquadMapNavigation) -> Unit = { rout ->
         navHostController.navigate(rout.route) {
             popUpTo(navHostController.graph.findStartDestination().id) {
@@ -26,6 +27,7 @@ class SquadMapRoutAction(navHostController: NavHostController) {
             restoreState = true
         }
     }
+
     val navToWebView: (SquadMapNavigation, String) -> Unit = { rout, url ->
         navHostController.navigate("${rout.route}/$url") {
             popUpTo(navHostController.graph.findStartDestination().id) {
@@ -35,6 +37,7 @@ class SquadMapRoutAction(navHostController: NavHostController) {
             restoreState = true
         }
     }
+
     val back = {
         navHostController.popBackStack()
     }

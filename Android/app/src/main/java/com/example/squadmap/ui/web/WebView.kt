@@ -13,7 +13,7 @@ private const val GITHUB_CALLBACK = "localhost:3000/login/github/callback"
 private const val CODE = "code"
 @Composable
 fun StoreWebView(url: String) {
-    val state = rememberWebViewState("https://www.naver.com/")
+    val state = rememberWebViewState(url)
     WebView(
         state = state,
         onCreated = { it.settings.javaScriptEnabled = true }
