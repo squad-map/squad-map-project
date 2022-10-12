@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
 
@@ -13,6 +13,7 @@ import LoadingSpinner from '@/components/common/LoadingSpinner';
 import Text from '@/components/common/Text';
 import GridCards from '@/components/GridCards';
 import Input from '@/components/Input';
+import useDebounce from '@/hooks/useDebounce';
 import { IMap } from '@/interfaces/IMap';
 import theme from '@/styles/theme';
 
@@ -24,13 +25,14 @@ const getMapsData = async (searchValue: string, type: string) => {
 
 export default function HomePage() {
   const [searchValue, setSerachValue] = useState('');
+  const debouncedValue = useDebounce(searchValue, 500);
   const [searchType, setSearchType] = useState('all');
 
   const {
     data: mapsData,
     isLoading: loading,
     refetch: refetchMaps,
-  } = useQuery(['allMaps'], () => getMapsData(searchValue, searchType));
+  } = useQuery(['allMaps'], () => getMapsData(debouncedValue, searchType));
 
   const handleSearchInput = ({
     target,
@@ -38,16 +40,14 @@ export default function HomePage() {
     setSerachValue(target.value);
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      refetchMaps();
-    }
-  };
-
   const handleClickType = (type: string) => {
     setSearchType(type);
     refetchMaps();
   };
+
+  useEffect(() => {
+    refetchMaps();
+  }, [debouncedValue, refetchMaps]);
 
   return (
     <S.Container>
@@ -61,7 +61,6 @@ export default function HomePage() {
             background={`${theme.color.white} url(${Icons.Search}) no-repeat 1rem`}
             value={searchValue}
             onChange={handleSearchInput}
-            onKeyPress={handleKeyPress}
           />
         </S.SearchInputWrapper>
         <S.NavWrapper>
