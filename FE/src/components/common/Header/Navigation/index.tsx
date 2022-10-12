@@ -41,7 +41,6 @@ const Navigation = ({ menu, handleCloseMenu }: INavigationProps) => {
             size="medium"
             url={Icons.Close}
             alt="Close Icon"
-            cursor
             onClick={handleCloseMenu}
           />
         </S.CloseWrapper>

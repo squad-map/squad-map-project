@@ -51,12 +51,10 @@ const selectSize = (size: string) => {
 export const Text = styled.div<{
   size: string;
   color: string;
-  cursor?: boolean;
   hover?: boolean;
 }>`
   ${({ size }) => selectSize(size)};
   color: ${props => props.color};
-  cursor: ${props => props.cursor && 'pointer'};
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;

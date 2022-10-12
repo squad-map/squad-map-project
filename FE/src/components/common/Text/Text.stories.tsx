@@ -7,7 +7,6 @@ import theme from '@/styles/theme';
 export default {
   title: 'Text',
   component: Text,
-  cursor: false,
   hover: false,
   argTypes: {
     text: { defaultValue: 'REGULAR TEXT' },

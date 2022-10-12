@@ -12,7 +12,6 @@ interface IText {
     | 'small'
     | 'xSmall';
   color: string;
-  cursor?: boolean;
   hover?: boolean;
 }
 

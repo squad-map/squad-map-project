@@ -30,7 +30,7 @@ const Header = ({ children }: HeaderProps) => {
     <S.Container>
       <S.Wrapper>
         <Link to="/">
-          <Image url={Images.Logo} alt="SquadMap Logo" cursor />
+          <Image url={Images.Logo} alt="SquadMap Logo" />
         </Link>
         <S.RightArea>
           {user?.nickname ? (
@@ -52,7 +52,6 @@ const Header = ({ children }: HeaderProps) => {
             url={Images.Menu}
             alt="Header Menu"
             data-testid="menuBtn"
-            cursor
             onClick={handleOpenMenu}
           />
         </S.RightArea>

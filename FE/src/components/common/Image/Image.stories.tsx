@@ -10,7 +10,6 @@ export default {
   args: {
     url: Images.Logo,
     alt: 'SquadMap Logo',
-    cursor: true,
   },
 } as ComponentMeta<typeof Image>;
 

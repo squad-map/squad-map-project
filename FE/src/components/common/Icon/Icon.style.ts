@@ -25,9 +25,8 @@ const selectSize = (size: string) => {
 
 export const Icon = styled.img<{
   size: string;
-  cursor?: boolean;
 }>`
   ${({ size }) => selectSize(size)};
   display: block;
-  cursor: ${props => props.cursor && 'pointer'};
+  cursor: pointer;
 `;
