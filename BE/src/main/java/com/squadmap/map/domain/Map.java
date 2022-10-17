@@ -1,16 +1,15 @@
 package com.squadmap.map.domain;
 
+import com.squadmap.place.domain.Place;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 public class Map {
 
@@ -24,13 +23,26 @@ public class Map {
 
     private Long memberId;
 
+    @OneToMany(mappedBy = "map")
+    private List<Place> places = new ArrayList<>();
+
+    private Map(String name, boolean fullDisclosure, Long memberId) {
+        this.name = name;
+        this.fullDisclosure = fullDisclosure;
+        this.memberId = memberId;
+    }
+
     public static Map of(String name, boolean fullDisclosure, Long memberId) {
-        return new Map(null, name, fullDisclosure, memberId);
+        return new Map(name, fullDisclosure, memberId);
     }
 
     public void update(String updateName, boolean fullDisclosure) {
         this.name = updateName;
         this.fullDisclosure = fullDisclosure;
+    }
+
+    public int getPlacesCount() {
+        return this.places.size();
     }
 
     @Override

@@ -13,8 +13,10 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.restdocs.snippet.Snippet;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
 
 class MapAcceptanceTest extends RestAssuredTest {
@@ -51,7 +53,7 @@ class MapAcceptanceTest extends RestAssuredTest {
         .when().post("/map")
 
         .then().statusCode(HttpStatus.CREATED.value())
-                .body("map_id", Matchers.equalTo(3));
+                .body("map_id", equalTo(3));
 
     }
 
@@ -86,6 +88,31 @@ class MapAcceptanceTest extends RestAssuredTest {
 
         .then().statusCode(HttpStatus.OK.value());
 
+    }
+
+    private static final Snippet READ_MAP_DISCLOSURE = pathParameters(
+            parameterWithName("access").description("[public, private] 전체 공개, 그룹 지도를 조회"));
+
+    private static final Snippet READ_MAP_LIST_RESPONSE = responseFields(
+            fieldWithPath("map_id").type(JsonFieldType.NUMBER).description("지도의 아이디"),
+            fieldWithPath("map_name").type(JsonFieldType.STRING).description("지도의 이름"),
+            fieldWithPath("host_nickname").type(JsonFieldType.STRING).description("지도의 작성자의 닉네임"),
+            fieldWithPath("registered_places_count").type(JsonFieldType.NUMBER).description("지도내에 등록된 장소의 갯수")
+    );
+
+    @Test
+    @DisplayName("전체 지도를 조회할 수 있다.")
+    void readPublicMapListTest() {
+        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, READ_MAP_DISCLOSURE))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .queryParam("access", "public")
+
+
+        .when().get("/map")
+
+        .then()
+                .statusCode(HttpStatus.OK.value())
+                .log().all();
     }
 
 

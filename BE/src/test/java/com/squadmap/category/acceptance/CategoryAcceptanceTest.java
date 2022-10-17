@@ -4,7 +4,6 @@ import com.squadmap.assured.RestAssuredTest;
 import com.squadmap.category.ui.dto.CategoryRequest;
 import com.squadmap.common.auth.application.JwtProvider;
 import io.restassured.http.ContentType;
-import io.restassured.mapper.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,5 +1,8 @@
 package com.squadmap.map.application;
 
+import com.squadmap.map.application.dto.MapSimpleInfo;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 
@@ -11,4 +14,5 @@ public interface MapService {
 
     void update(Long memberId, Long mapId, String mapName, boolean fullDisclosure);
 
+    Page<MapSimpleInfo> readPublic(Pageable pageable);
 }
