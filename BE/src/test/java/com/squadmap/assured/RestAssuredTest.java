@@ -62,7 +62,8 @@ public class RestAssuredTest {
                 .addFilter(documentationConfiguration(restDocs)
                         .operationPreprocessors()
                         .withRequestDefaults(prettyPrint())
-                        .withResponseDefaults(prettyPrint()))
+                        .withResponseDefaults(prettyPrint())
+                )
                 .build();
     }
 

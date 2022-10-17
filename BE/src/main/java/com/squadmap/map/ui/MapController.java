@@ -1,12 +1,12 @@
 package com.squadmap.map.ui;
 
+import com.squadmap.common.SimplePage;
 import com.squadmap.common.auth.Login;
 import com.squadmap.map.application.MapService;
+import com.squadmap.map.application.dto.MapSimpleInfo;
 import com.squadmap.map.ui.dto.MapCreateResponse;
-import com.squadmap.map.ui.dto.MapList;
 import com.squadmap.map.ui.dto.MapRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -37,8 +37,7 @@ public class MapController {
     }
 
     @GetMapping("/map/public")
-    public Page<MapList> searchPublicMapList(@PageableDefault Pageable pageable) {
-        return null;
-        //mapService.readPublic(pageable);
+    public SimplePage<MapSimpleInfo> searchPublicMapList(@PageableDefault Pageable pageable) {
+        return new SimplePage<>(mapService.readPublic(pageable));
     }
 }
