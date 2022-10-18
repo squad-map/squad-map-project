@@ -92,19 +92,24 @@ class MapAcceptanceTest extends RestAssuredTest {
             parameterWithName("page").optional().description("페이지 번호(default 0)"),
             parameterWithName("size").optional().description("반환받을 지도 갯수(default 10)")
     );
-
+//    private final int pageNumber;
+//    private final int size;
+//    private final int totalPages;
+//    private final long totalElements;
+//    private final boolean first;
+//    private final boolean last;
     private static final Snippet READ_MAP_LIST_RESPONSE = responseFields(
             fieldWithPath("content[].id").type(JsonFieldType.NUMBER).description("지도의 아이디"),
             fieldWithPath("content[].map_name").type(JsonFieldType.STRING).description("지도의 이름"),
             fieldWithPath("content[].host_id").type(JsonFieldType.NUMBER).description("지도의 작성자의 닉네임"),
             fieldWithPath("content[].host_nickname").type(JsonFieldType.STRING).description("지도의 작성자의 닉네임"),
             fieldWithPath("content[].places_count").type(JsonFieldType.NUMBER).description("지도내에 등록된 장소의 갯수"),
-            fieldWithPath("pageable[].sort").type(JsonFieldType.NUMBER).description("지도내에 등록된 장소의 갯수"),
-            fieldWithPath("content[].places_count").type(JsonFieldType.NUMBER).description("지도내에 등록된 장소의 갯수"),
-            fieldWithPath("content[].places_count").type(JsonFieldType.NUMBER).description("지도내에 등록된 장소의 갯수"),
-            fieldWithPath("content[].places_count").type(JsonFieldType.NUMBER).description("지도내에 등록된 장소의 갯수"),
-            fieldWithPath("content[].places_count").type(JsonFieldType.NUMBER).description("지도내에 등록된 장소의 갯수"),
-            fieldWithPath("content[].places_count").type(JsonFieldType.NUMBER).description("지도내에 등록된 장소의 갯수")
+            fieldWithPath("page_number").type(JsonFieldType.NUMBER).description("페이지 넘버"),
+            fieldWithPath("size").type(JsonFieldType.NUMBER).description("요청 데이터 갯수"),
+            fieldWithPath("total_pages").type(JsonFieldType.NUMBER).description("총 페이지 갯수"),
+            fieldWithPath("total_elements").type(JsonFieldType.NUMBER).description("총 데이터 수"),
+            fieldWithPath("first").type(JsonFieldType.BOOLEAN).description("첫 페이지 여부"),
+            fieldWithPath("last").type(JsonFieldType.BOOLEAN).description("마지막 페이지 여부")
 
     );
 
@@ -120,6 +125,8 @@ class MapAcceptanceTest extends RestAssuredTest {
 
         .then()
                 .statusCode(HttpStatus.OK.value())
+                .body("page_number" , equalTo(0))
+                .body("size" , equalTo(10))
                 .log().all();
     }
 

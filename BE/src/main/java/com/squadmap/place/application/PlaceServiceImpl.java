@@ -25,7 +25,7 @@ public class PlaceServiceImpl implements PlaceService{
 
     @Override
     @Transactional
-    public Long create(String name, Point position, String description, Long mapId, Long categoryId) {
+    public Long create(String name, String address, Point position, String description, Long mapId, Long categoryId) {
         // mock member
         Long memberId = 1L;
 
@@ -35,7 +35,7 @@ public class PlaceServiceImpl implements PlaceService{
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(NoSuchElementException::new);
 
-        Place place = Place.of(name, Position.from(position), description, map, category, memberId);
+        Place place = Place.of(name, address, Position.from(position), description, map, category, memberId);
 
         Place saved = placeRepository.save(place);
 

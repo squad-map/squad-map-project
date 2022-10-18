@@ -1,10 +1,15 @@
 package com.squadmap.map.application;
 
+import com.squadmap.category.application.dto.CategoryInfo;
+import com.squadmap.category.domain.Category;
+import com.squadmap.category.infrastructure.CategoryRepository;
+import com.squadmap.map.application.dto.MapDetail;
 import com.squadmap.map.application.dto.MapSimpleInfo;
 import com.squadmap.map.domain.Map;
 import com.squadmap.map.infrastructure.MapRepository;
 import com.squadmap.member.domain.Member;
 import com.squadmap.member.infrastructure.MemberRepository;
+import com.squadmap.place.application.dto.PlaceSimpleInfo;
 import com.squadmap.place.domain.Place;
 import com.squadmap.place.infrastructure.PlaceRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +31,7 @@ public class MapServiceImpl implements MapService{
     private final MapRepository mapRepository;
     private final MemberRepository memberRepository;
     private final PlaceRepository placeRepository;
+    private final CategoryRepository categoryRepository;
 
     @Override
     @Transactional
@@ -55,6 +61,17 @@ public class MapServiceImpl implements MapService{
         });
     }
 
+    @Override
+    public MapDetail findOne(Long mapId, Long memberId) {
+        Map map = mapRepository.findById(mapId).orElseThrow(RuntimeException::new);
+        if(!map.isFullDisclosure() && !map.canAccess(memberId)) {
+           throw new IllegalArgumentException();
+        }
+        Member member = memberRepository.findById(map.getMemberId()).orElseThrow(RuntimeException::new);
+
+        return MapDetail.of(map, member, categorize(placeRepository.findAllByMapId(mapId)));
+    }
+
     private java.util.Map<Long, Member> getMembers(Page<Map> maps) {
         List<Long> memberIds = maps.stream()
                 .map(Map::getMemberId)
@@ -62,6 +79,17 @@ public class MapServiceImpl implements MapService{
         return memberRepository.findAllById(memberIds)
                 .stream()
                 .collect(Collectors.toMap(Member::getId, Function.identity()));
+    }
+
+    private java.util.Map<CategoryInfo, List<PlaceSimpleInfo>> categorize(List<Place> places) {
+        java.util.Map<Category, List<Place>> categorizedPlaces = places.stream()
+                .collect(Collectors.groupingBy(Place::getCategory));
+
+        return categorizedPlaces.entrySet()
+                .stream()
+                .collect(Collectors.toMap(e-> CategoryInfo.from(e.getKey()), e -> e.getValue().stream()
+                        .map(PlaceSimpleInfo::from)
+                        .collect(Collectors.toUnmodifiableList())));
     }
 
 }

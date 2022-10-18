@@ -78,8 +78,13 @@ class MapServiceTest {
         assertThat(content.get(0).getHostNickname()).isEqualTo("nickname");
         assertThat(content.get(0).getMapName()).isEqualTo("first map");
         assertThat(content.get(0).getPlacesCount()).isEqualTo(2);
-
         assertThat(mapSimpleInfos.getTotalElements()).isEqualTo(1);
+
+    }
+
+    @Test
+    @DisplayName("지도에 저장된 장소를 모두 조회할 수 있다.")
+    void getOneMapTest() {
 
     }
 

@@ -45,6 +45,10 @@ public class Map {
         return this.places.size();
     }
 
+    public boolean canAccess(Long memberId) {
+        return this.memberId.equals(memberId);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

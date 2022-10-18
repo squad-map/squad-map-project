@@ -22,6 +22,8 @@ public class Place {
 
     private String name;
 
+    private String address;
+
     @Embedded
     private Position position;
 
@@ -35,8 +37,8 @@ public class Place {
 
     private Long memberId;
 
-    public static Place of(String name, Position position, String description, Map map, Category category, Long memberId) {
-        return new Place(null, name, position, description, map, category, memberId);
+    public static Place of(String name, String address, Position position, String description, Map map, Category category, Long memberId) {
+        return new Place(null, name, address, position, description, map, category, memberId);
     }
 
     @Override

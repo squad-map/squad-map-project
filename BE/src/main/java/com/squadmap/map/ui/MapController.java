@@ -3,6 +3,7 @@ package com.squadmap.map.ui;
 import com.squadmap.common.SimplePage;
 import com.squadmap.common.auth.Login;
 import com.squadmap.map.application.MapService;
+import com.squadmap.map.application.dto.MapDetail;
 import com.squadmap.map.application.dto.MapSimpleInfo;
 import com.squadmap.map.ui.dto.MapCreateResponse;
 import com.squadmap.map.ui.dto.MapRequest;
@@ -39,5 +40,10 @@ public class MapController {
     @GetMapping("/map/public")
     public SimplePage<MapSimpleInfo> searchPublicMapList(@PageableDefault Pageable pageable) {
         return new SimplePage<>(mapService.readPublic(pageable));
+    }
+
+    @GetMapping("/map/{mapId}")
+    public void searchOneMap(@PathVariable Long mapId, @Login Long memberId) {
+        MapDetail one = mapService.findOne(mapId, memberId);
     }
 }

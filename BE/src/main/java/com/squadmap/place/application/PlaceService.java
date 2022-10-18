@@ -4,5 +4,5 @@ import org.springframework.data.geo.Point;
 
 public interface PlaceService {
 
-    Long create(String name, Point position, String description, Long mapId, Long categoryId);
+    Long create(String name, String address, Point position, String description, Long mapId, Long categoryId);
 }
