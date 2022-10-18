@@ -51,7 +51,7 @@ class MapAcceptanceTest extends RestAssuredTest {
         .when().post("/map")
 
         .then().statusCode(HttpStatus.CREATED.value())
-                .body("map_id", equalTo(3));
+                .body("map_id", notNullValue());
 
     }
 
@@ -87,17 +87,12 @@ class MapAcceptanceTest extends RestAssuredTest {
         .then().statusCode(HttpStatus.OK.value());
 
     }
-//page=0&size=3
+
     private static final Snippet READ_MAP_LIST_REQUSET = pathParameters(
             parameterWithName("page").optional().description("페이지 번호(default 0)"),
             parameterWithName("size").optional().description("반환받을 지도 갯수(default 10)")
     );
-//    private final int pageNumber;
-//    private final int size;
-//    private final int totalPages;
-//    private final long totalElements;
-//    private final boolean first;
-//    private final boolean last;
+
     private static final Snippet READ_MAP_LIST_RESPONSE = responseFields(
             fieldWithPath("content[].id").type(JsonFieldType.NUMBER).description("지도의 아이디"),
             fieldWithPath("content[].map_name").type(JsonFieldType.STRING).description("지도의 이름"),
@@ -129,6 +124,46 @@ class MapAcceptanceTest extends RestAssuredTest {
                 .body("size" , equalTo(10))
                 .log().all();
     }
+
+    private static final Snippet READ_MAP_DETAIL_REQUEST_PATH_PARAMETER = pathParameters(
+            parameterWithName("map_id").description("조회할 지도의 아이디")
+    );
+
+    private static final Snippet READ_MAP_DETAIL_RESPONSE = responseFields(
+            fieldWithPath("map_id").type(JsonFieldType.NUMBER).description("지도의 아이디"),
+            fieldWithPath("map_name").type(JsonFieldType.STRING).description("지도의 이름"),
+            fieldWithPath("host_id").type(JsonFieldType.NUMBER).description("지도의 작성자의 닉네임"),
+            fieldWithPath("host_nickname").type(JsonFieldType.STRING).description("지도의 작성자의 닉네임"),
+            fieldWithPath("places_count").type(JsonFieldType.NUMBER).description("지도내에 등록된 장소의 갯수"),
+            fieldWithPath("categorized_places[].category_info.category_id").type(JsonFieldType.NUMBER).description("카테고리 아이디"),
+            fieldWithPath("categorized_places[].category_info.category_name").type(JsonFieldType.STRING).description("카테고리 이름"),
+            fieldWithPath("categorized_places[].category_info.category_color").type(JsonFieldType.STRING).description("카테고리 색상"),
+            fieldWithPath("categorized_places[].places[].place_id").type(JsonFieldType.NUMBER).description("장소 아이디"),
+            fieldWithPath("categorized_places[].places[].place_name").type(JsonFieldType.STRING).description("장소 이름"),
+            fieldWithPath("categorized_places[].places[].address").type(JsonFieldType.STRING).description("장소 주소"),
+            fieldWithPath("categorized_places[].places[].position.latitude").type(JsonFieldType.NUMBER).description("장소 위도"),
+            fieldWithPath("categorized_places[].places[].position.longitude").type(JsonFieldType.NUMBER).description("장소 경도")
+    );
+
+    @Test
+    @DisplayName("로그인한 유저는 지도를 조회할 수 있다.")
+    void readMapDetail() {
+        String accessToken = jwtProvider.generateAccessToken(1L);
+        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, READ_MAP_DETAIL_REQUEST_PATH_PARAMETER, AUTHORIZATION_HEADER, READ_MAP_DETAIL_RESPONSE))
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
+
+                .when().get("/map/{map_id}", 1L)
+
+                .then()
+                .statusCode(HttpStatus.OK.value())
+                .log().all();
+    }
+
+
+
+
+
 
 
 

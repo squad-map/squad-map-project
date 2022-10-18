@@ -43,7 +43,7 @@ public class MapController {
     }
 
     @GetMapping("/map/{mapId}")
-    public void searchOneMap(@PathVariable Long mapId, @Login Long memberId) {
-        MapDetail one = mapService.findOne(mapId, memberId);
+    public MapDetail searchOneMap(@PathVariable Long mapId, @Login Long memberId) {
+        return mapService.findOne(mapId, memberId);
     }
 }

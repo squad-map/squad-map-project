@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 public class PlaceRequest {
 
     private String name;
+    private String address;
     private Point position;
     private String description;
     private Long mapId;

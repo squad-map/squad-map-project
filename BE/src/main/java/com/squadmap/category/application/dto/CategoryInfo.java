@@ -1,9 +1,7 @@
 package com.squadmap.category.application.dto;
 
 import com.squadmap.category.domain.Category;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 @Getter
 @RequiredArgsConstructor
@@ -17,4 +15,5 @@ public class CategoryInfo {
     public static CategoryInfo from(Category category) {
         return new CategoryInfo(category.getId(), category.getName(), category.getColor());
     }
+
 }

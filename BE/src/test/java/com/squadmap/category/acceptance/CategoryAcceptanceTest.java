@@ -15,6 +15,7 @@ import org.springframework.restdocs.snippet.Snippet;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
 
@@ -60,7 +61,7 @@ public class CategoryAcceptanceTest extends RestAssuredTest {
         .when().post("/categories")
 
         .then().statusCode(HttpStatus.CREATED.value())
-                .body("category_id", equalTo(3));
+                .body("category_id", notNullValue());
     }
 
 }

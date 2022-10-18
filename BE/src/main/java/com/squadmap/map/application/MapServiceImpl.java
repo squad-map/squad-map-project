@@ -3,6 +3,7 @@ package com.squadmap.map.application;
 import com.squadmap.category.application.dto.CategoryInfo;
 import com.squadmap.category.domain.Category;
 import com.squadmap.category.infrastructure.CategoryRepository;
+import com.squadmap.map.application.dto.CategorizedPlaces;
 import com.squadmap.map.application.dto.MapDetail;
 import com.squadmap.map.application.dto.MapSimpleInfo;
 import com.squadmap.map.domain.Map;
@@ -31,7 +32,6 @@ public class MapServiceImpl implements MapService{
     private final MapRepository mapRepository;
     private final MemberRepository memberRepository;
     private final PlaceRepository placeRepository;
-    private final CategoryRepository categoryRepository;
 
     @Override
     @Transactional
@@ -68,8 +68,9 @@ public class MapServiceImpl implements MapService{
            throw new IllegalArgumentException();
         }
         Member member = memberRepository.findById(map.getMemberId()).orElseThrow(RuntimeException::new);
+        List<Place> places = placeRepository.findAllByMapId(mapId);
 
-        return MapDetail.of(map, member, categorize(placeRepository.findAllByMapId(mapId)));
+        return MapDetail.of(map, member, places.size(), categorize(places));
     }
 
     private java.util.Map<Long, Member> getMembers(Page<Map> maps) {
@@ -81,15 +82,17 @@ public class MapServiceImpl implements MapService{
                 .collect(Collectors.toMap(Member::getId, Function.identity()));
     }
 
-    private java.util.Map<CategoryInfo, List<PlaceSimpleInfo>> categorize(List<Place> places) {
+    private List<CategorizedPlaces> categorize(List<Place> places) {
         java.util.Map<Category, List<Place>> categorizedPlaces = places.stream()
                 .collect(Collectors.groupingBy(Place::getCategory));
 
         return categorizedPlaces.entrySet()
                 .stream()
-                .collect(Collectors.toMap(e-> CategoryInfo.from(e.getKey()), e -> e.getValue().stream()
+                .map(e-> new CategorizedPlaces(CategoryInfo.from(e.getKey()),
+                        e.getValue().stream()
                         .map(PlaceSimpleInfo::from)
-                        .collect(Collectors.toUnmodifiableList())));
+                        .collect(Collectors.toList())))
+                .collect(Collectors.toList());
     }
 
 }

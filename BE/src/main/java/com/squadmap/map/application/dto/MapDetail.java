@@ -18,15 +18,15 @@ public class MapDetail {
     private final Long hostId;
     private final String hostNickname;
     private final int placesCount;
-    private final java.util.Map<CategoryInfo, List<PlaceSimpleInfo>> categorizedPlaces;
+    private final List<CategorizedPlaces> categorizedPlaces;
 
-    public static MapDetail of(Map map, Member member, java.util.Map<CategoryInfo, List<PlaceSimpleInfo>> categorizedPlaces) {
+    public static MapDetail of(Map map, Member member, int placesCount, List<CategorizedPlaces> categorizedPlaces) {
 
         return new MapDetail(map.getId(),
                 map.getName(),
                 member.getId(),
                 member.getNickname(),
-                map.getPlacesCount(),
+                placesCount,
                 categorizedPlaces);
     }
 

@@ -32,6 +32,7 @@ class PlaceAcceptanceTest extends RestAssuredTest {
      */
     private static final Snippet CREATE_REQUEST_FIELDS = requestFields(
             fieldWithPath("name").type(JsonFieldType.STRING).description("장소 이름"),
+            fieldWithPath("address").type(JsonFieldType.STRING).description("장소 주소"),
             fieldWithPath("position.x").type(JsonFieldType.NUMBER).description("장소 위도"),
             fieldWithPath("position.y").type(JsonFieldType.NUMBER).description("장소 경도"),
             fieldWithPath("description").type(JsonFieldType.STRING).description("장소에 대한 설명(리뷰)"),
@@ -46,6 +47,7 @@ class PlaceAcceptanceTest extends RestAssuredTest {
     @Test
     void createTest() {
         String placeName = "my favorite place";
+        String address = "관악구";
         double x = 37.123513;
         double y = 127.123414123;
         String description = "it's my favorite place\nthank you";
@@ -53,7 +55,7 @@ class PlaceAcceptanceTest extends RestAssuredTest {
         Long categoryId = 1L;
         Point point = new Point(x, y);
         String tokenHeader = "Bearer " + jwtProvider.generateAccessToken(1L);
-        PlaceRequest placeRequest = new PlaceRequest(placeName, point, description, mapId, categoryId);
+        PlaceRequest placeRequest = new PlaceRequest(placeName, address, point, description, mapId, categoryId);
 
         given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, CREATE_REQUEST_FIELDS, CREATE_RESPONSE_FIELDS, AUTHORIZATION_HEADER))
                 .accept(ContentType.JSON)
@@ -62,9 +64,9 @@ class PlaceAcceptanceTest extends RestAssuredTest {
                 .body(placeRequest)
                 .log().all()
 
-                .when().post("/places")
+        .when().post("/places")
 
-                .then().statusCode(HttpStatus.CREATED.value())
+        .then().statusCode(HttpStatus.CREATED.value())
                 .body("place_id", notNullValue());
 
     }

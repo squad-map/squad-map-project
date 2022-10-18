@@ -55,3 +55,33 @@ include::{snippets}/map_acceptance_test/map_update_test/request-headers.adoc[]
 
 ==== response
 include::{snippets}/map_acceptance_test/map_update_test/http-response.adoc[]
+
+
+[[resources-map-read-detail]]
+=== map detail 조회
+
+==== request
+include::{snippets}/map_acceptance_test/read_map_detail/path-parameters.adoc[]
+include::{snippets}/map_acceptance_test/read_map_detail/http-request.adoc[]
+
+필수 헤더
+include::{snippets}/map_acceptance_test/read_map_detail/request-headers.adoc[]
+
+==== response
+include::{snippets}/map_acceptance_test/read_map_detail/response-fields.adoc[]
+include::{snippets}/map_acceptance_test/read_map_detail/response-body.adoc[]
+include::{snippets}/map_acceptance_test/read_map_detail/http-response.adoc[]
+
+
+[[resources-read-public-map-list]]
+=== 전체 공개 지도 리스트 조회
+
+==== request
+include::{snippets}/map_acceptance_test/read_public_map_list_test/path-parameters.adoc[]
+include::{snippets}/map_acceptance_test/read_public_map_list_test/http-response.adoc[]
+
+==== response
+include::{snippets}/map_acceptance_test/read_public_map_list_test/response-fields.adoc[]
+include::{snippets}/map_acceptance_test/read_public_map_list_test/response-body.adoc[]
+include::{snippets}/map_acceptance_test/read_public_map_list_test/http-response.adoc[]
+

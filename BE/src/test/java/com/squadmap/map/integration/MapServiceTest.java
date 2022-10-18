@@ -1,6 +1,7 @@
 package com.squadmap.map.integration;
 
 import com.squadmap.map.application.MapService;
+import com.squadmap.map.application.dto.MapDetail;
 import com.squadmap.map.application.dto.MapSimpleInfo;
 import com.squadmap.map.domain.Map;
 import com.squadmap.map.infrastructure.MapRepository;
@@ -77,14 +78,25 @@ class MapServiceTest {
 
         assertThat(content.get(0).getHostNickname()).isEqualTo("nickname");
         assertThat(content.get(0).getMapName()).isEqualTo("first map");
-        assertThat(content.get(0).getPlacesCount()).isEqualTo(2);
-        assertThat(mapSimpleInfos.getTotalElements()).isEqualTo(1);
+        assertThat(content.get(0).getPlacesCount()).isPositive();
+        assertThat(mapSimpleInfos.getTotalElements()).isPositive();
 
     }
 
     @Test
     @DisplayName("지도에 저장된 장소를 모두 조회할 수 있다.")
     void getOneMapTest() {
+        // given
+        Long mapId = 1L;
+        Long memberId = 1L;
+
+        //when
+        MapDetail mapDetail = mapService.findOne(mapId, memberId);
+
+        //then
+        assertThat(mapDetail.getMapId()).isEqualTo(1L);
+        assertThat(mapDetail.getHostId()).isEqualTo(1L);
+        assertThat(mapDetail.getCategorizedPlaces()).isNotNull();
 
     }
 

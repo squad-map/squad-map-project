@@ -23,7 +23,7 @@ public class Map {
 
     private Long memberId;
 
-    @OneToMany(mappedBy = "map")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "map")
     private List<Place> places = new ArrayList<>();
 
     private Map(String name, boolean fullDisclosure, Long memberId) {
