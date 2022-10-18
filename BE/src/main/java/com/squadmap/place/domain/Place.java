@@ -41,6 +41,14 @@ public class Place {
         return new Place(null, name, address, position, description, map, category, memberId);
     }
 
+    public void changeCategory(Category category) {
+        this.category = category;
+    }
+
+    public void editDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

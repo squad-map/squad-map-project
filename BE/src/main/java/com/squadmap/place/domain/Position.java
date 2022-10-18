@@ -1,7 +1,7 @@
 package com.squadmap.place.domain;
 
+import com.squadmap.place.ui.dto.Point;
 import lombok.*;
-import org.springframework.data.geo.Point;
 
 import javax.persistence.Embeddable;
 

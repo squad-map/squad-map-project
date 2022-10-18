@@ -30,6 +30,9 @@ public class Category {
         return new Category(null, name, color, map);
     }
 
+    public boolean hasSameId(Long categoryId) {
+        return this.id.equals(categoryId);
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
