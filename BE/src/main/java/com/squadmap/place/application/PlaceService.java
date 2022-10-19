@@ -7,5 +7,5 @@ public interface PlaceService {
 
     Long create(String name, String address, Point position, String description, Long mapId, Long categoryId, Long memberId);
 
-    PlaceDetailInfo update(Long memberId, Long categoryId, Long placeId, String description);
+    PlaceDetailInfo update(Long memberId, Long placeId, Long categoryId, String description);
 }

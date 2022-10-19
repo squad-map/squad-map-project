@@ -78,10 +78,48 @@ include::{snippets}/map_acceptance_test/read_map_detail/http-response.adoc[]
 
 ==== request
 include::{snippets}/map_acceptance_test/read_public_map_list_test/path-parameters.adoc[]
-include::{snippets}/map_acceptance_test/read_public_map_list_test/http-response.adoc[]
+include::{snippets}/map_acceptance_test/read_public_map_list_test/http-request.adoc[]
 
 ==== response
 include::{snippets}/map_acceptance_test/read_public_map_list_test/response-fields.adoc[]
 include::{snippets}/map_acceptance_test/read_public_map_list_test/response-body.adoc[]
 include::{snippets}/map_acceptance_test/read_public_map_list_test/http-response.adoc[]
+
+
+[[resources-place]]
+== 장소
+
+[[resources-place-create-test]]
+=== 장소 등록
+
+==== request
+include::{snippets}/place_acceptance_test/create_test/request-fields.adoc[]
+include::{snippets}/place_acceptance_test/create_test/request-body.adoc[]
+include::{snippets}/place_acceptance_test/create_test/http-request.adoc[]
+
+==== 필수 헤더
+include::{snippets}/place_acceptance_test/create_test/request-headers.adoc[]
+
+==== response
+include::{snippets}/place_acceptance_test/create_test/response-fields.adoc[]
+include::{snippets}/place_acceptance_test/create_test/response-body.adoc[]
+include::{snippets}/place_acceptance_test/create_test/http-response.adoc[]
+
+
+
+[[resources-place-update-test]]
+=== 장소의 카테고리 및 설명 수정
+
+==== request
+include::{snippets}/place_acceptance_test/update_test/request-fields.adoc[]
+include::{snippets}/place_acceptance_test/update_test/request-body.adoc[]
+include::{snippets}/place_acceptance_test/update_test/http-request.adoc[]
+
+==== 필수 헤더
+include::{snippets}/place_acceptance_test/update_test/request-headers.adoc[]
+
+==== response
+include::{snippets}/place_acceptance_test/update_test/response-fields.adoc[]
+include::{snippets}/place_acceptance_test/update_test/response-body.adoc[]
+include::{snippets}/place_acceptance_test/update_test/http-response.adoc[]
 

@@ -48,16 +48,16 @@ public class PlaceServiceImpl implements PlaceService {
 
     @Override
     @Transactional
-    public PlaceDetailInfo update(Long memberId, Long categoryId, Long placeId, String description) {
-        Place place = placeRepository.findPlaceById(placeId)
-                .orElseThrow(NoSuchElementException::new);
+    public PlaceDetailInfo update(Long memberId, Long placeId, Long categoryId, String description) {
+    Place place = placeRepository.findPlaceById(placeId)
+            .orElseThrow(NoSuchElementException::new);
 
         if(!place.getMap().canAccess(memberId)) {
             throw new IllegalArgumentException();
         }
         place.editDescription(description);
         if(!place.getCategory().hasSameId(categoryId)) {
-            Category category = categoryRepository.findById(categoryId)
+            Category category = categoryRepository.findByIdAndMapId(categoryId, place.getMap().getId())
                     .orElseThrow(NoSuchElementException::new);
             place.changeCategory(category);
         }
