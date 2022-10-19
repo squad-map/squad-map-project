@@ -160,6 +160,32 @@ class MapAcceptanceTest extends RestAssuredTest {
                 .log().all();
     }
 
+    private static final Snippet READ_GROUP_MAP_LIST_RESPONSE = responseFields(
+            fieldWithPath("map_count").type(JsonFieldType.NUMBER).description("속한 그룹 지도의 갯수"),
+            fieldWithPath("maps[].id").type(JsonFieldType.NUMBER).description("지도의 아이디"),
+            fieldWithPath("maps[].map_name").type(JsonFieldType.STRING).description("지도의 이름"),
+            fieldWithPath("maps[].host_id").type(JsonFieldType.NUMBER).description("지도의 작성자의 닉네임"),
+            fieldWithPath("maps[].host_nickname").type(JsonFieldType.STRING).description("지도의 작성자의 닉네임"),
+            fieldWithPath("maps[].places_count").type(JsonFieldType.NUMBER).description("지도내에 등록된 장소의 갯수")
+    );
+
+    @Test
+    @DisplayName("로그인한 유저라면 그룹 혹은 자신이 만든 지도의 리스트를 조회할 수 있다.")
+    void readGroupMapsTest() {
+
+        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, AUTHORIZATION_HEADER, READ_GROUP_MAP_LIST_RESPONSE))
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(ContentType.JSON)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtProvider.generateAccessToken(1L))
+                .log().all()
+
+        .when().get("/map/group")
+
+        .then().statusCode(HttpStatus.OK.value())
+                .body("map_count", notNullValue())
+                .log().all();
+    }
+
 
 
 

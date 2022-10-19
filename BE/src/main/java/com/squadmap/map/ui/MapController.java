@@ -5,6 +5,7 @@ import com.squadmap.common.auth.Login;
 import com.squadmap.map.application.MapService;
 import com.squadmap.map.application.dto.MapDetail;
 import com.squadmap.map.application.dto.MapSimpleInfo;
+import com.squadmap.map.application.dto.MapsResponse;
 import com.squadmap.map.ui.dto.MapCreateResponse;
 import com.squadmap.map.ui.dto.MapRequest;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -45,5 +48,10 @@ public class MapController {
     @GetMapping("/map/{mapId}")
     public MapDetail searchOneMap(@PathVariable Long mapId, @Login Long memberId) {
         return mapService.findOne(mapId, memberId);
+    }
+
+    @GetMapping("/map/group")
+    public MapsResponse searchGroupMapList(@Login Long memberId) {
+        return mapService.readGroupMap(memberId);
     }
 }

@@ -6,6 +6,7 @@ import com.squadmap.category.infrastructure.CategoryRepository;
 import com.squadmap.map.application.dto.CategorizedPlaces;
 import com.squadmap.map.application.dto.MapDetail;
 import com.squadmap.map.application.dto.MapSimpleInfo;
+import com.squadmap.map.application.dto.MapsResponse;
 import com.squadmap.map.domain.Map;
 import com.squadmap.map.infrastructure.MapRepository;
 import com.squadmap.member.domain.Member;
@@ -71,6 +72,25 @@ public class MapServiceImpl implements MapService{
         List<Place> places = placeRepository.findAllByMapId(mapId);
 
         return MapDetail.of(map, member, places.size(), categorize(places));
+    }
+
+    @Override
+    public MapsResponse readGroupMap(Long memberId) {
+        List<Map> maps = mapRepository.findAllByMemberId(memberId);
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(NoSuchElementException::new);
+        List<MapSimpleInfo> mapSimpleInfos = maps.stream().map(
+                        map -> new MapSimpleInfo(
+                                map.getId(),
+                                map.getName(),
+                                member.getId(),
+                                member.getNickname(),
+                                map.getPlacesCount())
+                )
+                .collect(Collectors.toUnmodifiableList());
+
+        return new MapsResponse(mapSimpleInfos.size(), mapSimpleInfos);
+
     }
 
     private java.util.Map<Long, Member> getMembers(Page<Map> maps) {
