@@ -8,4 +8,6 @@ public interface PlaceService {
     Long create(String name, String address, Point position, String description, Long mapId, Long categoryId, Long memberId);
 
     PlaceDetailInfo update(Long memberId, Long placeId, Long categoryId, String description);
+
+    PlaceDetailInfo readOne(Long memberId, Long placeId);
 }

@@ -49,7 +49,7 @@ public class PlaceServiceImpl implements PlaceService {
     @Override
     @Transactional
     public PlaceDetailInfo update(Long memberId, Long placeId, Long categoryId, String description) {
-    Place place = placeRepository.findPlaceById(placeId)
+        Place place = placeRepository.findPlaceFetchAllById(placeId)
             .orElseThrow(NoSuchElementException::new);
 
         if(!place.getMap().canAccess(memberId)) {
@@ -62,7 +62,19 @@ public class PlaceServiceImpl implements PlaceService {
             place.changeCategory(category);
         }
 
-        return PlaceDetailInfo.of(place, categoryId);
+        return PlaceDetailInfo.from(place);
+    }
+
+    @Override
+    public PlaceDetailInfo readOne(Long memberId, Long placeId) {
+        Place place = placeRepository.findPlaceFetchAllById(placeId)
+                .orElseThrow(NoSuchElementException::new);
+
+        if(!place.getMap().canAccess(memberId)) {
+            throw new IllegalArgumentException();
+        }
+
+        return PlaceDetailInfo.from(place);
     }
 
 

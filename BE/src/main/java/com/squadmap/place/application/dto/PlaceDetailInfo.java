@@ -18,7 +18,7 @@ public class PlaceDetailInfo {
     private final String description;
     private final Long categoryId;
 
-    public static PlaceDetailInfo of(final Place place, final Long categoryId) {
+    public static PlaceDetailInfo from(final Place place) {
         return new PlaceDetailInfo(
                 place.getId(),
                 place.getName(),
@@ -26,6 +26,6 @@ public class PlaceDetailInfo {
                 place.getPosition().getLatitude(),
                 place.getPosition().getLongitude(),
                 place.getDescription(),
-                categoryId);
+                place.getCategory().getId());
     }
 }

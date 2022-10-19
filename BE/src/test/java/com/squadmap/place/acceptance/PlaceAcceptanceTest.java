@@ -13,14 +13,12 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.restdocs.snippet.Snippet;
 
-import java.awt.*;
-
 import static io.restassured.RestAssured.given;
-import static io.restassured.RestAssured.post;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
 
 class PlaceAcceptanceTest extends RestAssuredTest {
@@ -114,4 +112,46 @@ class PlaceAcceptanceTest extends RestAssuredTest {
                 .body("description", equalTo(description))
                 .log().all();
     }
+
+
+    private static final Snippet READ_PATH_PARAMETER = pathParameters(
+            parameterWithName("place_id").description("조회할 장소의 아이디")
+    );
+
+    private static final Snippet READ_ONE_RESPONSE_FIELDS = responseFields(
+            fieldWithPath("place_id").type(JsonFieldType.NUMBER).description("장소 아이디"),
+            fieldWithPath("place_name").type(JsonFieldType.STRING).description("장소 이름"),
+            fieldWithPath("address").type(JsonFieldType.STRING).description("장소 주소"),
+            fieldWithPath("latitude").type(JsonFieldType.NUMBER).description("장소 위도"),
+            fieldWithPath("longitude").type(JsonFieldType.NUMBER).description("장소 경도"),
+            fieldWithPath("description").type(JsonFieldType.STRING).description("장소 설명"),
+            fieldWithPath("category_id").type(JsonFieldType.NUMBER).description("카테고리의 아이디")
+    );
+
+    @Test
+    @DisplayName("지도에 권한이 있는 사용자는 지도에 등록된 장소를 조회할 수 있다.")
+    void readOneTest() {
+
+        Long placeId = 1L;
+        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, AUTHORIZATION_HEADER, READ_PATH_PARAMETER, READ_ONE_RESPONSE_FIELDS))
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(ContentType.JSON)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtProvider.generateAccessToken(1L))
+                .pathParam("place_id", placeId)
+                .log().all()
+
+        .when().get("/places/{place_id}",placeId)
+
+        .then().statusCode(HttpStatus.OK.value())
+                .body("place_id", notNullValue())
+                .body("place_name", notNullValue())
+                .body("address", notNullValue())
+                .body("latitude", notNullValue())
+                .body("longitude", notNullValue())
+                .body("category_id", notNullValue())
+                .body("description", notNullValue())
+                .log().all();
+
+    }
+
 }

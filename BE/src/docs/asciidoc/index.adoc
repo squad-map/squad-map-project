@@ -123,3 +123,21 @@ include::{snippets}/place_acceptance_test/update_test/response-fields.adoc[]
 include::{snippets}/place_acceptance_test/update_test/response-body.adoc[]
 include::{snippets}/place_acceptance_test/update_test/http-response.adoc[]
 
+
+[[resources-read-one-test]]
+=== 장소 디테일 조회
+
+==== request
+
+include::{snippets}/place_acceptance_test/read_one_test/path-parameters.adoc[]
+include::{snippets}/place_acceptance_test/read_one_test/http-request.adoc[]
+
+==== 필수 헤더
+include::{snippets}/place_acceptance_test/read_one_test/request-headers.adoc[]
+
+==== response
+include::{snippets}/place_acceptance_test/read_one_test/response-fields.adoc[]
+include::{snippets}/place_acceptance_test/read_one_test/response-body.adoc[]
+include::{snippets}/place_acceptance_test/read_one_test/http-response.adoc[]
+
+

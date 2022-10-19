@@ -65,4 +65,16 @@ class PlaceServiceTest {
         assertThat(placeDetailInfo.getDescription()).isEqualTo(description);
 
     }
+
+    @Test
+    @DisplayName("로그인된 유저이고, 지도에 권한에 있다면 장소를 조회할 수 있다.")
+    void placeReadOneTest() {
+
+        Long memberId = 1L;
+        Long placeId = 1L;
+        PlaceDetailInfo placeDetailInfo = placeService.readOne(memberId, placeId);
+
+        assertThat(placeDetailInfo.getPlaceId()).isEqualTo(placeId);
+
+    }
 }

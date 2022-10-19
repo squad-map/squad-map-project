@@ -38,4 +38,10 @@ public class PlaceController {
                 placeUpdateRequest.getDescription()
         );
     }
+
+    @GetMapping("/places/{placeId}")
+    public PlaceDetailInfo readOne(@Login Long memberId, @PathVariable Long placeId) {
+
+        return placeService.readOne(memberId, placeId);
+    }
 }
