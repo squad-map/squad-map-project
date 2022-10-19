@@ -12,7 +12,7 @@ public class CategoryInfo {
     private final String categoryName;
     private final String categoryColor;
 
-    public static CategoryInfo from(Category category) {
+    public static CategoryInfo from(final Category category) {
         return new CategoryInfo(category.getId(), category.getName(), category.getColor());
     }
 

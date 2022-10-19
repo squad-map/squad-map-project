@@ -45,7 +45,8 @@ class MemberAcceptanceTest extends RestAssuredTest {
 
         .when().post("/member/update")
 
-        .then().statusCode(HttpStatus.OK.value()).log().all();
+        .then().statusCode(HttpStatus.OK.value())
+                .log().all();
 
     }
 }
