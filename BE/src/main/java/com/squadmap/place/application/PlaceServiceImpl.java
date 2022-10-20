@@ -2,6 +2,8 @@ package com.squadmap.place.application;
 
 import com.squadmap.category.domain.Category;
 import com.squadmap.category.infrastructure.CategoryRepository;
+import com.squadmap.common.excetpion.ClientException;
+import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
 import com.squadmap.map.domain.Map;
 import com.squadmap.map.infrastructure.MapRepository;
 import com.squadmap.place.application.dto.PlaceDetailInfo;
@@ -31,7 +33,7 @@ public class PlaceServiceImpl implements PlaceService {
         Map map = mapRepository.findById(mapId)
                 .orElseThrow(NoSuchElementException::new);
         if (!map.canAccess(memberId)) {
-            throw new IllegalArgumentException();
+            throw new ClientException(ErrorStatusCodeAndMessage.UNAUTHORIZED);
         }
 
         Category category = categoryRepository.findById(categoryId)
@@ -39,7 +41,7 @@ public class PlaceServiceImpl implements PlaceService {
 
         Position pos = Position.from(position);
         if (placeRepository.existsPlaceByPositionAndMap(pos, map)) {
-            throw new IllegalArgumentException("이미 등록된 장소입니다.");
+            throw new ClientException(ErrorStatusCodeAndMessage.ALREADY_REGISTERED_PLACE);
         }
 
         Place place = placeRepository.save(Place.of(name, address, pos, description, map, category, memberId));
@@ -50,15 +52,15 @@ public class PlaceServiceImpl implements PlaceService {
     @Transactional
     public PlaceDetailInfo update(Long memberId, Long placeId, Long categoryId, String description) {
         Place place = placeRepository.findPlaceFetchAllById(placeId)
-            .orElseThrow(NoSuchElementException::new);
+            .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_PLACE));
 
         if(!place.getMap().canAccess(memberId)) {
-            throw new IllegalArgumentException();
+            throw new ClientException(ErrorStatusCodeAndMessage.UNAUTHORIZED);
         }
         place.editDescription(description);
         if(!place.getCategory().hasSameId(categoryId)) {
             Category category = categoryRepository.findByIdAndMapId(categoryId, place.getMap().getId())
-                    .orElseThrow(NoSuchElementException::new);
+                    .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_CATEGORY));
             place.changeCategory(category);
         }
 
@@ -71,7 +73,7 @@ public class PlaceServiceImpl implements PlaceService {
                 .orElseThrow(NoSuchElementException::new);
 
         if(!place.getMap().canAccess(memberId)) {
-            throw new IllegalArgumentException();
+            throw new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_MEMBER);
         }
 
         return PlaceDetailInfo.from(place);

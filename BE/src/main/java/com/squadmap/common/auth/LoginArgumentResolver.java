@@ -2,6 +2,8 @@ package com.squadmap.common.auth;
 
 import com.squadmap.common.auth.application.JwtProvider;
 import com.squadmap.common.auth.application.OauthService;
+import com.squadmap.common.excetpion.ClientException;
+import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -28,7 +30,7 @@ public class LoginArgumentResolver implements HandlerMethodArgumentResolver {
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         HttpServletRequest request = webRequest.getNativeRequest(HttpServletRequest.class);
         String token = (String) Optional.ofNullable(request.getAttribute(AUTH_TOKEN))
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NOT_LOGGED_IN));
 
         return Long.parseLong(jwtProvider.getAudience(token));
     }

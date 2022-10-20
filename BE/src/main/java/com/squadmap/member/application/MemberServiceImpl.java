@@ -1,5 +1,7 @@
 package com.squadmap.member.application;
 
+import com.squadmap.common.excetpion.ClientException;
+import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
 import com.squadmap.member.domain.Member;
 import com.squadmap.member.infrastructure.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +19,7 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     public String updateNickname(Long memberId, String nickname) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(RuntimeException::new);
+                .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_MEMBER));
 
         return member.updateNickname(nickname);
     }

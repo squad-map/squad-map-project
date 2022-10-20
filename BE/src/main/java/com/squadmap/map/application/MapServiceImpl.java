@@ -3,6 +3,8 @@ package com.squadmap.map.application;
 import com.squadmap.category.application.dto.CategoryInfo;
 import com.squadmap.category.domain.Category;
 import com.squadmap.category.infrastructure.CategoryRepository;
+import com.squadmap.common.excetpion.ClientException;
+import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
 import com.squadmap.map.application.dto.CategorizedPlaces;
 import com.squadmap.map.application.dto.MapDetail;
 import com.squadmap.map.application.dto.MapSimpleInfo;
@@ -47,7 +49,7 @@ public class MapServiceImpl implements MapService{
     public void update(Long memberId, Long mapId, String mapName, boolean fullDisclosure) {
         // 권한 검증 로직이 필요
         Map targetMap = mapRepository.findById(mapId)
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_MEMBER));
         targetMap.update(mapName, fullDisclosure);
     }
 
@@ -66,7 +68,7 @@ public class MapServiceImpl implements MapService{
     public MapDetail findOne(Long mapId, Long memberId) {
         Map map = mapRepository.findById(mapId).orElseThrow(RuntimeException::new);
         if(!map.isFullDisclosure() && !map.canAccess(memberId)) {
-           throw new IllegalArgumentException();
+           throw new ClientException(ErrorStatusCodeAndMessage.NO_AUTHORIZED);
         }
         Member member = memberRepository.findById(map.getMemberId()).orElseThrow(RuntimeException::new);
         List<Place> places = placeRepository.findAllByMapId(mapId);
@@ -78,7 +80,7 @@ public class MapServiceImpl implements MapService{
     public MapsResponse readGroupMap(Long memberId) {
         List<Map> maps = mapRepository.findAllByMemberId(memberId);
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_MEMBER));
         List<MapSimpleInfo> mapSimpleInfos = maps.stream().map(
                         map -> new MapSimpleInfo(
                                 map.getId(),
