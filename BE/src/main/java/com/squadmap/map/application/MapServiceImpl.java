@@ -68,7 +68,7 @@ public class MapServiceImpl implements MapService{
     public MapDetail findOne(Long mapId, Long memberId) {
         Map map = mapRepository.findById(mapId).orElseThrow(RuntimeException::new);
         if(!map.isFullDisclosure() && !map.canAccess(memberId)) {
-           throw new ClientException(ErrorStatusCodeAndMessage.NO_AUTHORIZED);
+           throw new ClientException(ErrorStatusCodeAndMessage.UNAUTHORIZED);
         }
         Member member = memberRepository.findById(map.getMemberId()).orElseThrow(RuntimeException::new);
         List<Place> places = placeRepository.findAllByMapId(mapId);

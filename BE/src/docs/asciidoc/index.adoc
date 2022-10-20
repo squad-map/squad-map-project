@@ -24,6 +24,17 @@ include::{snippets}/oauth_acceptance_test/naver_login_test/request-fields.adoc[]
 include::{snippets}/oauth_acceptance_test/naver_login_test/response-body.adoc[]
 include::{snippets}/oauth_acceptance_test/naver_login_test/response-fields.adoc[]
 
+[[login-reissue-access-token]]
+=== 엑세스 토큰 재발급
+==== Request
+include::{snippets}/oauth_acceptance_test/reissue_test/http-request.adoc[]
+(Authoriazation header에 refresh token을 담아주세요.)
+include::{snippets}/oauth_acceptance_test/reissue_test/request-headers.adoc[]
+==== Response
+include::{snippets}/oauth_acceptance_test/reissue_test/response-body.adoc[]
+include::{snippets}/oauth_acceptance_test/reissue_test/response-fields.adoc[]
+
+
 [[resources-member]]
 == 회원
 

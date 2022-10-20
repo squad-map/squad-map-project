@@ -1,14 +1,13 @@
 package com.squadmap.common.auth.ui;
 
+import com.squadmap.common.auth.Login;
 import com.squadmap.common.auth.application.LoginService;
 import com.squadmap.common.auth.application.dto.LoginInfo;
+import com.squadmap.common.auth.ui.dto.AccessToken;
 import com.squadmap.common.auth.ui.dto.LoginRequest;
 import com.squadmap.common.auth.ui.dto.LoginResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -26,5 +25,11 @@ public class LoginController {
                 loginInfo.getMemberId(),
                 loginInfo.getNickname(),
                 loginInfo.getProfileImage());
+    }
+
+    @GetMapping("/login")
+    public AccessToken reissueAccessToken(@Login Long memberId) {
+
+        return new AccessToken(loginService.reissueAccessToken(memberId));
     }
 }

@@ -1,5 +1,6 @@
 package com.squadmap.place.integration;
 
+import com.squadmap.common.excetpion.ClientException;
 import com.squadmap.place.application.PlaceService;
 import com.squadmap.place.application.dto.PlaceDetailInfo;
 import com.squadmap.place.ui.dto.Point;
@@ -18,11 +19,11 @@ class PlaceServiceTest {
     private PlaceService placeService;
 
     @Test
-    @DisplayName("로그인된 유저이고, 지도에 권한에 있다면 중복되지 않은 장소라면 장소를 등록할 수 있다.")
+    @DisplayName("로그인된 유저이고, 지도에 대한 권한이 있고, 중복되지 않은 장소라면 장소를 등록할 수 있다.")
     void placeCreateTest() {
         String name = "로니네 sweet home";
         String address = "서울시 관악구";
-        Point position = new Point(127.01, 37.00);
+        Point position = new Point(127.01, 36.00);
         String description = "home sweet home";
         Long mapId = 1L;
         Long categoryId = 1L;
@@ -34,7 +35,7 @@ class PlaceServiceTest {
     }
 
     @Test
-    @DisplayName("로그인된 유저이고, 지도에 권한에 있다면 중복되지 않은 장소라면 장소를 등록할 수 있다.")
+    @DisplayName("같은 지도에 중복된 장소를 등록하면 ClientException을 던진다. ")
     void placeCreateTest_duplicate_place() {
         String name = "로니네 sweet home";
         String address = "서울시 관악구";
@@ -45,8 +46,8 @@ class PlaceServiceTest {
         Long memberId = 1L;
 
         Assertions.assertThatThrownBy(() -> placeService.create(name, address, position, description, mapId, categoryId, memberId))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("이미 등록된 장소입니다.");
+                .isInstanceOf(ClientException.class)
+                .hasMessage("지도 내에 이미 등록되어 있습니다.");
 
     }
 

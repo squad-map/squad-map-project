@@ -1,5 +1,7 @@
 package com.squadmap.common.auth.application;
 
+import com.squadmap.common.excetpion.ClientException;
+import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
 import com.squadmap.common.properties.JwtProperties;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
@@ -51,6 +53,7 @@ public class JwtProvider {
     public String getAudience(String token) {
         return jwtParser.parseClaimsJws(token).getBody().getAudience();
     }
+
 
     private String generateToken(Long memberId, String subject, Long expireTime) {
         long now = System.currentTimeMillis();

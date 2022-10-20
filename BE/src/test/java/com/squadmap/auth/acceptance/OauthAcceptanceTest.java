@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
@@ -58,10 +59,10 @@ class OauthAcceptanceTest extends RestAssuredTest {
                 .log()
                 .all()
 
-                .when()
+        .when()
                 .post("login/github")
 
-                .then().log().all()
+        .then().log().all()
                 .statusCode(HttpStatus.OK.value())
                 .body("member_id", notNullValue(Long.TYPE))
                 .body("nickname", equalTo("CMSSKKK"))
@@ -81,10 +82,10 @@ class OauthAcceptanceTest extends RestAssuredTest {
                 .log()
                 .all()
 
-                .when()
+        .when()
                 .post("login/naver")
 
-                .then().log().all()
+        .then().log().all()
                 .statusCode(HttpStatus.OK.value())
                 .body("member_id", notNullValue(Long.TYPE))
                 .body("nickname", equalTo("최민석"))
@@ -92,5 +93,29 @@ class OauthAcceptanceTest extends RestAssuredTest {
                 .body("access_token", notNullValue(String.class))
                 .body("refresh_token", notNullValue(String.class));
     }
+
+    private static final Snippet REISSUE_RESPONSE_FIELDS = responseFields(
+            fieldWithPath("access_token").type(JsonFieldType.STRING).description("엑세스 토큰")
+    );
+
+    @Test
+    @DisplayName("유효한 리프레쉬 토큰으로 액세스 토큰을 재발급 요청을 하면, 새로운 엑세스 토큰을 재발급한다.")
+    void reissueTest() {
+
+        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, AUTHORIZATION_HEADER, REISSUE_RESPONSE_FIELDS))
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .contentType(ContentType.JSON)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtProvider.generateRefreshToken(1L))
+                .log().all()
+
+        .when().get("/login")
+
+        .then().statusCode(HttpStatus.OK.value())
+                .body("access_token", notNullValue())
+                .log().all();
+
+    }
+
+
 
 }

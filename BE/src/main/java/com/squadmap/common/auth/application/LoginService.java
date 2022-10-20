@@ -42,5 +42,8 @@ public class LoginService {
         return jwtProvider.validateToken(token);
     }
 
+    public String reissueAccessToken(Long memberId) {
 
+        return jwtProvider.generateAccessToken(memberId);
+    }
 }
