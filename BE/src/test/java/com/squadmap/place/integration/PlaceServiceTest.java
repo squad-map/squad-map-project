@@ -27,9 +27,12 @@ class PlaceServiceTest {
         String description = "home sweet home";
         Long mapId = 1L;
         Long categoryId = 1L;
+        String categoryName = "category test";
+        String categoryColor = "#FF";
         Long memberId = 1L;
 
-        Long placeId = placeService.create(name, address, position, description, mapId, categoryId, memberId);
+        Long placeId = placeService.create(name, address, position, description,
+                mapId, categoryId, categoryName, categoryColor, memberId);
 
         assertThat(placeId).isPositive();
     }
@@ -43,9 +46,12 @@ class PlaceServiceTest {
         String description = "home sweet home";
         Long mapId = 1L;
         Long categoryId = 1L;
+        String categoryName = "category test";
+        String categoryColor = "#FF";
         Long memberId = 1L;
 
-        Assertions.assertThatThrownBy(() -> placeService.create(name, address, position, description, mapId, categoryId, memberId))
+        Assertions.assertThatThrownBy(() -> placeService.create(name, address, position, description, mapId, categoryId,
+                        categoryName, categoryColor, memberId))
                 .isInstanceOf(ClientException.class)
                 .hasMessage("지도 내에 이미 등록되어 있습니다.");
 

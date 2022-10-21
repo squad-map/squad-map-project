@@ -24,7 +24,9 @@ public class PlaceController {
                 placeRequest.getPosition(),
                 placeRequest.getDescription(),
                 placeRequest.getMapId(),
-                placeRequest.getMapId(),
+                placeRequest.getCategoryId(),
+                placeRequest.getCategoryName(),
+                placeRequest.getCategoryColor(),
                 memberId);
         return new PlaceResponse(placeId);
     }

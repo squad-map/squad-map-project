@@ -16,5 +16,7 @@ public class PlaceRequest {
     private String description;
     private Long mapId;
     private Long categoryId;
+    private String categoryName;
+    private String categoryColor;
 
 }

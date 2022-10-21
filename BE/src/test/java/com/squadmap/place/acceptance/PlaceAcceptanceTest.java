@@ -38,7 +38,9 @@ class PlaceAcceptanceTest extends RestAssuredTest {
             fieldWithPath("position.y").type(JsonFieldType.NUMBER).description("장소 경도"),
             fieldWithPath("description").type(JsonFieldType.STRING).description("장소에 대한 설명(리뷰)"),
             fieldWithPath("map_id").type(JsonFieldType.NUMBER).description("장소를 등록할 지도의 아이디"),
-            fieldWithPath("category_id").type(JsonFieldType.NUMBER).description("장소를 등록할 카테고리의 아이디")
+            fieldWithPath("category_id").type(JsonFieldType.NUMBER).optional().description("기존 카테고리 사용시, 장소를 등록할 카테고리의 아이디"),
+            fieldWithPath("category_name").type(JsonFieldType.STRING).optional().description("신규 카테고리를 만들시, 장소를 등록할 (신규)카테고리의 이름"),
+            fieldWithPath("category_color").type(JsonFieldType.STRING).optional().description("신규 카테고리를 만들시, 장소를 등록할 (신규)카테고리의 색상")
     );
 
     private static final Snippet CREATE_RESPONSE_FIELDS = responseFields(
@@ -46,6 +48,7 @@ class PlaceAcceptanceTest extends RestAssuredTest {
     );
 
     @Test
+    @DisplayName("지도에 권한이 있는 사용자는 지도에 장소를 등록할 수 있다.")
     void createTest() {
         String placeName = "my favorite place";
         String address = "관악구";
@@ -56,7 +59,7 @@ class PlaceAcceptanceTest extends RestAssuredTest {
         Long categoryId = 1L;
         Point point = new Point(x, y);
         String tokenHeader = "Bearer " + jwtProvider.generateAccessToken(1L);
-        PlaceRequest placeRequest = new PlaceRequest(placeName, address, point, description, mapId, categoryId);
+        PlaceRequest placeRequest = new PlaceRequest(placeName, address, point, description, mapId, categoryId, null, null);
 
         given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, CREATE_REQUEST_FIELDS, CREATE_RESPONSE_FIELDS, AUTHORIZATION_HEADER))
                 .accept(ContentType.JSON)

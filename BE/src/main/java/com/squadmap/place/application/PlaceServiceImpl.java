@@ -28,16 +28,24 @@ public class PlaceServiceImpl implements PlaceService {
 
     @Override
     @Transactional
-    public Long create(String name, String address, Point position, String description, Long mapId, Long categoryId, Long memberId) {
+    public Long create(String name, String address, Point position, String description, Long mapId,
+                       Long categoryId, String categoryName, String categoryColor, Long memberId) {
 
         Map map = mapRepository.findById(mapId)
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_MAP));
         if (!map.canAccess(memberId)) {
             throw new ClientException(ErrorStatusCodeAndMessage.UNAUTHORIZED);
         }
-
-        Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(NoSuchElementException::new);
+        Category category;
+        if(categoryId == null) {
+            if(categoryRepository.existsByNameAndMap(categoryName, map)) {
+                throw new ClientException(ErrorStatusCodeAndMessage.DUPLICATE_CATEGORY);
+            }
+            category = categoryRepository.save(Category.of(categoryName, categoryColor, map));
+        } else {
+            category = categoryRepository.findById(categoryId)
+                    .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_CATEGORY));
+        }
 
         Position pos = Position.from(position);
         if (placeRepository.existsPlaceByPositionAndMap(pos, map)) {
@@ -47,6 +55,7 @@ public class PlaceServiceImpl implements PlaceService {
         Place place = placeRepository.save(Place.of(name, address, pos, description, map, category, memberId));
         return place.getId();
     }
+
 
     @Override
     @Transactional
