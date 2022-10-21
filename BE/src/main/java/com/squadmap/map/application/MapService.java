@@ -1,14 +1,24 @@
 package com.squadmap.map.application;
 
+import com.squadmap.map.application.dto.MapDetail;
+import com.squadmap.map.application.dto.MapSimpleInfo;
+import com.squadmap.map.application.dto.MapsResponse;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
-@Transactional(readOnly = true)
+import java.util.List;
+
+
 public interface MapService {
 
-    @Transactional
-    Long create(String mapName, Boolean isPrivate, Long memberId);
+    Long create(String mapName, String emoji, Boolean isPrivate, Long memberId);
 
-    @Transactional
-    void update(Long memberId, Long mapId, String mapName, Boolean isPrivate);
+    void update(Long memberId, Long mapId, String mapName, String emoji, boolean fullDisclosure);
 
+    Page<MapSimpleInfo> readPublic(Pageable pageable);
+
+    MapDetail findOne(Long mapId, Long memberId);
+
+    MapsResponse readGroupMap(Long memberId);
 }

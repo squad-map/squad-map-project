@@ -1,36 +1,56 @@
 package com.squadmap.map.domain;
 
+import com.squadmap.place.domain.Place;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 public class Map {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
-    String name;
+    private String name;
 
-    Boolean isPrivate;
+    private String emoji;
 
-    Long memberId;
+    private boolean fullDisclosure;
 
-    public static Map of(String name, Boolean isPrivate, Long memberId) {
-        return new Map(null, name, isPrivate, memberId);
+    private Long memberId;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "map")
+    private List<Place> places = new ArrayList<>();
+
+    private Map(String name, String emoji, boolean fullDisclosure, Long memberId) {
+        this.name = name;
+        this.emoji = emoji;
+        this.fullDisclosure = fullDisclosure;
+        this.memberId = memberId;
     }
 
-    public void update(String updateName, Boolean isPrivate) {
+    public static Map of(String name, String emoji, boolean fullDisclosure, Long memberId) {
+        return new Map(name, emoji, fullDisclosure, memberId);
+    }
+
+    public void update(String updateName, String emoji, boolean fullDisclosure) {
         this.name = updateName;
-        this.isPrivate = isPrivate;
+        this.emoji = emoji;
+        this.fullDisclosure = fullDisclosure;
+    }
+
+    public int getPlacesCount() {
+        return this.places.size();
+    }
+
+    public boolean canAccess(Long memberId) {
+        return this.memberId.equals(memberId);
     }
 
     @Override

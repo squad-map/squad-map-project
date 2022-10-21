@@ -12,4 +12,12 @@ public class LoginInfo {
     private final String profileImage;
     private final Tokens tokens;
 
+    public String getAccessToken() {
+        return this.tokens.getAccessToken();
+    }
+
+    public String getRefreshToken() {
+        return this.tokens.getRefreshToken();
+    }
+
 }

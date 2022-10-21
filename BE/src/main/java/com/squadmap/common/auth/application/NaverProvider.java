@@ -32,10 +32,10 @@ public class NaverProvider implements OauthProvider {
 
     @Override
     public MemberInfo oauth(String code, String state, OauthProperties.OauthProperty oauthProperty) {
-        NaverToken naverToken;
+
         NaverUserInfo naverUserInfo;
         try {
-            naverToken = accessNaver(code, state, oauthProperty);
+            NaverToken naverToken = accessNaver(code, state, oauthProperty);
             naverUserInfo = getUserInfo(naverToken, oauthProperty);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();

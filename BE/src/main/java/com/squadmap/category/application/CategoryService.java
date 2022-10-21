@@ -1,13 +1,19 @@
 package com.squadmap.category.application;
 
+import com.squadmap.category.application.dto.CategoryInfo;
 import com.squadmap.map.domain.Map;
-import org.springframework.transaction.annotation.Transactional;
 
-@Transactional(readOnly = true)
+import java.util.List;
+
 public interface CategoryService {
 
-    @Transactional
-    Long create(String name, String color, Long mapId);
+    Long create(String name, String color, Long mapId, Long memberId);
 
     boolean isDuplicateName(String name, Map map);
+
+    CategoryInfo readOne(Long categoryId, Long memberId);
+
+    List<CategoryInfo> readAll(Long mapId, Long memberId);
+
+    CategoryInfo update(Long categoryId, String categoryName, String categoryColor, Long memberId);
 }

@@ -4,6 +4,7 @@ package com.squadmap.common;
 import com.squadmap.common.auth.AuthExtractor;
 import com.squadmap.common.auth.application.LoginService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -12,9 +13,11 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@Component
 @RequiredArgsConstructor
+@Component
+@Slf4j
 public class AuthInterceptor implements HandlerInterceptor {
+    private static final String AUTH_TOKEN = "AUTH_TOKEN";
 
     private final LoginService loginService;
 
@@ -25,6 +28,7 @@ public class AuthInterceptor implements HandlerInterceptor {
         }
 
         String token = AuthExtractor.extract(request);
+        request.setAttribute(AUTH_TOKEN, token);
         return loginService.isLoginUser(token);
     }
 
