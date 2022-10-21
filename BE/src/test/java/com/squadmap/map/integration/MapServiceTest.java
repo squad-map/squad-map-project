@@ -37,12 +37,13 @@ class MapServiceTest {
     void mapCreateTest() {
         //given
         Long memberId = 1L;
+        String emoji = "U+1F600";
         String mapName = "first map";
         Boolean fullDisclosure = false;
 
 
         //when
-        Long mapId = mapService.create(mapName, fullDisclosure, memberId);
+        Long mapId = mapService.create(mapName, emoji, fullDisclosure, memberId);
 
         //then
         assertThat(mapId).isNotNull();
@@ -53,11 +54,12 @@ class MapServiceTest {
     void updateTest() {
         Long memberId = 1L;
         String mapName = "changed map";
+        String emoji = "U+1F600";
         boolean fullDisclosure = true;
 
-        Map map = mapRepository.save(Map.of("my map", false, memberId));
+        Map map = mapRepository.save(Map.of("my map", "U+1F603", false, memberId));
 
-        mapService.update(memberId, map.getId(), mapName, fullDisclosure);
+        mapService.update(memberId, map.getId(), mapName, emoji, fullDisclosure);
 
         Map changedMap = mapRepository.findById(map.getId())
                 .orElseThrow(NoSuchElementException::new);
@@ -66,6 +68,7 @@ class MapServiceTest {
         assertThat(changedMap.isFullDisclosure()).isTrue();
         assertThat(changedMap.getMemberId()).isEqualTo(memberId);
         assertThat(changedMap.getName()).isEqualTo(mapName);
+        assertThat(changedMap.getEmoji()).isEqualTo(emoji);
 
     }
 

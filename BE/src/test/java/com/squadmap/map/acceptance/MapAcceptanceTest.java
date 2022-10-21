@@ -19,13 +19,9 @@ import static org.springframework.restdocs.restassured3.RestAssuredRestDocumenta
 
 class MapAcceptanceTest extends RestAssuredTest {
 
-    /*
-      Map Create Request
-      Name : String
-      isPrivate : boolean
-     */
     private static final Snippet CREATE_REQUEST_FIELDS = requestFields(
             fieldWithPath("map_name").type(JsonFieldType.STRING).description("아이디"),
+            fieldWithPath("emoji").type(JsonFieldType.STRING).description("이모지"),
             fieldWithPath("full_disclosure").type(JsonFieldType.BOOLEAN).description("접근 권한")
     );
 
@@ -38,7 +34,7 @@ class MapAcceptanceTest extends RestAssuredTest {
     void mapCreateTest() {
         String accessToken = jwtProvider.generateAccessToken(1L);
 
-        MapRequest mapCreateRequest = new MapRequest("first map", false);
+        MapRequest mapCreateRequest = new MapRequest("first map", "U+1F600",false);
 
         given(this.specification)
                 .filter(document(DEFAULT_RESTDOC_PATH, CREATE_REQUEST_FIELDS, CREATE_RESPONSE_FIELDS, AUTHORIZATION_HEADER))
@@ -57,6 +53,7 @@ class MapAcceptanceTest extends RestAssuredTest {
 
     private static final Snippet UPDATE_REQUEST_FIELDS = requestFields(
             fieldWithPath("map_name").type(JsonFieldType.STRING).description("아이디"),
+            fieldWithPath("emoji").type(JsonFieldType.STRING).description("이모지"),
             fieldWithPath("full_disclosure").type(JsonFieldType.BOOLEAN).description("접근 권한")
     );
 
@@ -70,9 +67,10 @@ class MapAcceptanceTest extends RestAssuredTest {
         Long mapId = 1L;
         Boolean isPrivate = true;
         String mapName = "changed map";
+        String emoji = "U+1F600";
 
 
-        MapRequest mapUpdateRequest = new MapRequest(mapName, isPrivate);
+        MapRequest mapUpdateRequest = new MapRequest(mapName, emoji, isPrivate);
 
         given(this.specification)
                 .filter(document(DEFAULT_RESTDOC_PATH, UPDATE_REQUEST_FIELDS, AUTHORIZATION_HEADER, UPDATE_REQUEST_PATH_VARIABLE))
@@ -82,7 +80,7 @@ class MapAcceptanceTest extends RestAssuredTest {
                 .body(mapUpdateRequest)
                 .log().all(true)
 
-        .when().post("/map/{map_id}", 1)
+        .when().post("/map/{map_id}", mapId)
 
         .then().statusCode(HttpStatus.OK.value());
 
@@ -96,8 +94,9 @@ class MapAcceptanceTest extends RestAssuredTest {
     private static final Snippet READ_MAP_LIST_RESPONSE = responseFields(
             fieldWithPath("content[].id").type(JsonFieldType.NUMBER).description("지도의 아이디"),
             fieldWithPath("content[].map_name").type(JsonFieldType.STRING).description("지도의 이름"),
-            fieldWithPath("content[].host_id").type(JsonFieldType.NUMBER).description("지도의 작성자의 닉네임"),
-            fieldWithPath("content[].host_nickname").type(JsonFieldType.STRING).description("지도의 작성자의 닉네임"),
+            fieldWithPath("content[].map_emoji").type(JsonFieldType.STRING).description("지도의 이모지"),
+            fieldWithPath("content[].host_id").type(JsonFieldType.NUMBER).description("지도 작성자의 아이디"),
+            fieldWithPath("content[].host_nickname").type(JsonFieldType.STRING).description("지도 작성자의 닉네임"),
             fieldWithPath("content[].places_count").type(JsonFieldType.NUMBER).description("지도내에 등록된 장소의 갯수"),
             fieldWithPath("page_number").type(JsonFieldType.NUMBER).description("페이지 넘버"),
             fieldWithPath("size").type(JsonFieldType.NUMBER).description("요청 데이터 갯수"),
@@ -132,8 +131,9 @@ class MapAcceptanceTest extends RestAssuredTest {
     private static final Snippet READ_MAP_DETAIL_RESPONSE = responseFields(
             fieldWithPath("map_id").type(JsonFieldType.NUMBER).description("지도의 아이디"),
             fieldWithPath("map_name").type(JsonFieldType.STRING).description("지도의 이름"),
-            fieldWithPath("host_id").type(JsonFieldType.NUMBER).description("지도의 작성자의 닉네임"),
-            fieldWithPath("host_nickname").type(JsonFieldType.STRING).description("지도의 작성자의 닉네임"),
+            fieldWithPath("map_emoji").type(JsonFieldType.STRING).description("지도의 이모지"),
+            fieldWithPath("host_id").type(JsonFieldType.NUMBER).description("지도 작성자의 아이디"),
+            fieldWithPath("host_nickname").type(JsonFieldType.STRING).description("지도 작성자의 닉네임"),
             fieldWithPath("places_count").type(JsonFieldType.NUMBER).description("지도내에 등록된 장소의 갯수"),
             fieldWithPath("categorized_places[].category_info.category_id").type(JsonFieldType.NUMBER).description("카테고리 아이디"),
             fieldWithPath("categorized_places[].category_info.category_name").type(JsonFieldType.STRING).description("카테고리 이름"),
@@ -164,6 +164,7 @@ class MapAcceptanceTest extends RestAssuredTest {
             fieldWithPath("map_count").type(JsonFieldType.NUMBER).description("속한 그룹 지도의 갯수"),
             fieldWithPath("maps[].id").type(JsonFieldType.NUMBER).description("지도의 아이디"),
             fieldWithPath("maps[].map_name").type(JsonFieldType.STRING).description("지도의 이름"),
+            fieldWithPath("maps[].map_emoji").type(JsonFieldType.STRING).description("지도의 이모지"),
             fieldWithPath("maps[].host_id").type(JsonFieldType.NUMBER).description("지도의 작성자의 닉네임"),
             fieldWithPath("maps[].host_nickname").type(JsonFieldType.STRING).description("지도의 작성자의 닉네임"),
             fieldWithPath("maps[].places_count").type(JsonFieldType.NUMBER).description("지도내에 등록된 장소의 갯수")

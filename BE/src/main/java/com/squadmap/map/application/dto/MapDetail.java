@@ -15,6 +15,7 @@ public class MapDetail {
 
     private final Long mapId;
     private final String mapName;
+    private final String mapEmoji;
     private final Long hostId;
     private final String hostNickname;
     private final int placesCount;
@@ -24,6 +25,7 @@ public class MapDetail {
 
         return new MapDetail(map.getId(),
                 map.getName(),
+                map.getEmoji(),
                 member.getId(),
                 member.getNickname(),
                 placesCount,

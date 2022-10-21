@@ -12,9 +12,9 @@ import java.util.List;
 
 public interface MapService {
 
-    Long create(String mapName, Boolean isPrivate, Long memberId);
+    Long create(String mapName, String emoji, Boolean isPrivate, Long memberId);
 
-    void update(Long memberId, Long mapId, String mapName, boolean fullDisclosure);
+    void update(Long memberId, Long mapId, String mapName, String emoji, boolean fullDisclosure);
 
     Page<MapSimpleInfo> readPublic(Pageable pageable);
 

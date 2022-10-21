@@ -449,6 +449,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <ul class="sectlevel2">
 <li><a href="#login-github">Github Login</a></li>
 <li><a href="#_naver_login">Naver Login</a></li>
+<li><a href="#login-reissue-access-token">엑세스 토큰 재발급</a></li>
 </ul>
 </li>
 <li><a href="#resources-member">회원</a>
@@ -496,7 +497,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /login/github HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
 Content-Type: application/json
-Host: localhost:51199
+Host: localhost:51681
 Content-Length: 60
 
 {
@@ -537,8 +538,8 @@ Content-Length: 60
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code>{
-  "access_token" : "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0LWlzc3VlciIsInN1YiI6ImFjY2VzcyIsImF1ZCI6IjMiLCJleHAiOjE2NjYyODExMTd9._FjOFWtArTMo3BkSqZLMHjgyl1Y5-KTi2SRbX6ssSEM",
-  "refresh_token" : "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0LWlzc3VlciIsInN1YiI6InJlZnJlc2giLCJhdWQiOiIzIiwiZXhwIjoxNjY2MjgxNzIxfQ.HKcrYbVsw8ZrEjMryYXFFEfgn7Ya8HEWoM4IK7YKYJI",
+  "access_token" : "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0LWlzc3VlciIsInN1YiI6ImFjY2VzcyIsImF1ZCI6IjMiLCJleHAiOjE2NjYyODMwMzR9.pkwFkEQX3gtC6_yIf3mUDnGu9rgil1fFbNtf4g220IE",
+  "refresh_token" : "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0LWlzc3VlciIsInN1YiI6InJlZnJlc2giLCJhdWQiOiIzIiwiZXhwIjoxNjY2MjgzNjM4fQ.fB-llHwW2EuGQm9kPjDwngVT-oT_VTtHKK4c7Dj2TTc",
   "member_id" : 3,
   "nickname" : "CMSSKKK",
   "profile_image" : "https://avatars.githubusercontent.com/u/81129309?v=4"
@@ -597,7 +598,7 @@ Content-Length: 60
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /login/naver HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
 Content-Type: application/json
-Host: localhost:51199
+Host: localhost:51681
 Content-Length: 62
 
 {
@@ -638,8 +639,8 @@ Content-Length: 62
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code>{
-  "access_token" : "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0LWlzc3VlciIsInN1YiI6ImFjY2VzcyIsImF1ZCI6IjIiLCJleHAiOjE2NjYyODExMTZ9.b6fA4kWgra1ZeVgi1nuqdm_OfWWGqhor7mZrGWU453o",
-  "refresh_token" : "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0LWlzc3VlciIsInN1YiI6InJlZnJlc2giLCJhdWQiOiIyIiwiZXhwIjoxNjY2MjgxNzIwfQ.NC_4Whwhmd13ps69V8yDJaZ9p5REhNsCvIIAo2pbhKk",
+  "access_token" : "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0LWlzc3VlciIsInN1YiI6ImFjY2VzcyIsImF1ZCI6IjIiLCJleHAiOjE2NjYyODMwMzR9.CHusQDslhdGXz98btvmFspl-34V473fZbIhqKodGS3M",
+  "refresh_token" : "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0LWlzc3VlciIsInN1YiI6InJlZnJlc2giLCJhdWQiOiIyIiwiZXhwIjoxNjY2MjgzNjM4fQ.2LpXFhnxA963YCvowpafNWdk_T4UrJq4-fb6qK3kpvA",
   "member_id" : 2,
   "nickname" : "최민석",
   "profile_image" : "https://ssl.pstatic.net/static/pwe/address/img_profile.png"
@@ -689,6 +690,73 @@ Content-Length: 62
 </table>
 </div>
 </div>
+<div class="sect2">
+<h3 id="login-reissue-access-token"><a class="link" href="#login-reissue-access-token">엑세스 토큰 재발급</a></h3>
+<div class="sect3">
+<h4 id="_request_3"><a class="link" href="#_request_3">Request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /login HTTP/1.1
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0LWlzc3VlciIsInN1YiI6InJlZnJlc2giLCJhdWQiOiIxIiwiZXhwIjoxNjY2MjgzNjM4fQ.a92CGHj2WUfZr7EoKtjoa1iYRWNsXK54oPUKyxKKHYY
+Content-Type: application/json
+Host: localhost:51681</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>(Authoriazation header에 refresh token을 담아주세요.)</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">토큰, 로그인 및 권한 검증</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_response_3"><a class="link" href="#_response_3">Response</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>{
+  "access_token" : "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0LWlzc3VlciIsInN1YiI6ImFjY2VzcyIsImF1ZCI6IjEiLCJleHAiOjE2NjYyODMwMzR9.Q_APLmnrPmnm122lwo25SOAgWMBPzC_CL6OWKTOjBX4"
+}</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>access_token</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">엑세스 토큰</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -697,7 +765,7 @@ Content-Length: 62
 <div class="sect2">
 <h3 id="resources-member-nickname-update"><a class="link" href="#resources-member-nickname-update">회원 닉네임 업데이트</a></h3>
 <div class="sect3">
-<h4 id="_request_3"><a class="link" href="#_request_3">request</a></h4>
+<h4 id="_request_4"><a class="link" href="#_request_4">request</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -723,9 +791,9 @@ Content-Length: 62
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /member/update HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
-Authorization: bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2NzE4MTEyMX0.8ymyEhwbA6Lb0mUJJtYBvCM5YIJPEfEqSrhq_IdyaTA
+Authorization: bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2NzE4MzAzNX0.WY4uS13M8pUBhbmP0bimPCSadVQlzQZWeuBUk2vvh58
 Content-Type: application/json
-Host: localhost:51205
+Host: localhost:51688
 Content-Length: 36
 
 {
@@ -756,7 +824,7 @@ Content-Length: 36
 </table>
 </div>
 <div class="sect3">
-<h4 id="_response_3"><a class="link" href="#_response_3">response</a></h4>
+<h4 id="_response_4"><a class="link" href="#_response_4">response</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
@@ -765,7 +833,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Thu, 20 Oct 2022 15:52:01 GMT
+Date: Thu, 20 Oct 2022 16:23:55 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 36
@@ -806,14 +874,14 @@ Content-Length: 36
 <div class="sect2">
 <h3 id="resources-map-create"><a class="link" href="#resources-map-create">지도 생성</a></h3>
 <div class="sect3">
-<h4 id="_request_4"><a class="link" href="#_request_4">request</a></h4>
+<h4 id="_request_5"><a class="link" href="#_request_5">request</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /map HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2NzE4MTExOX0.IEzph0p1gjXVe--w04uDaauCj-F1k1jPdhRPfKzWYfI
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2NzE4MzAzNH0.ynVyogF06h5d76fWjJ0yrq-EcKMXatRtkFw3TJ6JLO8
 Content-Type: application/json
-Host: localhost:51205
+Host: localhost:51688
 Content-Length: 59
 
 {
@@ -871,7 +939,7 @@ Content-Length: 59
 </table>
 </div>
 <div class="sect3">
-<h4 id="_response_4"><a class="link" href="#_response_4">response</a></h4>
+<h4 id="_response_5"><a class="link" href="#_response_5">response</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 201 Created
@@ -880,7 +948,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Thu, 20 Oct 2022 15:51:59 GMT
+Date: Thu, 20 Oct 2022 16:23:53 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 18
@@ -916,7 +984,7 @@ Content-Length: 18
 <div class="sect2">
 <h3 id="resources-map-update"><a class="link" href="#resources-map-update">지도 정보 변경</a></h3>
 <div class="sect3">
-<h4 id="_request_5"><a class="link" href="#_request_5">request</a></h4>
+<h4 id="_request_6"><a class="link" href="#_request_6">request</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 1. /map/{map_id}</caption>
 <colgroup>
@@ -940,9 +1008,9 @@ Content-Length: 18
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /map/1 HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2NzE4MTExOX0.IEzph0p1gjXVe--w04uDaauCj-F1k1jPdhRPfKzWYfI
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2NzE4MzAzNH0.ynVyogF06h5d76fWjJ0yrq-EcKMXatRtkFw3TJ6JLO8
 Content-Type: application/json
-Host: localhost:51205
+Host: localhost:51688
 Content-Length: 60
 
 {
@@ -1000,14 +1068,14 @@ Content-Length: 60
 </table>
 </div>
 <div class="sect3">
-<h4 id="_response_5"><a class="link" href="#_response_5">response</a></h4>
+<h4 id="_response_6"><a class="link" href="#_response_6">response</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Date: Thu, 20 Oct 2022 15:51:59 GMT
+Date: Thu, 20 Oct 2022 16:23:53 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive</code></pre>
 </div>
@@ -1017,7 +1085,7 @@ Connection: keep-alive</code></pre>
 <div class="sect2">
 <h3 id="resources-map-read-detail"><a class="link" href="#resources-map-read-detail">지도 detail 조회</a></h3>
 <div class="sect3">
-<h4 id="_request_6"><a class="link" href="#_request_6">request</a></h4>
+<h4 id="_request_7"><a class="link" href="#_request_7">request</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 2. /map/{map_id}</caption>
 <colgroup>
@@ -1040,9 +1108,9 @@ Connection: keep-alive</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /map/1 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2NzE4MTExOX0.IEzph0p1gjXVe--w04uDaauCj-F1k1jPdhRPfKzWYfI
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2NzE4MzAzNH0.ynVyogF06h5d76fWjJ0yrq-EcKMXatRtkFw3TJ6JLO8
 Content-Type: application/json
-Host: localhost:51205</code></pre>
+Host: localhost:51688</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1068,7 +1136,7 @@ Host: localhost:51205</code></pre>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_response_6"><a class="link" href="#_response_6">response</a></h4>
+<h4 id="_response_7"><a class="link" href="#_response_7">response</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -1193,7 +1261,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Thu, 20 Oct 2022 15:51:59 GMT
+Date: Thu, 20 Oct 2022 16:23:53 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 655
@@ -1236,7 +1304,7 @@ Content-Length: 655
 <div class="sect2">
 <h3 id="resources-read-public-map-list"><a class="link" href="#resources-read-public-map-list">전체 공개 지도 리스트 조회</a></h3>
 <div class="sect3">
-<h4 id="_request_7"><a class="link" href="#_request_7">request</a></h4>
+<h4 id="_request_8"><a class="link" href="#_request_8">request</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 3. /map/public</caption>
 <colgroup>
@@ -1264,12 +1332,12 @@ Content-Length: 655
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /map/public?page=0&amp;size=10 HTTP/1.1
 Content-Type: application/json
-Host: localhost:51205</code></pre>
+Host: localhost:51688</code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_response_7"><a class="link" href="#_response_7">response</a></h4>
+<h4 id="_response_8"><a class="link" href="#_response_8">response</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -1368,7 +1436,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Thu, 20 Oct 2022 15:51:59 GMT
+Date: Thu, 20 Oct 2022 16:23:53 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 265
@@ -1395,19 +1463,19 @@ Content-Length: 265
 <div class="sect2">
 <h3 id="resources-read-group-map-list"><a class="link" href="#resources-read-group-map-list">그룹 지도 리스트 조회</a></h3>
 <div class="sect3">
-<h4 id="_request_8"><a class="link" href="#_request_8">request</a></h4>
+<h4 id="_request_9"><a class="link" href="#_request_9">request</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /map/group HTTP/1.1
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2NzE4MTExOX0.IEzph0p1gjXVe--w04uDaauCj-F1k1jPdhRPfKzWYfI
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2NzE4MzAzNH0.ynVyogF06h5d76fWjJ0yrq-EcKMXatRtkFw3TJ6JLO8
 Content-Type: application/json
-Host: localhost:51205</code></pre>
+Host: localhost:51688</code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_response_8"><a class="link" href="#_response_8">response</a></h4>
+<h4 id="_response_9"><a class="link" href="#_response_9">response</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -1476,7 +1544,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Thu, 20 Oct 2022 15:51:59 GMT
+Date: Thu, 20 Oct 2022 16:23:53 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 163
@@ -1503,7 +1571,7 @@ Content-Length: 163
 <div class="sect2">
 <h3 id="resources-place-create-test"><a class="link" href="#resources-place-create-test">장소 등록</a></h3>
 <div class="sect3">
-<h4 id="_request_9"><a class="link" href="#_request_9">request</a></h4>
+<h4 id="_request_10"><a class="link" href="#_request_10">request</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -1574,9 +1642,9 @@ Content-Length: 163
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /places HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2NzE4MTEyMX0.8ymyEhwbA6Lb0mUJJtYBvCM5YIJPEfEqSrhq_IdyaTA
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2NzE4MzAzNX0.WY4uS13M8pUBhbmP0bimPCSadVQlzQZWeuBUk2vvh58
 Content-Type: application/json
-Host: localhost:51205
+Host: localhost:51688
 Content-Length: 220
 
 {
@@ -1615,7 +1683,7 @@ Content-Length: 220
 </table>
 </div>
 <div class="sect3">
-<h4 id="_response_9"><a class="link" href="#_response_9">response</a></h4>
+<h4 id="_response_10"><a class="link" href="#_response_10">response</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -1652,7 +1720,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Thu, 20 Oct 2022 15:52:01 GMT
+Date: Thu, 20 Oct 2022 16:23:55 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 20
@@ -1667,7 +1735,7 @@ Content-Length: 20
 <div class="sect2">
 <h3 id="resources-place-update-test"><a class="link" href="#resources-place-update-test">장소의 카테고리 및 설명 수정</a></h3>
 <div class="sect3">
-<h4 id="_request_10"><a class="link" href="#_request_10">request</a></h4>
+<h4 id="_request_11"><a class="link" href="#_request_11">request</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -1712,9 +1780,9 @@ Content-Length: 20
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /places/update HTTP/1.1
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2NzE4MTEyMX0.8ymyEhwbA6Lb0mUJJtYBvCM5YIJPEfEqSrhq_IdyaTA
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2NzE4MzAzNX0.WY4uS13M8pUBhbmP0bimPCSadVQlzQZWeuBUk2vvh58
 Content-Type: application/json
-Host: localhost:51205
+Host: localhost:51688
 Content-Length: 82
 
 {
@@ -1747,7 +1815,7 @@ Content-Length: 82
 </table>
 </div>
 <div class="sect3">
-<h4 id="_response_10"><a class="link" href="#_response_10">response</a></h4>
+<h4 id="_response_11"><a class="link" href="#_response_11">response</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -1820,7 +1888,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Thu, 20 Oct 2022 15:52:01 GMT
+Date: Thu, 20 Oct 2022 16:23:55 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 183
@@ -1841,7 +1909,7 @@ Content-Length: 183
 <div class="sect2">
 <h3 id="resources-read-one-test"><a class="link" href="#resources-read-one-test">장소 디테일 조회</a></h3>
 <div class="sect3">
-<h4 id="_request_11"><a class="link" href="#_request_11">request</a></h4>
+<h4 id="_request_12"><a class="link" href="#_request_12">request</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 4. /places/{place_id}</caption>
 <colgroup>
@@ -1865,9 +1933,9 @@ Content-Length: 183
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /places/1 HTTP/1.1
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2NzE4MTEyMX0.8ymyEhwbA6Lb0mUJJtYBvCM5YIJPEfEqSrhq_IdyaTA
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2NzE4MzAzNX0.WY4uS13M8pUBhbmP0bimPCSadVQlzQZWeuBUk2vvh58
 Content-Type: application/json
-Host: localhost:51205</code></pre>
+Host: localhost:51688</code></pre>
 </div>
 </div>
 </div>
@@ -1893,7 +1961,7 @@ Host: localhost:51205</code></pre>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_response_11"><a class="link" href="#_response_11">response</a></h4>
+<h4 id="_response_12"><a class="link" href="#_response_12">response</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -1966,7 +2034,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Thu, 20 Oct 2022 15:52:01 GMT
+Date: Thu, 20 Oct 2022 16:23:55 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 175
@@ -1992,7 +2060,7 @@ Content-Length: 175
 <div class="sect2">
 <h3 id="resources-category-create-test"><a class="link" href="#resources-category-create-test">카테고리 등록</a></h3>
 <div class="sect3">
-<h4 id="_request_12"><a class="link" href="#_request_12">request</a></h4>
+<h4 id="_request_13"><a class="link" href="#_request_13">request</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -2037,9 +2105,9 @@ Content-Length: 175
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /categories HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2NzE4MTExOX0.IEzph0p1gjXVe--w04uDaauCj-F1k1jPdhRPfKzWYfI
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2NzE4MzAzNH0.ynVyogF06h5d76fWjJ0yrq-EcKMXatRtkFw3TJ6JLO8
 Content-Type: application/json
-Host: localhost:51205
+Host: localhost:51688
 Content-Length: 84
 
 {
@@ -2072,7 +2140,7 @@ Content-Length: 84
 </table>
 </div>
 <div class="sect3">
-<h4 id="_response_12"><a class="link" href="#_response_12">response</a></h4>
+<h4 id="_response_13"><a class="link" href="#_response_13">response</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -2109,7 +2177,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Thu, 20 Oct 2022 15:51:59 GMT
+Date: Thu, 20 Oct 2022 16:23:53 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 23
@@ -2124,7 +2192,7 @@ Content-Length: 23
 <div class="sect2">
 <h3 id="resources-category-read-test"><a class="link" href="#resources-category-read-test">카테고리 조회</a></h3>
 <div class="sect3">
-<h4 id="_request_13"><a class="link" href="#_request_13">request</a></h4>
+<h4 id="_request_14"><a class="link" href="#_request_14">request</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 5. /categories/{category_id}</caption>
 <colgroup>
@@ -2153,9 +2221,9 @@ Content-Length: 23
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /categories/1 HTTP/1.1
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2NzE4MTExOH0.YzlprVbZiAdaxMKlGJ_YM59COXfSuEbAtmd2w3LCkfg
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2NzE4MzAzNH0.ynVyogF06h5d76fWjJ0yrq-EcKMXatRtkFw3TJ6JLO8
 Content-Type: application/json
-Host: localhost:51205</code></pre>
+Host: localhost:51688</code></pre>
 </div>
 </div>
 </div>
@@ -2181,7 +2249,7 @@ Host: localhost:51205</code></pre>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_response_13"><a class="link" href="#_response_13">response</a></h4>
+<h4 id="_response_14"><a class="link" href="#_response_14">response</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -2230,7 +2298,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Thu, 20 Oct 2022 15:51:59 GMT
+Date: Thu, 20 Oct 2022 16:23:53 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 93
@@ -2247,7 +2315,7 @@ Content-Length: 93
 <div class="sect2">
 <h3 id="resources-category-update-test"><a class="link" href="#resources-category-update-test">카테고리 수정</a></h3>
 <div class="sect3">
-<h4 id="_request_14"><a class="link" href="#_request_14">request</a></h4>
+<h4 id="_request_15"><a class="link" href="#_request_15">request</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -2275,9 +2343,9 @@ Content-Length: 93
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /categories?map=1 HTTP/1.1
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2NzE4MTExOX0.IEzph0p1gjXVe--w04uDaauCj-F1k1jPdhRPfKzWYfI
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2NzE4MzAzNH0.ynVyogF06h5d76fWjJ0yrq-EcKMXatRtkFw3TJ6JLO8
 Content-Type: application/json
-Host: localhost:51205</code></pre>
+Host: localhost:51688</code></pre>
 </div>
 </div>
 </div>
@@ -2303,7 +2371,7 @@ Host: localhost:51205</code></pre>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_response_14"><a class="link" href="#_response_14">response</a></h4>
+<h4 id="_response_15"><a class="link" href="#_response_15">response</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -2356,7 +2424,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Thu, 20 Oct 2022 15:51:59 GMT
+Date: Thu, 20 Oct 2022 16:23:53 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 193
@@ -2377,7 +2445,7 @@ Content-Length: 193
 <div class="sect2">
 <h3 id="resources-categoryAll-read-in-map-test"><a class="link" href="#resources-categoryAll-read-in-map-test">지도 내의 모든 카테고리 조회</a></h3>
 <div class="sect3">
-<h4 id="_request_15"><a class="link" href="#_request_15">request</a></h4>
+<h4 id="_request_16"><a class="link" href="#_request_16">request</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 6. /categories/{category_id}</caption>
 <colgroup>
@@ -2406,9 +2474,9 @@ Content-Length: 193
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /categories/1 HTTP/1.1
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2NzE4MTExOH0.YzlprVbZiAdaxMKlGJ_YM59COXfSuEbAtmd2w3LCkfg
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2NzE4MzAzNH0.ynVyogF06h5d76fWjJ0yrq-EcKMXatRtkFw3TJ6JLO8
 Content-Type: application/json
-Host: localhost:51205</code></pre>
+Host: localhost:51688</code></pre>
 </div>
 </div>
 </div>
@@ -2434,7 +2502,7 @@ Host: localhost:51205</code></pre>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_response_15"><a class="link" href="#_response_15">response</a></h4>
+<h4 id="_response_16"><a class="link" href="#_response_16">response</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -2483,7 +2551,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Thu, 20 Oct 2022 15:51:59 GMT
+Date: Thu, 20 Oct 2022 16:23:53 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 93
@@ -2503,7 +2571,7 @@ Content-Length: 93
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-10-20 01:20:05 +0900
+Last updated 2022-10-21 01:00:11 +0900
 </div>
 </div>
 </body>

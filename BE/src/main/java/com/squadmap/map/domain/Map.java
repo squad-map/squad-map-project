@@ -19,6 +19,8 @@ public class Map {
 
     private String name;
 
+    private String emoji;
+
     private boolean fullDisclosure;
 
     private Long memberId;
@@ -26,18 +28,20 @@ public class Map {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "map")
     private List<Place> places = new ArrayList<>();
 
-    private Map(String name, boolean fullDisclosure, Long memberId) {
+    private Map(String name, String emoji, boolean fullDisclosure, Long memberId) {
         this.name = name;
+        this.emoji = emoji;
         this.fullDisclosure = fullDisclosure;
         this.memberId = memberId;
     }
 
-    public static Map of(String name, boolean fullDisclosure, Long memberId) {
-        return new Map(name, fullDisclosure, memberId);
+    public static Map of(String name, String emoji, boolean fullDisclosure, Long memberId) {
+        return new Map(name, emoji, fullDisclosure, memberId);
     }
 
-    public void update(String updateName, boolean fullDisclosure) {
+    public void update(String updateName, String emoji, boolean fullDisclosure) {
         this.name = updateName;
+        this.emoji = emoji;
         this.fullDisclosure = fullDisclosure;
     }
 

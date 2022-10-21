@@ -38,19 +38,19 @@ public class MapServiceImpl implements MapService{
 
     @Override
     @Transactional
-    public Long create(String mapName, Boolean fullDisclosure, Long memberId) {
-        Map save = mapRepository.save(Map.of(mapName, fullDisclosure, memberId));
+    public Long create(String mapName, String emoji, Boolean fullDisclosure, Long memberId) {
+        Map save = mapRepository.save(Map.of(mapName, emoji, fullDisclosure, memberId));
 
         return save.getId();
     }
 
     @Override
     @Transactional
-    public void update(Long memberId, Long mapId, String mapName, boolean fullDisclosure) {
+    public void update(Long memberId, Long mapId, String mapName, String emoji, boolean fullDisclosure) {
         // 권한 검증 로직이 필요
         Map targetMap = mapRepository.findById(mapId)
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_MEMBER));
-        targetMap.update(mapName, fullDisclosure);
+        targetMap.update(mapName, emoji, fullDisclosure);
     }
 
     @Override
@@ -60,7 +60,7 @@ public class MapServiceImpl implements MapService{
 
         return maps.map(map -> {
             Member member = members.get(map.getMemberId());
-            return new MapSimpleInfo(map.getId(), map.getName(), member.getId(), member.getNickname(), map.getPlacesCount());
+            return new MapSimpleInfo(map.getId(), map.getName(), map.getEmoji(), member.getId(), member.getNickname(), map.getPlacesCount());
         });
     }
 
@@ -85,6 +85,7 @@ public class MapServiceImpl implements MapService{
                         map -> new MapSimpleInfo(
                                 map.getId(),
                                 map.getName(),
+                                map.getEmoji(),
                                 member.getId(),
                                 member.getNickname(),
                                 map.getPlacesCount())

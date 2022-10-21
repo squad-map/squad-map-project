@@ -13,12 +13,14 @@ class MapTest {
     @DisplayName("지도를 업데이트 할 수 있다.")
     void updateTest() {
 
-        map = Map.of("first map", false, 1L);
+        map = Map.of("first map", "U+1F600",false, 1L);
 
         String updateName = "changed map";
-        map.update(updateName, true);
+        String updateEmoji = "U+1F603";
+        map.update(updateName, updateEmoji,true);
 
         assertThat(map.getName()).isEqualTo(updateName);
+        assertThat(map.getEmoji()).isEqualTo(updateEmoji);
         assertThat(map.isFullDisclosure()).isTrue();
     }
 }
