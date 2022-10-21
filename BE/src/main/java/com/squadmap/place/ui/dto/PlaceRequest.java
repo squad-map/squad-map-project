@@ -14,6 +14,7 @@ public class PlaceRequest {
     private String address;
     private Point position;
     private String description;
+    private String detailLink;
     private Long mapId;
     private Long categoryId;
     private String categoryName;

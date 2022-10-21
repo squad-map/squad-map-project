@@ -37,6 +37,7 @@ class PlaceAcceptanceTest extends RestAssuredTest {
             fieldWithPath("position.x").type(JsonFieldType.NUMBER).description("장소 위도"),
             fieldWithPath("position.y").type(JsonFieldType.NUMBER).description("장소 경도"),
             fieldWithPath("description").type(JsonFieldType.STRING).description("장소에 대한 설명(리뷰)"),
+            fieldWithPath("detail_link").type(JsonFieldType.STRING).description("장소에 대한 링크"),
             fieldWithPath("map_id").type(JsonFieldType.NUMBER).description("장소를 등록할 지도의 아이디"),
             fieldWithPath("category_id").type(JsonFieldType.NUMBER).optional().description("기존 카테고리 사용시, 장소를 등록할 카테고리의 아이디"),
             fieldWithPath("category_name").type(JsonFieldType.STRING).optional().description("신규 카테고리를 만들시, 장소를 등록할 (신규)카테고리의 이름"),
@@ -55,11 +56,12 @@ class PlaceAcceptanceTest extends RestAssuredTest {
         double x = 37.123513;
         double y = 127.123414123;
         String description = "it's my favorite place\nthank you";
+        String detailLink = "https://kakaomap";
         Long mapId = 1L;
         Long categoryId = 1L;
         Point point = new Point(x, y);
         String tokenHeader = "Bearer " + jwtProvider.generateAccessToken(1L);
-        PlaceRequest placeRequest = new PlaceRequest(placeName, address, point, description, mapId, categoryId, null, null);
+        PlaceRequest placeRequest = new PlaceRequest(placeName, address, point, description, detailLink, mapId, categoryId, null, null);
 
         given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, CREATE_REQUEST_FIELDS, CREATE_RESPONSE_FIELDS, AUTHORIZATION_HEADER))
                 .accept(ContentType.JSON)
@@ -88,6 +90,7 @@ class PlaceAcceptanceTest extends RestAssuredTest {
             fieldWithPath("latitude").type(JsonFieldType.NUMBER).description("장소 위도"),
             fieldWithPath("longitude").type(JsonFieldType.NUMBER).description("장소 경도"),
             fieldWithPath("description").type(JsonFieldType.STRING).description("(수정된)장소 설명"),
+            fieldWithPath("detail_link").type(JsonFieldType.STRING).description("장소에 대한 링크"),
             fieldWithPath("category_id").type(JsonFieldType.NUMBER).description("(수정된)카테고리의 아이디")
         );
 
@@ -128,6 +131,7 @@ class PlaceAcceptanceTest extends RestAssuredTest {
             fieldWithPath("latitude").type(JsonFieldType.NUMBER).description("장소 위도"),
             fieldWithPath("longitude").type(JsonFieldType.NUMBER).description("장소 경도"),
             fieldWithPath("description").type(JsonFieldType.STRING).description("장소 설명"),
+            fieldWithPath("detail_link").type(JsonFieldType.STRING).description("장소에 대한 링크"),
             fieldWithPath("category_id").type(JsonFieldType.NUMBER).description("카테고리의 아이디")
     );
 

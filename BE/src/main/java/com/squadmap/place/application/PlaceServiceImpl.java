@@ -28,7 +28,7 @@ public class PlaceServiceImpl implements PlaceService {
 
     @Override
     @Transactional
-    public Long create(String name, String address, Point position, String description, Long mapId,
+    public Long create(String name, String address, Point position, String description, String detailLink, Long mapId,
                        Long categoryId, String categoryName, String categoryColor, Long memberId) {
 
         Map map = mapRepository.findById(mapId)
@@ -52,7 +52,7 @@ public class PlaceServiceImpl implements PlaceService {
             throw new ClientException(ErrorStatusCodeAndMessage.ALREADY_REGISTERED_PLACE);
         }
 
-        Place place = placeRepository.save(Place.of(name, address, pos, description, map, category, memberId));
+        Place place = placeRepository.save(Place.of(name, address, pos, description, detailLink, map, category, memberId));
         return place.getId();
     }
 
