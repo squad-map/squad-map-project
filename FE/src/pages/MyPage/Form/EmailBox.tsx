@@ -26,7 +26,6 @@ const EmailBox = ({ dataId, handleEmailChange }: EmailBoxProps) => (
       url={Icons.Minus}
       alt="이메일 삭제 버튼"
       data-id={dataId}
-      cursor
     />
   </S.EmailBox>
 );

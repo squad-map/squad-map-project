@@ -11,7 +11,6 @@ export default {
     size: 'small',
     url: Icons.Login,
     alt: 'SquadMap Login Icon',
-    cursor: true,
   },
 } as ComponentMeta<typeof Icon>;
 

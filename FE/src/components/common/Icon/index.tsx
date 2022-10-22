@@ -4,7 +4,6 @@ interface IIcon {
   size: 'small' | 'medium' | 'large';
   url: string;
   alt: string;
-  cursor?: boolean;
   onClick?: (e: React.MouseEvent<HTMLImageElement>) => void;
 }
 

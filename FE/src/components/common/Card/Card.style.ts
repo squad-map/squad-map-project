@@ -29,7 +29,4 @@ export const Card = styled.div<{ size: string; color: string }>`
   border-radius: 1rem;
   cursor: pointer;
   padding: 1rem;
-  &:hover {
-    opacity: 0.7;
-  }
 `;

@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-export const Image = styled.img<{ cursor?: boolean }>`
+export const Image = styled.img`
   display: block;
-  cursor: ${props => (props.cursor ? 'pointer' : '')};
+  cursor: pointer;
 `;

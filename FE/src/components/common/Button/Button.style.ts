@@ -80,8 +80,4 @@ export const Button = styled.button<{
     background-color: #e9ebee;
     color: #c5c8ce;
   }
-
-  &:hover {
-    opacity: 0.7;
-  }
 `;

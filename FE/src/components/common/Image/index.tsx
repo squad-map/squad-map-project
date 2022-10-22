@@ -3,7 +3,6 @@ import * as S from './Image.style';
 interface IImage {
   url: string;
   alt: string;
-  cursor?: boolean;
   onClick?: () => void;
 }
 

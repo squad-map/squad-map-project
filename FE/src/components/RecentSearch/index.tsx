@@ -28,7 +28,6 @@ const RecentSearch = () => {
                 text={value}
                 size="regular"
                 color={theme.color.lightGray}
-                cursor
                 hover
               />
             ))}
@@ -44,7 +43,6 @@ const RecentSearch = () => {
             text="전체삭제"
             size="regular"
             color={theme.color.white}
-            cursor
             hover
           />
         </Button>
@@ -52,7 +50,6 @@ const RecentSearch = () => {
           text="최근검색어 끄기"
           size="regular"
           color={theme.color.white}
-          cursor
           hover
         />
       </S.Bottom>
