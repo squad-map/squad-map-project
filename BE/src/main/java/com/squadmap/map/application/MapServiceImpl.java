@@ -2,9 +2,10 @@ package com.squadmap.map.application;
 
 import com.squadmap.category.application.dto.CategoryInfo;
 import com.squadmap.category.domain.Category;
-import com.squadmap.category.infrastructure.CategoryRepository;
 import com.squadmap.common.excetpion.ClientException;
 import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
+import com.squadmap.group.domain.GroupMember;
+import com.squadmap.group.infrastructure.GroupMemberRepository;
 import com.squadmap.map.application.dto.CategorizedPlaces;
 import com.squadmap.map.application.dto.MapDetail;
 import com.squadmap.map.application.dto.MapSimpleInfo;
@@ -23,7 +24,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -35,13 +35,14 @@ public class MapServiceImpl implements MapService{
     private final MapRepository mapRepository;
     private final MemberRepository memberRepository;
     private final PlaceRepository placeRepository;
+    private final GroupMemberRepository groupRepository;
 
     @Override
     @Transactional
     public Long create(String mapName, String emoji, Boolean fullDisclosure, Long memberId) {
-        Map save = mapRepository.save(Map.of(mapName, emoji, fullDisclosure, memberId));
-
-        return save.getId();
+        Map map = mapRepository.save(Map.of(mapName, emoji, fullDisclosure, memberId));
+        groupRepository.save(GroupMember.of(map.getId(), memberId, "HOST"));
+        return map.getId();
     }
 
     @Override
@@ -94,6 +95,12 @@ public class MapServiceImpl implements MapService{
 
         return new MapsResponse(mapSimpleInfos.size(), mapSimpleInfos);
 
+    }
+
+    @Override
+    public boolean isHost(Long memberId, Long mapId) {
+        Long hostId = mapRepository.findMemberIdById(mapId).orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_MAP));
+        return mapId.equals(memberId);
     }
 
     private java.util.Map<Long, Member> getMembers(Page<Map> maps) {

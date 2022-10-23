@@ -86,7 +86,7 @@ class MapAcceptanceTest extends RestAssuredTest {
 
     }
 
-    private static final Snippet READ_MAP_LIST_REQUSET = pathParameters(
+    private static final Snippet READ_MAP_LIST_REQUSET = requestParameters(
             parameterWithName("page").optional().description("페이지 번호(default 0)"),
             parameterWithName("size").optional().description("반환받을 지도 갯수(default 10)")
     );

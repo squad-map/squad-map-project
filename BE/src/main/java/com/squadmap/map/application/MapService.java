@@ -21,4 +21,6 @@ public interface MapService {
     MapDetail findOne(Long mapId, Long memberId);
 
     MapsResponse readGroupMap(Long memberId);
+
+    boolean isHost(Long memberId, Long mapId);
 }

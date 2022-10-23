@@ -10,5 +10,7 @@ public class GroupMemberInfo {
 
     private final Long memberId;
     private final String memberNickname;
+    private final String memberProfileImage;
     private final PermissionLevel permissionLevel;
+
 }

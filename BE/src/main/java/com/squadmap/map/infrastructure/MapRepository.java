@@ -18,4 +18,6 @@ public interface MapRepository extends JpaRepository<Map, Long> {
 
     List<Map> findAllByMemberId(Long memberId);
 
+    Optional<Long> findMemberIdById(Long mapId);
+
 }
