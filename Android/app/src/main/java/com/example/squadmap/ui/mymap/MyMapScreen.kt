@@ -23,7 +23,7 @@ fun MyMapScreen(
     routAction: SquadMapRoutAction,
     myMapViewModel: MyMapViewModel = hiltViewModel()
 ) {
-    if(!myMapViewModel.isLogin()) {
+    if(myMapViewModel.isLogin()) {
         Scaffold(
             topBar = { TopAppbar() }
         ) { paddingValues ->
