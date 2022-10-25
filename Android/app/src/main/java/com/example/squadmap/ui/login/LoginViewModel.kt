@@ -35,17 +35,24 @@ class LoginViewModel @Inject constructor(
     }
 
     fun login(code: String, state: String?) {
-        viewModelScope.launch(ceh) {
-            kotlin.runCatching {
-                withContext(Dispatchers.IO) {
-                    repository.login(code, state)
-                }
-            }.onSuccess {
-                logger("$it")
-                loginResult = it
-                saveJWT(loginResult.toJwt())
-                setUserInfo(loginResult.toUserInfo())
+        viewModelScope.launch() {
+            withContext(Dispatchers.IO) {
+                logger("repository login")
+                repository.login(code, state)
             }
+//            kotlin.runCatching {
+//                withContext(Dispatchers.IO) {
+//                    logger("repository login")
+//                    repository.login(code, state)
+//                }
+//            }.onSuccess {
+//                logger("$it")
+//                loginResult = it
+//                saveJWT(loginResult.toJwt())
+//                setUserInfo(loginResult.toUserInfo())
+//            }.onFailure {
+//                it.message?.let { it1 -> logger(it1) }
+//            }
         }
     }
 
