@@ -3,6 +3,7 @@ package com.example.squadmap.ui
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -13,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.squadmap.common.AppSession
@@ -22,6 +24,7 @@ import com.example.squadmap.ui.common.bottommenu.BottomNavigationBar
 import com.example.squadmap.ui.common.navigation.SquadMapNavGraph
 import com.example.squadmap.ui.common.navigation.SquadMapNavigation
 import com.example.squadmap.ui.theme.SquadMapTheme
+import com.example.squadmap.ui.web.LoginViewModel
 import com.kakao.util.maps.helper.Utility
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -30,7 +33,8 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    @Inject lateinit var appSession: AppSession
+    @Inject
+    lateinit var appSession: AppSession
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,8 +49,7 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-        val keyHash = Utility.getKeyHash(this)
-        logger("keyHash : $keyHash")
+
     }
 
 }
@@ -57,7 +60,7 @@ fun SquadMapApp(jwt: JWT?) {
     Scaffold(
         bottomBar = {
             val navBackStackEntry by navController.currentBackStackEntryAsState()
-            when(navBackStackEntry?.destination?.route) {
+            when (navBackStackEntry?.destination?.route) {
                 SquadMapNavigation.HOME.route, SquadMapNavigation.MY_MAP.route, SquadMapNavigation.PROFILE.route -> {
                     logger("${navBackStackEntry?.destination?.route}")
                     BottomNavigationBar(navController = navController)
@@ -68,7 +71,7 @@ fun SquadMapApp(jwt: JWT?) {
             }
         }
     ) {
-        Box(Modifier.padding(it)){
+        Box(Modifier.padding(it)) {
             SquadMapNavGraph(navController = navController, jwt = jwt)
         }
     }

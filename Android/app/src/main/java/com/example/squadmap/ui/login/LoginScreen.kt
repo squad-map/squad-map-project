@@ -14,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.rememberNavController
+import com.example.squadmap.BuildConfig
 import com.example.squadmap.R
 import com.example.squadmap.common.logger
 import com.example.squadmap.ui.TopAppbar
@@ -21,6 +22,9 @@ import com.example.squadmap.ui.common.navigation.SquadMapNavigation
 import com.example.squadmap.ui.common.navigation.SquadMapRoutAction
 import com.example.squadmap.ui.theme.Main
 import com.example.squadmap.ui.theme.SquadMapTheme
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
+import java.util.UUID
 
 @Composable
 fun LoginScreen(routAction: SquadMapRoutAction) {
@@ -62,7 +66,12 @@ fun LoginScreen(routAction: SquadMapRoutAction) {
                 iconTint = Color.White,
                 fontColor = Color.White,
             ) {
-                logger("never login")
+                val url = URLEncoder.encode(
+                    "https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${BuildConfig.NAVER_LOGIN_ID}&redirect_uri=http://localhost:3000/login/naver/callback&state=state",
+                    StandardCharsets.UTF_8.toString()
+                )
+                val state = UUID.randomUUID().toString()
+                routAction.navToLogin(SquadMapNavigation.OAUTH_LOGIN, url, state)
             }
             Spacer(modifier = Modifier.height(10.dp))
             LoginButton(
@@ -73,7 +82,11 @@ fun LoginScreen(routAction: SquadMapRoutAction) {
                 iconTint = Color.White,
                 fontColor = Color.White,
             ) {
-                routAction.navToRout(SquadMapNavigation.GITHUB_LOGIN)
+                val url = URLEncoder.encode(
+                    "https://github.com/login/oauth/authorize?client_id=${BuildConfig.GITHUB_LOGIN_ID}&scope=user:email",
+                    StandardCharsets.UTF_8.toString()
+                )
+                routAction.navToLogin(SquadMapNavigation.OAUTH_LOGIN, url, null)
             }
         }
     }
@@ -98,7 +111,7 @@ private fun LoginButton(
     ) {
         Row(
             horizontalArrangement = Arrangement.Center
-        ){
+        ) {
             icon?.let {
                 Icon(
                     painter = icon,

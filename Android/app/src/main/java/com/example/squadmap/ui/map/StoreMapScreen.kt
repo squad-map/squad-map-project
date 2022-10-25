@@ -32,7 +32,6 @@ import com.example.squadmap.ui.common.navigation.SquadMapRoutAction
 import com.example.squadmap.ui.theme.SquadMapTheme
 import net.daum.mf.map.api.MapPoint
 
-
 @Composable
 fun MapViewScreen(
     latitude: String,

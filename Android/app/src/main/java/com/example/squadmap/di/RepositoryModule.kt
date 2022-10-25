@@ -1,7 +1,6 @@
 package com.example.squadmap.di
 
-import com.example.squadmap.data.repository.StoreSearchRepository
-import com.example.squadmap.data.repository.StoreSearchRepositoryImpl
+import com.example.squadmap.data.repository.*
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -17,5 +16,23 @@ abstract class RepositoryModule {
     abstract fun bindStoreSearchRepository(
         storeSearchRepositoryImpl: StoreSearchRepositoryImpl
     ): StoreSearchRepository
+
+    @Singleton
+    @Binds
+    abstract fun bindLoginRepository(
+        loginRepositoryImpl: LoginRepositoryImpl
+    ): LoginRepository
+
+    @Singleton
+    @Binds
+    abstract fun bindProfileRepository(
+        profileRepositoryImpl: ProfileRepositoryImpl
+    ): ProfileRepository
+
+    @Singleton
+    @Binds
+    abstract fun bindMyMapRepository(
+        myMapRepositoryImpl: MyMapRepositoryImpl
+    ): MyMapRepository
 
 }

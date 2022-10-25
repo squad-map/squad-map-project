@@ -2,5 +2,5 @@ package com.example.squadmap.common
 
 object Constants {
     val SEARCH_URL = "https://dapi.kakao.com"
-    val GEO_CODING_URL = "https://naveropenapi.apigw.ntruss.com"
+    val BASE_URL = "http://13.124.249.154"
 }
