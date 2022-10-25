@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { v4 } from 'uuid';
 
 import Button from '../common/Button';
 
@@ -17,25 +18,14 @@ declare global {
   }
 }
 
-const NaverLogin = () => {
-  const { naver } = window;
-  const naverLogin = new naver.LoginWithNaverId({
-    clientId: process.env.LOCAL_NAVER_CLIENT_ID,
-    callbackUrl: process.env.LOCAL_NAVER_CALLBACK_URL,
-    callbackHandle: true,
-    loginButton: { color: 'green', type: 3, height: 60 },
-    isPopup: false,
-  });
-  naverLogin.init();
-};
-
 const Login = () => {
   const isLoggedIn = useIsLoggedIn();
-  useEffect(() => {
-    if (isLoggedIn) return;
+  const state = v4();
 
-    NaverLogin();
-  }, []);
+  useEffect(() => {
+    // eslint-disable-next-line no-useless-return
+    if (isLoggedIn) return;
+  }, [isLoggedIn, state]);
 
   return (
     <S.Login>
@@ -50,7 +40,17 @@ const Login = () => {
           />
         </Button>
       </a>
-      <div id="naverIdLogin" />
+      <a
+        href={`https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${process.env.SQUAD_MAP_NAVER_CLIENT_ID}&redirect_uri=${process.env.SQUAD_MAP_NAVER_CALLBACK_URL}&state=${state}`}
+      >
+        <Button size="large" color={theme.color.green}>
+          <Text
+            size="large"
+            text="Naver 계정으로 로그인"
+            color={theme.color.white}
+          />
+        </Button>
+      </a>
     </S.Login>
   );
 };
