@@ -10,17 +10,29 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.rememberNavController
+import com.example.squadmap.ui.common.navigation.SquadMapNavigation
+import com.example.squadmap.ui.common.navigation.SquadMapRoutAction
 import com.example.squadmap.ui.theme.Main
 import com.example.squadmap.ui.theme.SquadMapTheme
 
 @Composable
-fun MyMapScreen() {
-    Scaffold(
-        topBar = { TopAppbar() }
-    ) { paddingValues ->
-        Box(modifier = Modifier.padding(paddingValues)) {
-            Text(text = "MyMapScreen", fontSize = 20.sp)
+fun MyMapScreen(
+    routAction: SquadMapRoutAction,
+    myMapViewModel: MyMapViewModel = hiltViewModel()
+) {
+    if(myMapViewModel.isLogin()) {
+        Scaffold(
+            topBar = { TopAppbar() }
+        ) { paddingValues ->
+            Box(modifier = Modifier.padding(paddingValues)) {
+                Text(text = "MyMapScreen", fontSize = 20.sp)
+            }
         }
+    } else {
+        routAction.navToRout(SquadMapNavigation.LOGIN)
     }
 }
 
@@ -44,6 +56,9 @@ private fun TopAppbar() {
 @Composable
 fun DefaultPreview() {
     SquadMapTheme {
-        MyMapScreen()
+        MyMapScreen(
+            routAction = SquadMapRoutAction(rememberNavController()),
+            myMapViewModel = viewModel()
+        )
     }
 }

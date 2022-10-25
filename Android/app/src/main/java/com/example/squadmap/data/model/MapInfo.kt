@@ -5,4 +5,3 @@ data class MapInfo(
     val store: List<StoreInfo>,
     val categories: List<CategoryInfo>
 )
-// 맵 정보 저장해서 가져오기

@@ -33,6 +33,13 @@ class AddStoreViewModel @Inject constructor(
     private val _addStore = MutableStateFlow<UiState<ResultStore>>(UiState.Loading)
     val addStore = _addStore.asStateFlow()
 
+    private val _description = mutableStateOf("")
+    val description: State<String> = _description
+
+    fun updateDescription(newValue: String) {
+        _description.value = newValue
+    }
+
     fun updateQuery(newValue: String) {
         _query.value = newValue
         currentPage = 1

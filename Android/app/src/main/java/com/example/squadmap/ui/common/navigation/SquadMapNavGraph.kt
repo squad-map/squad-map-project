@@ -8,7 +8,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.example.squadmap.BuildConfig
+import com.example.squadmap.common.logger
 import com.example.squadmap.data.model.JWT
 import com.example.squadmap.ui.common.bottommenu.BottomNavigation
 import com.example.squadmap.ui.home.HomeScreen
@@ -23,11 +23,18 @@ import com.example.squadmap.ui.addstore.AddStoreViewModel
 import com.example.squadmap.ui.addstore.StoreDescriptionScreen
 import com.example.squadmap.ui.addstore.StoreSearchScreen
 import com.example.squadmap.ui.home.HomeViewModel
-import com.example.squadmap.ui.web.GithubLoginWebView
+import com.example.squadmap.ui.mymap.MyMapViewModel
+import com.example.squadmap.ui.profile.ProfileViewModel
+import com.example.squadmap.ui.web.LoginViewModel
+import com.example.squadmap.ui.web.OAuthLoginWebView
 import com.example.squadmap.ui.web.StoreWebView
 
 @Composable
-fun SquadMapNavGraph(navController: NavHostController, startRoute: String = BottomNavigation.Home.screenRoute, jwt: JWT?) {
+fun SquadMapNavGraph(
+    navController: NavHostController,
+    startRoute: String = BottomNavigation.Home.screenRoute,
+    jwt: JWT?
+) {
     val routeAction = remember(navController) {
         SquadMapRoutAction(navController)
     }
@@ -62,33 +69,56 @@ fun SquadMapNavGraph(navController: NavHostController, startRoute: String = Bott
             val url = backStackEntry.arguments?.getString("url").orEmpty()
             StoreWebView(url)
         }
-        composable(SquadMapNavigation.GITHUB_LOGIN.route) {
-            GithubLoginWebView(url = "http://github.com/login/oauth/authorize?client_id=" +
-                    BuildConfig.GITHUB_LOGIN_ID +
-                    "&redirect_uri=http://localhost:3000/login/github/callback&response_type=code")
+        composable(
+            route = "${SquadMapNavigation.OAUTH_LOGIN.route}/{url}/{state}",
+            arguments = listOf(
+                navArgument("url") {
+                    type = NavType.StringType
+                },
+                navArgument("state") {
+                    type = NavType.StringType
+                }
+            )
+        ) { backStackEntry ->
+            val url = backStackEntry.arguments?.getString("url").orEmpty()
+            val state = backStackEntry.arguments?.getString("state")
+            val viewModel = hiltViewModel<LoginViewModel>()
+
+            OAuthLoginWebView(
+                viewModel = viewModel,
+                move = {
+                    routeAction.navToRout(SquadMapNavigation.PROFILE)
+                },
+                url = url,
+                state = state
+            )
+
         }
         composable(SquadMapNavigation.SEARCH_STORE_FOR_ADD.route) { backStackEntry ->
-            val viewModel : AddStoreViewModel = hiltViewModel(backStackEntry)
+            val viewModel: AddStoreViewModel = hiltViewModel(backStackEntry)
             StoreSearchScreen(routAction = routeAction, viewModel = viewModel)
         }
         composable(SquadMapNavigation.ADD_STORE_DESCRIPTION.route) { backStackEntry ->
-            val viewModel : AddStoreViewModel = hiltViewModel(backStackEntry)
+            val viewModel: AddStoreViewModel = hiltViewModel(backStackEntry)
             StoreDescriptionScreen(routAction = routeAction, viewModel = viewModel)
         }
         composable(BottomNavigation.MyMap.screenRoute) {
-            if (jwt != null) {
-                MyMapScreen()
-            } else {
-                LoginScreen(routeAction)
-            }
+            val viewModel: MyMapViewModel = hiltViewModel(it)
+            MyMapScreen(
+                myMapViewModel = viewModel,
+                routAction = routeAction
+            )
         }
         composable(BottomNavigation.Profile.screenRoute) {
-            if (jwt != null) {
-                ProfileScreen()
-            } else {
-                LoginScreen(routeAction)
-            }
+            val viewModel: ProfileViewModel = hiltViewModel()
+            ProfileScreen(
+                profileViewModel = viewModel,
+                routAction = routeAction
+            )
         }
-
+        composable(SquadMapNavigation.LOGIN.route) {
+            logger("LOGIN")
+            LoginScreen(routeAction)
+        }
     }
 }

@@ -3,14 +3,18 @@ package com.example.squadmap.ui.web
 import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.squadmap.common.logger
+import com.example.squadmap.ui.common.navigation.SquadMapNavigation
+import com.example.squadmap.ui.common.navigation.SquadMapRoutAction
 import com.google.accompanist.web.AccompanistWebViewClient
 import com.google.accompanist.web.WebView
 import com.google.accompanist.web.rememberWebViewState
 
 private const val SCHEME = "http"
-private const val GITHUB_CALLBACK = "localhost:3000/login/github/callback"
+private const val HOST = "localhost"
 private const val CODE = "code"
+
 @Composable
 fun StoreWebView(url: String) {
     val state = rememberWebViewState(url)
@@ -21,28 +25,43 @@ fun StoreWebView(url: String) {
 }
 
 @Composable
-fun GithubLoginWebView(url: String) {
-    val client = GithubLoginClient()
-    val state = rememberWebViewState(url)
+fun OAuthLoginWebView(
+    viewModel: LoginViewModel = hiltViewModel(),
+    move: () -> Unit,
+    url: String,
+    state: String?) {
+    val client = LoginClient(
+        login = { code ->
+            viewModel.login(code, state)
+        },
+        move = move
+    )
+
+    val webView = rememberWebViewState(url)
 
     WebView(
-        state = state,
+        state = webView,
         onCreated = { it.settings.javaScriptEnabled = true },
         client = client
     )
 }
 
-class GithubLoginClient: AccompanistWebViewClient() {
+class LoginClient(
+    private val login: (String) -> Unit,
+    private val move: () -> Unit
+) : AccompanistWebViewClient() {
 
     private fun checkUrl(request: WebResourceRequest?) {
         val url = request?.url ?: return
-        val code = url.getQueryParameter("code")
+        val code = url.getQueryParameter(CODE)
 
         if (url.scheme == SCHEME &&
-            url.host == GITHUB_CALLBACK &&
+            url.host == HOST &&
             code != null
         ) {
             logger("test code $code")
+            login(code)
+            move()
         }
     }
 

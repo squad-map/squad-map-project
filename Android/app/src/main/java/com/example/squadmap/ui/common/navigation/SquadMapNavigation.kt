@@ -11,9 +11,10 @@ enum class SquadMapNavigation(val route: String) {
     WEB("WEB"),
     MY_MAP( "MY_MAP"),
     PROFILE("PROFILE"),
-    GITHUB_LOGIN("GITHUB_LOGIN"),
+    OAUTH_LOGIN("OAUTH_LOGIN"),
     SEARCH_STORE_FOR_ADD("SEARCH_STORE_FOR_ADD"),
-    ADD_STORE_DESCRIPTION("ADD_STORE_DESCRIPTION")
+    ADD_STORE_DESCRIPTION("ADD_STORE_DESCRIPTION"),
+    LOGIN("LOGIN")
 }
 
 class SquadMapRoutAction(navHostController: NavHostController) {
@@ -30,6 +31,16 @@ class SquadMapRoutAction(navHostController: NavHostController) {
 
     val navToWebView: (SquadMapNavigation, String) -> Unit = { rout, url ->
         navHostController.navigate("${rout.route}/$url") {
+            popUpTo(navHostController.graph.findStartDestination().id) {
+                saveState = true
+            }
+            launchSingleTop = true
+            restoreState = true
+        }
+    }
+
+    val navToLogin: (SquadMapNavigation, String, String?) -> Unit = { rout, url, state ->
+        navHostController.navigate("${rout.route}/$url/$state") {
             popUpTo(navHostController.graph.findStartDestination().id) {
                 saveState = true
             }

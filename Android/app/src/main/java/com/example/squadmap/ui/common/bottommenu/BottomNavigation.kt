@@ -17,17 +17,22 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import com.example.squadmap.data.model.JWT
+import com.example.squadmap.ui.common.navigation.SquadMapNavigation
 import com.example.squadmap.ui.theme.SquadMapTheme
+import com.example.squadmap.ui.web.LoginViewModel
 
-val items = listOf(
+private val items = listOf(
     BottomNavigation.Home,
     BottomNavigation.MyMap,
     BottomNavigation.Profile
 )
 
 @Composable
-fun BottomNavigationBar(navController: NavHostController) {
-
+fun BottomNavigationBar(
+    navController: NavHostController,
+) {
     androidx.compose.material.BottomNavigation(
         backgroundColor = Color.White,
         contentColor = Color(0xFF3F414E),
@@ -69,6 +74,8 @@ fun BottomNavigationBar(navController: NavHostController) {
 @Composable
 fun DefaultPreview() {
     SquadMapTheme {
-
+        BottomNavigationBar(
+            navController = rememberNavController()
+        )
     }
 }
