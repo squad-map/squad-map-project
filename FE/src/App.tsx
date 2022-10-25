@@ -22,7 +22,8 @@ export default function App() {
             <Route path="/mymap/:id" element={<MyMapPage />} />
             <Route path="/mymap/search/:id" element={<SearchMapPage />} />
           </Route>
-          <Route path="/callback/:provider" element={<Callback />} />
+          <Route path="/login/github/callback" element={<Callback />} />
+          <Route path="/login/naver/callback" element={<Callback />} />
         </Routes>
       </Suspense>
     </BrowserRouter>

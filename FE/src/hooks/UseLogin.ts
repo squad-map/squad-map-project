@@ -9,30 +9,31 @@ export const UseLogin = () => {
   const setUser = useSetRecoilState(userState);
   const navigate = useNavigate();
 
-  const SNSLogin = async (params: string, sns: string) => {
+  const SNSLogin = async (code: string, state: string, sns: string) => {
     try {
-      // const response = await fetch(
-      //   `${process.env.SQUAD_MAP_OAUTH_URL}/${sns}${params}`
-      // );
-
-      // const loginData = await response.json();
-      const loginData = {
-        accessToken: 'muffin_accessToken',
-        refreshToken: 'muffin_refreshToken',
-        nickname: 'muffin',
-        profileImageUrl:
-          'https://w.namu.la/s/7cab72cebf334078cb60ad2d292e30f9172354e14440789a2002472fa13216f07c443819e7c14712c94707837e8a0c48b8e69b816e6f29d33bdc4ed975e95ae09175e79b553e19e439571c16520327e2ad85aa14c009e848426ef11b0ab166eb',
-      };
+      const response = await fetch(
+        `${process.env.SQUAD_MAP_OAUTH_URL}login/${sns}`,
+        {
+          method: 'POST',
+          headers: {
+            'content-type': 'application/json',
+          },
+          body: JSON.stringify({ code, state }),
+        }
+      );
+      const loginData = await response.json();
 
       if (!Object.hasOwn(loginData, 'nickname')) {
         reportError({ message: `로그인 실패` });
       }
 
-      const expires = new Date();
-      setCookie('access_token', loginData.accessToken, {
-        expires,
+      setCookie('access_token', loginData.access_token, {
+        path: '/',
       });
-      setCookie('refresh_token', loginData.refreshToken, { expires });
+      setCookie('refresh_token', loginData.refresh_token, {
+        path: '/',
+      });
+
       setUser({
         nickname: loginData.nickname,
         profileImageUrl: loginData.profileImageUrl,
@@ -55,28 +56,24 @@ export const UseSilentRefresh = () => {
     try {
       const refreshToken = getCookie('refresh_token');
 
-      // const response = await fetch(
-      //   `${process.env.SQUAD_MAP_OAUTH_URL}/refresh`,
-      //   { headers: {
-      //  Authorization: `Barer ${refreshToken}`;
-      // }}
-      // );
+      const response = await fetch(`${process.env.SQUAD_MAP_OAUTH_URL}/login`, {
+        headers: {
+          Authorization: `Barer ${refreshToken}`,
+        },
+      });
 
-      // const refreshData = await response.json();
-      const refreshData = {
-        accessToken: 'muffin_accessToken',
-        refreshToken: 'muffin_refreshToken',
-        nickname: 'muffin',
-        profileImageUrl:
-          'https://w.namu.la/s/7cab72cebf334078cb60ad2d292e30f9172354e14440789a2002472fa13216f07c443819e7c14712c94707837e8a0c48b8e69b816e6f29d33bdc4ed975e95ae09175e79b553e19e439571c16520327e2ad85aa14c009e848426ef11b0ab166eb',
-      };
+      const refreshData = await response.json();
 
       if (!Object.hasOwn(refreshData, 'nickname')) {
         reportError({ message: `토큰 발급 실패` });
       }
 
-      setCookie('access_token', refreshData.accessToken);
-      setCookie('refresh_token', refreshData.refreshToken);
+      setCookie('access_token', refreshData.access_token, {
+        path: '/',
+      });
+      setCookie('refresh_token', refreshData.refresh_token, {
+        path: '/',
+      });
       // setUser
       setUser({
         nickname: refreshData.nickname,
