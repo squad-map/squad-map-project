@@ -1,6 +1,6 @@
 import { getCookie } from '@/utils/cookie';
 
-export const postNickName = async (nickName: string) => {
+export const patchNickName = async (nickName: string) => {
   const accessToken = getCookie('access_token');
   if (!accessToken) throw new Error('accessToken is undefined');
 
