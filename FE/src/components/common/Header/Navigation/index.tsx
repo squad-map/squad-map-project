@@ -9,6 +9,7 @@ import Icon from '@/components/common/Icon';
 import Overlay from '@/components/common/Overlay';
 import Login from '@/components/Login';
 import Manual from '@/components/Manual';
+import NickName from '@/components/NickName';
 import ReportError from '@/components/ReportError';
 import { useIsLoggedIn } from '@/hooks/useIsLoggedIn';
 
@@ -80,7 +81,9 @@ const Navigation = ({ menu, handleCloseMenu }: INavigationProps) => {
                   <S.Text>나의지도</S.Text>
                 </S.Box>
               </Link>
-              <S.Box>
+              <S.Box
+                onClick={() => setOpenModal({ isOpen: true, type: 'nickname' })}
+              >
                 <Icon
                   size="medium"
                   url={Icons.MyProfile}
@@ -113,6 +116,9 @@ const Navigation = ({ menu, handleCloseMenu }: INavigationProps) => {
           {openModal.type === 'login' && <Login />}
           {openModal.type === 'manual' && <Manual />}
           {openModal.type === 'reporting' && <ReportError />}
+          {openModal.type === 'nickname' && (
+            <NickName handleCancelClick={handleCancelClick} />
+          )}
         </GlobalModal>
       )}
     </>

@@ -1,5 +1,5 @@
 // Logged In & Logged Out
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
@@ -12,6 +12,7 @@ import GlobalModal from '@/components/common/GlobalModal';
 import Image from '@/components/common/Image';
 import Text from '@/components/common/Text';
 import Login from '@/components/Login';
+import NickName from '@/components/NickName';
 import { userState } from '@/recoil/atoms/user';
 import theme from '@/styles/theme';
 
@@ -21,6 +22,7 @@ interface HeaderProps {
 
 const Header = ({ children }: HeaderProps) => {
   const [openLoginModal, setOpenLoginModal] = useState(false);
+  const [nickNameModal, setNickNameModal] = useState(false);
   const [menu, setMenu] = useState(false);
   const handleCloseMenu = () => setMenu(false);
   const handleOpenMenu = () => setMenu(true);
@@ -34,11 +36,17 @@ const Header = ({ children }: HeaderProps) => {
         </Link>
         <S.RightArea>
           {user?.nickname ? (
-            <Text
+            <Button
               size="regular"
-              text={user.nickname}
               color={theme.color.white}
-            />
+              onClick={() => setNickNameModal(true)}
+            >
+              <Text
+                size="regular"
+                text={user.nickname}
+                color={theme.color.blue}
+              />
+            </Button>
           ) : (
             <Button
               size="small"
@@ -63,6 +71,14 @@ const Header = ({ children }: HeaderProps) => {
           handleCancelClick={() => setOpenLoginModal(false)}
         >
           <Login />
+        </GlobalModal>
+      )}
+      {user?.nickname && nickNameModal && (
+        <GlobalModal
+          size="small"
+          handleCancelClick={() => setNickNameModal(false)}
+        >
+          <NickName handleCancelClick={() => setNickNameModal(false)} />
         </GlobalModal>
       )}
       {children}
