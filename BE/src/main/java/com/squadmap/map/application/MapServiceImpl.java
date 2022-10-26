@@ -48,9 +48,10 @@ public class MapServiceImpl implements MapService{
     @Override
     @Transactional
     public void update(Long memberId, Long mapId, String mapName, String emoji, boolean fullDisclosure) {
-        // 권한 검증 로직이 필요
+
         Map targetMap = mapRepository.findById(mapId)
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_MEMBER));
+
         targetMap.update(mapName, emoji, fullDisclosure);
     }
 

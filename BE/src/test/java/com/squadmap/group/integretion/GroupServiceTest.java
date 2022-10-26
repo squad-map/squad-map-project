@@ -23,6 +23,7 @@ class GroupServiceTest {
 
         Long mapId = 1L;
         Long memberId = 1L;
+
         List<GroupMemberInfo> groupMembers = groupService.searchMembersInGroup(mapId, memberId);
 
         assertThat(groupMembers.size()).isPositive();
