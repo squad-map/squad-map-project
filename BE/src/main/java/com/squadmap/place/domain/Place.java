@@ -44,6 +44,10 @@ public class Place {
         return new Place(null, name, address, position, description, detailLink, map, category, memberId);
     }
 
+    public Long getMapId() {
+        return this.getMap().getId();
+    }
+
     public void changeCategory(Category category) {
         this.category = category;
     }
