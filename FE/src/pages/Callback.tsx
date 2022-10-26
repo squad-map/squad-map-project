@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
+import { LoadingSpinner } from '@/components/common/LoadingSpinner/LoadingSpinner.style';
 import { UseLogin } from '@/hooks/UseLogin';
 import { getErrorMessage } from '@/utils/util';
 
@@ -20,7 +21,7 @@ const Callback = () => {
     }
   }, [SNSLogin, location.pathname]);
 
-  return <div>Login...</div>;
+  return <LoadingSpinner size="large" />;
 };
 
 export default Callback;

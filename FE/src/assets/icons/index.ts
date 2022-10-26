@@ -6,6 +6,7 @@ import Error from '@/assets/icons/error.svg';
 import Exclamation from '@/assets/icons/exclamation.svg';
 import Home from '@/assets/icons/home.svg';
 import Login from '@/assets/icons/login.svg';
+import Logout from '@/assets/icons/logout.svg';
 import Map from '@/assets/icons/map.svg';
 import Menual from '@/assets/icons/menual.svg';
 import Minus from '@/assets/icons/minus.svg';
@@ -22,6 +23,7 @@ export const Icons = {
   Close,
   Error,
   Login,
+  Logout,
   Map,
   Menual,
   Search,

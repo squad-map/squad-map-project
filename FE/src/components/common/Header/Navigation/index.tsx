@@ -64,17 +64,8 @@ const Navigation = ({ menu, handleCloseMenu }: INavigationProps) => {
             <Icon size="medium" url={Icons.Map} alt="Map Icon" />
             <S.Text>전체지도</S.Text>
           </S.Box>
-          <S.Box>
-            <Icon
-              size="medium"
-              url={Icons.CategoryMap}
-              alt="CategoryMap Icon"
-            />
-            <S.Text>카테고리별 지도</S.Text>
-          </S.Box>
           {isLoggedIn && (
             <>
-              <S.Divider />
               <Link to="/mypage">
                 <S.Box>
                   <Icon size="medium" url={Icons.Map} alt="Map Icon" />
@@ -91,7 +82,12 @@ const Navigation = ({ menu, handleCloseMenu }: INavigationProps) => {
                 />
                 <S.Text>닉네임 변경</S.Text>
               </S.Box>
-              <S.Divider />
+              <Link to="/logout">
+                <S.Box>
+                  <Icon size="medium" url={Icons.Logout} alt="Logout Icon" />
+                  <S.Text>로그아웃</S.Text>
+                </S.Box>
+              </Link>
             </>
           )}
           <S.Divider />
@@ -105,7 +101,6 @@ const Navigation = ({ menu, handleCloseMenu }: INavigationProps) => {
             <Icon size="medium" url={Icons.Error} alt="Error Icon" />
             <S.Text>오류사항 제보</S.Text>
           </S.Box>
-          <S.Divider />
         </S.InnerContainer>
       </S.Container>
       {openModal.isOpen && (

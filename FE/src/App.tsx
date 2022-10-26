@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import Callback from './pages/Callback';
+import Logout from './pages/Logout';
 import Verification from './pages/Verification';
 
 const MyPage = lazy(() => import('@/pages/MyPage'));
@@ -24,6 +25,7 @@ export default function App() {
           </Route>
           <Route path="/login/github/callback" element={<Callback />} />
           <Route path="/login/naver/callback" element={<Callback />} />
+          <Route path="/logout" element={<Logout />} />
         </Routes>
       </Suspense>
     </BrowserRouter>
