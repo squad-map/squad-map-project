@@ -5,7 +5,13 @@ export const getMypage = async () => {
   const accessToken = getCookie('access_token');
   if (!accessToken) throw new Error('accesToken is undefined');
 
-  const response = await fetch(`/mypage`);
+  const response = await fetch(`${process.env.SQUAD_MAP_OAUTH_URL}/map/group`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+    },
+  });
   const mypageData = await response.json();
 
   try {
@@ -17,12 +23,13 @@ export const getMypage = async () => {
 
 export const postMypage = async (mypageRequestBody: MypagePostParams) => {
   const accessToken = getCookie('access_token');
+
   if (!accessToken) throw new Error('accesToken is undefined');
 
-  const response = await fetch(`/mypage`, {
+  const response = await fetch(`${process.env.SQUAD_MAP_OAUTH_URL}/map`, {
     method: 'POST',
     headers: {
-      Authorization: `Barer ${accessToken}`,
+      Authorization: `Bearer ${accessToken}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(mypageRequestBody),

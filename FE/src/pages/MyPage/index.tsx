@@ -6,6 +6,7 @@ import Form from './Form';
 import Item from './Item';
 import * as S from './MyPage.style';
 
+import { getMypage } from '@/apis/mypage';
 import { Icons } from '@/assets/icons';
 import Button from '@/components/common/Button';
 import Card from '@/components/common/Card';
@@ -17,15 +18,10 @@ import GridCards from '@/components/GridCards';
 import { IMyMap } from '@/interfaces/IMyMap';
 import theme from '@/styles/theme';
 
-const getMyPageMapsData = async () => {
-  const response = await fetch('/mypage');
-  const maps = await response.json();
-  return maps;
-};
-
 const MyPage = () => {
-  const { data: myPageData, isLoading: loading } = useQuery(['myMaps'], () =>
-    getMyPageMapsData()
+  const { data: myPageData, isLoading: loading } = useQuery(
+    ['myMaps'],
+    getMypage
   );
   const [formType, setFormType] = useState({ isForm: false, type: 'create' });
 
@@ -45,19 +41,20 @@ const MyPage = () => {
           <>
             <S.GridWrapper>
               <GridCards size="large">
-                {myPageData.map((item: IMyMap) => (
-                  <Link to={`/mymap/${item.id}`}>
-                    <Card size="large" key={item.id}>
-                      <Item
-                        item={item}
-                        handleModifyButton={e => {
-                          e.preventDefault();
-                          setFormType({ isForm: true, type: 'modify' });
-                        }}
-                      />
-                    </Card>
-                  </Link>
-                ))}
+                {myPageData.maps &&
+                  myPageData.maps.map((item: IMyMap) => (
+                    <Link to={`/mymap/${item.id}`}>
+                      <Card size="large" key={item.id}>
+                        <Item
+                          item={item}
+                          handleModifyButton={e => {
+                            e.preventDefault();
+                            setFormType({ isForm: true, type: 'modify' });
+                          }}
+                        />
+                      </Card>
+                    </Link>
+                  ))}
               </GridCards>
             </S.GridWrapper>
             <S.ButtonWrapper>

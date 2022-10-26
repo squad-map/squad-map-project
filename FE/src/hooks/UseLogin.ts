@@ -12,7 +12,7 @@ export const UseLogin = () => {
   const SNSLogin = async (code: string, state: string, sns: string) => {
     try {
       const response = await fetch(
-        `${process.env.SQUAD_MAP_OAUTH_URL}login/${sns}`,
+        `${process.env.SQUAD_MAP_OAUTH_URL}/login/${sns}`,
         {
           method: 'POST',
           headers: {

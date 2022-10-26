@@ -1,7 +1,9 @@
 export interface IMyMap {
   id: number;
+  host_id: number;
+  host_nickname: string;
+  map_name: string;
+  map_emoji: string;
   categories: { name: string; color: string }[];
-  emoji: string;
-  title: string;
-  placeCount: number;
+  places_count: number;
 }
