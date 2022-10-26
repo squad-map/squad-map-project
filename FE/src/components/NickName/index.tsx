@@ -1,6 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useMutation } from 'react-query';
 import { useRecoilState } from 'recoil';
+
+import LoadingSpinner from '../common/LoadingSpinner';
 
 import * as S from './NickName.style';
 
@@ -18,8 +20,8 @@ interface NickNameProps {
 }
 
 const NickName = ({ handleCancelClick }: NickNameProps) => {
-  const [nickName, setNickName] = useState('');
   const [user, setUser] = useRecoilState(userState);
+  const [nickName, setNickName] = useState(user?.nickname);
 
   const handleNickNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setNickName(e.target.value);
@@ -33,14 +35,11 @@ const NickName = ({ handleCancelClick }: NickNameProps) => {
           setUser({ nickname: data.nickname });
         }
       },
+      onError: (error: unknown) => {
+        throw new Error(`error is ${error}`);
+      },
     }
   );
-
-  useEffect(() => {
-    if (user?.nickname) {
-      setNickName(user.nickname);
-    }
-  }, [user]);
 
   const handleUpdatedNickName = async () => {
     fetchPostNickName.mutate(nickName);
@@ -50,25 +49,31 @@ const NickName = ({ handleCancelClick }: NickNameProps) => {
   return (
     <S.NickNameWrapper>
       <S.Title>닉네임 변경</S.Title>
-      <Image url={Images.LoginBackground} alt="Login Background" />
-      <Input
-        id="nickname"
-        width="19rem"
-        height="2.5rem"
-        placeholderText="변경할 닉네임을 입력해주세요."
-        color={theme.color.placeholder}
-        background={theme.color.inputBackground}
-        type="text"
-        value={nickName}
-        onChange={handleNickNameChange}
-      />
-      <Button
-        size="regular"
-        color={theme.color.blue}
-        onClick={handleUpdatedNickName}
-      >
-        <Text text="변경하기" size="small" color={theme.color.white} />
-      </Button>
+      {fetchPostNickName.isLoading ? (
+        <LoadingSpinner size="large" />
+      ) : (
+        <>
+          <Image url={Images.LoginBackground} alt="Login Background" />
+          <Input
+            id="nickname"
+            width="19rem"
+            height="2.5rem"
+            placeholderText="변경할 닉네임을 입력해주세요."
+            color={theme.color.placeholder}
+            background={theme.color.inputBackground}
+            type="text"
+            value={nickName}
+            onChange={handleNickNameChange}
+          />
+          <Button
+            size="regular"
+            color={theme.color.blue}
+            onClick={handleUpdatedNickName}
+          >
+            <Text text="변경하기" size="small" color={theme.color.white} />
+          </Button>
+        </>
+      )}
     </S.NickNameWrapper>
   );
 };
