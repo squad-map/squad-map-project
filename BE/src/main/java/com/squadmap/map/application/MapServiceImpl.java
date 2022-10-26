@@ -35,13 +35,13 @@ public class MapServiceImpl implements MapService{
     private final MapRepository mapRepository;
     private final MemberRepository memberRepository;
     private final PlaceRepository placeRepository;
-    private final GroupMemberRepository groupRepository;
+    private final GroupMemberRepository groupMemberRepository;
 
     @Override
     @Transactional
     public Long create(String mapName, String emoji, Boolean fullDisclosure, Long memberId) {
         Map map = mapRepository.save(Map.of(mapName, emoji, fullDisclosure, memberId));
-        groupRepository.save(GroupMember.of(map.getId(), memberId, "HOST"));
+        groupMemberRepository.save(GroupMember.of(map.getId(), memberId, "HOST"));
         return map.getId();
     }
 
@@ -49,10 +49,12 @@ public class MapServiceImpl implements MapService{
     @Transactional
     public void update(Long memberId, Long mapId, String mapName, String emoji, boolean fullDisclosure) {
 
-        Map targetMap = mapRepository.findById(mapId)
+        Map map = mapRepository.findById(mapId)
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_MEMBER));
-
-        targetMap.update(mapName, emoji, fullDisclosure);
+        if(!map.canAccess(memberId)) {
+            throw new ClientException(ErrorStatusCodeAndMessage.UNAUTHORIZED);
+        }
+        map.update(mapName, emoji, fullDisclosure);
     }
 
     @Override
@@ -80,9 +82,11 @@ public class MapServiceImpl implements MapService{
 
     @Override
     public MapsResponse readGroupMap(Long memberId) {
-        List<Map> maps = mapRepository.findAllByMemberId(memberId);
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_MEMBER));
+
+        List<Long> mapIds = groupMemberRepository.findMapIdByMemberId(memberId);
+        List<Map> maps = mapRepository.findAllById(mapIds);
         List<MapSimpleInfo> mapSimpleInfos = maps.stream().map(
                         map -> new MapSimpleInfo(
                                 map.getId(),
@@ -98,16 +102,11 @@ public class MapServiceImpl implements MapService{
 
     }
 
-    @Override
-    public boolean isHost(Long memberId, Long mapId) {
-        Long hostId = mapRepository.findMemberIdById(mapId).orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_MAP));
-        return mapId.equals(memberId);
-    }
-
     private java.util.Map<Long, Member> getMembers(Page<Map> maps) {
         List<Long> memberIds = maps.stream()
                 .map(Map::getMemberId)
                 .collect(Collectors.toList());
+
         return memberRepository.findAllById(memberIds)
                 .stream()
                 .collect(Collectors.toMap(Member::getId, Function.identity()));

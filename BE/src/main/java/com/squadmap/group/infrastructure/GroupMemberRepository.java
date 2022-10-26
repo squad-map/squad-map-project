@@ -15,4 +15,6 @@ public interface GroupMemberRepository extends JpaRepository<GroupMember, Long> 
     void deleteByMapIdAndMemberId(Long mapId, Long memberId);
 
     boolean existsByMapIdAndMemberId(Long mapId, Long memberId);
+
+    List<Long> findMapIdByMemberId(Long memberId);
 }
