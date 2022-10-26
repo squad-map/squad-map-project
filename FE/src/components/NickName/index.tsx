@@ -6,7 +6,7 @@ import LoadingSpinner from '../common/LoadingSpinner';
 
 import * as S from './NickName.style';
 
-import { postNickName } from '@/apis/user';
+import { patchNickName } from '@/apis/user';
 import { Images } from '@/assets/images';
 import Button from '@/components/common/Button';
 import Image from '@/components/common/Image';
@@ -27,8 +27,8 @@ const NickName = ({ handleCancelClick }: NickNameProps) => {
     setNickName(e.target.value);
   };
 
-  const fetchPostNickName = useMutation(
-    (updatedNickName: string) => postNickName(updatedNickName),
+  const fetchPatchNickName = useMutation(
+    (updatedNickName: string) => patchNickName(updatedNickName),
     {
       onSuccess: (data: { nickname: string }) => {
         if (data) {
@@ -42,14 +42,14 @@ const NickName = ({ handleCancelClick }: NickNameProps) => {
   );
 
   const handleUpdatedNickName = async () => {
-    fetchPostNickName.mutate(nickName);
+    fetchPatchNickName.mutate(nickName);
     handleCancelClick();
   };
 
   return (
     <S.NickNameWrapper>
       <S.Title>닉네임 변경</S.Title>
-      {fetchPostNickName.isLoading ? (
+      {fetchPatchNickName.isLoading ? (
         <LoadingSpinner size="large" />
       ) : (
         <>
