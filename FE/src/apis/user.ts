@@ -5,7 +5,7 @@ export const patchNickName = async (nickName: string) => {
   if (!accessToken) throw new Error('accessToken is undefined');
 
   const response = await fetch(
-    `${process.env.SQUAD_MAP_OAUTH_URL}member/update`,
+    `${process.env.SQUAD_MAP_OAUTH_URL}/member/update`,
     {
       method: 'POST',
       headers: {

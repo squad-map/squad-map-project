@@ -7,6 +7,7 @@ import Icon from '@/components/common/Icon';
 import Text from '@/components/common/Text';
 import { IMyMap } from '@/interfaces/IMyMap';
 import theme from '@/styles/theme';
+import { unicodeToEmoji } from '@/utils/util';
 
 interface ItemProps {
   item: IMyMap;
@@ -17,7 +18,7 @@ const Item = ({ item, handleModifyButton }: ItemProps) => (
   <S.Item>
     <S.ItemHeader>
       <Text
-        text={`${item.emoji} ${item.title}`}
+        text={`${unicodeToEmoji(item.map_emoji)} ${item.map_name}`}
         size="xRegularFill"
         color={theme.color.darkGray}
       />
@@ -30,7 +31,7 @@ const Item = ({ item, handleModifyButton }: ItemProps) => (
     </S.ItemHeader>
     <S.ItemFooter>
       <Text
-        text={`${item.placeCount}개의장소`}
+        text={`${item.places_count}개의장소`}
         size="xSmall"
         color={theme.color.gray}
       />

@@ -1,3 +1,5 @@
+import React from 'react';
+
 import * as S from './Button.style';
 
 interface IButton {
@@ -15,7 +17,7 @@ interface IButton {
   disabled?: boolean;
   loading?: boolean;
   children: React.ReactNode;
-  onClick?: () => void;
+  onClick?: (e?: React.SyntheticEvent | any) => void;
 }
 
 const Button = ({

@@ -1,18 +1,17 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
+import { useNavigate } from 'react-router-dom';
 
-import EmailBox from './EmailBox';
 import * as S from './Form.style';
 
 import { postMypage, patchMypage } from '@/apis/mypage';
-import { Images } from '@/assets/images';
 import Button from '@/components/common/Button';
-import Image from '@/components/common/Image';
 import Text from '@/components/common/Text';
 import Input from '@/components/Input';
 import { IMyMap } from '@/interfaces/IMyMap';
 import theme from '@/styles/theme';
 import { MypagePostParams } from '@/types/mypage';
+import { emojiToUnicode } from '@/utils/util';
 
 interface FormProps {
   type: string;
@@ -21,20 +20,25 @@ interface FormProps {
 
 const Form = ({ type, myPageData }: FormProps) => {
   const queryClient = useQueryClient();
-  const dataId = useRef(1);
-  const [isShareForm, setIsShareForm] = useState(true);
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    title: myPageData.title || '',
-    emoji: myPageData.emoji || '',
+    map_name: myPageData.map_name || '',
+    emoji: myPageData.map_emoji || '',
     share: 'do',
-    authority: 'public',
-    emails: [] as string[],
+    authority: true,
   });
 
   const fetchPostMypage = useMutation(postMypage, {
-    onSuccess: () => {
-      queryClient.invalidateQueries('mypageData');
+    onSuccess: (data: { map_id: number }) => {
+      if (data.map_id) {
+        queryClient.invalidateQueries('mypageData');
+        // 성공 popup 띄우기.
+        navigate(-1);
+      }
+    },
+    onError: (error: unknown) => {
+      throw new Error(`error is ${error}`);
     },
   });
 
@@ -49,86 +53,41 @@ const Form = ({ type, myPageData }: FormProps) => {
     {
       onSuccess: () => {
         queryClient.invalidateQueries('mypageData');
+        navigate(-1);
+      },
+      onError: (error: unknown) => {
+        throw new Error(`error is ${error}`);
       },
     }
   );
 
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, emails: [...formData.emails, e.target.value] });
-  };
-
-  const [emailComponent, setEmailComponent] = useState<
-    {
-      dataId: number;
-      component: React.ReactNode;
-    }[]
-  >([]);
-
-  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, title: e.target.value });
+  const handleMapNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFormData({ ...formData, map_name: e.target.value });
   };
 
   const handleEmojiChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, emoji: e.target.value });
   };
 
-  const handleMinusEmail = (e: React.MouseEvent<HTMLImageElement>) => {
-    // 해당 id만 객체에서 뺴주기
-    const ImageTarget = e.target as HTMLImageElement;
-
-    if (ImageTarget.tagName === 'IMG') {
-      const filteredEmailComponent = emailComponent.filter(email =>
-        email.dataId.toString() !== ImageTarget.dataset.id ? email : ''
-      );
-      setEmailComponent(filteredEmailComponent);
-    }
-  };
-
-  const handleAddEmail = () => {
-    dataId.current += 1;
-    const newEmailComponent = [
-      ...emailComponent,
-      {
-        dataId: dataId.current,
-        component: (
-          <EmailBox
-            key={dataId.current}
-            dataId={dataId.current}
-            handleEmailChange={handleEmailChange}
-          />
-        ),
-      },
-    ];
-
-    setEmailComponent(newEmailComponent);
-  };
-
   const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id } = e.target;
     setFormData({ ...formData, share: id });
-
-    if (id === 'do') {
-      setIsShareForm(true);
-    } else {
-      setIsShareForm(false);
-    }
   };
 
   const handleAuthorityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id } = e.target;
-    setFormData({ ...formData, authority: id });
+    setFormData({ ...formData, authority: id === 'public' });
   };
 
-  const handleSubmit = async (
-    e: React.SyntheticEvent<HTMLFormElement>,
+  const handleSubmit = (
+    e: React.SyntheticEvent<HTMLButtonElement>,
     patchId?: number
   ) => {
     e.preventDefault();
     const newMypage = {
-      title: formData.title,
-      emoji: formData.emoji,
-      emails: formData.emails,
-      authority: formData.authority,
+      map_name: formData.map_name,
+      emoji: emojiToUnicode(formData.emoji),
+      full_disclosure: formData.authority,
     };
 
     if (patchId) {
@@ -138,36 +97,20 @@ const Form = ({ type, myPageData }: FormProps) => {
     }
   };
 
-  useEffect(() => {
-    if (fetchPostMypage.isSuccess) {
-      // 성공적인 팝업창 보여주기.
-      // url 이동.
-      window.location.href = '/mypage';
-    }
-  }, [fetchPostMypage]);
-
-  useEffect(() => {
-    if (fetchPatchMypage.isSuccess) {
-      // 성공적인 팝업창 보여주기.
-      // url 이동.
-      window.location.href = '/mypage';
-    }
-  }, [fetchPatchMypage]);
-
   return (
     <S.Form>
       <S.ColumnBox>
-        <S.Label htmlFor="title">지도명</S.Label>
+        <S.Label htmlFor="map_name">지도명</S.Label>
         <Input
-          id="title"
+          id="map_name"
           width="19rem"
           height="2.5rem"
           placeholderText="코드스쿼드 주변 맛집"
           color={theme.color.placeholder}
           background={theme.color.inputBackground}
           type="text"
-          value={formData.title}
-          onChange={handleTitleChange}
+          value={formData.map_name}
+          onChange={handleMapNameChange}
         />
       </S.ColumnBox>
       <S.ColumnBox>
@@ -176,7 +119,7 @@ const Form = ({ type, myPageData }: FormProps) => {
           id="emoji"
           width="19rem"
           height="2.5rem"
-          placeholderText="🍖 과 같은 이모지 입력"
+          placeholderText="&#x1f6a7; 과 같은 이모지 입력"
           color={theme.color.placeholder}
           background={theme.color.inputBackground}
           type="text"
@@ -201,17 +144,6 @@ const Form = ({ type, myPageData }: FormProps) => {
               onChange={handleAuthorityChange}
             />
             공개
-          </label>
-
-          <label htmlFor="private">
-            <input
-              type="radio"
-              name="authority"
-              id="private"
-              value="false"
-              onChange={handleAuthorityChange}
-            />
-            비공개
           </label>
 
           <label htmlFor="group">
@@ -257,19 +189,6 @@ const Form = ({ type, myPageData }: FormProps) => {
           </label>
         </S.RadioBox>
       </S.ColumnBox>
-      {isShareForm && (
-        <S.ColumnBox>
-          <S.ShareBox onClick={handleMinusEmail}>
-            {emailComponent.map(element => element.component)}
-          </S.ShareBox>
-          <Image
-            url={Images.PlusEmail}
-            alt="Email Plus Button"
-            cursor
-            onClick={handleAddEmail}
-          />
-        </S.ColumnBox>
-      )}
 
       {type === 'modify' ? (
         <S.ButtonWrapper>
@@ -277,7 +196,7 @@ const Form = ({ type, myPageData }: FormProps) => {
             type="submit"
             size="regular"
             color={theme.color.darkBlue}
-            onClick={(e: React.SyntheticEvent<HTMLFormElement>) =>
+            onClick={(e: React.SyntheticEvent<HTMLButtonElement>) =>
               handleSubmit(e, myPageData.id)
             }
           >
@@ -293,7 +212,7 @@ const Form = ({ type, myPageData }: FormProps) => {
             type="submit"
             size="large"
             color="#000"
-            onClick={(e: React.SyntheticEvent<HTMLFormElement>) =>
+            onClick={(e: React.SyntheticEvent<HTMLButtonElement>) =>
               handleSubmit(e)
             }
           >
