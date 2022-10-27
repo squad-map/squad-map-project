@@ -245,3 +245,66 @@ include::{snippets}/category_acceptance_test/read_one_test/response-fields.adoc[
 include::{snippets}/category_acceptance_test/read_one_test/response-body.adoc[]
 include::{snippets}/category_acceptance_test/read_one_test/http-response.adoc[]
 
+
+[[resources-groupMember]]
+== 그룹
+
+[[resources-groupMember-create-test]]
+=== 그룹 멤버 추가
+
+==== request
+include::{snippets}/group_member_acceptance_test/add_group_member_test/request-fields.adoc[]
+include::{snippets}/group_member_acceptance_test/add_group_member_test/request-body.adoc[]
+include::{snippets}/group_member_acceptance_test/add_group_member_test/http-request.adoc[]
+
+==== 필수 헤더
+include::{snippets}/group_member_acceptance_test/add_group_member_test/request-headers.adoc[]
+
+==== response
+include::{snippets}/group_member_acceptance_test/add_group_member_test/http-response.adoc[]
+
+
+[[resources-groupMember-update-test]]
+=== 그룹 멤버 권한 수정
+
+==== request
+include::{snippets}/group_member_acceptance_test/update_group_member_permission_test/request-fields.adoc[]
+include::{snippets}/group_member_acceptance_test/update_group_member_permission_test/request-body.adoc[]
+include::{snippets}/group_member_acceptance_test/update_group_member_permission_test/http-request.adoc[]
+
+==== 필수 헤더
+include::{snippets}/group_member_acceptance_test/update_group_member_permission_test/request-headers.adoc[]
+
+==== response
+include::{snippets}/group_member_acceptance_test/update_group_member_permission_test/http-response.adoc[]
+
+
+[[resources-groupMember-delete-test]]
+=== 그룹 멤버 삭제
+
+==== request
+include::{snippets}/group_member_acceptance_test/delete_group_member_test/path-parameters.adoc[]
+include::{snippets}/group_member_acceptance_test/delete_group_member_test/request-fields.adoc[]
+include::{snippets}/group_member_acceptance_test/delete_group_member_test/request-body.adoc[]
+include::{snippets}/group_member_acceptance_test/delete_group_member_test/http-request.adoc[]
+
+==== 필수 헤더
+include::{snippets}/group_member_acceptance_test/delete_group_member_test/request-headers.adoc[]
+
+==== response
+include::{snippets}/group_member_acceptance_test/delete_group_member_test/http-response.adoc[]
+
+
+[[resources-groupMember-search-test]]
+=== 그룹 멤버 조회
+
+==== request
+include::{snippets}/group_member_acceptance_test/search_group_in_map_test/path-parameters.adoc[]
+include::{snippets}/group_member_acceptance_test/search_group_in_map_test/http-request.adoc[]
+
+==== 필수 헤더
+include::{snippets}/group_member_acceptance_test/search_group_in_map_test/request-headers.adoc[]
+
+==== response
+include::{snippets}/group_member_acceptance_test/search_group_in_map_test/response-fields.adoc[]
+include::{snippets}/group_member_acceptance_test/search_group_in_map_test/http-response.adoc[]

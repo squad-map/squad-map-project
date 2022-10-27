@@ -39,7 +39,7 @@ public class GroupMemberAcceptanceTest extends RestAssuredTest {
         Long memberId = 1L;
         Long mapId = 1L;
 
-        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, GROUP_MAP_REQUEST_PATH_PARAMETER, SEARCH_GROUP_IN_MAP_RESPONSE_FIELDS))
+        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, AUTHORIZATION_HEADER, GROUP_MAP_REQUEST_PATH_PARAMETER, SEARCH_GROUP_IN_MAP_RESPONSE_FIELDS))
                 .accept(ContentType.JSON)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header(HttpHeaders.AUTHORIZATION, this.createAuthorizationHeader(memberId))
@@ -67,7 +67,7 @@ public class GroupMemberAcceptanceTest extends RestAssuredTest {
         String permissionLevel = "READ";
 
         GroupMemberRequest addMemberRequest = new GroupMemberRequest(addMemberId, permissionLevel);
-        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, GROUP_MAP_REQUEST_PATH_PARAMETER, GROUP_MEMBER_CREATE_OR_UPDATE_REQUEST_FIELDS))
+        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, AUTHORIZATION_HEADER, GROUP_MAP_REQUEST_PATH_PARAMETER, GROUP_MEMBER_CREATE_OR_UPDATE_REQUEST_FIELDS))
                 .accept(ContentType.JSON)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header(HttpHeaders.AUTHORIZATION, this.createAuthorizationHeader(memberId))
@@ -91,7 +91,7 @@ public class GroupMemberAcceptanceTest extends RestAssuredTest {
         String permissionLevel = "MAINTAIN";
 
         GroupMemberRequest updateRequest = new GroupMemberRequest(addMemberId, permissionLevel);
-        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, GROUP_MAP_REQUEST_PATH_PARAMETER, GROUP_MEMBER_CREATE_OR_UPDATE_REQUEST_FIELDS))
+        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, AUTHORIZATION_HEADER, GROUP_MAP_REQUEST_PATH_PARAMETER, GROUP_MEMBER_CREATE_OR_UPDATE_REQUEST_FIELDS))
                 .accept(ContentType.JSON)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header(HttpHeaders.AUTHORIZATION, this.createAuthorizationHeader(memberId))
@@ -118,7 +118,7 @@ public class GroupMemberAcceptanceTest extends RestAssuredTest {
 
         GroupMemberDeleteRequest groupMemberDeleteRequest = new GroupMemberDeleteRequest(deleteMemberId);
 
-        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, GROUP_MAP_REQUEST_PATH_PARAMETER, GROUP_MEMBER_DELETE_REQUEST))
+        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, AUTHORIZATION_HEADER, GROUP_MAP_REQUEST_PATH_PARAMETER, GROUP_MEMBER_DELETE_REQUEST))
                 .accept(ContentType.JSON)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header(HttpHeaders.AUTHORIZATION, this.createAuthorizationHeader(loginMemberId))
