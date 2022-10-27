@@ -1,5 +1,13 @@
-export const getMaps = async () => {
-  const response = await fetch(`/maps`);
+export const getMaps = async (
+  searchType: string,
+  page: number,
+  size: number
+) => {
+  const response = await fetch(
+    `${process.env.SQUAD_MAP_OAUTH_URL}/map/${searchType}${
+      searchType === 'public' ? `?page=${page}&size=${size}` : ''
+    }`
+  );
   const mapsData = await response.json();
 
   try {
