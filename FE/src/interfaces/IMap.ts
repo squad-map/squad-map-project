@@ -1,7 +1,8 @@
 export interface IMap {
   id: number;
-  title: string;
-  emoji: string;
-  shareCount: number;
-  owner: string;
+  host_id: number;
+  host_nickname: string;
+  map_name: string;
+  map_emoji: string;
+  places_count: number;
 }

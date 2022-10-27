@@ -18,7 +18,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route element={<Verification />}>
-            <Route path="/maps/:id" element={<MapsPage />} />
+            <Route path="/map/:id" element={<MapsPage />} />
             <Route path="/mypage" element={<MyPage />} />
             <Route path="/mymap/:id" element={<MyMapPage />} />
             <Route path="/mymap/search/:id" element={<SearchMapPage />} />

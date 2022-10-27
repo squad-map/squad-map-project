@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 
 import * as S from './Home.style';
 import Item from './Item';
 
+import { getMaps } from '@/apis/home';
 import { Icons } from '@/assets/icons';
 import Button from '@/components/common/Button';
 import Card from '@/components/common/Card';
@@ -15,24 +17,26 @@ import GridCards from '@/components/GridCards';
 import Input from '@/components/Input';
 import useDebounce from '@/hooks/useDebounce';
 import { IMap } from '@/interfaces/IMap';
+import { userState } from '@/recoil/atoms/user';
 import theme from '@/styles/theme';
 
-const getMapsData = async (searchValue: string, type: string) => {
-  const response = await fetch(`/maps?type=${type}&searchValue=${searchValue}`);
-  const maps = await response.json();
-  return maps;
-};
+// const getMapsData = async (searchValue: string, type: string) => {
+//   const response = await fetch(`/maps?type=${type}&searchValue=${searchValue}`);
+//   const maps = await response.json();
+//   return maps;
+// };
 
 export default function HomePage() {
   const [searchValue, setSerachValue] = useState('');
-  const debouncedValue = useDebounce(searchValue, 500);
-  const [searchType, setSearchType] = useState('all');
+  // const debouncedValue = useDebounce(searchValue, 500);
+  const [searchType, setSearchType] = useState('public');
+  const user = useRecoilValue(userState);
 
   const {
     data: mapsData,
     isLoading: loading,
     refetch: refetchMaps,
-  } = useQuery(['allMaps'], () => getMapsData(debouncedValue, searchType));
+  } = useQuery(['allMaps'], () => getMaps(searchType, 1, 10));
 
   const handleSearchInput = ({
     target,
@@ -42,12 +46,11 @@ export default function HomePage() {
 
   const handleClickType = (type: string) => {
     setSearchType(type);
-    refetchMaps();
   };
 
   useEffect(() => {
     refetchMaps();
-  }, [debouncedValue, refetchMaps]);
+  }, [refetchMaps, searchType]);
 
   return (
     <S.Container>
@@ -66,40 +69,44 @@ export default function HomePage() {
         <S.NavWrapper>
           <Button
             size="small"
-            color={searchType === 'all' ? theme.color.navy : theme.color.white}
-            onClick={() => handleClickType('all')}
+            color={
+              searchType === 'public' ? theme.color.navy : theme.color.white
+            }
+            onClick={() => handleClickType('public')}
           >
             <Text
               size="small"
               text="전체 공개 지도"
               color={
-                searchType === 'all' ? theme.color.white : theme.color.navy
+                searchType === 'public' ? theme.color.white : theme.color.navy
               }
             />
           </Button>
-          <Button
-            size="small"
-            color={
-              searchType === 'private' ? theme.color.navy : theme.color.white
-            }
-            onClick={() => handleClickType('private')}
-          >
-            <Text
+          {user?.nickname && (
+            <Button
               size="small"
-              text="내가 포함된 지도"
               color={
-                searchType === 'private' ? theme.color.white : theme.color.navy
+                searchType === 'group' ? theme.color.navy : theme.color.white
               }
-            />
-          </Button>
+              onClick={() => handleClickType('group')}
+            >
+              <Text
+                size="small"
+                text="내가 포함된 지도"
+                color={
+                  searchType === 'group' ? theme.color.white : theme.color.navy
+                }
+              />
+            </Button>
+          )}
         </S.NavWrapper>
         {loading ? (
           <LoadingSpinner size="xLarge" />
         ) : (
           <S.GridWrapper>
             <GridCards size="small">
-              {mapsData.map((item: IMap) => (
-                <Link to={`/maps/${item.id}`} key={`map-${item.id}`}>
+              {mapsData.content.map((item: IMap) => (
+                <Link to={`/map/${item.id}`} key={`map-${item.id}`}>
                   <Card size="small" key={`HomeCard-${item.id}`}>
                     <Item item={item} key={`Card-${item.id}`} />
                   </Card>
