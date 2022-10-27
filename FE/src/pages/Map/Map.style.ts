@@ -6,5 +6,3 @@ export const RecommendationButtonWrapper = styled.div`
   right: 2rem;
   z-index: 999;
 `;
-
-export const MyMap = styled.section``;

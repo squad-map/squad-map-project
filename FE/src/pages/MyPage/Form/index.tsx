@@ -69,11 +69,6 @@ const Form = ({ type, myPageData }: FormProps) => {
     setFormData({ ...formData, emoji: e.target.value });
   };
 
-  const handleRadioChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id } = e.target;
-    setFormData({ ...formData, share: id });
-  };
-
   const handleAuthorityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id } = e.target;
     setFormData({ ...formData, authority: id === 'public' });
@@ -155,37 +150,6 @@ const Form = ({ type, myPageData }: FormProps) => {
               onChange={handleAuthorityChange}
             />
             그룹 공개
-          </label>
-        </S.RadioBox>
-      </S.ColumnBox>
-      <S.ColumnBox>
-        <Text
-          text="지도를 다른 사람들과 공유할건가요?"
-          size="large"
-          color={theme.color.lightGray}
-        />
-        <S.RadioBox>
-          <label htmlFor="do">
-            <input
-              type="radio"
-              name="share"
-              id="do"
-              value="true"
-              defaultChecked
-              onChange={handleRadioChange}
-            />
-            공유
-          </label>
-
-          <label htmlFor="dont">
-            <input
-              type="radio"
-              name="share"
-              id="dont"
-              value="false"
-              onChange={handleRadioChange}
-            />
-            공유하지않음
           </label>
         </S.RadioBox>
       </S.ColumnBox>

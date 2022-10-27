@@ -1,14 +1,15 @@
 import { useState } from 'react';
 import { useQuery } from 'react-query';
+import { useParams } from 'react-router-dom';
 
 import * as S from './SearchMap.style';
 import SearchPlace from './SearchPlace';
 
-import { getMyMap } from '@/apis/mypage';
+import { getMapDetailInfo } from '@/apis/mypage';
 import { KakaoMap } from '@/components/KaKaoMap';
 import { defaultCoords } from '@/constants/map';
 import { ISearchPlace } from '@/interfaces/ISearchPlace';
-import Header from '@/pages/MyMap/Header';
+import Header from '@/pages/Map/Header';
 
 declare global {
   interface Window {
@@ -19,11 +20,14 @@ declare global {
 const { kakao } = window;
 
 const SearchMap = () => {
+  const { id } = useParams();
   const [placeInfos, setPlaceInfos] = useState<ISearchPlace[]>([]);
 
-  const { data: myMapData, isLoading: loading } = useQuery(['myMap'], () =>
-    getMyMap()
-  );
+  const { data: mapData, isLoading: loading } = useQuery(['Map'], () => {
+    if (id) {
+      getMapDetailInfo(id);
+    }
+  });
 
   const placesSearchCallBack = (data: any, status: string) => {
     if (status === kakao.maps.services.Status.OK) {
@@ -45,13 +49,13 @@ const SearchMap = () => {
 
   return (
     <S.SearchMap>
-      {myMapData && (
+      {mapData && (
         <KakaoMap placeInfos={placeInfos}>
           <Header
             headerData={{
-              emoji: myMapData.emoji,
-              title: myMapData.title,
-              categories: myMapData.categories,
+              emoji: mapData.emoji,
+              title: mapData.title,
+              categories: mapData.categories,
             }}
           />
           <SearchPlace

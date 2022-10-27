@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useQuery } from 'react-query';
+import { useParams } from 'react-router-dom';
 
 import * as S from './ModalContent.style';
 
-import { getMyMap } from '@/apis/mypage';
+import { getMapDetailInfo } from '@/apis/mypage';
 import CategoryModalInfo from '@/components/Category/CategoryModalInfo';
 import Button from '@/components/common/Button';
 import Text from '@/components/common/Text';
@@ -16,11 +17,14 @@ interface ModalContentProps {
 }
 
 const ModalContent = ({ placeInfo }: ModalContentProps) => {
+  const { id } = useParams();
   const [isCategoryForm, setIsCategoryForm] = useState(false);
 
-  const { data: myMapData, isLoading: loading } = useQuery(['myMap'], () =>
-    getMyMap()
-  );
+  const { data: mapData, isLoading: loading } = useQuery(['Map'], () => {
+    if (id) {
+      getMapDetailInfo(id);
+    }
+  });
 
   return (
     <S.ModalContent>
@@ -37,9 +41,9 @@ const ModalContent = ({ placeInfo }: ModalContentProps) => {
           </S.PrevButtonWrapper>
           <CategoryModalInfo
             headerData={{
-              emoji: myMapData.emoji,
-              title: myMapData.title,
-              categories: myMapData.categories,
+              emoji: mapData.emoji,
+              title: mapData.title,
+              categories: mapData.categories,
             }}
           />
         </>

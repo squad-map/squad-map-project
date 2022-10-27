@@ -88,8 +88,22 @@ export const deleteMypage = async (deleteId: number) => {
   }
 };
 
-export const getMyMap = async () => {
-  const response = await fetch('/mymap');
-  const myMapData = await response.json();
-  return myMapData;
+export const getMapDetailInfo = async (id: string) => {
+  const accessToken = getCookie('access_token');
+  if (!accessToken) throw new Error('accesToken is undefined');
+
+  const response = await fetch(`${process.env.SQUAD_MAP_OAUTH_URL}/map/${id}`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+    },
+  });
+  const mapData = await response.json();
+
+  try {
+    return mapData;
+  } catch (err) {
+    throw new Error(`getMypage get api fail err: ${err}`);
+  }
 };

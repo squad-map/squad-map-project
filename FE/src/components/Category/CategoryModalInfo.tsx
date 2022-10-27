@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { HeaderProps } from '../../pages/MyMap/Header';
+import { HeaderProps } from '../../pages/Map/Header';
 
 import * as S from './CategoryModalInfo.style';
 

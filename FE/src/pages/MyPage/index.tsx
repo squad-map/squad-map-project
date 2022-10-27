@@ -43,7 +43,7 @@ const MyPage = () => {
               <GridCards size="large">
                 {myPageData.maps &&
                   myPageData.maps.map((item: IMyMap) => (
-                    <Link to={`/mymap/${item.id}`}>
+                    <Link to={`/map/${item.id}`}>
                       <Card size="large" key={item.id}>
                         <Item
                           item={item}

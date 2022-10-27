@@ -7,8 +7,7 @@ import Verification from './pages/Verification';
 
 const MyPage = lazy(() => import('@/pages/MyPage'));
 const HomePage = lazy(() => import('@/pages/Home'));
-const MapsPage = lazy(() => import('@/pages/Maps'));
-const MyMapPage = lazy(() => import('@/pages/MyMap'));
+const MapPage = lazy(() => import('@/pages/Map'));
 const SearchMapPage = lazy(() => import('@/pages/SearchMap'));
 
 export default function App() {
@@ -18,10 +17,9 @@ export default function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route element={<Verification />}>
-            <Route path="/map/:id" element={<MapsPage />} />
+            <Route path="/map/:id" element={<MapPage />} />
+            <Route path="/map/search/:id" element={<SearchMapPage />} />
             <Route path="/mypage" element={<MyPage />} />
-            <Route path="/mymap/:id" element={<MyMapPage />} />
-            <Route path="/mymap/search/:id" element={<SearchMapPage />} />
           </Route>
           <Route path="/login/github/callback" element={<Callback />} />
           <Route path="/login/naver/callback" element={<Callback />} />
