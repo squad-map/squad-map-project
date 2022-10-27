@@ -72,7 +72,10 @@ public class GroupMemberServiceImpl implements GroupMemberService {
     @Override
     @Transactional
     public void removeGroupMember(Long loginMemberId, Long mapId, Long memberId) {
-        checkHasAuthority(mapId, loginMemberId, PermissionLevel.HOST);
+        if(!loginMemberId.equals(memberId)) {
+            checkHasAuthority(mapId, loginMemberId, PermissionLevel.HOST);
+        }
+
         groupMemberRepository.deleteByMapIdAndMemberId(mapId, memberId);
     }
 

@@ -1,15 +1,13 @@
 package com.squadmap.group.ui.dto;
 
-import com.squadmap.group.domain.PermissionLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
-public class AddMemberRequest {
+public class GroupMemberDeleteRequest {
 
     private Long memberId;
-    private String permissionLevel;
 }
