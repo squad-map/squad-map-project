@@ -20,11 +20,17 @@ const ModalContent = ({ placeInfo }: ModalContentProps) => {
   const { id } = useParams();
   const [isCategoryForm, setIsCategoryForm] = useState(false);
 
-  const { data: mapData, isLoading: loading } = useQuery(['Map'], () => {
-    if (id) {
-      getMapDetailInfo(id);
+  const { data: mapData, isLoading: loading } = useQuery(
+    ['Map'],
+    () => {
+      if (id) {
+        getMapDetailInfo(id);
+      }
+    },
+    {
+      staleTime: 5 * 60 * 1000,
     }
-  });
+  );
 
   return (
     <S.ModalContent>
@@ -39,13 +45,7 @@ const ModalContent = ({ placeInfo }: ModalContentProps) => {
               <Text text="이전" size="regular" color={theme.color.white} />
             </Button>
           </S.PrevButtonWrapper>
-          <CategoryModalInfo
-            headerData={{
-              emoji: mapData.emoji,
-              title: mapData.title,
-              categories: mapData.categories,
-            }}
-          />
+          <CategoryModalInfo mapData={mapData} />
         </>
       ) : (
         <>

@@ -16,12 +16,18 @@ import { unicodeToEmoji } from '@/utils/util';
 
 const Map = () => {
   const { id } = useParams();
-  const { data: mapData, isLoading: loading } = useQuery(['Map'], () => {
-    if (id) {
-      return getMapDetailInfo(id);
+  const { data: mapData, isLoading: loading } = useQuery(
+    ['Map'],
+    () => {
+      if (id) {
+        return getMapDetailInfo(id);
+      }
+      return true;
+    },
+    {
+      staleTime: 5 * 60 * 1000,
     }
-    return true;
-  });
+  );
 
   return (
     // eslint-disable-next-line react/jsx-no-useless-fragment

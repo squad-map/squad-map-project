@@ -10,6 +10,7 @@ import { KakaoMap } from '@/components/KaKaoMap';
 import { defaultCoords } from '@/constants/map';
 import { ISearchPlace } from '@/interfaces/ISearchPlace';
 import Header from '@/pages/Map/Header';
+import { unicodeToEmoji } from '@/utils/util';
 
 declare global {
   interface Window {
@@ -23,11 +24,18 @@ const SearchMap = () => {
   const { id } = useParams();
   const [placeInfos, setPlaceInfos] = useState<ISearchPlace[]>([]);
 
-  const { data: mapData, isLoading: loading } = useQuery(['Map'], () => {
-    if (id) {
-      getMapDetailInfo(id);
+  const { data: mapData, isLoading: loading } = useQuery(
+    ['Map'],
+    () => {
+      if (id) {
+        return getMapDetailInfo(id);
+      }
+      return true;
+    },
+    {
+      staleTime: 5 * 60 * 1000, // 5분
     }
-  });
+  );
 
   const placesSearchCallBack = (data: any, status: string) => {
     if (status === kakao.maps.services.Status.OK) {
@@ -53,8 +61,8 @@ const SearchMap = () => {
         <KakaoMap placeInfos={placeInfos}>
           <Header
             headerData={{
-              emoji: mapData.emoji,
-              title: mapData.title,
+              emoji: `${unicodeToEmoji(mapData.map_emoji)}`,
+              title: mapData.map_name,
               categories: mapData.categories,
             }}
           />
