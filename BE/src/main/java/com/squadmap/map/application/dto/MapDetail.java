@@ -16,6 +16,7 @@ public class MapDetail {
     private final String mapEmoji;
     private final Long hostId;
     private final String hostNickname;
+    private final String hostProfileImage;
     private final int placesCount;
     private final List<CategorizedPlaces> categorizedPlaces;
 
@@ -26,6 +27,7 @@ public class MapDetail {
                 map.getEmoji(),
                 member.getId(),
                 member.getNickname(),
+                member.getProfileImage(),
                 placesCount,
                 categorizedPlaces);
     }

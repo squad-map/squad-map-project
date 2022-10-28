@@ -81,7 +81,7 @@ class MapAcceptanceTest extends RestAssuredTest {
                 .body(mapUpdateRequest)
                 .log().all(true)
 
-        .when().post("/map/{map_id}", mapId)
+        .when().put("/map/{map_id}", mapId)
 
         .then().statusCode(HttpStatus.OK.value());
 
@@ -98,6 +98,7 @@ class MapAcceptanceTest extends RestAssuredTest {
             fieldWithPath("content[].map_emoji").type(JsonFieldType.STRING).description("지도의 이모지"),
             fieldWithPath("content[].host_id").type(JsonFieldType.NUMBER).description("지도 작성자의 아이디"),
             fieldWithPath("content[].host_nickname").type(JsonFieldType.STRING).description("지도 작성자의 닉네임"),
+            fieldWithPath("content[].host_profile_image").type(JsonFieldType.STRING).description("지도 작성자의 프로필 이미지"),
             fieldWithPath("content[].places_count").type(JsonFieldType.NUMBER).description("지도내에 등록된 장소의 갯수"),
             fieldWithPath("page_number").type(JsonFieldType.NUMBER).description("페이지 넘버"),
             fieldWithPath("size").type(JsonFieldType.NUMBER).description("요청 데이터 갯수"),
@@ -135,6 +136,7 @@ class MapAcceptanceTest extends RestAssuredTest {
             fieldWithPath("map_emoji").type(JsonFieldType.STRING).description("지도의 이모지"),
             fieldWithPath("host_id").type(JsonFieldType.NUMBER).description("지도 작성자의 아이디"),
             fieldWithPath("host_nickname").type(JsonFieldType.STRING).description("지도 작성자의 닉네임"),
+            fieldWithPath("host_profile_image").type(JsonFieldType.STRING).description("지도 작성자의 닉네임"),
             fieldWithPath("places_count").type(JsonFieldType.NUMBER).description("지도내에 등록된 장소의 갯수"),
             fieldWithPath("categorized_places[].category_info.category_id").type(JsonFieldType.NUMBER).description("카테고리 아이디"),
             fieldWithPath("categorized_places[].category_info.category_name").type(JsonFieldType.STRING).description("카테고리 이름"),
@@ -142,8 +144,8 @@ class MapAcceptanceTest extends RestAssuredTest {
             fieldWithPath("categorized_places[].places[].place_id").type(JsonFieldType.NUMBER).description("장소 아이디"),
             fieldWithPath("categorized_places[].places[].place_name").type(JsonFieldType.STRING).description("장소 이름"),
             fieldWithPath("categorized_places[].places[].address").type(JsonFieldType.STRING).description("장소 주소"),
-            fieldWithPath("categorized_places[].places[].position.latitude").type(JsonFieldType.NUMBER).description("장소 위도"),
-            fieldWithPath("categorized_places[].places[].position.longitude").type(JsonFieldType.NUMBER).description("장소 경도")
+            fieldWithPath("categorized_places[].places[].latitude").type(JsonFieldType.NUMBER).description("장소 위도"),
+            fieldWithPath("categorized_places[].places[].longitude").type(JsonFieldType.NUMBER).description("장소 경도")
     );
 
     @Test
@@ -168,6 +170,7 @@ class MapAcceptanceTest extends RestAssuredTest {
             fieldWithPath("maps[].map_emoji").type(JsonFieldType.STRING).description("지도의 이모지"),
             fieldWithPath("maps[].host_id").type(JsonFieldType.NUMBER).description("지도의 작성자의 닉네임"),
             fieldWithPath("maps[].host_nickname").type(JsonFieldType.STRING).description("지도의 작성자의 닉네임"),
+            fieldWithPath("maps[].host_profile_image").type(JsonFieldType.STRING).description("지도의 작성자의 프로필 이미지"),
             fieldWithPath("maps[].places_count").type(JsonFieldType.NUMBER).description("지도내에 등록된 장소의 갯수")
     );
 

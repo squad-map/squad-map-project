@@ -3,8 +3,10 @@ package com.squadmap.map.integration;
 import com.squadmap.map.application.MapService;
 import com.squadmap.map.application.dto.MapDetail;
 import com.squadmap.map.application.dto.MapSimpleInfo;
+import com.squadmap.map.application.dto.MapsResponse;
 import com.squadmap.map.domain.Map;
 import com.squadmap.map.infrastructure.MapRepository;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -97,6 +100,33 @@ class MapServiceTest {
         assertThat(mapDetail.getHostId()).isEqualTo(1L);
         assertThat(mapDetail.getCategorizedPlaces()).isNotNull();
 
+    }
+
+    @Test
+    @DisplayName("지도 이름에 포함되는 문자열을 보내면, 해당하는 전채 공개 지도를 반환한다.")
+    void searchPublicMapTest() {
+        //given
+        String searchName = "st";
+
+        //when
+        MapsResponse mapsResponse = mapService.searchPublicMapName(searchName);
+
+        //then
+        assertThat(mapsResponse.getMapCount()).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("유저 아이디와 지도 이름에 포함되는 문자열을 보내면, 그 유저가 포함된 해당하는 그룹에 속한 지도를 반환한다.")
+    void searchGroupMapList() {
+        //given
+        Long memberId = 1L;
+        String searchName = "st";
+
+        //when
+        MapsResponse mapsResponse = mapService.searchGroupMapName(searchName, memberId);
+
+        //then
+        assertThat(mapsResponse.getMapCount()).isEqualTo(1);
     }
 
 

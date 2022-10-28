@@ -30,7 +30,7 @@ public class MapController {
         return new MapCreateResponse(mapId);
     }
 
-    @PostMapping("/map/{mapId}")
+    @PutMapping("/map/{mapId}")
     public void updateMap(@Login Long memberId, @PathVariable Long mapId, @RequestBody MapRequest mapRequest) {
         mapService.update(memberId, mapId, mapRequest.getMapName(), mapRequest.getMapEmoji(), mapRequest.getFullDisclosure());
     }
