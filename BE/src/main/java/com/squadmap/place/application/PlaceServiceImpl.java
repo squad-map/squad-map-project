@@ -4,6 +4,9 @@ import com.squadmap.category.domain.Category;
 import com.squadmap.category.infrastructure.CategoryRepository;
 import com.squadmap.common.excetpion.ClientException;
 import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
+import com.squadmap.group.domain.GroupMember;
+import com.squadmap.group.domain.PermissionLevel;
+import com.squadmap.group.infrastructure.GroupMemberRepository;
 import com.squadmap.map.domain.Map;
 import com.squadmap.map.infrastructure.MapRepository;
 import com.squadmap.place.application.dto.PlaceDetailInfo;
@@ -25,17 +28,24 @@ public class PlaceServiceImpl implements PlaceService {
     private final PlaceRepository placeRepository;
     private final MapRepository mapRepository;
     private final CategoryRepository categoryRepository;
+    private final GroupMemberRepository groupMemberRepository;
 
     @Override
     @Transactional
-    public Long create(String name, String address, Point position, String description, Long mapId,
+    public Long create(String name, String address, Point position, String description, String detailLink, Long mapId,
                        Long categoryId, String categoryName, String categoryColor, Long memberId) {
+
 
         Map map = mapRepository.findById(mapId)
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_MAP));
-        if (!map.canAccess(memberId)) {
-            throw new ClientException(ErrorStatusCodeAndMessage.UNAUTHORIZED);
+
+        GroupMember groupMember = groupMemberRepository.findByMapIdAndMemberId(mapId, memberId)
+                .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_GROUP_MEMBER));
+
+        if(!groupMember.hasRequiredPermission(PermissionLevel.MAINTAIN)) {
+            throw new ClientException(ErrorStatusCodeAndMessage.REQUIRE_MAINTAIN_PERMISSION);
         }
+
         Category category;
         if(categoryId == null) {
             if(categoryRepository.existsByNameAndMap(categoryName, map)) {
@@ -52,7 +62,7 @@ public class PlaceServiceImpl implements PlaceService {
             throw new ClientException(ErrorStatusCodeAndMessage.ALREADY_REGISTERED_PLACE);
         }
 
-        Place place = placeRepository.save(Place.of(name, address, pos, description, map, category, memberId));
+        Place place = placeRepository.save(Place.of(name, address, pos, description, detailLink, map, category, memberId));
         return place.getId();
     }
 
@@ -63,9 +73,12 @@ public class PlaceServiceImpl implements PlaceService {
         Place place = placeRepository.findPlaceFetchAllById(placeId)
             .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_PLACE));
 
-        if(!place.getMap().canAccess(memberId)) {
-            throw new ClientException(ErrorStatusCodeAndMessage.UNAUTHORIZED);
+        GroupMember groupMember = groupMemberRepository.findByMapIdAndMemberId(place.getMapId(), memberId)
+                .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_GROUP_MEMBER));
+        if(!groupMember.hasRequiredPermission(PermissionLevel.MAINTAIN)) {
+            throw new ClientException(ErrorStatusCodeAndMessage.REQUIRE_MAINTAIN_PERMISSION);
         }
+
         place.editDescription(description);
         if(!place.getCategory().hasSameId(categoryId)) {
             Category category = categoryRepository.findByIdAndMapId(categoryId, place.getMap().getId())
@@ -81,9 +94,9 @@ public class PlaceServiceImpl implements PlaceService {
         Place place = placeRepository.findPlaceFetchAllById(placeId)
                 .orElseThrow(NoSuchElementException::new);
 
-        if(!place.getMap().canAccess(memberId)) {
-            throw new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_MEMBER);
-        }
+        if(!groupMemberRepository.existsByMapIdAndMemberId(place.getMapId(), memberId)) {
+            throw new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_GROUP_MEMBER);
+        };
 
         return PlaceDetailInfo.from(place);
     }

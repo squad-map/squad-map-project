@@ -29,6 +29,8 @@ public class Place {
 
     private String description;
 
+    private String detailLink;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Map map;
 
@@ -37,8 +39,13 @@ public class Place {
 
     private Long memberId;
 
-    public static Place of(String name, String address, Position position, String description, Map map, Category category, Long memberId) {
-        return new Place(null, name, address, position, description, map, category, memberId);
+    public static Place of(String name, String address, Position position, String description,
+                           String detailLink, Map map, Category category, Long memberId) {
+        return new Place(null, name, address, position, description, detailLink, map, category, memberId);
+    }
+
+    public Long getMapId() {
+        return this.getMap().getId();
     }
 
     public void changeCategory(Category category) {

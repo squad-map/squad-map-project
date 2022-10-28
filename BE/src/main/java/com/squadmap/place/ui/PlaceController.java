@@ -23,6 +23,7 @@ public class PlaceController {
                 placeRequest.getAddress(),
                 placeRequest.getPosition(),
                 placeRequest.getDescription(),
+                placeRequest.getDetailLink(),
                 placeRequest.getMapId(),
                 placeRequest.getCategoryId(),
                 placeRequest.getCategoryName(),

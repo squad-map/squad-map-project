@@ -67,4 +67,8 @@ public class RestAssuredTest {
                 .build();
     }
 
+    protected String createAuthorizationHeader(Long memberId) {
+        return "Bearer " + this.jwtProvider.generateAccessToken(memberId);
+    }
+
 }

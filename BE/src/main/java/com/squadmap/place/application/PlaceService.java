@@ -5,7 +5,7 @@ import com.squadmap.place.ui.dto.Point;
 
 public interface PlaceService {
 
-    Long create(String name, String address, Point position, String description,
+    Long create(String name, String address, Point position, String description, String detailLink,
                                Long mapId, Long categoryId, String categoryName, String categoryColor, Long memberId);
 
     PlaceDetailInfo update(Long memberId, Long placeId, Long categoryId, String description);

@@ -1,13 +1,9 @@
 package com.squadmap.member.acceptance;
 
 import com.squadmap.assured.RestAssuredTest;
-import com.squadmap.category.infrastructure.CategoryRepository;
-import com.squadmap.common.auth.application.JwtProvider;
-import com.squadmap.common.auth.ui.dto.LoginRequest;
 import com.squadmap.member.ui.dto.NicknameUpdateRequest;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,7 +11,6 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.restdocs.snippet.Snippet;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
 

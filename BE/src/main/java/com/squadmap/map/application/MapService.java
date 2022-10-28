@@ -21,4 +21,5 @@ public interface MapService {
     MapDetail findOne(Long mapId, Long memberId);
 
     MapsResponse readGroupMap(Long memberId);
+
 }

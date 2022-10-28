@@ -16,6 +16,7 @@ public class PlaceDetailInfo {
     private final Double latitude;
     private final Double longitude;
     private final String description;
+    private final String detailLink;
     private final Long categoryId;
 
     public static PlaceDetailInfo from(final Place place) {
@@ -26,6 +27,7 @@ public class PlaceDetailInfo {
                 place.getPosition().getLatitude(),
                 place.getPosition().getLongitude(),
                 place.getDescription(),
+                place.getDetailLink(),
                 place.getCategory().getId());
     }
 }

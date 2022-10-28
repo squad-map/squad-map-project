@@ -2,9 +2,10 @@ package com.squadmap.map.application;
 
 import com.squadmap.category.application.dto.CategoryInfo;
 import com.squadmap.category.domain.Category;
-import com.squadmap.category.infrastructure.CategoryRepository;
 import com.squadmap.common.excetpion.ClientException;
 import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
+import com.squadmap.group.domain.GroupMember;
+import com.squadmap.group.infrastructure.GroupMemberRepository;
 import com.squadmap.map.application.dto.CategorizedPlaces;
 import com.squadmap.map.application.dto.MapDetail;
 import com.squadmap.map.application.dto.MapSimpleInfo;
@@ -23,7 +24,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -35,22 +35,26 @@ public class MapServiceImpl implements MapService{
     private final MapRepository mapRepository;
     private final MemberRepository memberRepository;
     private final PlaceRepository placeRepository;
+    private final GroupMemberRepository groupMemberRepository;
 
     @Override
     @Transactional
     public Long create(String mapName, String emoji, Boolean fullDisclosure, Long memberId) {
-        Map save = mapRepository.save(Map.of(mapName, emoji, fullDisclosure, memberId));
-
-        return save.getId();
+        Map map = mapRepository.save(Map.of(mapName, emoji, fullDisclosure, memberId));
+        groupMemberRepository.save(GroupMember.of(map.getId(), memberId, "HOST"));
+        return map.getId();
     }
 
     @Override
     @Transactional
     public void update(Long memberId, Long mapId, String mapName, String emoji, boolean fullDisclosure) {
-        // 권한 검증 로직이 필요
-        Map targetMap = mapRepository.findById(mapId)
+
+        Map map = mapRepository.findById(mapId)
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_MEMBER));
-        targetMap.update(mapName, emoji, fullDisclosure);
+        if(!map.canAccess(memberId)) {
+            throw new ClientException(ErrorStatusCodeAndMessage.UNAUTHORIZED);
+        }
+        map.update(mapName, emoji, fullDisclosure);
     }
 
     @Override
@@ -78,9 +82,11 @@ public class MapServiceImpl implements MapService{
 
     @Override
     public MapsResponse readGroupMap(Long memberId) {
-        List<Map> maps = mapRepository.findAllByMemberId(memberId);
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_MEMBER));
+
+        List<Long> mapIds = groupMemberRepository.findMapIdByMemberId(memberId);
+        List<Map> maps = mapRepository.findAllById(mapIds);
         List<MapSimpleInfo> mapSimpleInfos = maps.stream().map(
                         map -> new MapSimpleInfo(
                                 map.getId(),
@@ -100,6 +106,7 @@ public class MapServiceImpl implements MapService{
         List<Long> memberIds = maps.stream()
                 .map(Map::getMemberId)
                 .collect(Collectors.toList());
+
         return memberRepository.findAllById(memberIds)
                 .stream()
                 .collect(Collectors.toMap(Member::getId, Function.identity()));
