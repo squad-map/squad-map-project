@@ -29,7 +29,7 @@ public class MapController {
     @Transactional
     public MapCreateResponse createMap(@Login Long memberId, @RequestBody MapRequest mapCreateRequest) {
 
-        Long mapId = mapService.create(mapCreateRequest.getMapName(), mapCreateRequest.getEmoji(), mapCreateRequest.getFullDisclosure(), memberId);
+        Long mapId = mapService.create(mapCreateRequest.getMapName(), mapCreateRequest.getMapEmoji(), mapCreateRequest.getFullDisclosure(), memberId);
 
         return new MapCreateResponse(mapId);
     }
@@ -37,7 +37,7 @@ public class MapController {
     @PostMapping("/map/{mapId}")
     @Transactional
     public void updateMap(@Login Long memberId, @PathVariable Long mapId, @RequestBody MapRequest mapRequest) {
-        mapService.update(memberId, mapId, mapRequest.getMapName(), mapRequest.getEmoji(), mapRequest.getFullDisclosure());
+        mapService.update(memberId, mapId, mapRequest.getMapName(), mapRequest.getMapEmoji(), mapRequest.getFullDisclosure());
     }
 
     @GetMapping("/map/public")

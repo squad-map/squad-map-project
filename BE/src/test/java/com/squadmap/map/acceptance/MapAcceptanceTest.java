@@ -21,7 +21,7 @@ class MapAcceptanceTest extends RestAssuredTest {
 
     private static final Snippet CREATE_REQUEST_FIELDS = requestFields(
             fieldWithPath("map_name").type(JsonFieldType.STRING).description("아이디"),
-            fieldWithPath("emoji").type(JsonFieldType.STRING).description("이모지"),
+            fieldWithPath("map_emoji").type(JsonFieldType.STRING).description("이모지"),
             fieldWithPath("full_disclosure").type(JsonFieldType.BOOLEAN).description("접근 권한")
     );
 
@@ -53,7 +53,7 @@ class MapAcceptanceTest extends RestAssuredTest {
 
     private static final Snippet UPDATE_REQUEST_FIELDS = requestFields(
             fieldWithPath("map_name").type(JsonFieldType.STRING).description("아이디"),
-            fieldWithPath("emoji").type(JsonFieldType.STRING).description("이모지"),
+            fieldWithPath("map_emoji").type(JsonFieldType.STRING).description("이모지"),
             fieldWithPath("full_disclosure").type(JsonFieldType.BOOLEAN).description("접근 권한")
     );
 

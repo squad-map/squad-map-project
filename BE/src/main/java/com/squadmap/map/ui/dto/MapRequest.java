@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 public class MapRequest {
 
     private String mapName;
-    private String emoji;
+    private String mapEmoji;
     private Boolean fullDisclosure;
 
 }
