@@ -1,5 +1,5 @@
+import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
 
 import Form from './Form';
@@ -34,7 +34,7 @@ const MyPage = () => {
       </S.TitleBox>
       <S.Contents>
         {formType.isForm ? (
-          <Form type={formType.type} myPageData={myPageData} />
+          <Form type={formType.type} />
         ) : loading ? (
           <LoadingSpinner size="xLarge" />
         ) : (
