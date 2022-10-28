@@ -23,6 +23,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -42,6 +43,7 @@ public class MapServiceImpl implements MapService{
     public Long create(String mapName, String emoji, Boolean fullDisclosure, Long memberId) {
         Map map = mapRepository.save(Map.of(mapName, emoji, fullDisclosure, memberId));
         groupMemberRepository.save(GroupMember.of(map.getId(), memberId, "HOST"));
+
         return map.getId();
     }
 
@@ -54,27 +56,38 @@ public class MapServiceImpl implements MapService{
         if(!map.canAccess(memberId)) {
             throw new ClientException(ErrorStatusCodeAndMessage.UNAUTHORIZED);
         }
+
         map.update(mapName, emoji, fullDisclosure);
     }
 
     @Override
     public Page<MapSimpleInfo> readPublic(Pageable pageable) {
         Page<Map> maps = mapRepository.findAllByFullDisclosure(true, pageable);
-        java.util.Map<Long, Member> members = getMembers(maps);
 
+        java.util.Map<Long, Member> members = getMembers(maps.getContent());
         return maps.map(map -> {
             Member member = members.get(map.getMemberId());
-            return new MapSimpleInfo(map.getId(), map.getName(), map.getEmoji(), member.getId(), member.getNickname(), map.getPlacesCount());
+            return new MapSimpleInfo(map.getId(),
+                    map.getName(),
+                    map.getEmoji(),
+                    member.getId(),
+                    member.getNickname(),
+                    member.getProfileImage(),
+                    map.getPlacesCount());
         });
     }
 
     @Override
     public MapDetail findOne(Long mapId, Long memberId) {
-        Map map = mapRepository.findById(mapId).orElseThrow(RuntimeException::new);
-        if(!map.isFullDisclosure() && !map.canAccess(memberId)) {
+        Map map = mapRepository.findById(mapId)
+                .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_MAP));
+
+        if(!map.isFullDisclosure() && !groupMemberRepository.existsByMapIdAndMemberId(mapId, memberId)) {
            throw new ClientException(ErrorStatusCodeAndMessage.UNAUTHORIZED);
         }
-        Member member = memberRepository.findById(map.getMemberId()).orElseThrow(RuntimeException::new);
+
+        Member member = memberRepository.findById(map.getMemberId())
+                .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_MEMBER));
         List<Place> places = placeRepository.findAllByMapId(mapId);
 
         return MapDetail.of(map, member, places.size(), categorize(places));
@@ -82,27 +95,25 @@ public class MapServiceImpl implements MapService{
 
     @Override
     public MapsResponse readGroupMap(Long memberId) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_MEMBER));
-
         List<Long> mapIds = groupMemberRepository.findMapIdByMemberId(memberId);
         List<Map> maps = mapRepository.findAllById(mapIds);
-        List<MapSimpleInfo> mapSimpleInfos = maps.stream().map(
-                        map -> new MapSimpleInfo(
-                                map.getId(),
-                                map.getName(),
-                                map.getEmoji(),
-                                member.getId(),
-                                member.getNickname(),
-                                map.getPlacesCount())
-                )
-                .collect(Collectors.toUnmodifiableList());
-
-        return new MapsResponse(mapSimpleInfos.size(), mapSimpleInfos);
-
+        return mapsToMapResponse(maps);
     }
 
-    private java.util.Map<Long, Member> getMembers(Page<Map> maps) {
+    @Override
+    public MapsResponse searchPublicMapName(String searchName) {
+        List<Map> maps = mapRepository.findAllByFullDisclosureAndNameContaining(true, searchName);
+        return mapsToMapResponse(maps);
+    }
+
+    @Override
+    public MapsResponse searchGroupMapName(String searchName, Long memberId) {
+        List<Long> mapIds = groupMemberRepository.findMapIdByMemberId(memberId);
+        List<Map> maps = mapRepository.findAllByIdAndNameContaining(mapIds, searchName);
+        return mapsToMapResponse(maps);
+    }
+
+    private java.util.Map<Long, Member> getMembers(List<Map> maps) {
         List<Long> memberIds = maps.stream()
                 .map(Map::getMemberId)
                 .collect(Collectors.toList());
@@ -123,6 +134,30 @@ public class MapServiceImpl implements MapService{
                         .map(PlaceSimpleInfo::from)
                         .collect(Collectors.toList())))
                 .collect(Collectors.toList());
+    }
+
+    private MapsResponse mapsToMapResponse(List<Map> maps) {
+        if(maps.isEmpty()) {
+            return new MapsResponse(0, new ArrayList<>());
+        }
+
+        java.util.Map<Long, Member> members = getMembers(maps);
+        List<MapSimpleInfo> mapSimpleInfos = maps.stream().map(
+                        map -> {
+                            Member member = members.get(map.getMemberId());
+                            return new MapSimpleInfo(
+                                    map.getId(),
+                                    map.getName(),
+                                    map.getEmoji(),
+                                    member.getId(),
+                                    member.getNickname(),
+                                    member.getProfileImage(),
+                                    map.getPlacesCount());
+                        }
+                )
+                .collect(Collectors.toUnmodifiableList());
+
+        return new MapsResponse(mapSimpleInfos.size(), mapSimpleInfos);
     }
 
 }

@@ -22,4 +22,7 @@ public interface MapService {
 
     MapsResponse readGroupMap(Long memberId);
 
+    MapsResponse searchPublicMapName(String searchName);
+
+    MapsResponse searchGroupMapName(String searchName, Long memberId);
 }

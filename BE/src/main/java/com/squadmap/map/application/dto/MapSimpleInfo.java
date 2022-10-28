@@ -12,6 +12,7 @@ public class MapSimpleInfo {
     private final String mapEmoji;
     private final Long hostId;
     private final String hostNickname;
+    private final String hostProfileImage;
     private final int placesCount;
 
 }
