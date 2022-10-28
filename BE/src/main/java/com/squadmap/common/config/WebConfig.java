@@ -5,7 +5,6 @@ import com.squadmap.common.MapConditionConverter;
 import com.squadmap.common.auth.LoginArgumentResolver;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.format.Formatter;
 import org.springframework.format.FormatterRegistry;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

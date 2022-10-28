@@ -15,7 +15,7 @@ public class PlaceRequest {
     private String address;
     private Double latitude;
     private Double longitude;
-    private String stories;
+    private String story;
     private String detailLink;
     private Long mapId;
     private Long categoryId;

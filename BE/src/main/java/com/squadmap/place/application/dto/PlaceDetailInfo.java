@@ -1,8 +1,6 @@
 package com.squadmap.place.application.dto;
 
-import com.squadmap.category.application.dto.CategoryInfo;
 import com.squadmap.place.domain.Place;
-import com.squadmap.place.domain.Position;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -15,7 +13,7 @@ public class PlaceDetailInfo {
     private final String address;
     private final Double latitude;
     private final Double longitude;
-    private final String description;
+    private final String story;
     private final String detailLink;
     private final Long categoryId;
 

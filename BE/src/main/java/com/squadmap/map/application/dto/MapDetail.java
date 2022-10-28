@@ -1,9 +1,7 @@
 package com.squadmap.map.application.dto;
 
-import com.squadmap.category.application.dto.CategoryInfo;
 import com.squadmap.map.domain.Map;
 import com.squadmap.member.domain.Member;
-import com.squadmap.place.application.dto.PlaceSimpleInfo;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

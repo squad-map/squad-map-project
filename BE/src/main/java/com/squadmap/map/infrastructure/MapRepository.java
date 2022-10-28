@@ -5,7 +5,7 @@ import com.squadmap.map.domain.Map;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
@@ -21,6 +21,7 @@ public interface MapRepository extends JpaRepository<Map, Long> {
 
     List<Map> findAllByFullDisclosureAndNameContaining(boolean fullDisclosure, String name);
 
-    List<Map> findAllByIdAndNameContaining(Iterable<Long> ids, String name);
+    @Query("select m from Map m where m.id in :ids and m.name like %:name%")
+    List<Map> findAllByIdsAndNameContaining(@Param("ids") List<Long> ids, @Param("name") String name);
 
 }

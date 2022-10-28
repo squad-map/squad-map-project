@@ -1,7 +1,6 @@
 package com.squadmap.group.acceptance;
 
 import com.squadmap.assured.RestAssuredTest;
-
 import com.squadmap.group.ui.dto.GroupMemberDeleteRequest;
 import com.squadmap.group.ui.dto.GroupMemberRequest;
 import io.restassured.http.ContentType;
@@ -13,9 +12,10 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.restdocs.snippet.Snippet;
 
-import static io.restassured.RestAssured.*;
+import static io.restassured.RestAssured.given;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
 
 public class GroupMemberAcceptanceTest extends RestAssuredTest {

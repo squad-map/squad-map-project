@@ -1,6 +1,5 @@
 package com.squadmap.member.application;
 
-import com.squadmap.common.auth.application.dto.MemberInfo;
 import com.squadmap.common.excetpion.ClientException;
 import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
 import com.squadmap.member.application.dto.MemberSimpleInfo;

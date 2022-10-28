@@ -109,7 +109,7 @@ public class MapServiceImpl implements MapService{
     @Override
     public MapsResponse searchGroupMapName(String searchName, Long memberId) {
         List<Long> mapIds = groupMemberRepository.findMapIdByMemberId(memberId);
-        List<Map> maps = mapRepository.findAllByIdAndNameContaining(mapIds, searchName);
+        List<Map> maps = mapRepository.findAllByIdsAndNameContaining(mapIds, searchName);
         return mapsToMapResponse(maps);
     }
 

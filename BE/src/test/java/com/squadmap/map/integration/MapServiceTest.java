@@ -5,14 +5,11 @@ import com.squadmap.map.application.dto.MapDetail;
 import com.squadmap.map.application.dto.MapSimpleInfo;
 import com.squadmap.map.domain.Map;
 import com.squadmap.map.infrastructure.MapRepository;
-import com.squadmap.place.domain.Place;
-import com.squadmap.place.infrastructure.PlaceRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -20,7 +17,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.InstanceOfAssertFactories.map;
 
 @SpringBootTest
 @ActiveProfiles("test")

@@ -1,7 +1,6 @@
 package com.squadmap.common.auth.application;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.squadmap.common.auth.application.dto.LoginMember;
 import com.squadmap.common.auth.application.dto.MemberInfo;
 import com.squadmap.common.auth.application.dto.naver.NaverRequest;
 import com.squadmap.common.auth.application.dto.naver.NaverToken;

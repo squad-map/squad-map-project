@@ -18,7 +18,8 @@ import org.springframework.test.context.ActiveProfiles;
 import java.io.IOException;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
 

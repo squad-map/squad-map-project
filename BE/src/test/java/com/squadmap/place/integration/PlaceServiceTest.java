@@ -3,14 +3,13 @@ package com.squadmap.place.integration;
 import com.squadmap.common.excetpion.ClientException;
 import com.squadmap.place.application.PlaceService;
 import com.squadmap.place.application.dto.PlaceDetailInfo;
-import com.squadmap.place.ui.dto.Point;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 class PlaceServiceTest {
@@ -23,17 +22,16 @@ class PlaceServiceTest {
     void placeCreateTest() {
         String name = "로니네 sweet home";
         String address = "서울시 관악구";
-        Point position = new Point(127.01, 36.00);
+        Double latitude = 127.01;
+        Double longitude = 36.00;
         String description = "home sweet home";
         String detailLink = "place link";
         Long mapId = 1L;
         Long categoryId = 1L;
-        String categoryName = "category test";
-        String categoryColor = "#FF";
         Long memberId = 1L;
 
-        Long placeId = placeService.create(name, address, position, description, detailLink,
-                mapId, categoryId, categoryName, categoryColor, memberId);
+        Long placeId = placeService.create(name, address, latitude, longitude, description, detailLink,
+                mapId, categoryId, memberId);
 
         assertThat(placeId).isPositive();
     }
@@ -43,17 +41,16 @@ class PlaceServiceTest {
     void placeCreateTest_duplicate_place() {
         String name = "로니네 sweet home";
         String address = "서울시 관악구";
-        Point position = new Point(127.00, 37.00);
+        Double latitude = 127.00;
+        Double longitude = 37.00;
         String description = "home sweet home";
         String detailLink = "place link";
         Long mapId = 1L;
         Long categoryId = 1L;
-        String categoryName = "category test";
-        String categoryColor = "#FF";
         Long memberId = 1L;
 
-        Assertions.assertThatThrownBy(() -> placeService.create(name, address, position, description, detailLink, mapId, categoryId,
-                        categoryName, categoryColor, memberId))
+        Assertions.assertThatThrownBy(() -> placeService.create(name, address, latitude, longitude,
+                        description, detailLink, mapId, categoryId, memberId))
                 .isInstanceOf(ClientException.class)
                 .hasMessage("지도 내에 이미 등록되어 있습니다.");
 
@@ -71,7 +68,7 @@ class PlaceServiceTest {
 
         assertThat(placeDetailInfo.getPlaceId()).isEqualTo(placeId);
         assertThat(placeDetailInfo.getCategoryId()).isEqualTo(categoryId);
-        assertThat(placeDetailInfo.getDescription()).isEqualTo(description);
+        assertThat(placeDetailInfo.getStory()).isEqualTo(description);
 
     }
 

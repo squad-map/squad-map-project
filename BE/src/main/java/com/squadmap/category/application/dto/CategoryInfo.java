@@ -1,7 +1,9 @@
 package com.squadmap.category.application.dto;
 
 import com.squadmap.category.domain.Category;
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
