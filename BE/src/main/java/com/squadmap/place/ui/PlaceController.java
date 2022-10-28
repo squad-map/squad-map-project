@@ -21,24 +21,23 @@ public class PlaceController {
     public PlaceResponse create(@Login Long memberId, @RequestBody PlaceRequest placeRequest) {
         Long placeId = placeService.create(placeRequest.getName(),
                 placeRequest.getAddress(),
-                placeRequest.getPosition(),
-                placeRequest.getDescription(),
+                placeRequest.getLatitude(),
+                placeRequest.getLongitude(),
+                placeRequest.getStories(),
                 placeRequest.getDetailLink(),
                 placeRequest.getMapId(),
                 placeRequest.getCategoryId(),
-                placeRequest.getCategoryName(),
-                placeRequest.getCategoryColor(),
                 memberId);
         return new PlaceResponse(placeId);
     }
 
-    @PostMapping("/places/update")
-    public PlaceDetailInfo update(@Login Long memberId, @RequestBody PlaceUpdateRequest placeUpdateRequest) {
+    @PatchMapping("/places/{placeId}")
+    public PlaceDetailInfo update(@Login Long memberId, @PathVariable Long placeId, @RequestBody PlaceUpdateRequest placeUpdateRequest) {
          return placeService.update(
                 memberId,
-                placeUpdateRequest.getPlaceId(),
+                placeId,
                 placeUpdateRequest.getCategoryId(),
-                placeUpdateRequest.getDescription()
+                placeUpdateRequest.getStory()
         );
     }
 

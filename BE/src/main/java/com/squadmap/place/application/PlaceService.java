@@ -1,14 +1,13 @@
 package com.squadmap.place.application;
 
 import com.squadmap.place.application.dto.PlaceDetailInfo;
-import com.squadmap.place.ui.dto.Point;
 
 public interface PlaceService {
 
-    Long create(String name, String address, Point position, String description, String detailLink,
-                               Long mapId, Long categoryId, String categoryName, String categoryColor, Long memberId);
+    Long create(String name, String address, Double latitude, Double longitude, String story, String detailLink,
+                               Long mapId, Long categoryId, Long memberId);
 
-    PlaceDetailInfo update(Long memberId, Long placeId, Long categoryId, String description);
+    PlaceDetailInfo update(Long memberId, Long placeId, Long categoryId, String story);
 
     PlaceDetailInfo readOne(Long memberId, Long placeId);
 }
