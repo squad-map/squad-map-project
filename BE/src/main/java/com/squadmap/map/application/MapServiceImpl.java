@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -61,8 +62,8 @@ public class MapServiceImpl implements MapService{
     }
 
     @Override
-    public Page<MapSimpleInfo> readPublic(Pageable pageable) {
-        Page<Map> maps = mapRepository.findAllByFullDisclosure(true, pageable);
+    public Page<MapSimpleInfo> searchPublic(Pageable pageable, Optional<String> name) {
+        Page<Map> maps = searchPublicWithName(pageable, name);
 
         java.util.Map<Long, Member> members = getMembers(maps.getContent());
         return maps.map(map -> {
@@ -94,23 +95,25 @@ public class MapServiceImpl implements MapService{
     }
 
     @Override
-    public MapsResponse readGroupMap(Long memberId) {
+    public MapsResponse readGroupMap(Long memberId, Optional<String> name) {
         List<Long> mapIds = groupMemberRepository.findMapIdByMemberId(memberId);
-        List<Map> maps = mapRepository.findAllById(mapIds);
+        List<Map> maps = searchGroupMap(name, mapIds);
         return mapsToMapResponse(maps);
     }
 
-    @Override
-    public MapsResponse searchPublicMapName(String searchName) {
-        List<Map> maps = mapRepository.findAllByFullDisclosureAndNameContaining(true, searchName);
-        return mapsToMapResponse(maps);
+
+    private Page<Map> searchPublicWithName(Pageable pageable, Optional<String> name) {
+        if(name.isPresent()) {
+           return mapRepository.findAllByFullDisclosureAndNameContaining(pageable, true, name.get());
+        }
+        return mapRepository.findAllByFullDisclosure(true, pageable);
     }
 
-    @Override
-    public MapsResponse searchGroupMapName(String searchName, Long memberId) {
-        List<Long> mapIds = groupMemberRepository.findMapIdByMemberId(memberId);
-        List<Map> maps = mapRepository.findAllByIdsAndNameContaining(mapIds, searchName);
-        return mapsToMapResponse(maps);
+    private List<Map> searchGroupMap(Optional<String> name, List<Long> mapIds) {
+        if(name.isPresent()) {
+            return mapRepository.findAllByIdsAndNameContaining(mapIds, name.get());
+        }
+        return mapRepository.findAllById(mapIds);
     }
 
     private java.util.Map<Long, Member> getMembers(List<Map> maps) {

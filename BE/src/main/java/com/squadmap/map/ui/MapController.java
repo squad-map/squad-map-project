@@ -6,7 +6,6 @@ import com.squadmap.map.application.MapService;
 import com.squadmap.map.application.dto.MapDetail;
 import com.squadmap.map.application.dto.MapSimpleInfo;
 import com.squadmap.map.application.dto.MapsResponse;
-import com.squadmap.map.ui.dto.MapCondition;
 import com.squadmap.map.ui.dto.MapCreateResponse;
 import com.squadmap.map.ui.dto.MapRequest;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -36,8 +37,8 @@ public class MapController {
     }
 
     @GetMapping("/map/public")
-    public SimplePage<MapSimpleInfo> findPublicMapList(@PageableDefault Pageable pageable) {
-        return new SimplePage<>(mapService.readPublic(pageable));
+    public SimplePage<MapSimpleInfo> findPublicMapList(@PageableDefault Pageable pageable, Optional<String> name) {
+        return new SimplePage<>(mapService.searchPublic(pageable, name));
     }
 
     @GetMapping("/map/{mapId}")
@@ -46,17 +47,10 @@ public class MapController {
     }
 
     @GetMapping("/map/group")
-    public MapsResponse findGroupMapList(@Login Long memberId) {
-        return mapService.readGroupMap(memberId);
+    public MapsResponse findGroupMapList(@Login Long memberId, Optional<String> name) {
+        return mapService.readGroupMap(memberId, name);
     }
 
-    @GetMapping("/map")
-    public MapsResponse searchGroupMapWithName(@Login Long memberId, MapCondition mapCondition, String searchName) {
-        if (mapCondition.equals(MapCondition.PUBLIC)) {
-            return mapService.searchPublicMapName(searchName);
-        }
-        return mapService.searchGroupMapName(searchName, memberId);
-    }
 
 
 }

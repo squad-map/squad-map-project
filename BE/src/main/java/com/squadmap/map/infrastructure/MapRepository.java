@@ -13,13 +13,13 @@ import java.util.Optional;
 
 public interface MapRepository extends JpaRepository<Map, Long> {
 
-    Page<Map> findAllByFullDisclosure(@Param("fullDisclosure") boolean fullDisclosure, Pageable pageable);
+    Page<Map> findAllByFullDisclosure(boolean fullDisclosure, Pageable pageable);
 
     List<Map> findAllByMemberId(Long memberId);
 
     Optional<Long> findMemberIdById(Long mapId);
 
-    List<Map> findAllByFullDisclosureAndNameContaining(boolean fullDisclosure, String name);
+    Page<Map> findAllByFullDisclosureAndNameContaining(Pageable pageable, boolean fullDisclosure, String name);
 
     @Query("select m from Map m where m.id in :ids and m.name like %:name%")
     List<Map> findAllByIdsAndNameContaining(@Param("ids") List<Long> ids, @Param("name") String name);

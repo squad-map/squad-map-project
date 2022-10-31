@@ -6,6 +6,9 @@ import com.squadmap.map.application.dto.MapsResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.Optional;
+import java.util.OptionalInt;
+
 
 public interface MapService {
 
@@ -13,13 +16,10 @@ public interface MapService {
 
     void update(Long memberId, Long mapId, String mapName, String emoji, boolean fullDisclosure);
 
-    Page<MapSimpleInfo> readPublic(Pageable pageable);
+    Page<MapSimpleInfo> searchPublic(Pageable pageable, Optional<String> name);
 
     MapDetail findOne(Long mapId, Long memberId);
 
-    MapsResponse readGroupMap(Long memberId);
+    MapsResponse readGroupMap(Long memberId, Optional<String> name);
 
-    MapsResponse searchPublicMapName(String searchName);
-
-    MapsResponse searchGroupMapName(String searchName, Long memberId);
 }
