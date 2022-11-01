@@ -95,7 +95,7 @@ public class MapServiceImpl implements MapService{
     }
 
     @Override
-    public MapsResponse readGroupMap(Long memberId, Optional<String> name) {
+    public MapsResponse searchGroup(Long memberId, Optional<String> name) {
         List<Long> mapIds = groupMemberRepository.findMapIdByMemberId(memberId);
         List<Map> maps = searchGroupMap(name, mapIds);
         return mapsToMapResponse(maps);

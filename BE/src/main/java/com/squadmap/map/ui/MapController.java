@@ -48,7 +48,7 @@ public class MapController {
 
     @GetMapping("/map/group")
     public MapsResponse findGroupMapList(@Login Long memberId, Optional<String> name) {
-        return mapService.readGroupMap(memberId, name);
+        return mapService.searchGroup(memberId, name);
     }
 
 

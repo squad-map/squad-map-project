@@ -89,7 +89,8 @@ class MapAcceptanceTest extends RestAssuredTest {
 
     private static final Snippet READ_MAP_LIST_REQUEST = requestParameters(
             parameterWithName("page").optional().description("페이지 번호(default 0)"),
-            parameterWithName("size").optional().description("반환받을 지도 갯수(default 10)")
+            parameterWithName("size").optional().description("반환받을 지도 갯수(default 10)"),
+            parameterWithName("name").optional().description("검색하고자 하는 지도 이름")
     );
 
     private static final Snippet READ_MAP_LIST_RESPONSE = responseFields(
@@ -106,7 +107,6 @@ class MapAcceptanceTest extends RestAssuredTest {
             fieldWithPath("total_elements").type(JsonFieldType.NUMBER).description("총 데이터 수"),
             fieldWithPath("first").type(JsonFieldType.BOOLEAN).description("첫 페이지 여부"),
             fieldWithPath("last").type(JsonFieldType.BOOLEAN).description("마지막 페이지 여부")
-
     );
 
     @Test
@@ -162,6 +162,10 @@ class MapAcceptanceTest extends RestAssuredTest {
                 .log().all();
     }
 
+    private static final Snippet SEARCH_GROUP_MAP_LIST_REQUEST_PARAMS = requestParameters(
+            parameterWithName("name").optional().description("검색하고자하는 그룹 지도 이름")
+    );
+
     private static final Snippet READ_GROUP_MAP_LIST_RESPONSE = responseFields(
             fieldWithPath("map_count").type(JsonFieldType.NUMBER).description("속한 그룹 지도의 갯수"),
             fieldWithPath("maps[].id").type(JsonFieldType.NUMBER).description("지도의 아이디"),
@@ -177,7 +181,7 @@ class MapAcceptanceTest extends RestAssuredTest {
     @DisplayName("로그인한 유저라면 그룹 혹은 자신이 만든 지도의 리스트를 조회할 수 있다.")
     void readGroupMapsTest() {
 
-        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, AUTHORIZATION_HEADER, READ_GROUP_MAP_LIST_RESPONSE))
+        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, AUTHORIZATION_HEADER, SEARCH_GROUP_MAP_LIST_REQUEST_PARAMS, READ_GROUP_MAP_LIST_RESPONSE))
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .contentType(ContentType.JSON)
                 .header(HttpHeaders.AUTHORIZATION, this.createAuthorizationHeader(1L))
@@ -190,28 +194,6 @@ class MapAcceptanceTest extends RestAssuredTest {
                 .log().all();
     }
 
-    private static final Snippet SEARCH_MAPS_QUERY_PARAMS = requestParameters(
-            parameterWithName("map").description("(PUBLIC, GROUP) 전체 공개 지도 or 그룹 지도 "),
-            parameterWithName("name").description("찾고자하는 지도의 이름 검색어")
-    );
-
-
-    @Test
-    @DisplayName("로그인한 유저는 전체 공개 지도 또는 그룹에 속한 지도를 지도이름으로 검색할 수 있다.")
-    void searchMapNamesTest() {
-        Long memberId = 1L;
-
-        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, SEARCH_MAPS_QUERY_PARAMS, READ_GROUP_MAP_LIST_RESPONSE))
-                .accept(ContentType.JSON)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .header(HttpHeaders.AUTHORIZATION, this.createAuthorizationHeader(memberId))
-                .queryParam("map", "public")
-                .queryParam("name", "")
-
-        .when().get("/map")
-
-        .then().statusCode(HttpStatus.OK.value()).log().all();
-    }
 
 
 

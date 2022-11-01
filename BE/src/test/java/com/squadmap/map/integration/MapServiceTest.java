@@ -17,6 +17,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -71,63 +72,76 @@ class MapServiceTest {
 
     }
 
-//    @Test
-//    @DisplayName("전체 공개 지도는, 로그인하지 않은 유저도 조회할 수 있다.")
-//    void searchPublicMapList() {
-//
-//        Page<MapSimpleInfo> mapSimpleInfos = mapService.readPublic(PageRequest.of(0, 5));
-//        List<MapSimpleInfo> content = mapSimpleInfos.getContent();
-//
-//        assertThat(content.get(0).getHostNickname()).isEqualTo("nickname");
-//        assertThat(content.get(0).getMapName()).isEqualTo("first map");
-//        assertThat(content.get(0).getPlacesCount()).isPositive();
-//        assertThat(mapSimpleInfos.getTotalElements()).isPositive();
-//
-//    }
-//
-//    @Test
-//    @DisplayName("지도에 저장된 장소를 모두 조회할 수 있다.")
-//    void getOneMapTest() {
-//        // given
-//        Long mapId = 1L;
-//        Long memberId = 1L;
-//
-//        //when
-//        MapDetail mapDetail = mapService.findOne(mapId, memberId);
-//
-//        //then
-//        assertThat(mapDetail.getMapId()).isEqualTo(1L);
-//        assertThat(mapDetail.getHostId()).isEqualTo(1L);
-//        assertThat(mapDetail.getCategorizedPlaces()).isNotNull();
-//
-//    }
-//
-//    @Test
-//    @DisplayName("지도 이름에 포함되는 문자열을 보내면, 해당하는 전채 공개 지도를 반환한다.")
-//    void searchPublicMapTest() {
-//        //given
-//        String searchName = "st";
-//
-//        //when
-//        MapsResponse mapsResponse = mapService.searchPublicMapName(searchName);
-//
-//        //then
-//        assertThat(mapsResponse.getMapCount()).isEqualTo(1);
-//    }
-//
-//    @Test
-//    @DisplayName("유저 아이디와 지도 이름에 포함되는 문자열을 보내면, 그 유저가 포함된 해당하는 그룹에 속한 지도를 반환한다.")
-//    void searchGroupMapList() {
-//        //given
-//        Long memberId = 1L;
-//        String searchName = "st";
-//
-//        //when
-//        MapsResponse mapsResponse = mapService.searchGroupMapName(searchName, memberId);
-//
-//        //then
-//        assertThat(mapsResponse.getMapCount()).isEqualTo(1);
-//    }
+    @Test
+    @DisplayName("전체 공개 지도는, 로그인하지 않은 유저도 조회할 수 있다.")
+    void searchPublicMapList() {
+
+        Page<MapSimpleInfo> mapSimpleInfos = mapService.searchPublic(PageRequest.of(0, 5), Optional.empty());
+        List<MapSimpleInfo> content = mapSimpleInfos.getContent();
+
+        assertThat(content.get(0).getHostNickname()).isEqualTo("nickname");
+        assertThat(content.get(0).getMapName()).isEqualTo("first map");
+        assertThat(content.get(0).getPlacesCount()).isPositive();
+        assertThat(mapSimpleInfos.getTotalElements()).isPositive();
+
+    }
+
+    @Test
+    @DisplayName("지도에 저장된 장소를 모두 조회할 수 있다.")
+    void getOneMapTest() {
+        // given
+        Long mapId = 1L;
+        Long memberId = 1L;
+
+        //when
+        MapDetail mapDetail = mapService.findOne(mapId, memberId);
+
+        //then
+        assertThat(mapDetail.getMapId()).isEqualTo(1L);
+        assertThat(mapDetail.getHostId()).isEqualTo(1L);
+        assertThat(mapDetail.getCategorizedPlaces()).isNotNull();
+
+    }
+
+    @Test
+    @DisplayName("지도 이름에 포함되는 문자열을 보내면, 해당하는 전채 공개 지도를 반환한다.")
+    void searchPublicMapTest() {
+        //given
+        Optional<String> searchName = Optional.of("st");
+
+        //when
+        Page<MapSimpleInfo> mapSimpleInfos = mapService.searchPublic(PageRequest.of(0, 10), searchName);
+
+        //then
+        assertThat(mapSimpleInfos.getContent()).isNotEmpty();
+    }
+
+    @Test
+    @DisplayName("유저 아이디와 지도 이름에 포함되는 문자열을 보내면, 그 유저가 포함된 해당하는 그룹에 속한 지도를 반환한다.")
+    void searchGroupMapListWithMapNameTest() {
+        //given
+        Long memberId = 1L;
+        Optional<String> searchName = Optional.of("st");
+
+        //when
+        MapsResponse mapsResponse = mapService.searchGroup(memberId, searchName);
+
+        //then
+        assertThat(mapsResponse.getMapCount()).isEqualTo(1);
+    }
+
+    @Test
+    @DisplayName("유저 아이디로 지도를 검색하면, 그 유저가 속해있는 그룹 지도를 반환한다.")
+    void searchGroupMapListTest() {
+        //given
+        Long memberId = 1L;
+
+        //when
+        MapsResponse mapsResponse = mapService.searchGroup(memberId, Optional.empty());
+
+        //then
+        assertThat(mapsResponse.getMapCount()).isEqualTo(1);
+    }
 
 
 }
