@@ -1,8 +1,6 @@
 package com.squadmap.place.application.dto;
 
 import com.squadmap.place.domain.Place;
-import com.squadmap.place.domain.Position;
-import com.squadmap.place.ui.dto.Point;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -13,10 +11,17 @@ public class PlaceSimpleInfo {
     private final Long placeId;
     private final String placeName;
     private final String address;
-    private final Position position;
+    private final Double latitude;
+    private final Double longitude;
 
-    public static PlaceSimpleInfo from(Place place) {
-        return new PlaceSimpleInfo(place.getId(), place.getName(), "address", place.getPosition());
+    public static PlaceSimpleInfo from(final Place place) {
+        return new PlaceSimpleInfo(place.getId(),
+                place.getName(),
+                place.getAddress(),
+                place.getPosition().getLatitude(),
+                place.getPosition().getLongitude()
+        );
+
     }
 
 }

@@ -12,46 +12,45 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
 public class MapController {
 
     private final MapService mapService;
 
     @PostMapping("/map")
     @ResponseStatus(HttpStatus.CREATED)
-    @Transactional
     public MapCreateResponse createMap(@Login Long memberId, @RequestBody MapRequest mapCreateRequest) {
 
-        Long mapId = mapService.create(mapCreateRequest.getMapName(), mapCreateRequest.getEmoji(), mapCreateRequest.getFullDisclosure(), memberId);
+        Long mapId = mapService.create(mapCreateRequest.getMapName(), mapCreateRequest.getMapEmoji(), mapCreateRequest.getFullDisclosure(), memberId);
 
         return new MapCreateResponse(mapId);
     }
 
-    @PostMapping("/map/{mapId}")
-    @Transactional
+    @PutMapping("/map/{mapId}")
     public void updateMap(@Login Long memberId, @PathVariable Long mapId, @RequestBody MapRequest mapRequest) {
-        mapService.update(memberId, mapId, mapRequest.getMapName(), mapRequest.getEmoji(), mapRequest.getFullDisclosure());
+        mapService.update(memberId, mapId, mapRequest.getMapName(), mapRequest.getMapEmoji(), mapRequest.getFullDisclosure());
     }
 
     @GetMapping("/map/public")
-    public SimplePage<MapSimpleInfo> searchPublicMapList(@PageableDefault Pageable pageable) {
-        return new SimplePage<>(mapService.readPublic(pageable));
+    public SimplePage<MapSimpleInfo> findPublicMapList(@PageableDefault Pageable pageable, Optional<String> name) {
+        return new SimplePage<>(mapService.searchPublic(pageable, name));
     }
 
     @GetMapping("/map/{mapId}")
-    public MapDetail searchOneMap(@PathVariable Long mapId, @Login Long memberId) {
+    public MapDetail findMapOne(@PathVariable Long mapId, @Login Long memberId) {
         return mapService.findOne(mapId, memberId);
     }
 
     @GetMapping("/map/group")
-    public MapsResponse searchGroupMapList(@Login Long memberId) {
-        return mapService.readGroupMap(memberId);
+    public MapsResponse findGroupMapList(@Login Long memberId, Optional<String> name) {
+        return mapService.searchGroup(memberId, name);
     }
+
+
+
 }

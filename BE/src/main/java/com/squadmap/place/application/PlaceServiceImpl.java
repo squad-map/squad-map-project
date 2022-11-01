@@ -13,7 +13,6 @@ import com.squadmap.place.application.dto.PlaceDetailInfo;
 import com.squadmap.place.domain.Place;
 import com.squadmap.place.domain.Position;
 import com.squadmap.place.infrastructure.PlaceRepository;
-import com.squadmap.place.ui.dto.Point;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,9 +31,8 @@ public class PlaceServiceImpl implements PlaceService {
 
     @Override
     @Transactional
-    public Long create(String name, String address, Point position, String description, String detailLink, Long mapId,
-                       Long categoryId, String categoryName, String categoryColor, Long memberId) {
-
+    public Long create(String name, String address, Double latitude, Double longitude, String story, String detailLink, Long mapId,
+                       Long categoryId, Long memberId) {
 
         Map map = mapRepository.findById(mapId)
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_MAP));
@@ -46,40 +44,32 @@ public class PlaceServiceImpl implements PlaceService {
             throw new ClientException(ErrorStatusCodeAndMessage.REQUIRE_MAINTAIN_PERMISSION);
         }
 
-        Category category;
-        if(categoryId == null) {
-            if(categoryRepository.existsByNameAndMap(categoryName, map)) {
-                throw new ClientException(ErrorStatusCodeAndMessage.DUPLICATE_CATEGORY);
-            }
-            category = categoryRepository.save(Category.of(categoryName, categoryColor, map));
-        } else {
-            category = categoryRepository.findById(categoryId)
+        Category category = categoryRepository.findById(categoryId)
                     .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_CATEGORY));
-        }
-
-        Position pos = Position.from(position);
-        if (placeRepository.existsPlaceByPositionAndMap(pos, map)) {
+        Position position = new Position(latitude, longitude);
+        if (placeRepository.existsPlaceByPositionAndMap(position, map)) {
             throw new ClientException(ErrorStatusCodeAndMessage.ALREADY_REGISTERED_PLACE);
         }
 
-        Place place = placeRepository.save(Place.of(name, address, pos, description, detailLink, map, category, memberId));
+        Place place = placeRepository.save(Place.of(name, address, position, story, detailLink, map, category, memberId));
         return place.getId();
     }
 
 
     @Override
     @Transactional
-    public PlaceDetailInfo update(Long memberId, Long placeId, Long categoryId, String description) {
+    public PlaceDetailInfo update(Long memberId, Long placeId, Long categoryId, String story) {
         Place place = placeRepository.findPlaceFetchAllById(placeId)
             .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_PLACE));
 
         GroupMember groupMember = groupMemberRepository.findByMapIdAndMemberId(place.getMapId(), memberId)
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_GROUP_MEMBER));
+
         if(!groupMember.hasRequiredPermission(PermissionLevel.MAINTAIN)) {
             throw new ClientException(ErrorStatusCodeAndMessage.REQUIRE_MAINTAIN_PERMISSION);
         }
 
-        place.editDescription(description);
+        place.editDescription(story);
         if(!place.getCategory().hasSameId(categoryId)) {
             Category category = categoryRepository.findByIdAndMapId(categoryId, place.getMap().getId())
                     .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_CATEGORY));

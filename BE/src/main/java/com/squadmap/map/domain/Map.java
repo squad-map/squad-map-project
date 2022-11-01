@@ -1,7 +1,9 @@
 package com.squadmap.map.domain;
 
 import com.squadmap.place.domain.Place;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.util.ArrayList;

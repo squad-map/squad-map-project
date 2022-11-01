@@ -1,12 +1,13 @@
 package com.squadmap.common.auth.application;
 
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
-import com.squadmap.common.auth.application.dto.LoginMember;
 import com.squadmap.common.auth.application.dto.MemberInfo;
-import com.squadmap.common.auth.application.dto.github.*;
+import com.squadmap.common.auth.application.dto.github.GithubEmail;
+import com.squadmap.common.auth.application.dto.github.GithubRequest;
+import com.squadmap.common.auth.application.dto.github.GithubToken;
+import com.squadmap.common.auth.application.dto.github.GithubUserInfo;
 import com.squadmap.common.properties.OauthProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -19,7 +20,6 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.List;
 
 import static java.net.http.HttpRequest.newBuilder;

@@ -1,9 +1,7 @@
 package com.squadmap.map.application.dto;
 
-import com.squadmap.category.application.dto.CategoryInfo;
 import com.squadmap.map.domain.Map;
 import com.squadmap.member.domain.Member;
-import com.squadmap.place.application.dto.PlaceSimpleInfo;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -18,6 +16,7 @@ public class MapDetail {
     private final String mapEmoji;
     private final Long hostId;
     private final String hostNickname;
+    private final String hostProfileImage;
     private final int placesCount;
     private final List<CategorizedPlaces> categorizedPlaces;
 
@@ -28,6 +27,7 @@ public class MapDetail {
                 map.getEmoji(),
                 member.getId(),
                 member.getNickname(),
+                member.getProfileImage(),
                 placesCount,
                 categorizedPlaces);
     }

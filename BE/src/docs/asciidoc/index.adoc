@@ -50,6 +50,18 @@ include::{snippets}/member_acceptance_test/nickname_update_test/request-headers.
 include::{snippets}/member_acceptance_test/nickname_update_test/http-response.adoc[]
 include::{snippets}/member_acceptance_test/nickname_update_test/response-fields.adoc[]
 
+[[resources-member-search]]
+=== 회원 nickname 조회
+==== request
+include::{snippets}/member_acceptance_test/search_member_by_nickname_test/request-parameters.adoc[]
+include::{snippets}/member_acceptance_test/search_member_by_nickname_test/http-request.adoc[]
+필수 헤더
+include::{snippets}/member_acceptance_test/search_member_by_nickname_test/request-headers.adoc[]
+
+==== response
+include::{snippets}/member_acceptance_test/search_member_by_nickname_test/response-fields.adoc[]
+include::{snippets}/member_acceptance_test/search_member_by_nickname_test/http-response.adoc[]
+
 
 [[resources-map]]
 == 지도
@@ -103,7 +115,7 @@ include::{snippets}/map_acceptance_test/read_map_detail/http-response.adoc[]
 === 전체 공개 지도 리스트 조회
 
 ==== request
-include::{snippets}/map_acceptance_test/read_public_map_list_test/path-parameters.adoc[]
+include::{snippets}/map_acceptance_test/read_public_map_list_test/request-parameters.adoc[]
 include::{snippets}/map_acceptance_test/read_public_map_list_test/http-request.adoc[]
 
 ==== response
@@ -115,6 +127,7 @@ include::{snippets}/map_acceptance_test/read_public_map_list_test/http-response.
 === 그룹 지도 리스트 조회
 
 ==== request
+include::{snippets}/map_acceptance_test/read_group_maps_test/request-parameters.adoc[]
 include::{snippets}/map_acceptance_test/read_group_maps_test/http-request.adoc[]
 
 ==== response

@@ -12,7 +12,8 @@ import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.restdocs.snippet.Snippet;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
@@ -21,7 +22,7 @@ class MapAcceptanceTest extends RestAssuredTest {
 
     private static final Snippet CREATE_REQUEST_FIELDS = requestFields(
             fieldWithPath("map_name").type(JsonFieldType.STRING).description("아이디"),
-            fieldWithPath("emoji").type(JsonFieldType.STRING).description("이모지"),
+            fieldWithPath("map_emoji").type(JsonFieldType.STRING).description("이모지"),
             fieldWithPath("full_disclosure").type(JsonFieldType.BOOLEAN).description("접근 권한")
     );
 
@@ -53,7 +54,7 @@ class MapAcceptanceTest extends RestAssuredTest {
 
     private static final Snippet UPDATE_REQUEST_FIELDS = requestFields(
             fieldWithPath("map_name").type(JsonFieldType.STRING).description("아이디"),
-            fieldWithPath("emoji").type(JsonFieldType.STRING).description("이모지"),
+            fieldWithPath("map_emoji").type(JsonFieldType.STRING).description("이모지"),
             fieldWithPath("full_disclosure").type(JsonFieldType.BOOLEAN).description("접근 권한")
     );
 
@@ -80,15 +81,16 @@ class MapAcceptanceTest extends RestAssuredTest {
                 .body(mapUpdateRequest)
                 .log().all(true)
 
-        .when().post("/map/{map_id}", mapId)
+        .when().put("/map/{map_id}", mapId)
 
         .then().statusCode(HttpStatus.OK.value());
 
     }
 
-    private static final Snippet READ_MAP_LIST_REQUSET = requestParameters(
+    private static final Snippet READ_MAP_LIST_REQUEST = requestParameters(
             parameterWithName("page").optional().description("페이지 번호(default 0)"),
-            parameterWithName("size").optional().description("반환받을 지도 갯수(default 10)")
+            parameterWithName("size").optional().description("반환받을 지도 갯수(default 10)"),
+            parameterWithName("name").optional().description("검색하고자 하는 지도 이름 (값을 넣어주지 않으면 전체 지도 검색)")
     );
 
     private static final Snippet READ_MAP_LIST_RESPONSE = responseFields(
@@ -97,6 +99,7 @@ class MapAcceptanceTest extends RestAssuredTest {
             fieldWithPath("content[].map_emoji").type(JsonFieldType.STRING).description("지도의 이모지"),
             fieldWithPath("content[].host_id").type(JsonFieldType.NUMBER).description("지도 작성자의 아이디"),
             fieldWithPath("content[].host_nickname").type(JsonFieldType.STRING).description("지도 작성자의 닉네임"),
+            fieldWithPath("content[].host_profile_image").type(JsonFieldType.STRING).description("지도 작성자의 프로필 이미지"),
             fieldWithPath("content[].places_count").type(JsonFieldType.NUMBER).description("지도내에 등록된 장소의 갯수"),
             fieldWithPath("page_number").type(JsonFieldType.NUMBER).description("페이지 넘버"),
             fieldWithPath("size").type(JsonFieldType.NUMBER).description("요청 데이터 갯수"),
@@ -104,13 +107,12 @@ class MapAcceptanceTest extends RestAssuredTest {
             fieldWithPath("total_elements").type(JsonFieldType.NUMBER).description("총 데이터 수"),
             fieldWithPath("first").type(JsonFieldType.BOOLEAN).description("첫 페이지 여부"),
             fieldWithPath("last").type(JsonFieldType.BOOLEAN).description("마지막 페이지 여부")
-
     );
 
     @Test
     @DisplayName("전체 지도를 조회할 수 있다.")
     void readPublicMapListTest() {
-        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, READ_MAP_LIST_REQUSET, READ_MAP_LIST_RESPONSE))
+        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, READ_MAP_LIST_REQUEST, READ_MAP_LIST_RESPONSE))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .queryParam("page", 0)
                 .queryParam("size", 10)
@@ -134,6 +136,7 @@ class MapAcceptanceTest extends RestAssuredTest {
             fieldWithPath("map_emoji").type(JsonFieldType.STRING).description("지도의 이모지"),
             fieldWithPath("host_id").type(JsonFieldType.NUMBER).description("지도 작성자의 아이디"),
             fieldWithPath("host_nickname").type(JsonFieldType.STRING).description("지도 작성자의 닉네임"),
+            fieldWithPath("host_profile_image").type(JsonFieldType.STRING).description("지도 작성자의 닉네임"),
             fieldWithPath("places_count").type(JsonFieldType.NUMBER).description("지도내에 등록된 장소의 갯수"),
             fieldWithPath("categorized_places[].category_info.category_id").type(JsonFieldType.NUMBER).description("카테고리 아이디"),
             fieldWithPath("categorized_places[].category_info.category_name").type(JsonFieldType.STRING).description("카테고리 이름"),
@@ -141,17 +144,16 @@ class MapAcceptanceTest extends RestAssuredTest {
             fieldWithPath("categorized_places[].places[].place_id").type(JsonFieldType.NUMBER).description("장소 아이디"),
             fieldWithPath("categorized_places[].places[].place_name").type(JsonFieldType.STRING).description("장소 이름"),
             fieldWithPath("categorized_places[].places[].address").type(JsonFieldType.STRING).description("장소 주소"),
-            fieldWithPath("categorized_places[].places[].position.latitude").type(JsonFieldType.NUMBER).description("장소 위도"),
-            fieldWithPath("categorized_places[].places[].position.longitude").type(JsonFieldType.NUMBER).description("장소 경도")
+            fieldWithPath("categorized_places[].places[].latitude").type(JsonFieldType.NUMBER).description("장소 위도"),
+            fieldWithPath("categorized_places[].places[].longitude").type(JsonFieldType.NUMBER).description("장소 경도")
     );
 
     @Test
     @DisplayName("로그인한 유저는 지도를 조회할 수 있다.")
     void readMapDetail() {
-        String accessToken = jwtProvider.generateAccessToken(1L);
         given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, READ_MAP_DETAIL_REQUEST_PATH_PARAMETER, AUTHORIZATION_HEADER, READ_MAP_DETAIL_RESPONSE))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
+                .header(HttpHeaders.AUTHORIZATION, this.createAuthorizationHeader(1L))
 
                 .when().get("/map/{map_id}", 1L)
 
@@ -160,6 +162,10 @@ class MapAcceptanceTest extends RestAssuredTest {
                 .log().all();
     }
 
+    private static final Snippet SEARCH_GROUP_MAP_LIST_REQUEST_PARAMS = requestParameters(
+            parameterWithName("name").optional().description("검색하고자하는 그룹 지도 이름 (값을 넣어주지 않으면 속한 그룹지도 전체검색) ")
+    );
+
     private static final Snippet READ_GROUP_MAP_LIST_RESPONSE = responseFields(
             fieldWithPath("map_count").type(JsonFieldType.NUMBER).description("속한 그룹 지도의 갯수"),
             fieldWithPath("maps[].id").type(JsonFieldType.NUMBER).description("지도의 아이디"),
@@ -167,6 +173,7 @@ class MapAcceptanceTest extends RestAssuredTest {
             fieldWithPath("maps[].map_emoji").type(JsonFieldType.STRING).description("지도의 이모지"),
             fieldWithPath("maps[].host_id").type(JsonFieldType.NUMBER).description("지도의 작성자의 닉네임"),
             fieldWithPath("maps[].host_nickname").type(JsonFieldType.STRING).description("지도의 작성자의 닉네임"),
+            fieldWithPath("maps[].host_profile_image").type(JsonFieldType.STRING).description("지도의 작성자의 프로필 이미지"),
             fieldWithPath("maps[].places_count").type(JsonFieldType.NUMBER).description("지도내에 등록된 장소의 갯수")
     );
 
@@ -174,10 +181,10 @@ class MapAcceptanceTest extends RestAssuredTest {
     @DisplayName("로그인한 유저라면 그룹 혹은 자신이 만든 지도의 리스트를 조회할 수 있다.")
     void readGroupMapsTest() {
 
-        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, AUTHORIZATION_HEADER, READ_GROUP_MAP_LIST_RESPONSE))
+        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, AUTHORIZATION_HEADER, SEARCH_GROUP_MAP_LIST_REQUEST_PARAMS, READ_GROUP_MAP_LIST_RESPONSE))
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .contentType(ContentType.JSON)
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtProvider.generateAccessToken(1L))
+                .header(HttpHeaders.AUTHORIZATION, this.createAuthorizationHeader(1L))
                 .log().all()
 
         .when().get("/map/group")
@@ -186,6 +193,9 @@ class MapAcceptanceTest extends RestAssuredTest {
                 .body("map_count", notNullValue())
                 .log().all();
     }
+
+
+
 
 
 

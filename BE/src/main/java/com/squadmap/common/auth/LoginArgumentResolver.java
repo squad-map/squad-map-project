@@ -1,7 +1,6 @@
 package com.squadmap.common.auth;
 
 import com.squadmap.common.auth.application.JwtProvider;
-import com.squadmap.common.auth.application.OauthService;
 import com.squadmap.common.excetpion.ClientException;
 import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
 import lombok.RequiredArgsConstructor;

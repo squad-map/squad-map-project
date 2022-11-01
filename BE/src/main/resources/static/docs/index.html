@@ -455,6 +455,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#resources-member">회원</a>
 <ul class="sectlevel2">
 <li><a href="#resources-member-nickname-update">회원 닉네임 업데이트</a></li>
+<li><a href="#resources-member-search">회원 nickname 조회</a></li>
 </ul>
 </li>
 <li><a href="#resources-map">지도</a>
@@ -505,7 +506,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /login/github HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
 Content-Type: application/json
-Host: localhost:61795
+Host: localhost:55933
 Content-Length: 60
 
 {
@@ -546,8 +547,8 @@ Content-Length: 60
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code>{
-  "access_token" : "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0LWlzc3VlciIsInN1YiI6ImFjY2VzcyIsImF1ZCI6IjYiLCJleHAiOjE2NjY4NjAzOTB9.doG9CvpyWnO-3FYCBxUze67j2GHFdwujqYJ-iLRweeg",
-  "refresh_token" : "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0LWlzc3VlciIsInN1YiI6InJlZnJlc2giLCJhdWQiOiI2IiwiZXhwIjoxNjY2ODYwOTkzfQ.KuYnQe4QLGoJrfReg7A5_QbhVJ4OBFqOi_m_6Xe3GUw",
+  "access_token" : "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0LWlzc3VlciIsInN1YiI6ImFjY2VzcyIsImF1ZCI6IjYiLCJleHAiOjE2NjcyODcxODB9.yTVJ08-yFe7RXeCIJaqKeQ8uy7vrfgRtVxI9SwQlMEQ",
+  "refresh_token" : "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0LWlzc3VlciIsInN1YiI6InJlZnJlc2giLCJhdWQiOiI2IiwiZXhwIjoxNjY3Mjg3Nzg0fQ.IM3e2BVZ3XAy9EzcvCptruL4Zkak9X0pxO7-nzrfBDE",
   "member_id" : 6,
   "nickname" : "CMSSKKK",
   "profile_image" : "https://avatars.githubusercontent.com/u/81129309?v=4"
@@ -606,7 +607,7 @@ Content-Length: 60
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /login/naver HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
 Content-Type: application/json
-Host: localhost:61795
+Host: localhost:55933
 Content-Length: 62
 
 {
@@ -647,8 +648,8 @@ Content-Length: 62
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code>{
-  "access_token" : "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0LWlzc3VlciIsInN1YiI6ImFjY2VzcyIsImF1ZCI6IjUiLCJleHAiOjE2NjY4NjAzODh9.7oeB-XHq3d90ipQBv0vtHtErJ1jxeSWGODL3AA6AwSY",
-  "refresh_token" : "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0LWlzc3VlciIsInN1YiI6InJlZnJlc2giLCJhdWQiOiI1IiwiZXhwIjoxNjY2ODYwOTkyfQ.nzkJTSa-kGnqerGOOlaB92SVU-0rFWaQloWqtLzaX-Q",
+  "access_token" : "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0LWlzc3VlciIsInN1YiI6ImFjY2VzcyIsImF1ZCI6IjUiLCJleHAiOjE2NjcyODcxNzh9.Jb_PIvN_h1SnEOoJlxKQZrGcAp_tiViwiEymDqSryI8",
+  "refresh_token" : "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0LWlzc3VlciIsInN1YiI6InJlZnJlc2giLCJhdWQiOiI1IiwiZXhwIjoxNjY3Mjg3NzgyfQ.zFuyTM7J4Zp9p3IlENgNGO8XBxQmhxxzrNOnGB4P5sE",
   "member_id" : 5,
   "nickname" : "최민석",
   "profile_image" : "https://ssl.pstatic.net/static/pwe/address/img_profile.png"
@@ -706,9 +707,9 @@ Content-Length: 62
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /login HTTP/1.1
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0LWlzc3VlciIsInN1YiI6InJlZnJlc2giLCJhdWQiOiIxIiwiZXhwIjoxNjY2ODYwOTk0fQ.iKAEmDkDR0-Pibk9asVByo3W2I50ghj3LWdJa_wMa-E
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0LWlzc3VlciIsInN1YiI6InJlZnJlc2giLCJhdWQiOiIxIiwiZXhwIjoxNjY3Mjg3Nzg0fQ.a-p6CuJNInTvDSn1gJIVq5cZ9kHX26mDb0sIQhP-rFU
 Content-Type: application/json
-Host: localhost:61795</code></pre>
+Host: localhost:55933</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -738,7 +739,7 @@ Host: localhost:61795</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code>{
-  "access_token" : "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0LWlzc3VlciIsInN1YiI6ImFjY2VzcyIsImF1ZCI6IjEiLCJleHAiOjE2NjY4NjAzOTB9.S-tSsG8KUW0I7SNkrtwnLI8jmfEhxcpAzqP5SUUYhCA"
+  "access_token" : "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0LWlzc3VlciIsInN1YiI6ImFjY2VzcyIsImF1ZCI6IjEiLCJleHAiOjE2NjcyODcxODB9.RibqUlYvqY8kI6C7NzUvhuIurAHW6cuO_jT6TzIe2bg"
 }</code></pre>
 </div>
 </div>
@@ -797,11 +798,11 @@ Host: localhost:61795</code></pre>
 </table>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /member/update HTTP/1.1
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">PATCH /members HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
-Authorization: bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2Nzc2MDM5NH0.gchFEH0-LxIxsBcKVsklRTPP3HueGd4RRg_lnpbKYAE
+Authorization: bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2ODE4NzE4NH0.H9PMk2T-Ty39Yz_OOA0ddz793xTPAExhTajZq_QdcZk
 Content-Type: application/json
-Host: localhost:61801
+Host: localhost:55939
 Content-Length: 36
 
 {
@@ -841,7 +842,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Thu, 27 Oct 2022 08:46:34 GMT
+Date: Tue, 01 Nov 2022 07:19:44 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 36
@@ -874,62 +875,37 @@ Content-Length: 36
 </table>
 </div>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="resources-map"><a class="link" href="#resources-map">지도</a></h2>
-<div class="sectionbody">
 <div class="sect2">
-<h3 id="resources-map-create"><a class="link" href="#resources-map-create">지도 생성</a></h3>
+<h3 id="resources-member-search"><a class="link" href="#resources-member-search">회원 nickname 조회</a></h3>
 <div class="sect3">
 <h4 id="_request_5"><a class="link" href="#_request_5">request</a></h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /map HTTP/1.1
-Accept: application/json, application/javascript, text/javascript, text/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2Nzc2MDM5Mn0.idImZMmhPU88ACP6M_JozaPIM_oKLKXDOfj28iATcos
-Content-Type: application/json
-Host: localhost:61801
-Content-Length: 82
-
-{
-  "map_name" : "first map",
-  "emoji" : "U+1F600",
-  "full_disclosure" : false
-}</code></pre>
-</div>
-</div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
+<col style="width: 50%;">
+<col style="width: 50%;">
 </colgroup>
 <thead>
 <tr>
-<th class="tableblock halign-left valign-top">Path</th>
-<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Parameter</th>
 <th class="tableblock halign-left valign-top">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>map_name</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">아이디</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>emoji</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">이모지</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>full_disclosure</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">접근 권한</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>nickname</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">찾고자하는 닉네임 검색어</p></td>
 </tr>
 </tbody>
 </table>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /members?nickname=icknam HTTP/1.1
+Accept: application/json, application/javascript, text/javascript, text/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2ODE4NzE4NH0.H9PMk2T-Ty39Yz_OOA0ddz793xTPAExhTajZq_QdcZk
+Content-Type: application/json
+Host: localhost:55939</code></pre>
+</div>
+</div>
 <div class="paragraph">
 <p>필수 헤더</p>
 </div>
@@ -954,24 +930,6 @@ Content-Length: 82
 </div>
 <div class="sect3">
 <h4 id="_response_5"><a class="link" href="#_response_5">response</a></h4>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 201 Created
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers
-Content-Type: application/json
-Transfer-Encoding: chunked
-Date: Thu, 27 Oct 2022 08:46:32 GMT
-Keep-Alive: timeout=60
-Connection: keep-alive
-Content-Length: 18
-
-{
-  "map_id" : 2
-}</code></pre>
-</div>
-</div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -987,50 +945,78 @@ Content-Length: 18
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>map_id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].id</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">아이디</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">멤버 아이디</p></td>
 </tr>
-</tbody>
-</table>
-</div>
-</div>
-<div class="sect2">
-<h3 id="resources-map-update"><a class="link" href="#resources-map-update">지도 정보 변경</a></h3>
-<div class="sect3">
-<h4 id="_request_6"><a class="link" href="#_request_6">request</a></h4>
-<table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 1. /map/{map_id}</caption>
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
 <tr>
-<th class="tableblock halign-left valign-top">Parameter</th>
-<th class="tableblock halign-left valign-top">Description</th>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].nickname</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">멤버 닉네임</p></td>
 </tr>
-</thead>
-<tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>map_id</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">지도의 아이디</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>[].profile_image</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">멤버 프로필 이미지</p></td>
 </tr>
 </tbody>
 </table>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /map/1 HTTP/1.1
-Accept: application/json, application/javascript, text/javascript, text/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2Nzc2MDM5Mn0.idImZMmhPU88ACP6M_JozaPIM_oKLKXDOfj28iATcos
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
 Content-Type: application/json
-Host: localhost:61801
-Content-Length: 83
+Transfer-Encoding: chunked
+Date: Tue, 01 Nov 2022 07:19:44 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive
+Content-Length: 303
+
+[ {
+  "id" : 1,
+  "nickname" : "update nickname",
+  "profile_image" : "image"
+}, {
+  "id" : 2,
+  "nickname" : "nickname2",
+  "profile_image" : "image2"
+}, {
+  "id" : 3,
+  "nickname" : "nickname3",
+  "profile_image" : "image3"
+}, {
+  "id" : 4,
+  "nickname" : "nickname4",
+  "profile_image" : "image4"
+} ]</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="resources-map"><a class="link" href="#resources-map">지도</a></h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="resources-map-create"><a class="link" href="#resources-map-create">지도 생성</a></h3>
+<div class="sect3">
+<h4 id="_request_6"><a class="link" href="#_request_6">request</a></h4>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /map HTTP/1.1
+Accept: application/json, application/javascript, text/javascript, text/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2ODE4NzE4Mn0.YOdbSNf_saDWW-scZoCErSb-L8FidcUhD38lI3O19C4
+Content-Type: application/json
+Host: localhost:55939
+Content-Length: 86
 
 {
-  "map_name" : "changed map",
-  "emoji" : "U+1F600",
-  "full_disclosure" : true
+  "map_name" : "first map",
+  "map_emoji" : "U+1F600",
+  "full_disclosure" : false
 }</code></pre>
 </div>
 </div>
@@ -1054,7 +1040,7 @@ Content-Length: 83
 <td class="tableblock halign-left valign-top"><p class="tableblock">아이디</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>emoji</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>map_emoji</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">이모지</p></td>
 </tr>
@@ -1091,11 +1077,146 @@ Content-Length: 83
 <h4 id="_response_6"><a class="link" href="#_response_6">response</a></h4>
 <div class="listingblock">
 <div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 201 Created
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Tue, 01 Nov 2022 07:19:42 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive
+Content-Length: 18
+
+{
+  "map_id" : 2
+}</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>map_id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">아이디</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="resources-map-update"><a class="link" href="#resources-map-update">지도 정보 변경</a></h3>
+<div class="sect3">
+<h4 id="_request_7"><a class="link" href="#_request_7">request</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. /map/{map_id}</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>map_id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">지도의 아이디</p></td>
+</tr>
+</tbody>
+</table>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">PUT /map/1 HTTP/1.1
+Accept: application/json, application/javascript, text/javascript, text/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2ODE4NzE4Mn0.YOdbSNf_saDWW-scZoCErSb-L8FidcUhD38lI3O19C4
+Content-Type: application/json
+Host: localhost:55939
+Content-Length: 87
+
+{
+  "map_name" : "changed map",
+  "map_emoji" : "U+1F600",
+  "full_disclosure" : true
+}</code></pre>
+</div>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>map_name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">아이디</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>map_emoji</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">이모지</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>full_disclosure</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Boolean</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">접근 권한</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>필수 헤더</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">토큰, 로그인 및 권한 검증</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_response_7"><a class="link" href="#_response_7">response</a></h4>
+<div class="listingblock">
+<div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Date: Thu, 27 Oct 2022 08:46:32 GMT
+Date: Tue, 01 Nov 2022 07:19:42 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive</code></pre>
 </div>
@@ -1105,7 +1226,7 @@ Connection: keep-alive</code></pre>
 <div class="sect2">
 <h3 id="resources-map-read-detail"><a class="link" href="#resources-map-read-detail">지도 detail 조회</a></h3>
 <div class="sect3">
-<h4 id="_request_7"><a class="link" href="#_request_7">request</a></h4>
+<h4 id="_request_8"><a class="link" href="#_request_8">request</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 2. /map/{map_id}</caption>
 <colgroup>
@@ -1128,9 +1249,9 @@ Connection: keep-alive</code></pre>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /map/1 HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2Nzc2MDM5Mn0.idImZMmhPU88ACP6M_JozaPIM_oKLKXDOfj28iATcos
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2ODE4NzE4Mn0.YOdbSNf_saDWW-scZoCErSb-L8FidcUhD38lI3O19C4
 Content-Type: application/json
-Host: localhost:61801</code></pre>
+Host: localhost:55939</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1156,7 +1277,7 @@ Host: localhost:61801</code></pre>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_response_7"><a class="link" href="#_response_7">response</a></h4>
+<h4 id="_response_8"><a class="link" href="#_response_8">response</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -1197,6 +1318,11 @@ Host: localhost:61801</code></pre>
 <td class="tableblock halign-left valign-top"><p class="tableblock">지도 작성자의 닉네임</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>host_profile_image</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">지도 작성자의 닉네임</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>places_count</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">지도내에 등록된 장소의 갯수</p></td>
@@ -1232,12 +1358,12 @@ Host: localhost:61801</code></pre>
 <td class="tableblock halign-left valign-top"><p class="tableblock">장소 주소</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>categorized_places[].places[].position.latitude</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>categorized_places[].places[].latitude</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">장소 위도</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>categorized_places[].places[].position.longitude</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>categorized_places[].places[].longitude</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">장소 경도</p></td>
 </tr>
@@ -1251,6 +1377,7 @@ Host: localhost:61801</code></pre>
   "map_emoji" : "U+1F600",
   "host_id" : 1,
   "host_nickname" : "nickname",
+  "host_profile_image" : "image",
   "places_count" : 2,
   "categorized_places" : [ {
     "category_info" : {
@@ -1261,19 +1388,15 @@ Host: localhost:61801</code></pre>
     "places" : [ {
       "place_id" : 1,
       "place_name" : "starbucks",
-      "address" : "address",
-      "position" : {
-        "latitude" : 127.0,
-        "longitude" : 37.0
-      }
+      "address" : "봉천동",
+      "latitude" : 127.0,
+      "longitude" : 37.0
     }, {
       "place_id" : 2,
       "place_name" : "star",
-      "address" : "address",
-      "position" : {
-        "latitude" : 127.0,
-        "longitude" : 37.0
-      }
+      "address" : "염창동",
+      "latitude" : 127.0,
+      "longitude" : 37.0
     } ]
   } ]
 }</code></pre>
@@ -1287,10 +1410,10 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Thu, 27 Oct 2022 08:46:32 GMT
+Date: Tue, 01 Nov 2022 07:19:42 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
-Content-Length: 682
+Content-Length: 654
 
 {
   "map_id" : 1,
@@ -1298,6 +1421,7 @@ Content-Length: 682
   "map_emoji" : "U+1F600",
   "host_id" : 1,
   "host_nickname" : "nickname",
+  "host_profile_image" : "image",
   "places_count" : 2,
   "categorized_places" : [ {
     "category_info" : {
@@ -1308,19 +1432,15 @@ Content-Length: 682
     "places" : [ {
       "place_id" : 1,
       "place_name" : "starbucks",
-      "address" : "address",
-      "position" : {
-        "latitude" : 127.0,
-        "longitude" : 37.0
-      }
+      "address" : "봉천동",
+      "latitude" : 127.0,
+      "longitude" : 37.0
     }, {
       "place_id" : 2,
       "place_name" : "star",
-      "address" : "address",
-      "position" : {
-        "latitude" : 127.0,
-        "longitude" : 37.0
-      }
+      "address" : "염창동",
+      "latitude" : 127.0,
+      "longitude" : 37.0
     } ]
   } ]
 }</code></pre>
@@ -1331,9 +1451,8 @@ Content-Length: 682
 <div class="sect2">
 <h3 id="resources-read-public-map-list"><a class="link" href="#resources-read-public-map-list">전체 공개 지도 리스트 조회</a></h3>
 <div class="sect3">
-<h4 id="_request_8"><a class="link" href="#_request_8">request</a></h4>
+<h4 id="_request_9"><a class="link" href="#_request_9">request</a></h4>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 3. /map/public</caption>
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -1353,18 +1472,22 @@ Content-Length: 682
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>size</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">반환받을 지도 갯수(default 10)</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">검색하고자 하는 지도 이름</p></td>
+</tr>
 </tbody>
 </table>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /map/public?page=0&amp;size=10 HTTP/1.1
 Content-Type: application/json
-Host: localhost:61801</code></pre>
+Host: localhost:55939</code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_response_8"><a class="link" href="#_response_8">response</a></h4>
+<h4 id="_response_9"><a class="link" href="#_response_9">response</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -1403,6 +1526,11 @@ Host: localhost:61801</code></pre>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].host_nickname</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">지도 작성자의 닉네임</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].host_profile_image</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">지도 작성자의 프로필 이미지</p></td>
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>content[].places_count</code></p></td>
@@ -1456,6 +1584,7 @@ Host: localhost:61801</code></pre>
     "map_emoji" : "U+1F600",
     "host_id" : 1,
     "host_nickname" : "nickname",
+    "host_profile_image" : "image",
     "places_count" : 2
   } ]
 }</code></pre>
@@ -1469,10 +1598,10 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Thu, 27 Oct 2022 08:46:32 GMT
+Date: Tue, 01 Nov 2022 07:19:42 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
-Content-Length: 294
+Content-Length: 330
 
 {
   "page_number" : 0,
@@ -1487,6 +1616,7 @@ Content-Length: 294
     "map_emoji" : "U+1F600",
     "host_id" : 1,
     "host_nickname" : "nickname",
+    "host_profile_image" : "image",
     "places_count" : 2
   } ]
 }</code></pre>
@@ -1497,19 +1627,37 @@ Content-Length: 294
 <div class="sect2">
 <h3 id="resources-read-group-map-list"><a class="link" href="#resources-read-group-map-list">그룹 지도 리스트 조회</a></h3>
 <div class="sect3">
-<h4 id="_request_9"><a class="link" href="#_request_9">request</a></h4>
+<h4 id="_request_10"><a class="link" href="#_request_10">request</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">검색하고자하는 그룹 지도 이름</p></td>
+</tr>
+</tbody>
+</table>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /map/group HTTP/1.1
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2Nzc2MDM5Mn0.idImZMmhPU88ACP6M_JozaPIM_oKLKXDOfj28iATcos
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2ODE4NzE4Mn0.YOdbSNf_saDWW-scZoCErSb-L8FidcUhD38lI3O19C4
 Content-Type: application/json
-Host: localhost:61801</code></pre>
+Host: localhost:55939</code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_response_9"><a class="link" href="#_response_9">response</a></h4>
+<h4 id="_response_10"><a class="link" href="#_response_10">response</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -1555,6 +1703,11 @@ Host: localhost:61801</code></pre>
 <td class="tableblock halign-left valign-top"><p class="tableblock">지도의 작성자의 닉네임</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>maps[].host_profile_image</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">지도의 작성자의 프로필 이미지</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>maps[].places_count</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">지도내에 등록된 장소의 갯수</p></td>
@@ -1571,6 +1724,7 @@ Host: localhost:61801</code></pre>
     "map_emoji" : "U+1F600",
     "host_id" : 1,
     "host_nickname" : "nickname",
+    "host_profile_image" : "image",
     "places_count" : 2
   } ]
 }</code></pre>
@@ -1584,10 +1738,10 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Thu, 27 Oct 2022 08:46:32 GMT
+Date: Tue, 01 Nov 2022 07:19:42 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
-Content-Length: 192
+Content-Length: 228
 
 {
   "map_count" : 1,
@@ -1597,6 +1751,7 @@ Content-Length: 192
     "map_emoji" : "U+1F600",
     "host_id" : 1,
     "host_nickname" : "nickname",
+    "host_profile_image" : "image",
     "places_count" : 2
   } ]
 }</code></pre>
@@ -1612,7 +1767,7 @@ Content-Length: 192
 <div class="sect2">
 <h3 id="resources-place-create-test"><a class="link" href="#resources-place-create-test">장소 등록</a></h3>
 <div class="sect3">
-<h4 id="_request_10"><a class="link" href="#_request_10">request</a></h4>
+<h4 id="_request_11"><a class="link" href="#_request_11">request</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -1638,17 +1793,17 @@ Content-Length: 192
 <td class="tableblock halign-left valign-top"><p class="tableblock">장소 주소</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>position.x</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>latitude</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">장소 위도</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>position.y</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>longitude</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">장소 경도</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>description</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>story</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">장소에 대한 설명(리뷰)</p></td>
 </tr>
@@ -1665,17 +1820,7 @@ Content-Length: 192
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>category_id</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">기존 카테고리 사용시, 장소를 등록할 카테고리의 아이디</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>category_name</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">신규 카테고리를 만들시, 장소를 등록할 (신규)카테고리의 이름</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>category_color</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">신규 카테고리를 만들시, 장소를 등록할 (신규)카테고리의 색상</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">장소를 등록할 카테고리의 아이디</p></td>
 </tr>
 </tbody>
 </table>
@@ -1684,16 +1829,12 @@ Content-Length: 192
 <pre class="highlight nowrap"><code>{
   "name" : "my favorite place",
   "address" : "관악구",
-  "position" : {
-    "x" : 37.123513,
-    "y" : 127.123414123
-  },
-  "description" : "it's my favorite place\nthank you",
+  "latitude" : 37.123513,
+  "longitude" : 127.123414123,
+  "story" : "it's my favorite place\nthank you",
   "detail_link" : "https://kakaomap",
   "map_id" : 1,
-  "category_id" : 1,
-  "category_name" : null,
-  "category_color" : null
+  "category_id" : 1
 }</code></pre>
 </div>
 </div>
@@ -1701,162 +1842,26 @@ Content-Length: 192
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /places HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2Nzc2MDM5NH0.gchFEH0-LxIxsBcKVsklRTPP3HueGd4RRg_lnpbKYAE
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2ODE4NzE4NH0.H9PMk2T-Ty39Yz_OOA0ddz793xTPAExhTajZq_QdcZk
 Content-Type: application/json
-Host: localhost:61801
-Content-Length: 311
+Host: localhost:55939
+Content-Length: 242
 
 {
   "name" : "my favorite place",
   "address" : "관악구",
-  "position" : {
-    "x" : 37.123513,
-    "y" : 127.123414123
-  },
-  "description" : "it's my favorite place\nthank you",
+  "latitude" : 37.123513,
+  "longitude" : 127.123414123,
+  "story" : "it's my favorite place\nthank you",
   "detail_link" : "https://kakaomap",
   "map_id" : 1,
-  "category_id" : 1,
-  "category_name" : null,
-  "category_color" : null
+  "category_id" : 1
 }</code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_필수_헤더"><a class="link" href="#_필수_헤더">필수 헤더</a></h4>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Name</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">토큰, 로그인 및 권한 검증</p></td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="sect3">
-<h4 id="_response_10"><a class="link" href="#_response_10">response</a></h4>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Path</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>place_id</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">장소 아이디</p></td>
-</tr>
-</tbody>
-</table>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code>{
-  "place_id" : 3
-}</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 201 Created
-Vary: Origin
-Vary: Access-Control-Request-Method
-Vary: Access-Control-Request-Headers
-Content-Type: application/json
-Transfer-Encoding: chunked
-Date: Thu, 27 Oct 2022 08:46:34 GMT
-Keep-Alive: timeout=60
-Connection: keep-alive
-Content-Length: 20
-
-{
-  "place_id" : 3
-}</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="resources-place-update-test"><a class="link" href="#resources-place-update-test">장소의 카테고리 및 설명 수정</a></h3>
-<div class="sect3">
-<h4 id="_request_11"><a class="link" href="#_request_11">request</a></h4>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 33.3333%;">
-<col style="width: 33.3333%;">
-<col style="width: 33.3334%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Path</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>place_id</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">장소 아이디</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>category_id</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">장소를 포함하는 카테고리 아이디</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>description</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">변경할 장소에 대한 설명</p></td>
-</tr>
-</tbody>
-</table>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code>{
-  "place_id" : 1,
-  "category_id" : 2,
-  "description" : "updated description"
-}</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /places/update HTTP/1.1
-Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2Nzc2MDM5NH0.gchFEH0-LxIxsBcKVsklRTPP3HueGd4RRg_lnpbKYAE
-Content-Type: application/json
-Host: localhost:61801
-Content-Length: 82
-
-{
-  "place_id" : 1,
-  "category_id" : 2,
-  "description" : "updated description"
-}</code></pre>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="_필수_헤더_2"><a class="link" href="#_필수_헤더_2">필수 헤더</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -1897,119 +1902,91 @@ Content-Length: 82
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">장소 아이디</p></td>
 </tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>place_name</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">장소 이름</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>address</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">장소 주소</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>latitude</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">장소 위도</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>longitude</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">장소 경도</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>description</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">(수정된)장소 설명</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>detail_link</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">장소에 대한 링크</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>category_id</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">(수정된)카테고리의 아이디</p></td>
-</tr>
 </tbody>
 </table>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code>{
-  "place_id" : 1,
-  "place_name" : "starbucks",
-  "address" : "봉천동",
-  "latitude" : 127.0,
-  "longitude" : 37.0,
-  "description" : "updated description",
-  "detail_link" : "https://kakaomap",
-  "category_id" : 2
+  "place_id" : 3
 }</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 201 Created
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Thu, 27 Oct 2022 08:46:34 GMT
+Date: Tue, 01 Nov 2022 07:19:44 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
-Content-Length: 221
+Content-Length: 20
 
 {
-  "place_id" : 1,
-  "place_name" : "starbucks",
-  "address" : "봉천동",
-  "latitude" : 127.0,
-  "longitude" : 37.0,
-  "description" : "updated description",
-  "detail_link" : "https://kakaomap",
-  "category_id" : 2
+  "place_id" : 3
 }</code></pre>
 </div>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="resources-read-one-test"><a class="link" href="#resources-read-one-test">장소 디테일 조회</a></h3>
+<h3 id="resources-place-update-test"><a class="link" href="#resources-place-update-test">장소의 카테고리 및 설명 수정</a></h3>
 <div class="sect3">
 <h4 id="_request_12"><a class="link" href="#_request_12">request</a></h4>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 4. /places/{place_id}</caption>
 <colgroup>
-<col style="width: 50%;">
-<col style="width: 50%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
 </colgroup>
 <thead>
 <tr>
-<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
 <th class="tableblock halign-left valign-top">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>place_id</code></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">조회할 장소의 아이디</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>category_id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">변경할 장소의 카테고리 아이디</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>story</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">변경할 장소에 대한 설명</p></td>
 </tr>
 </tbody>
 </table>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /places/1 HTTP/1.1
+<pre class="highlight nowrap"><code>{
+  "category_id" : 2,
+  "story" : "updated description"
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">PATCH /places/1 HTTP/1.1
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2Nzc2MDM5NH0.gchFEH0-LxIxsBcKVsklRTPP3HueGd4RRg_lnpbKYAE
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2ODE4NzE4NH0.H9PMk2T-Ty39Yz_OOA0ddz793xTPAExhTajZq_QdcZk
 Content-Type: application/json
-Host: localhost:61801</code></pre>
+Host: localhost:55939
+Content-Length: 58
+
+{
+  "category_id" : 2,
+  "story" : "updated description"
+}</code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_필수_헤더_3"><a class="link" href="#_필수_헤더_3">필수 헤더</a></h4>
+<h4 id="_필수_헤더_2"><a class="link" href="#_필수_헤더_2">필수 헤더</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -2071,7 +2048,160 @@ Host: localhost:61801</code></pre>
 <td class="tableblock halign-left valign-top"><p class="tableblock">장소 경도</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><code>description</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>story</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(수정된)장소 설명</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>detail_link</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">장소에 대한 링크</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>category_id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">(수정된)카테고리의 아이디</p></td>
+</tr>
+</tbody>
+</table>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code>{
+  "place_id" : 1,
+  "place_name" : "starbucks",
+  "address" : "봉천동",
+  "latitude" : 127.0,
+  "longitude" : 37.0,
+  "story" : "updated description",
+  "detail_link" : "https://kakaomap",
+  "category_id" : 2
+}</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
+Vary: Origin
+Vary: Access-Control-Request-Method
+Vary: Access-Control-Request-Headers
+Content-Type: application/json
+Transfer-Encoding: chunked
+Date: Tue, 01 Nov 2022 07:19:44 GMT
+Keep-Alive: timeout=60
+Connection: keep-alive
+Content-Length: 215
+
+{
+  "place_id" : 1,
+  "place_name" : "starbucks",
+  "address" : "봉천동",
+  "latitude" : 127.0,
+  "longitude" : 37.0,
+  "story" : "updated description",
+  "detail_link" : "https://kakaomap",
+  "category_id" : 2
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="resources-read-one-test"><a class="link" href="#resources-read-one-test">장소 디테일 조회</a></h3>
+<div class="sect3">
+<h4 id="_request_13"><a class="link" href="#_request_13">request</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 3. /places/{place_id}</caption>
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>place_id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">장소의 아이디</p></td>
+</tr>
+</tbody>
+</table>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /places/1 HTTP/1.1
+Accept: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2ODE4NzE4NH0.H9PMk2T-Ty39Yz_OOA0ddz793xTPAExhTajZq_QdcZk
+Content-Type: application/json
+Host: localhost:55939</code></pre>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_필수_헤더_3"><a class="link" href="#_필수_헤더_3">필수 헤더</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Authorization</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">토큰, 로그인 및 권한 검증</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sect3">
+<h4 id="_response_13"><a class="link" href="#_response_13">response</a></h4>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Path</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>place_id</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">장소 아이디</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>place_name</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">장소 이름</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>address</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">장소 주소</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>latitude</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">장소 위도</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>longitude</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>Number</code></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">장소 경도</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><code>story</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><code>String</code></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">장소 설명</p></td>
 </tr>
@@ -2095,7 +2225,7 @@ Host: localhost:61801</code></pre>
   "address" : "봉천동",
   "latitude" : 127.0,
   "longitude" : 37.0,
-  "description" : "first place",
+  "story" : "first place",
   "detail_link" : "https://kakaomap",
   "category_id" : 1
 }</code></pre>
@@ -2109,10 +2239,10 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Thu, 27 Oct 2022 08:46:34 GMT
+Date: Tue, 01 Nov 2022 07:19:44 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
-Content-Length: 213
+Content-Length: 207
 
 {
   "place_id" : 1,
@@ -2120,7 +2250,7 @@ Content-Length: 213
   "address" : "봉천동",
   "latitude" : 127.0,
   "longitude" : 37.0,
-  "description" : "first place",
+  "story" : "first place",
   "detail_link" : "https://kakaomap",
   "category_id" : 1
 }</code></pre>
@@ -2136,7 +2266,7 @@ Content-Length: 213
 <div class="sect2">
 <h3 id="resources-category-create-test"><a class="link" href="#resources-category-create-test">카테고리 등록</a></h3>
 <div class="sect3">
-<h4 id="_request_13"><a class="link" href="#_request_13">request</a></h4>
+<h4 id="_request_14"><a class="link" href="#_request_14">request</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -2181,9 +2311,9 @@ Content-Length: 213
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /categories HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2Nzc2MDM5MX0.TqGPOVEuoq3wMh4L1hQGFaRqx8S7M62AiNjOcHbVlyI
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2ODE4NzE4MX0.XS6PZwqGzUnXp0GKv8k_QkdnPjZS8WCSpY7Rx5Bo6C4
 Content-Type: application/json
-Host: localhost:61801
+Host: localhost:55939
 Content-Length: 84
 
 {
@@ -2216,7 +2346,7 @@ Content-Length: 84
 </table>
 </div>
 <div class="sect3">
-<h4 id="_response_13"><a class="link" href="#_response_13">response</a></h4>
+<h4 id="_response_14"><a class="link" href="#_response_14">response</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -2253,7 +2383,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Thu, 27 Oct 2022 08:46:31 GMT
+Date: Tue, 01 Nov 2022 07:19:41 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 23
@@ -2268,9 +2398,9 @@ Content-Length: 23
 <div class="sect2">
 <h3 id="resources-category-read-test"><a class="link" href="#resources-category-read-test">카테고리 조회</a></h3>
 <div class="sect3">
-<h4 id="_request_14"><a class="link" href="#_request_14">request</a></h4>
+<h4 id="_request_15"><a class="link" href="#_request_15">request</a></h4>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 5. /categories/{category_id}</caption>
+<caption class="title">Table 4. /categories/{category_id}</caption>
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -2297,9 +2427,9 @@ Content-Length: 23
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /categories/1 HTTP/1.1
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2Nzc2MDM5MX0.TqGPOVEuoq3wMh4L1hQGFaRqx8S7M62AiNjOcHbVlyI
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2ODE4NzE4MX0.XS6PZwqGzUnXp0GKv8k_QkdnPjZS8WCSpY7Rx5Bo6C4
 Content-Type: application/json
-Host: localhost:61801</code></pre>
+Host: localhost:55939</code></pre>
 </div>
 </div>
 </div>
@@ -2325,7 +2455,7 @@ Host: localhost:61801</code></pre>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_response_14"><a class="link" href="#_response_14">response</a></h4>
+<h4 id="_response_15"><a class="link" href="#_response_15">response</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -2374,7 +2504,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Thu, 27 Oct 2022 08:46:31 GMT
+Date: Tue, 01 Nov 2022 07:19:41 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 93
@@ -2391,7 +2521,7 @@ Content-Length: 93
 <div class="sect2">
 <h3 id="resources-category-update-test"><a class="link" href="#resources-category-update-test">카테고리 수정</a></h3>
 <div class="sect3">
-<h4 id="_request_15"><a class="link" href="#_request_15">request</a></h4>
+<h4 id="_request_16"><a class="link" href="#_request_16">request</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -2419,9 +2549,9 @@ Content-Length: 93
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /categories?map=1 HTTP/1.1
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2Nzc2MDM5MX0.TqGPOVEuoq3wMh4L1hQGFaRqx8S7M62AiNjOcHbVlyI
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2ODE4NzE4MX0.XS6PZwqGzUnXp0GKv8k_QkdnPjZS8WCSpY7Rx5Bo6C4
 Content-Type: application/json
-Host: localhost:61801</code></pre>
+Host: localhost:55939</code></pre>
 </div>
 </div>
 </div>
@@ -2447,7 +2577,7 @@ Host: localhost:61801</code></pre>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_response_15"><a class="link" href="#_response_15">response</a></h4>
+<h4 id="_response_16"><a class="link" href="#_response_16">response</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -2500,7 +2630,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Thu, 27 Oct 2022 08:46:31 GMT
+Date: Tue, 01 Nov 2022 07:19:41 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 193
@@ -2521,9 +2651,9 @@ Content-Length: 193
 <div class="sect2">
 <h3 id="resources-categoryAll-read-in-map-test"><a class="link" href="#resources-categoryAll-read-in-map-test">지도 내의 모든 카테고리 조회</a></h3>
 <div class="sect3">
-<h4 id="_request_16"><a class="link" href="#_request_16">request</a></h4>
+<h4 id="_request_17"><a class="link" href="#_request_17">request</a></h4>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 6. /categories/{category_id}</caption>
+<caption class="title">Table 5. /categories/{category_id}</caption>
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -2550,9 +2680,9 @@ Content-Length: 193
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /categories/1 HTTP/1.1
 Accept: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2Nzc2MDM5MX0.TqGPOVEuoq3wMh4L1hQGFaRqx8S7M62AiNjOcHbVlyI
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2ODE4NzE4MX0.XS6PZwqGzUnXp0GKv8k_QkdnPjZS8WCSpY7Rx5Bo6C4
 Content-Type: application/json
-Host: localhost:61801</code></pre>
+Host: localhost:55939</code></pre>
 </div>
 </div>
 </div>
@@ -2578,7 +2708,7 @@ Host: localhost:61801</code></pre>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_response_16"><a class="link" href="#_response_16">response</a></h4>
+<h4 id="_response_17"><a class="link" href="#_response_17">response</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -2627,7 +2757,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Thu, 27 Oct 2022 08:46:31 GMT
+Date: Tue, 01 Nov 2022 07:19:41 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 93
@@ -2649,7 +2779,7 @@ Content-Length: 93
 <div class="sect2">
 <h3 id="resources-groupMember-create-test"><a class="link" href="#resources-groupMember-create-test">그룹 멤버 추가</a></h3>
 <div class="sect3">
-<h4 id="_request_17"><a class="link" href="#_request_17">request</a></h4>
+<h4 id="_request_18"><a class="link" href="#_request_18">request</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -2688,9 +2818,9 @@ Content-Length: 93
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">POST /groups/1 HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2Nzc2MDM5MX0.TqGPOVEuoq3wMh4L1hQGFaRqx8S7M62AiNjOcHbVlyI
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2ODE4NzE4MX0.XS6PZwqGzUnXp0GKv8k_QkdnPjZS8WCSpY7Rx5Bo6C4
 Content-Type: application/json
-Host: localhost:61801
+Host: localhost:55939
 Content-Length: 52
 
 {
@@ -2722,14 +2852,14 @@ Content-Length: 52
 </table>
 </div>
 <div class="sect3">
-<h4 id="_response_17"><a class="link" href="#_response_17">response</a></h4>
+<h4 id="_response_18"><a class="link" href="#_response_18">response</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Date: Thu, 27 Oct 2022 08:46:31 GMT
+Date: Tue, 01 Nov 2022 07:19:41 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive</code></pre>
 </div>
@@ -2739,7 +2869,7 @@ Connection: keep-alive</code></pre>
 <div class="sect2">
 <h3 id="resources-groupMember-update-test"><a class="link" href="#resources-groupMember-update-test">그룹 멤버 권한 수정</a></h3>
 <div class="sect3">
-<h4 id="_request_18"><a class="link" href="#_request_18">request</a></h4>
+<h4 id="_request_19"><a class="link" href="#_request_19">request</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -2778,9 +2908,9 @@ Connection: keep-alive</code></pre>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">PUT /groups/1 HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2Nzc2MDM5MX0.TqGPOVEuoq3wMh4L1hQGFaRqx8S7M62AiNjOcHbVlyI
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2ODE4NzE4MX0.XS6PZwqGzUnXp0GKv8k_QkdnPjZS8WCSpY7Rx5Bo6C4
 Content-Type: application/json
-Host: localhost:61801
+Host: localhost:55939
 Content-Length: 56
 
 {
@@ -2812,14 +2942,14 @@ Content-Length: 56
 </table>
 </div>
 <div class="sect3">
-<h4 id="_response_18"><a class="link" href="#_response_18">response</a></h4>
+<h4 id="_response_19"><a class="link" href="#_response_19">response</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Date: Thu, 27 Oct 2022 08:46:31 GMT
+Date: Tue, 01 Nov 2022 07:19:41 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive</code></pre>
 </div>
@@ -2829,9 +2959,9 @@ Connection: keep-alive</code></pre>
 <div class="sect2">
 <h3 id="resources-groupMember-delete-test"><a class="link" href="#resources-groupMember-delete-test">그룹 멤버 삭제</a></h3>
 <div class="sect3">
-<h4 id="_request_19"><a class="link" href="#_request_19">request</a></h4>
+<h4 id="_request_20"><a class="link" href="#_request_20">request</a></h4>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 7. /groups/{map_id}</caption>
+<caption class="title">Table 6. /groups/{map_id}</caption>
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -2881,9 +3011,9 @@ Connection: keep-alive</code></pre>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">DELETE /groups/1 HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2Nzc2MDM5MX0.TqGPOVEuoq3wMh4L1hQGFaRqx8S7M62AiNjOcHbVlyI
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2ODE4NzE4MX0.XS6PZwqGzUnXp0GKv8k_QkdnPjZS8WCSpY7Rx5Bo6C4
 Content-Type: application/json
-Host: localhost:61801
+Host: localhost:55939
 Content-Length: 21
 
 {
@@ -2914,14 +3044,14 @@ Content-Length: 21
 </table>
 </div>
 <div class="sect3">
-<h4 id="_response_19"><a class="link" href="#_response_19">response</a></h4>
+<h4 id="_response_20"><a class="link" href="#_response_20">response</a></h4>
 <div class="listingblock">
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">HTTP/1.1 200 OK
 Vary: Origin
 Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
-Date: Thu, 27 Oct 2022 08:46:31 GMT
+Date: Tue, 01 Nov 2022 07:19:41 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive</code></pre>
 </div>
@@ -2931,9 +3061,9 @@ Connection: keep-alive</code></pre>
 <div class="sect2">
 <h3 id="resources-groupMember-search-test"><a class="link" href="#resources-groupMember-search-test">그룹 멤버 조회</a></h3>
 <div class="sect3">
-<h4 id="_request_20"><a class="link" href="#_request_20">request</a></h4>
+<h4 id="_request_21"><a class="link" href="#_request_21">request</a></h4>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 8. /groups/{map_id}</caption>
+<caption class="title">Table 7. /groups/{map_id}</caption>
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -2955,9 +3085,9 @@ Connection: keep-alive</code></pre>
 <div class="content">
 <pre class="highlight nowrap"><code class="language-http" data-lang="http">GET /groups/1 HTTP/1.1
 Accept: application/json, application/javascript, text/javascript, text/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2Nzc2MDM5Mn0.idImZMmhPU88ACP6M_JozaPIM_oKLKXDOfj28iATcos
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJyb24yIiwic3ViIjoiYWNjZXNzIiwiYXVkIjoiMSIsImV4cCI6MTY2ODE4NzE4Mn0.YOdbSNf_saDWW-scZoCErSb-L8FidcUhD38lI3O19C4
 Content-Type: application/json
-Host: localhost:61801</code></pre>
+Host: localhost:55939</code></pre>
 </div>
 </div>
 </div>
@@ -2983,7 +3113,7 @@ Host: localhost:61801</code></pre>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_response_20"><a class="link" href="#_response_20">response</a></h4>
+<h4 id="_response_21"><a class="link" href="#_response_21">response</a></h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -3028,7 +3158,7 @@ Vary: Access-Control-Request-Method
 Vary: Access-Control-Request-Headers
 Content-Type: application/json
 Transfer-Encoding: chunked
-Date: Thu, 27 Oct 2022 08:46:31 GMT
+Date: Tue, 01 Nov 2022 07:19:41 GMT
 Keep-Alive: timeout=60
 Connection: keep-alive
 Content-Length: 382
@@ -3059,7 +3189,7 @@ Content-Length: 382
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-10-27 17:46:07 +0900
+Last updated 2022-11-01 16:19:19 +0900
 </div>
 </div>
 </body>
