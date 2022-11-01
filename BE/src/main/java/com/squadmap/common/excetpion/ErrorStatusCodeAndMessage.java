@@ -19,7 +19,8 @@ public enum ErrorStatusCodeAndMessage {
     DUPLICATE_CATEGORY(HttpStatus.CONFLICT, "지도 내에 카테고리가 중복됩니다."),
     NO_SUCH_GROUP_MEMBER(HttpStatus.NO_CONTENT, "그룹에 속한 회원이 아닙니다."),
     UNIQUE_HOST(HttpStatus.FORBIDDEN, "지도의 HOST 권한은 지도 생성자만 가능합니다."),
-    REQUIRE_MAINTAIN_PERMISSION(HttpStatus.FORBIDDEN, "지도에 MAINTAIN 이상의 권한이 필요합니다.");
+    REQUIRE_MAINTAIN_PERMISSION(HttpStatus.FORBIDDEN, "지도에 MAINTAIN 이상의 권한이 필요합니다."),
+    OUT_OF_LIMIT_COMMENT_LENGTH(HttpStatus.BAD_REQUEST, "댓글은 1~150자 이내로만 작성할 수 있습니다.");
 
     private final HttpStatus httpStatus;
     private final String message;
