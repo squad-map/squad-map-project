@@ -90,7 +90,7 @@ class MapAcceptanceTest extends RestAssuredTest {
     private static final Snippet READ_MAP_LIST_REQUEST = requestParameters(
             parameterWithName("page").optional().description("페이지 번호(default 0)"),
             parameterWithName("size").optional().description("반환받을 지도 갯수(default 10)"),
-            parameterWithName("name").optional().description("검색하고자 하는 지도 이름")
+            parameterWithName("name").optional().description("검색하고자 하는 지도 이름 (값을 넣어주지 않으면 전체 지도 검색)")
     );
 
     private static final Snippet READ_MAP_LIST_RESPONSE = responseFields(
@@ -163,7 +163,7 @@ class MapAcceptanceTest extends RestAssuredTest {
     }
 
     private static final Snippet SEARCH_GROUP_MAP_LIST_REQUEST_PARAMS = requestParameters(
-            parameterWithName("name").optional().description("검색하고자하는 그룹 지도 이름")
+            parameterWithName("name").optional().description("검색하고자하는 그룹 지도 이름 (값을 넣어주지 않으면 속한 그룹지도 전체검색) ")
     );
 
     private static final Snippet READ_GROUP_MAP_LIST_RESPONSE = responseFields(
