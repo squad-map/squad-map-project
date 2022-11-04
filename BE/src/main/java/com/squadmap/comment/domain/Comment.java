@@ -2,6 +2,7 @@ package com.squadmap.comment.domain;
 
 import com.squadmap.common.excetpion.ClientException;
 import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
+import com.squadmap.place.domain.Place;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -26,32 +27,33 @@ public class Comment {
 
     private Long memberId;
 
-    private Long placeId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Place place;
 
     @Column(length = MAX_COMMENT_LENGTH)
-    private String comment;
+    private String content;
 
     @CreatedDate
-    private LocalDateTime writeAt;
+    private LocalDateTime writtenAt;
 
     @LastModifiedDate
     private LocalDateTime modifiedAt;
 
-    public Comment(Long memberId, Long placeId, String comment) {
+    public Comment(Long memberId, Place place, String content) {
         this.memberId = memberId;
-        this.placeId = placeId;
-        this.comment = checkCommentLength(comment);
+        this.place = place;
+        this.content = checkContentLength(content);
     }
 
-    private String checkCommentLength(String comment) {
-        if(comment.isBlank() || comment.length() > MAX_COMMENT_LENGTH) {
+    private String checkContentLength(String content) {
+        if(content.isBlank() || content.length() > MAX_COMMENT_LENGTH) {
             throw new ClientException(ErrorStatusCodeAndMessage.OUT_OF_LIMIT_COMMENT_LENGTH);
         }
-        return comment;
+        return content;
     }
 
-    private void update(String comment) {
-        this.comment = checkCommentLength(comment);
+    private void update(String content) {
+        this.content = checkContentLength(content);
     }
 
 }

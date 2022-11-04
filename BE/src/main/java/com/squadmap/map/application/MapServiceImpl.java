@@ -4,6 +4,7 @@ import com.squadmap.category.application.dto.CategoryInfo;
 import com.squadmap.category.domain.Category;
 import com.squadmap.common.excetpion.ClientException;
 import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
+import com.squadmap.group.application.GroupMemberService;
 import com.squadmap.group.domain.GroupMember;
 import com.squadmap.group.infrastructure.GroupMemberRepository;
 import com.squadmap.map.application.dto.CategorizedPlaces;
@@ -38,6 +39,7 @@ public class MapServiceImpl implements MapService{
     private final MemberRepository memberRepository;
     private final PlaceRepository placeRepository;
     private final GroupMemberRepository groupMemberRepository;
+    private final GroupMemberService groupMemberService;
 
     @Override
     @Transactional
