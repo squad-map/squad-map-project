@@ -1,7 +1,5 @@
 import { useState } from 'react';
 
-import { HeaderProps } from '../../pages/Map/Header';
-
 import * as S from './CategoryModalInfo.style';
 
 import { Icons } from '@/assets/icons';
@@ -11,16 +9,17 @@ import Text from '@/components/common/Text';
 import Input from '@/components/Input';
 import { CategoryColors } from '@/constants/colors';
 import theme from '@/styles/theme';
+import { unicodeToEmoji } from '@/utils/util';
 
-const CategoryModalInfo = ({ headerData }: HeaderProps) => {
+const CategoryModalInfo = ({ stories, mapData, placeInfo }: any) => {
   const [categoryFormData, setCategoryFormData] = useState({
-    title: '',
+    name: '',
     description: '',
     color: '',
   });
 
-  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCategoryFormData({ ...categoryFormData, title: e.target.value });
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCategoryFormData({ ...categoryFormData, name: e.target.value });
   };
 
   const handleDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -32,42 +31,60 @@ const CategoryModalInfo = ({ headerData }: HeaderProps) => {
   };
 
   const checkDupliCateColor = (color: string) => {
-    const existColors = headerData.categories.map(category => category.color);
+    const existColors = mapData.categorized_places.map(
+      (category: any) => category.color
+    );
     if (existColors.includes(color)) return true;
     return false;
   };
 
-  const isExistTitle = () => {
-    const existTitle = headerData.categories.map(category => category.name);
-    if (existTitle.includes(categoryFormData.title)) return true;
+  const isExistName = () => {
+    const existName = mapData.categorized_places.map(
+      (category: any) => category.name
+    );
+    if (existName.includes(categoryFormData.name)) return true;
     return false;
   };
 
   const isExistBgColor = () => {
-    const existColors = headerData.categories.map(category => category.color);
+    const existColors = mapData.categorized_places.map(
+      (category: any) => category.color
+    );
     if (existColors.includes(categoryFormData.color)) return true;
     return false;
   };
 
   const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (isExistTitle() || isExistBgColor()) {
+    if (isExistName() || isExistBgColor()) {
       // 간단한 popup창 띄우기.
     }
-    // 통과되면 카테고리 생성 api 호출.
+    // 통과되면 장소 생성 api 호출.
+    const newPlace = {
+      name: placeInfo.place_name,
+      address: placeInfo.address_name,
+      lat: placeInfo.x,
+      lng: placeInfo.y,
+      stories,
+      map_id: mapData.map_id,
+      category_id: null,
+      category_name: categoryFormData.name,
+      category_color: categoryFormData.color,
+      category_description: categoryFormData.description,
+    };
   };
 
   return (
     <S.ModalInfoWrapper>
       <S.Header>
         <S.Title>
-          {headerData.title}
+          {`${unicodeToEmoji(mapData.map_emoji)} ${mapData.map_name}`}
           <br />
         </S.Title>
         <S.SubTitle>지도에서 사용중인 카테고리 현재 목록</S.SubTitle>
       </S.Header>
       <S.Buttons>
-        {headerData.categories.map(category => (
+        {mapData.categorized_places.map((category: any) => (
           <Button size="xSmall" color={category.color}>
             <Text
               text={category.name}
@@ -87,19 +104,19 @@ const CategoryModalInfo = ({ headerData }: HeaderProps) => {
       </S.Suffix>
       <S.Form>
         <S.ColumnBox>
-          <S.Label htmlFor="title">카테고리명</S.Label>
+          <S.Label htmlFor="name">카테고리명</S.Label>
           <Input
-            id="title"
+            id="name"
             width="15rem"
             height="2.5rem"
             placeholderText="카테고리 이름"
             color={theme.color.placeholder}
             background={theme.color.inputBackground}
             type="text"
-            value={categoryFormData.title}
-            onChange={handleTitleChange}
+            value={categoryFormData.name}
+            onChange={handleNameChange}
           />
-          {isExistTitle() && (
+          {isExistName() && (
             <Text
               text="중복되는 카테고리 이름입니다."
               size="xSmall"
@@ -145,11 +162,7 @@ const CategoryModalInfo = ({ headerData }: HeaderProps) => {
               handleSubmit(e)
             }
           >
-            <Text
-              text="카테고리 생성"
-              size="regular"
-              color={theme.color.white}
-            />
+            <Text text="장소 생성" size="regular" color={theme.color.white} />
           </Button>
         </S.ButtonBox>
       </S.Form>

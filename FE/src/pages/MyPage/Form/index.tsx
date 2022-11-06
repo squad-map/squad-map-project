@@ -1,5 +1,5 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import React, { useState } from 'react';
-import { useMutation, useQueryClient } from 'react-query';
 import { useNavigate } from 'react-router-dom';
 
 import * as S from './Form.style';
@@ -14,17 +14,17 @@ import { MypagePostParams } from '@/types/mypage';
 import { emojiToUnicode } from '@/utils/util';
 
 interface FormProps {
+  formId?: number;
   type: string;
-  myPageData: IMyMap;
 }
 
-const Form = ({ type, myPageData }: FormProps) => {
+const Form = ({ formId, type }: FormProps) => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    map_name: myPageData.map_name || '',
-    emoji: myPageData.map_emoji || '',
+    map_name: '',
+    emoji: '',
     share: 'do',
     authority: true,
   });
@@ -93,7 +93,7 @@ const Form = ({ type, myPageData }: FormProps) => {
   };
 
   return (
-    <S.Form>
+    <S.Form data-testid="map_form">
       <S.ColumnBox>
         <S.Label htmlFor="map_name">지도명</S.Label>
         <Input
@@ -138,7 +138,7 @@ const Form = ({ type, myPageData }: FormProps) => {
               defaultChecked
               onChange={handleAuthorityChange}
             />
-            공개
+            Public
           </label>
 
           <label htmlFor="group">
@@ -149,7 +149,7 @@ const Form = ({ type, myPageData }: FormProps) => {
               value="false"
               onChange={handleAuthorityChange}
             />
-            그룹 공개
+            Group
           </label>
         </S.RadioBox>
       </S.ColumnBox>
@@ -161,7 +161,7 @@ const Form = ({ type, myPageData }: FormProps) => {
             size="regular"
             color={theme.color.darkBlue}
             onClick={(e: React.SyntheticEvent<HTMLButtonElement>) =>
-              handleSubmit(e, myPageData.id)
+              handleSubmit(e, formId)
             }
           >
             <Text text="수정하기" size="regular" color="#fff" />
