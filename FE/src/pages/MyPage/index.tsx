@@ -1,5 +1,5 @@
+import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
 
 import Form from './Form';
@@ -23,7 +23,11 @@ const MyPage = () => {
     ['myMaps'],
     getMypage
   );
-  const [formType, setFormType] = useState({ isForm: false, type: 'create' });
+  const [formType, setFormType] = useState({
+    id: 0,
+    isForm: false,
+    type: 'create',
+  });
 
   return (
     <>
@@ -34,7 +38,7 @@ const MyPage = () => {
       </S.TitleBox>
       <S.Contents>
         {formType.isForm ? (
-          <Form type={formType.type} myPageData={myPageData} />
+          <Form formId={formType.id} type={formType.type} />
         ) : loading ? (
           <LoadingSpinner size="xLarge" />
         ) : (
@@ -49,7 +53,11 @@ const MyPage = () => {
                           item={item}
                           handleModifyButton={e => {
                             e.preventDefault();
-                            setFormType({ isForm: true, type: 'modify' });
+                            setFormType({
+                              id: item.id,
+                              isForm: true,
+                              type: 'modify',
+                            });
                           }}
                         />
                       </Card>
@@ -62,7 +70,9 @@ const MyPage = () => {
                 size="large"
                 color={theme.color.navy}
                 background={`url(${Icons.Plus}) no-repeat right 1rem`}
-                onClick={() => setFormType({ isForm: true, type: 'create' })}
+                onClick={() =>
+                  setFormType({ id: 0, isForm: true, type: 'create' })
+                }
               >
                 <Text
                   size="regular"

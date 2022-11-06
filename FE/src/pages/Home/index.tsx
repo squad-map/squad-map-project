@@ -1,5 +1,5 @@
+import { useQuery } from '@tanstack/react-query';
 import { useState, useEffect } from 'react';
-import { useQuery } from 'react-query';
 import { Link } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 

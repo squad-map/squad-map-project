@@ -3,7 +3,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { ThemeProvider } from '@emotion/react';
 import theme from '@/styles/theme';
 import { RecoilRoot } from 'recoil';
-import { QueryClientProvider } from 'react-query';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from '../src';
 import { initialize, mswDecorator } from "msw-storybook-addon";
 

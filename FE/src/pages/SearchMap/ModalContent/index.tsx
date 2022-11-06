@@ -1,5 +1,5 @@
+import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { useQuery } from 'react-query';
 import { useParams } from 'react-router-dom';
 
 import * as S from './ModalContent.style';
@@ -18,7 +18,12 @@ interface ModalContentProps {
 
 const ModalContent = ({ placeInfo }: ModalContentProps) => {
   const { id } = useParams();
+  const [stories, setStories] = useState('');
   const [isCategoryForm, setIsCategoryForm] = useState(false);
+
+  const handleStoriesChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setStories(e.target.value);
+  };
 
   const { data: mapData, isLoading: loading } = useQuery(
     ['Map'],
@@ -45,13 +50,21 @@ const ModalContent = ({ placeInfo }: ModalContentProps) => {
               <Text text="이전" size="regular" color={theme.color.white} />
             </Button>
           </S.PrevButtonWrapper>
-          <CategoryModalInfo mapData={mapData} />
+          <CategoryModalInfo
+            stories={stories}
+            mapData={mapData}
+            placeInfo={placeInfo}
+          />
         </>
       ) : (
         <>
           <S.Title>{placeInfo.place_name}</S.Title>
           <KakaoStaticMap placeInfo={placeInfo} />
-          <S.TextArea placeholder="당신의 이야기를 들려주세요." />
+          <S.TextArea
+            placeholder="당신의 이야기를 들려주세요."
+            value={stories}
+            onChange={handleStoriesChange}
+          />
           <Button
             size="xLarge"
             color={theme.color.darkNavy}
