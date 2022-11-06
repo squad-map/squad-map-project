@@ -8,24 +8,23 @@ import { postMypage, patchMypage } from '@/apis/mypage';
 import Button from '@/components/common/Button';
 import Text from '@/components/common/Text';
 import Input from '@/components/Input';
-import { IMyMap } from '@/interfaces/IMyMap';
 import theme from '@/styles/theme';
-import { MypagePostParams } from '@/types/mypage';
+import { MypagePostParams, MypagePatchParams } from '@/types/mypage';
 import { emojiToUnicode } from '@/utils/util';
 
 interface FormProps {
-  formId?: number;
-  type: string;
+  mapId?: string;
+  state?: MypagePatchParams;
+  type: boolean;
 }
 
-const Form = ({ formId, type }: FormProps) => {
+const Form = ({ mapId, state, type }: FormProps) => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    map_name: '',
-    emoji: '',
-    share: 'do',
+    map_name: state?.map_name || '',
+    map_emoji: state?.map_emoji || '',
     authority: true,
   });
 
@@ -34,7 +33,7 @@ const Form = ({ formId, type }: FormProps) => {
       if (data.map_id) {
         queryClient.invalidateQueries('mypageData');
         // 성공 popup 띄우기.
-        navigate(-1);
+        navigate('/mypage');
       }
     },
     onError: (error: unknown) => {
@@ -53,7 +52,7 @@ const Form = ({ formId, type }: FormProps) => {
     {
       onSuccess: () => {
         queryClient.invalidateQueries('mypageData');
-        navigate(-1);
+        navigate('/mypage');
       },
       onError: (error: unknown) => {
         throw new Error(`error is ${error}`);
@@ -66,7 +65,7 @@ const Form = ({ formId, type }: FormProps) => {
   };
 
   const handleEmojiChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, emoji: e.target.value });
+    setFormData({ ...formData, map_emoji: e.target.value });
   };
 
   const handleAuthorityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,12 +75,12 @@ const Form = ({ formId, type }: FormProps) => {
 
   const handleSubmit = (
     e: React.SyntheticEvent<HTMLButtonElement>,
-    patchId?: number
+    patchId?: string
   ) => {
     e.preventDefault();
     const newMypage = {
       map_name: formData.map_name,
-      emoji: emojiToUnicode(formData.emoji),
+      map_emoji: emojiToUnicode(formData.map_emoji),
       full_disclosure: formData.authority,
     };
 
@@ -109,16 +108,16 @@ const Form = ({ formId, type }: FormProps) => {
         />
       </S.ColumnBox>
       <S.ColumnBox>
-        <S.Label htmlFor="emoji">이모지</S.Label>
+        <S.Label htmlFor="map_emoji">이모지</S.Label>
         <Input
-          id="emoji"
+          id="map_emoji"
           width="19rem"
           height="2.5rem"
           placeholderText="&#x1f6a7; 과 같은 이모지 입력"
           color={theme.color.placeholder}
           background={theme.color.inputBackground}
           type="text"
-          value={formData.emoji}
+          value={formData.map_emoji}
           onChange={handleEmojiChange}
         />
       </S.ColumnBox>
@@ -154,14 +153,14 @@ const Form = ({ formId, type }: FormProps) => {
         </S.RadioBox>
       </S.ColumnBox>
 
-      {type === 'modify' ? (
+      {type ? (
         <S.ButtonWrapper>
           <Button
             type="submit"
             size="regular"
             color={theme.color.darkBlue}
             onClick={(e: React.SyntheticEvent<HTMLButtonElement>) =>
-              handleSubmit(e, formId)
+              handleSubmit(e, mapId)
             }
           >
             <Text text="수정하기" size="regular" color="#fff" />

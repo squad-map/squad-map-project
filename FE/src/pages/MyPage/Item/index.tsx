@@ -1,4 +1,4 @@
-import React from 'react';
+import { Link } from 'react-router-dom';
 
 import * as S from './Item.style';
 
@@ -11,10 +11,9 @@ import { unicodeToEmoji } from '@/utils/util';
 
 interface ItemProps {
   item: IMyMap;
-  handleModifyButton: (e: React.MouseEvent<HTMLImageElement>) => void;
 }
 
-const Item = ({ item, handleModifyButton }: ItemProps) => (
+const Item = ({ item }: ItemProps) => (
   <S.Item>
     <S.ItemHeader>
       <Text
@@ -22,12 +21,12 @@ const Item = ({ item, handleModifyButton }: ItemProps) => (
         size="xRegularFill"
         color={theme.color.darkGray}
       />
-      <Icon
-        size="small"
-        url={Icons.Edit}
-        alt="Edit Icon"
-        onClick={handleModifyButton}
-      />
+      <Link
+        to={`/mypage/modify/${item.id}`}
+        state={{ map_name: item.map_name, map_emoji: item.map_emoji }}
+      >
+        <Icon size="small" url={Icons.Edit} alt="Edit Icon" />
+      </Link>
     </S.ItemHeader>
     <S.ItemFooter>
       <Text
@@ -38,5 +37,4 @@ const Item = ({ item, handleModifyButton }: ItemProps) => (
     </S.ItemFooter>
   </S.Item>
 );
-
 export default Item;
