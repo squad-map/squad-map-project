@@ -7,6 +7,7 @@ import * as S from './Home.style';
 import Item from './Item';
 
 import { getMaps } from '@/apis/home';
+import { getMypage } from '@/apis/mypage';
 import { Icons } from '@/assets/icons';
 import Button from '@/components/common/Button';
 import Card from '@/components/common/Card';
@@ -36,7 +37,9 @@ export default function HomePage() {
     data: mapsData,
     isLoading: loading,
     refetch: refetchMaps,
-  } = useQuery(['allMaps'], () => getMaps(searchType, 1, 10));
+  } = useQuery(['allMaps'], () =>
+    searchType === 'public' ? getMaps(0, 10) : getMypage()
+  );
 
   const handleSearchInput = ({
     target,
@@ -105,13 +108,14 @@ export default function HomePage() {
         ) : (
           <S.GridWrapper>
             <GridCards size="small">
-              {mapsData.content.map((item: IMap) => (
-                <Link to={`/map/${item.id}`} key={`map-${item.id}`}>
-                  <Card size="small" key={`HomeCard-${item.id}`}>
-                    <Item item={item} key={`Card-${item.id}`} />
-                  </Card>
-                </Link>
-              ))}
+              {mapsData.maps &&
+                mapsData.maps.map((item: IMap) => (
+                  <Link to={`/map/${item.id}`} key={`map-${item.id}`}>
+                    <Card size="small" key={`HomeCard-${item.id}`}>
+                      <Item item={item} key={`Card-${item.id}`} />
+                    </Card>
+                  </Link>
+                ))}
             </GridCards>
           </S.GridWrapper>
         )}

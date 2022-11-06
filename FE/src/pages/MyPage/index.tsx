@@ -1,8 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import Form from './Form';
 import Item from './Item';
 import * as S from './MyPage.style';
 
@@ -12,22 +10,13 @@ import Button from '@/components/common/Button';
 import Card from '@/components/common/Card';
 import Header from '@/components/common/Header';
 import Icon from '@/components/common/Icon';
-import LoadingSpinner from '@/components/common/LoadingSpinner';
 import Text from '@/components/common/Text';
 import GridCards from '@/components/GridCards';
 import { IMyMap } from '@/interfaces/IMyMap';
 import theme from '@/styles/theme';
 
 const MyPage = () => {
-  const { data: myPageData, isLoading: loading } = useQuery(
-    ['myMaps'],
-    getMypage
-  );
-  const [formType, setFormType] = useState({
-    id: 0,
-    isForm: false,
-    type: 'create',
-  });
+  const { data: myPageData } = useQuery(['myMaps'], getMypage);
 
   return (
     <>
@@ -37,52 +26,36 @@ const MyPage = () => {
         <Text text="지도 관리" size="xLargeFill" color={theme.color.navy} />
       </S.TitleBox>
       <S.Contents>
-        {formType.isForm ? (
-          <Form formId={formType.id} type={formType.type} />
-        ) : loading ? (
-          <LoadingSpinner size="xLarge" />
+        {myPageData ? (
+          <S.GridWrapper>
+            <GridCards size="large">
+              {myPageData.maps.map((item: IMyMap) => (
+                <Link to={`/map/${item.id}`} key={item.id}>
+                  <Card size="large">
+                    <Item item={item} />
+                  </Card>
+                </Link>
+              ))}
+            </GridCards>
+          </S.GridWrapper>
         ) : (
-          <>
-            <S.GridWrapper>
-              <GridCards size="large">
-                {myPageData.maps &&
-                  myPageData.maps.map((item: IMyMap) => (
-                    <Link to={`/map/${item.id}`}>
-                      <Card size="large" key={item.id}>
-                        <Item
-                          item={item}
-                          handleModifyButton={e => {
-                            e.preventDefault();
-                            setFormType({
-                              id: item.id,
-                              isForm: true,
-                              type: 'modify',
-                            });
-                          }}
-                        />
-                      </Card>
-                    </Link>
-                  ))}
-              </GridCards>
-            </S.GridWrapper>
-            <S.ButtonWrapper>
-              <Button
-                size="large"
-                color={theme.color.navy}
-                background={`url(${Icons.Plus}) no-repeat right 1rem`}
-                onClick={() =>
-                  setFormType({ id: 0, isForm: true, type: 'create' })
-                }
-              >
-                <Text
-                  size="regular"
-                  text="나만의 지도 만들기"
-                  color={theme.color.white}
-                />
-              </Button>
-            </S.ButtonWrapper>
-          </>
+          <S.EmptyContent>
+            지도 데이터가 존재하지 않습니다. <br /> 나만의 지도를 추가해주세요.
+          </S.EmptyContent>
         )}
+        <Link to="/mypage/create">
+          <Button
+            size="large"
+            color={theme.color.navy}
+            background={`url(${Icons.Plus}) no-repeat right 1rem`}
+          >
+            <Text
+              size="regular"
+              text="나만의 지도 만들기"
+              color={theme.color.white}
+            />
+          </Button>
+        </Link>
       </S.Contents>
     </>
   );
