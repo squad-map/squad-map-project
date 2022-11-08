@@ -25,7 +25,7 @@ const ModalContent = ({ placeInfo }: ModalContentProps) => {
     setStories(e.target.value);
   };
 
-  const { data: mapData, isLoading: loading } = useQuery(
+  const { data: mapData } = useQuery(
     ['Map'],
     () => {
       if (id) {
@@ -58,6 +58,7 @@ const ModalContent = ({ placeInfo }: ModalContentProps) => {
         </>
       ) : (
         <>
+          <S.PrevButtonWrapper />
           <S.Title>{placeInfo.place_name}</S.Title>
           <KakaoStaticMap placeInfo={placeInfo} />
           <S.TextArea

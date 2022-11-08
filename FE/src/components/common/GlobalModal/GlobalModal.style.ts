@@ -19,7 +19,7 @@ const selectSize = (size: string) => {
     case 'large':
       return css`
         width: 31.625rem;
-        height: 46.25rem;
+        height: 42.25rem;
       `;
     default:
       throw new Error(`${size} type is not found`);

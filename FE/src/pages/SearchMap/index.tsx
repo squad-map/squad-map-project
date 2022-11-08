@@ -24,7 +24,7 @@ const SearchMap = () => {
   const { id } = useParams();
   const [placeInfos, setPlaceInfos] = useState<ISearchPlace[]>([]);
 
-  const { data: mapData, isLoading: loading } = useQuery(
+  const { data: mapData } = useQuery(
     ['Map'],
     () => {
       if (id) {
