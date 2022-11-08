@@ -1,7 +1,10 @@
+import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import * as S from './CategoryModalInfo.style';
 
+import { postCategory } from '@/apis/category';
+import { postPlace } from '@/apis/place';
 import { Icons } from '@/assets/icons';
 import Button from '@/components/common/Button';
 import Icon from '@/components/common/Icon';
@@ -11,19 +14,46 @@ import { CategoryColors } from '@/constants/colors';
 import theme from '@/styles/theme';
 import { unicodeToEmoji } from '@/utils/util';
 
-const CategoryModalInfo = ({ stories, mapData, placeInfo }: any) => {
+const CategoryModalInfo = ({ story, mapData, placeInfo }: any) => {
   const [categoryFormData, setCategoryFormData] = useState({
     name: '',
-    description: '',
     color: '',
+  });
+
+  const fetchPostPlace = useMutation(postPlace, {
+    onSuccess: (data: { place_id: number }) => {
+      if (data.place_id) {
+        // 팝업닫기.
+      }
+    },
+    onError: (error: unknown) => {
+      throw new Error(`error is ${error}`);
+    },
+  });
+
+  const fetchPostCategory = useMutation(postCategory, {
+    onSuccess: (data: { category_id: number }) => {
+      if (data.category_id) {
+        const newPlace = {
+          name: placeInfo.name,
+          address: placeInfo.address_name,
+          latitude: +placeInfo.x,
+          longitude: +placeInfo.y,
+          story,
+          detail_link: '',
+          map_id: mapData.map_id,
+          category_id: data.category_id,
+        };
+        fetchPostPlace.mutate(newPlace);
+      }
+    },
+    onError: (error: unknown) => {
+      throw new Error(`error is ${error}`);
+    },
   });
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCategoryFormData({ ...categoryFormData, name: e.target.value });
-  };
-
-  const handleDescriptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCategoryFormData({ ...categoryFormData, description: e.target.value });
   };
 
   const handleColorClick = (color: string) => {
@@ -59,19 +89,16 @@ const CategoryModalInfo = ({ stories, mapData, placeInfo }: any) => {
     if (isExistName() || isExistBgColor()) {
       // 간단한 popup창 띄우기.
     }
-    // 통과되면 장소 생성 api 호출.
-    const newPlace = {
-      name: placeInfo.place_name,
-      address: placeInfo.address_name,
-      lat: placeInfo.x,
-      lng: placeInfo.y,
-      stories,
-      map_id: mapData.map_id,
-      category_id: null,
+
+    // category create api 호출.
+    const newCategory = {
       category_name: categoryFormData.name,
-      category_color: categoryFormData.color,
-      category_description: categoryFormData.description,
+      color: categoryFormData.color,
+      map_id: mapData.map_id,
+      // category_description: categoryFormData.description,
     };
+
+    fetchPostCategory.mutate(newCategory);
   };
 
   return (
@@ -81,23 +108,11 @@ const CategoryModalInfo = ({ stories, mapData, placeInfo }: any) => {
           {`${unicodeToEmoji(mapData.map_emoji)} ${mapData.map_name}`}
           <br />
         </S.Title>
-        <S.SubTitle>지도에서 사용중인 카테고리 현재 목록</S.SubTitle>
       </S.Header>
-      <S.Buttons>
-        {mapData.categorized_places.map((category: any) => (
-          <Button size="xSmall" color={category.color}>
-            <Text
-              text={category.name}
-              size="xSmall"
-              color={theme.color.white}
-            />
-          </Button>
-        ))}
-      </S.Buttons>
       <S.Suffix>
         <Icon size="small" url={Icons.Exclamation} alt="카테고리 추가 문구" />
         <Text
-          text="카테고리를 추가 할 수 있습니다. (최대 10개)"
+          text="카테고리를 추가 할 수 있습니다. (장소당 1개)"
           size="xSmall"
           color={theme.color.gray}
         />
@@ -125,19 +140,6 @@ const CategoryModalInfo = ({ stories, mapData, placeInfo }: any) => {
           )}
         </S.ColumnBox>
         <S.ColumnBox>
-          <S.Label htmlFor="description">카테고리 설명</S.Label>
-          <Input
-            id="description"
-            width="15rem"
-            height="2.5rem"
-            placeholderText="설명(선택)"
-            color={theme.color.placeholder}
-            background={theme.color.inputBackground}
-            type="text"
-            onChange={handleDescriptionChange}
-          />
-        </S.ColumnBox>
-        <S.ColumnBox>
           <S.Label htmlFor="color">카테고리 색상</S.Label>
           <S.ColorBox>
             {CategoryColors.map(
@@ -156,7 +158,7 @@ const CategoryModalInfo = ({ stories, mapData, placeInfo }: any) => {
         <S.ButtonBox>
           <Button
             type="submit"
-            size="regular"
+            size="xRegular"
             color={theme.color.black}
             onClick={(e: React.SyntheticEvent<HTMLFormElement>) =>
               handleSubmit(e)
