@@ -9,20 +9,16 @@ import CategoryModalInfo from '@/components/Category/CategoryModalInfo';
 import Button from '@/components/common/Button';
 import Text from '@/components/common/Text';
 import KakaoStaticMap from '@/components/KaKaoMap/staticMap';
-import { ISearchPlace } from '@/interfaces/ISearchPlace';
 import theme from '@/styles/theme';
+import { PlaceType } from '@/types/map';
 
-interface ModalContentProps {
-  placeInfo: ISearchPlace;
-}
-
-const ModalContent = ({ placeInfo }: ModalContentProps) => {
+const ModalContent = ({ placeInfo }: { placeInfo: PlaceType }) => {
   const { id } = useParams();
-  const [stories, setStories] = useState('');
+  const [story, setStory] = useState('');
   const [isCategoryForm, setIsCategoryForm] = useState(false);
 
-  const handleStoriesChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setStories(e.target.value);
+  const handlestoryChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setStory(e.target.value);
   };
 
   const { data: mapData } = useQuery(
@@ -51,7 +47,7 @@ const ModalContent = ({ placeInfo }: ModalContentProps) => {
             </Button>
           </S.PrevButtonWrapper>
           <CategoryModalInfo
-            stories={stories}
+            story={story}
             mapData={mapData}
             placeInfo={placeInfo}
           />
@@ -63,8 +59,8 @@ const ModalContent = ({ placeInfo }: ModalContentProps) => {
           <KakaoStaticMap placeInfo={placeInfo} />
           <S.TextArea
             placeholder="당신의 이야기를 들려주세요."
-            value={stories}
-            onChange={handleStoriesChange}
+            value={story}
+            onChange={handlestoryChange}
           />
           <Button
             size="xLarge"

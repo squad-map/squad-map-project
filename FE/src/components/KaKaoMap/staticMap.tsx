@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 
 import * as S from './KakaoMap.style';
 
-import { ISearchPlace } from '@/interfaces/ISearchPlace';
+import { PlaceType } from '@/types/map';
 
 declare global {
   interface Window {
@@ -12,18 +12,14 @@ declare global {
 
 const { kakao } = window;
 
-interface KakaoStaticMapProps {
-  placeInfo: ISearchPlace;
-}
-
-const KakaoStaticMap = ({ placeInfo }: KakaoStaticMapProps) => {
+const KakaoStaticMap = ({ placeInfo }: { placeInfo: PlaceType }) => {
   const mapRef = useRef<HTMLElement | null | any>(null);
-  const staticMapLink = `https://map.kakao.com/?itemId=${placeInfo.id}`;
+  const staticMapLink = `https://map.kakao.com/?itemId=${placeInfo.place_id}`;
 
   useEffect(() => {
     const container = document.getElementById('static_map');
     const options = {
-      center: new kakao.maps.LatLng(placeInfo.y, placeInfo.x),
+      center: new kakao.maps.LatLng(placeInfo.longitude, placeInfo.latitude),
       level: 5,
     };
     mapRef.current = new kakao.maps.Map(container, options);
