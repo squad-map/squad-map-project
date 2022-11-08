@@ -11,6 +11,7 @@ import Button from '@/components/common/Button';
 import Text from '@/components/common/Text';
 import { KakaoMap } from '@/components/KaKaoMap';
 import theme from '@/styles/theme';
+import { CategorizedPlaces } from '@/types/map';
 import { unicodeToEmoji } from '@/utils/util';
 
 const Map = () => {
@@ -24,12 +25,22 @@ const Map = () => {
 
   return (
     mapData && (
-      <KakaoMap placeInfos={mapData.categorized_places}>
+      <KakaoMap
+        placeInfos={mapData.categorized_places.reduce(
+          (acc: any, placeInfo: CategorizedPlaces) => {
+            acc.push(...placeInfo.places);
+            return acc;
+          },
+          []
+        )}
+      >
         <Header
           headerData={{
             emoji: `${unicodeToEmoji(mapData.map_emoji)}`,
             title: mapData.map_name,
-            categories: mapData.categories,
+            category_info: mapData.categorized_places.map(
+              (placeInfo: CategorizedPlaces) => placeInfo.category_info
+            ),
           }}
         />
         <Infos infoData={mapData.categorized_places} />

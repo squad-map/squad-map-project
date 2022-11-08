@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
 
 import { defaultCoords } from '@/constants/map';
-import { ISearchPlace } from '@/interfaces/ISearchPlace';
+import { PlaceType } from '@/types/map';
 
 interface KakaoMapProps {
   children: React.ReactNode;
-  placeInfos: ISearchPlace[];
+  placeInfos: PlaceType[];
 }
 
 declare global {
@@ -20,17 +20,17 @@ export const KakaoMap = ({ children, placeInfos }: KakaoMapProps) => {
   const mapRef = useRef<HTMLElement | null | any>(null);
   const [markers, setMarkers] = useState([]) as any;
 
-  const displayPlaces = (places: ISearchPlace[]) => {
+  const displayPlaces = (places: PlaceType[]) => {
     const sampleImageSrc =
       'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
     const imageSize = new kakao.maps.Size(24, 35);
     const markerImage = new kakao.maps.MarkerImage(sampleImageSrc, imageSize);
     const newMarkers = [] as any;
 
-    places.forEach((data: ISearchPlace) => {
+    places.forEach((place: PlaceType) => {
       const marker = new kakao.maps.Marker({
         map: mapRef.current,
-        position: new kakao.maps.LatLng(data.y, data.x),
+        position: new kakao.maps.LatLng(place.longitude, place.latitude),
         image: markerImage,
         zIndex: 10,
       });
@@ -41,7 +41,7 @@ export const KakaoMap = ({ children, placeInfos }: KakaoMapProps) => {
         map: mapRef.current,
         position: marker.getPosition(),
         content: `<button class="info-button">
-            <span>${data.place_name}</span>
+            <span>${place.name}</span>
           </button>`,
         yAnchor: 1,
       });

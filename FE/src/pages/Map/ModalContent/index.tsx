@@ -3,18 +3,14 @@ import * as S from './ModalContent.style';
 import Button from '@/components/common/Button';
 import Text from '@/components/common/Text';
 import KakaoStaticMap from '@/components/KaKaoMap/staticMap';
-import { ISearchPlace } from '@/interfaces/ISearchPlace';
+import { PlaceDetail } from '@/interfaces/Place';
 import theme from '@/styles/theme';
 
-interface ModalProps {
-  placeInfo: ISearchPlace;
-}
-
-const Modal = ({ placeInfo }: ModalProps) => (
+const Modal = ({ placeInfo }: { placeInfo: PlaceDetail }) => (
   <S.ModalContent>
     <S.Header>
       <S.Title>{placeInfo.place_name}</S.Title>
-      <S.Address>{placeInfo.address_name}</S.Address>
+      <S.Address>{placeInfo.address}</S.Address>
     </S.Header>
     <KakaoStaticMap placeInfo={placeInfo} />
     {/*  리뷰 작성 Form */}

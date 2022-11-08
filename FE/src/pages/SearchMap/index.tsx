@@ -10,6 +10,7 @@ import { KakaoMap } from '@/components/KaKaoMap';
 import { defaultCoords } from '@/constants/map';
 import { ISearchPlace } from '@/interfaces/ISearchPlace';
 import Header from '@/pages/Map/Header';
+import { CategorizedPlaces, PlaceType } from '@/types/map';
 import { unicodeToEmoji } from '@/utils/util';
 
 declare global {
@@ -22,7 +23,7 @@ const { kakao } = window;
 
 const SearchMap = () => {
   const { id } = useParams();
-  const [placeInfos, setPlaceInfos] = useState<ISearchPlace[]>([]);
+  const [placeInfos, setPlaceInfos] = useState<PlaceType[]>([]);
 
   const { data: mapData } = useQuery(
     ['Map'],
@@ -37,9 +38,17 @@ const SearchMap = () => {
     }
   );
 
-  const placesSearchCallBack = (data: any, status: string) => {
+  const placesSearchCallBack = (data: ISearchPlace[], status: string) => {
     if (status === kakao.maps.services.Status.OK) {
-      setPlaceInfos(data);
+      const searchPlaceInfos = data.map((place: ISearchPlace) => ({
+        place_id: +place.id,
+        name: place.place_name,
+        address: place.address_name,
+        latitude: +place.x,
+        longitude: +place.y,
+      }));
+
+      setPlaceInfos(searchPlaceInfos);
     }
     if (status === kakao.maps.services.Status.ZERO_RESULT) {
       // 검색 결과가 존재하지 않습니다.
@@ -51,7 +60,7 @@ const SearchMap = () => {
   const searchAddressToCoordinate = (address: string) => {
     const kakaoSearchService = new kakao.maps.services.Places();
     kakaoSearchService.keywordSearch(address, placesSearchCallBack, {
-      location: new kakao.maps.LatLng(defaultCoords.lat, defaultCoords.lng),
+      location: new kakao.maps.LatLng(defaultCoords.lng, defaultCoords.lat),
     });
   };
 
@@ -63,7 +72,9 @@ const SearchMap = () => {
             headerData={{
               emoji: `${unicodeToEmoji(mapData.map_emoji)}`,
               title: mapData.map_name,
-              categories: mapData.categories,
+              category_info: mapData.categorized_places.map(
+                (placeInfo: CategorizedPlaces) => placeInfo.category_info
+              ),
             }}
           />
           <SearchPlace

@@ -8,16 +8,16 @@ import Button from '@/components/common/Button';
 import Card from '@/components/common/Card';
 import GlobalModal from '@/components/common/GlobalModal';
 import Text from '@/components/common/Text';
-import { ISearchPlace } from '@/interfaces/ISearchPlace';
 import theme from '@/styles/theme';
+import { PlaceType } from '@/types/map';
 
-const PlaceInfos = ({ placeInfos }: { placeInfos: ISearchPlace[] }) => {
+const PlaceInfos = ({ placeInfos }: { placeInfos: PlaceType[] }) => {
   const [isOpenGlobalModal, setIsOpenGlobalModal] = useState(false);
-  const [placeInfo, setPlaceInfo] = useState<ISearchPlace>();
+  const [placeInfo, setPlaceInfo] = useState<PlaceType>();
 
-  const handleClickPlace = (id: string) => {
+  const handleClickPlace = (id: number) => {
     const clickedPlace = placeInfos.find(
-      (place: ISearchPlace) => place.id === id
+      (place: PlaceType) => place.place_id === id
     );
 
     setPlaceInfo(clickedPlace);
@@ -28,32 +28,27 @@ const PlaceInfos = ({ placeInfos }: { placeInfos: ISearchPlace[] }) => {
     placeInfos && (
       <S.PlaceInfos>
         {placeInfos.map &&
-          placeInfos.map((map: ISearchPlace) => (
+          placeInfos.map((place: PlaceType) => (
             <Card
               size="large"
-              key={`InfoCard-${map.id}`}
+              key={`InfoCard-${place.place_id}`}
               color={theme.color.white}
             >
               <S.Item>
                 <Text
                   size="xRegular"
-                  text={map.place_name}
+                  text={place.place_name}
                   color={theme.color.lightGreen}
                 />
                 <Text
                   size="small"
-                  text={map.address_name}
+                  text={place.address}
                   color={theme.color.gray}
-                />
-                <Text
-                  size="small"
-                  text={map.category_name}
-                  color={theme.color.lightGray}
                 />
                 <Button
                   size="small"
                   color={theme.color.navy}
-                  onClick={() => handleClickPlace(map.id)}
+                  onClick={() => handleClickPlace(place.place_id)}
                 >
                   <Text
                     size="small"
@@ -69,7 +64,7 @@ const PlaceInfos = ({ placeInfos }: { placeInfos: ISearchPlace[] }) => {
             size="large"
             handleCancelClick={() => setIsOpenGlobalModal(false)}
           >
-            <ModalContent placeInfo={placeInfo as ISearchPlace} />
+            <ModalContent placeInfo={placeInfo as PlaceType} />
           </GlobalModal>
         )}
       </S.PlaceInfos>

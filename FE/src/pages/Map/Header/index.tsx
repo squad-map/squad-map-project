@@ -13,7 +13,7 @@ export interface HeaderProps {
   headerData: {
     emoji: string;
     title: string;
-    categories: { name: string; color: string }[];
+    category_info: CategoryType[];
   };
 }
 
@@ -31,17 +31,17 @@ const Header = ({ headerData }: HeaderProps) => {
             color={theme.color.white}
           />
         </S.BackComponent>
-        {headerData.categories &&
-          headerData.categories.map((category: CategoryType) => (
+        {headerData.category_info &&
+          headerData.category_info.map((category: CategoryType) => (
             <Button
               size="regular"
               color={theme.color.white}
-              key={category.name}
+              key={category.category_id}
             >
               <Text
                 size="regular"
-                text={category.name}
-                color={category.color}
+                text={category.category_name}
+                color={category.category_color}
               />
             </Button>
           ))}

@@ -8,13 +8,13 @@ import * as S from './SearchPlace.style';
 import Button from '@/components/common/Button';
 import Text from '@/components/common/Text';
 import RecentSearch from '@/components/RecentSearch';
-import { ISearchPlace } from '@/interfaces/ISearchPlace';
 import { searchplaceState } from '@/recoil/atoms/searchplace';
 import theme from '@/styles/theme';
+import { PlaceType } from '@/types/map';
 
 interface SearchPlaceProps {
   searchAddressToCoordinate: (address: string) => any;
-  placeInfos: ISearchPlace[];
+  placeInfos: PlaceType[];
 }
 
 const SearchPlace = ({
