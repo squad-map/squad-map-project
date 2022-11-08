@@ -61,7 +61,7 @@ export const ColumnBox = styled.div`
   width: 15rem;
   ${flexbox({ dir: 'column' })}
   gap: 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
 `;
 
 export const Form = styled.form`
