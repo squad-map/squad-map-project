@@ -108,8 +108,8 @@ export default function HomePage() {
         ) : (
           <S.GridWrapper>
             <GridCards size="small">
-              {mapsData.maps &&
-                mapsData.maps.map((item: IMap) => (
+              {mapsData.content &&
+                mapsData.content.map((item: IMap) => (
                   <Link to={`/map/${item.id}`} key={`map-${item.id}`}>
                     <Card size="small" key={`HomeCard-${item.id}`}>
                       <Item item={item} key={`Card-${item.id}`} />

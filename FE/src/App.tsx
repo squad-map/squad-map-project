@@ -16,7 +16,7 @@ const SearchMapPage = lazy(() => import('@/pages/SearchMap'));
 export default function App() {
   return (
     <BrowserRouter>
-      <Suspense fallback={<LoadingSpinner size="large" />}>
+      <Suspense fallback={<LoadingSpinner size="xLarge" />}>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route element={<Verification />}>
