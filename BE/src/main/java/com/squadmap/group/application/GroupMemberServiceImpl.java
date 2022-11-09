@@ -85,7 +85,7 @@ public class GroupMemberServiceImpl implements GroupMemberService {
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_GROUP_MEMBER));
 
         if(!groupMember.hasRequiredPermission(permissionLevel)) {
-            throw new ClientException(ErrorStatusCodeAndMessage.UNAUTHORIZED);
+            throw new ClientException(ErrorStatusCodeAndMessage.FORBIDDEN);
         }
 
     }

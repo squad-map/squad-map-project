@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 public class PlaceDetailInfo {
 
     private final Long placeId;
-    private final String placeName;
+    private final String name;
     private final String address;
     private final Double latitude;
     private final Double longitude;

@@ -10,6 +10,6 @@ import java.util.List;
 public class MapsResponse {
 
     private final int mapCount;
-    private final List<MapSimpleInfo> maps;
+    private final List<MapSimpleInfo> content;
 
 }

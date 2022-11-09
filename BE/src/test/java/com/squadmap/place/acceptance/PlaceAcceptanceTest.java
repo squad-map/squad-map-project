@@ -77,7 +77,7 @@ class PlaceAcceptanceTest extends RestAssuredTest {
 
     private static final Snippet UPDATE_RESPONSE_FIELDS = responseFields(
             fieldWithPath("place_id").type(JsonFieldType.NUMBER).description("장소 아이디"),
-            fieldWithPath("place_name").type(JsonFieldType.STRING).description("장소 이름"),
+            fieldWithPath("name").type(JsonFieldType.STRING).description("장소 이름"),
             fieldWithPath("address").type(JsonFieldType.STRING).description("장소 주소"),
             fieldWithPath("latitude").type(JsonFieldType.NUMBER).description("장소 위도"),
             fieldWithPath("longitude").type(JsonFieldType.NUMBER).description("장소 경도"),

@@ -57,7 +57,7 @@ public class MapServiceImpl implements MapService{
         Map map = mapRepository.findById(mapId)
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_MEMBER));
         if(!map.canAccess(memberId)) {
-            throw new ClientException(ErrorStatusCodeAndMessage.UNAUTHORIZED);
+            throw new ClientException(ErrorStatusCodeAndMessage.FORBIDDEN);
         }
 
         map.update(mapName, emoji, fullDisclosure);
@@ -86,7 +86,7 @@ public class MapServiceImpl implements MapService{
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_MAP));
 
         if(!map.isFullDisclosure() && !groupMemberRepository.existsByMapIdAndMemberId(mapId, memberId)) {
-           throw new ClientException(ErrorStatusCodeAndMessage.UNAUTHORIZED);
+           throw new ClientException(ErrorStatusCodeAndMessage.FORBIDDEN);
         }
 
         Member member = memberRepository.findById(map.getMemberId())
