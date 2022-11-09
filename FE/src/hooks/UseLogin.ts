@@ -58,7 +58,7 @@ export const UseSilentRefresh = () => {
 
       const response = await fetch(`${process.env.SQUAD_MAP_OAUTH_URL}/login`, {
         headers: {
-          Authorization: `Barer ${refreshToken}`,
+          Authorization: `Bearer ${refreshToken}`,
         },
       });
 
