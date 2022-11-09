@@ -116,7 +116,7 @@ class PlaceAcceptanceTest extends RestAssuredTest {
 
     private static final Snippet READ_ONE_RESPONSE_FIELDS = responseFields(
             fieldWithPath("place_id").type(JsonFieldType.NUMBER).description("장소 아이디"),
-            fieldWithPath("place_name").type(JsonFieldType.STRING).description("장소 이름"),
+            fieldWithPath("name").type(JsonFieldType.STRING).description("장소 이름"),
             fieldWithPath("address").type(JsonFieldType.STRING).description("장소 주소"),
             fieldWithPath("latitude").type(JsonFieldType.NUMBER).description("장소 위도"),
             fieldWithPath("longitude").type(JsonFieldType.NUMBER).description("장소 경도"),
@@ -141,7 +141,7 @@ class PlaceAcceptanceTest extends RestAssuredTest {
 
         .then().statusCode(HttpStatus.OK.value())
                 .body("place_id", notNullValue())
-                .body("place_name", notNullValue())
+                .body("name", notNullValue())
                 .body("address", notNullValue())
                 .body("latitude", notNullValue())
                 .body("longitude", notNullValue())
