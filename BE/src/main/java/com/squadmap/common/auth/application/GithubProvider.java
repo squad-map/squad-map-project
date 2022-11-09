@@ -8,6 +8,8 @@ import com.squadmap.common.auth.application.dto.github.GithubEmail;
 import com.squadmap.common.auth.application.dto.github.GithubRequest;
 import com.squadmap.common.auth.application.dto.github.GithubToken;
 import com.squadmap.common.auth.application.dto.github.GithubUserInfo;
+import com.squadmap.common.excetpion.ClientException;
+import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
 import com.squadmap.common.properties.OauthProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -43,6 +45,7 @@ public class GithubProvider implements OauthProvider {
             githubEmail = getUserEmail(githubToken, oauthProperty);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
+            throw new ClientException(ErrorStatusCodeAndMessage.GITHUB_LOGIN_ERROR);
         }
 
         return new MemberInfo(githubUserInfo.getLogin(), githubUserInfo.getAvatarUrl(), githubEmail.getEmail());
@@ -64,12 +67,13 @@ public class GithubProvider implements OauthProvider {
         if (response.statusCode() != 200) {
             throw new IllegalArgumentException();
         }
-        // TODO exceptionHandler 추가
+
         GithubToken githubToken;
         try {
             githubToken = objectMapper.readValue(response.body(), GithubToken.class);
         } catch (MismatchedInputException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            throw new ClientException(ErrorStatusCodeAndMessage.GITHUB_LOGIN_ERROR);
         }
 
         return githubToken;
@@ -82,7 +86,7 @@ public class GithubProvider implements OauthProvider {
         HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
 
         if (response.statusCode() != 200) {
-            throw new IllegalArgumentException();
+            throw new ClientException(ErrorStatusCodeAndMessage.GITHUB_LOGIN_ERROR);
         }
 
         return objectMapper.readValue(response.body(), GithubUserInfo.class);
@@ -96,7 +100,7 @@ public class GithubProvider implements OauthProvider {
         HttpResponse<String> response = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
 
         if (response.statusCode() != 200) {
-            throw new IllegalArgumentException();
+            throw new ClientException(ErrorStatusCodeAndMessage.GITHUB_LOGIN_ERROR);
         }
         List<GithubEmail> emails = objectMapper.readValue(response.body(), new TypeReference<>() {});
 

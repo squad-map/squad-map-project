@@ -6,6 +6,8 @@ import com.squadmap.common.auth.application.dto.naver.NaverRequest;
 import com.squadmap.common.auth.application.dto.naver.NaverToken;
 import com.squadmap.common.auth.application.dto.naver.NaverUserInfo;
 import com.squadmap.common.auth.application.dto.naver.NaverUserProfileResponse;
+import com.squadmap.common.excetpion.ClientException;
+import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
 import com.squadmap.common.properties.OauthProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -38,7 +40,7 @@ public class NaverProvider implements OauthProvider {
             naverUserInfo = getUserInfo(naverToken, oauthProperty);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
-            throw new RuntimeException();
+            throw new ClientException(ErrorStatusCodeAndMessage.NAVER_LOGIN_ERROR);
         }
 
         return new MemberInfo(naverUserInfo.getNickname(), naverUserInfo.getProfileImage(), naverUserInfo.getEmail());

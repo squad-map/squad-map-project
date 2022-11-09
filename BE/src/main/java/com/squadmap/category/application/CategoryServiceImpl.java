@@ -32,7 +32,7 @@ public class CategoryServiceImpl implements CategoryService{
     public Long create(String name, String color, Long mapId, Long memberId) {
 
         Map map = mapRepository.findById(mapId)
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_MAP));
 
         GroupMember groupMember = groupMemberRepository.findByMapIdAndMemberId(mapId, memberId)
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_GROUP_MEMBER));

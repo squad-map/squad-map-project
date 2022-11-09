@@ -20,7 +20,9 @@ public enum ErrorStatusCodeAndMessage {
     NO_SUCH_GROUP_MEMBER(HttpStatus.NO_CONTENT, "그룹에 속한 회원이 아닙니다."),
     UNIQUE_HOST(HttpStatus.FORBIDDEN, "지도의 HOST 권한은 지도 생성자만 가능합니다."),
     REQUIRE_MAINTAIN_PERMISSION(HttpStatus.FORBIDDEN, "지도에 MAINTAIN 이상의 권한이 필요합니다."),
-    OUT_OF_LIMIT_COMMENT_LENGTH(HttpStatus.BAD_REQUEST, "댓글은 1~150자 이내로만 작성할 수 있습니다.");
+    OUT_OF_LIMIT_COMMENT_LENGTH(HttpStatus.BAD_REQUEST, "댓글은 1~150자 이내로만 작성할 수 있습니다."),
+    NAVER_LOGIN_ERROR(HttpStatus.BAD_REQUEST, "NAVER 로그인에 실패하였습니다."),
+    GITHUB_LOGIN_ERROR(HttpStatus.BAD_REQUEST, "GITHUB 로그인에 실패하였습니다.");
 
     private final HttpStatus httpStatus;
     private final String message;

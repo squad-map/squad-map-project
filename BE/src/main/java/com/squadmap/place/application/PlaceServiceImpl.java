@@ -82,7 +82,7 @@ public class PlaceServiceImpl implements PlaceService {
     @Override
     public PlaceDetailInfo readOne(Long memberId, Long placeId) {
         Place place = placeRepository.findPlaceFetchAllById(placeId)
-                .orElseThrow(NoSuchElementException::new);
+                .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_PLACE));
 
         if(!groupMemberRepository.existsByMapIdAndMemberId(place.getMapId(), memberId)) {
             throw new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_GROUP_MEMBER);
