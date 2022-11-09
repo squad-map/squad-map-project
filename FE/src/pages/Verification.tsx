@@ -1,20 +1,20 @@
 import { useEffect } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 import { useIsLoggedIn } from '@/hooks/useIsLoggedIn';
-import { UseSilentRefresh } from '@/hooks/UseLogin';
 
 const Verification = () => {
   const isLoggedIn = useIsLoggedIn();
-  const SilentRefresh = UseSilentRefresh();
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isLoggedIn) return;
 
-    SilentRefresh('/error');
-  }, [isLoggedIn, SilentRefresh]);
+    navigate('/login');
+  }, [isLoggedIn, navigate]);
 
-  return !isLoggedIn ? <div>로딩중...</div> : <Outlet />;
+  return <Outlet />;
 };
 
 export default Verification;

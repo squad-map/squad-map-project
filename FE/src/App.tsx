@@ -7,6 +7,7 @@ import Logout from './pages/Logout';
 import Verification from './pages/Verification';
 
 const MyPage = lazy(() => import('@/pages/MyPage'));
+const LoginPage = lazy(() => import('@/pages/Login'));
 const CreateMapPage = lazy(() => import('@/pages/MapForm'));
 const ModifyMapPage = lazy(() => import('@/pages/MapForm'));
 const HomePage = lazy(() => import('@/pages/Home'));
@@ -19,6 +20,7 @@ export default function App() {
       <Suspense fallback={<LoadingSpinner size="xLarge" />}>
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route element={<Verification />}>
             <Route path="/map/:id" element={<MapPage />} />
             <Route path="/map/search/:id" element={<SearchMapPage />} />
