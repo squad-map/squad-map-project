@@ -72,6 +72,7 @@ const Navigation = ({ menu, handleCloseMenu }: INavigationProps) => {
                   <S.Text>나의지도</S.Text>
                 </S.Box>
               </Link>
+              <S.Divider />
               <S.Box
                 onClick={() => setOpenModal({ isOpen: true, type: 'nickname' })}
               >
