@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 @RequiredArgsConstructor
 public class CommentController {
@@ -21,7 +23,7 @@ public class CommentController {
     @PostMapping("/places/{placeId}/comments")
     public CommentInfo writeComment(@Login Long memberId,
                                     @PathVariable Long placeId,
-                                    @RequestBody CommentRequest commentRequest) {
+                                    @RequestBody @Valid CommentRequest commentRequest) {
 
 
 

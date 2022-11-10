@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequiredArgsConstructor
 public class PlaceController {
@@ -18,7 +20,7 @@ public class PlaceController {
 
     @PostMapping("/places")
     @ResponseStatus(HttpStatus.CREATED)
-    public PlaceResponse create(@Login Long memberId, @RequestBody PlaceRequest placeRequest) {
+    public PlaceResponse create(@Login Long memberId, @RequestBody @Valid PlaceRequest placeRequest) {
         Long placeId = placeService.create(placeRequest.getName(),
                 placeRequest.getAddress(),
                 placeRequest.getLatitude(),
@@ -32,7 +34,7 @@ public class PlaceController {
     }
 
     @PatchMapping("/places/{placeId}")
-    public PlaceDetailInfo update(@Login Long memberId, @PathVariable Long placeId, @RequestBody PlaceUpdateRequest placeUpdateRequest) {
+    public PlaceDetailInfo update(@Login Long memberId, @PathVariable Long placeId, @RequestBody @Valid PlaceUpdateRequest placeUpdateRequest) {
          return placeService.update(
                 memberId,
                 placeId,

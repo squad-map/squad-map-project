@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -20,7 +21,7 @@ public class MemberController {
     private final MemberService memberService;
 
     @PatchMapping
-    public NicknameUpdateResponse updateMemberNickname(@Login Long memberId, @RequestBody NicknameUpdateRequest nicknameUpdateRequest) {
+    public NicknameUpdateResponse updateMemberNickname(@Login Long memberId, @RequestBody @Valid NicknameUpdateRequest nicknameUpdateRequest) {
         String nickname = memberService.updateNickname(memberId, nicknameUpdateRequest.getNickname());
         return new NicknameUpdateResponse(nickname);
     }
