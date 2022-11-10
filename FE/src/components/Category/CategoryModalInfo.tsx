@@ -36,11 +36,11 @@ const CategoryModalInfo = ({ story, mapData, placeInfo }: any) => {
       if (data.category_id) {
         const newPlace = {
           name: placeInfo.name,
-          address: placeInfo.address_name,
-          latitude: +placeInfo.x,
-          longitude: +placeInfo.y,
+          address: placeInfo.address,
+          latitude: placeInfo.latitude,
+          longitude: placeInfo.longitude,
           story,
-          detail_link: '',
+          detail_link: placeInfo.detail_link,
           map_id: mapData.map_id,
           category_id: data.category_id,
         };

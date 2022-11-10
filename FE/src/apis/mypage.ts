@@ -52,14 +52,18 @@ export const patchMypage = async (
   if (!patchId) throw new Error('id is undefined');
   if (!mypageRequestBody) throw new Error('requestbody is undefined');
 
-  const response = await fetch(`/mypage/${patchId}`, {
-    method: 'PATCH',
-    headers: {
-      Authorization: `Barer ${accessToken}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(mypageRequestBody),
-  });
+  const response = await fetch(
+    `${process.env.SQUAD_MAP_OAUTH_URL}/map/${patchId}`,
+    {
+      method: 'PATCH',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(mypageRequestBody),
+    }
+  );
+
   const mypageData = await response.json();
 
   try {
@@ -72,13 +76,16 @@ export const patchMypage = async (
 export const deleteMypage = async (deleteId: number) => {
   const accessToken = getCookie('access_token');
   if (!accessToken) throw new Error('accesToken is undefined');
-  const response = await fetch(`mypage/${deleteId}`, {
-    method: 'DELETE',
-    headers: {
-      Authorization: `Barer ${accessToken}`,
-      'Content-Type': 'application/json',
-    },
-  });
+  const response = await fetch(
+    `${process.env.SQUAD_MAP_OAUTH_URL}/map/${deleteId}`,
+    {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+    }
+  );
   const mypageData = await response.json();
 
   try {

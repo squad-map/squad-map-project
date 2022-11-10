@@ -1,3 +1,4 @@
+import React from 'react';
 import ReactDom from 'react-dom';
 
 import * as S from './GlobalModal.style';
@@ -8,7 +9,7 @@ import Overlay from '@/components/common/Overlay';
 
 interface IGlobalModal {
   size: 'small' | 'medium' | 'large';
-  handleCancelClick: () => void;
+  handleCancelClick: (e?: React.MouseEvent<HTMLElement>) => void;
   children: React.ReactNode;
 }
 
