@@ -85,7 +85,7 @@ const Form = ({ mapId, state, type }: FormProps) => {
     };
 
     if (patchId) {
-      fetchPatchMypage.mutate({ patchId, newMypage });
+      fetchPatchMypage.mutate({ patchId, mypageRequestBody: newMypage });
     } else {
       fetchPostMypage.mutate(newMypage);
     }

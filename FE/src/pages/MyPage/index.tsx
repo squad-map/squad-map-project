@@ -26,10 +26,10 @@ const MyPage = () => {
         <Text text="지도 관리" size="xLargeFill" color={theme.color.navy} />
       </S.TitleBox>
       <S.Contents>
-        {myPageData ? (
+        {myPageData && myPageData.content.length > 0 ? (
           <S.GridWrapper>
             <GridCards size="large">
-              {myPageData.maps.map((item: IMyMap) => (
+              {myPageData.content.map((item: IMyMap) => (
                 <Link to={`/map/${item.id}`} key={item.id}>
                   <Card size="large">
                     <Item item={item} />

@@ -46,6 +46,7 @@ const SearchMap = () => {
         address: place.address_name,
         latitude: +place.x,
         longitude: +place.y,
+        detail_link: place.place_url,
       }));
 
       setPlaceInfos(searchPlaceInfos);
