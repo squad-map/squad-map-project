@@ -10,7 +10,7 @@ public enum ErrorStatusCodeAndMessage {
 
     NO_SUCH_MEMBER(HttpStatus.NO_CONTENT, "등록된 회원이 아닙니다."),
     NO_SUCH_MAP(HttpStatus.NO_CONTENT, "등록된 지도가 아닙니다."),
-    UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "접근 권한이 없습니다"),
+    FORBIDDEN(HttpStatus.FORBIDDEN, "접근 권한이 없습니다"),
     NO_SUCH_PLACE(HttpStatus.NO_CONTENT, "등록된 장소가 아닙니다."),
     NO_SUCH_CATEGORY(HttpStatus.NO_CONTENT, "등록된 카테고리가 아닙니다."),
     ALREADY_REGISTERED_PLACE(HttpStatus.CONFLICT, "지도 내에 이미 등록되어 있습니다."),
@@ -19,7 +19,10 @@ public enum ErrorStatusCodeAndMessage {
     DUPLICATE_CATEGORY(HttpStatus.CONFLICT, "지도 내에 카테고리가 중복됩니다."),
     NO_SUCH_GROUP_MEMBER(HttpStatus.NO_CONTENT, "그룹에 속한 회원이 아닙니다."),
     UNIQUE_HOST(HttpStatus.FORBIDDEN, "지도의 HOST 권한은 지도 생성자만 가능합니다."),
-    REQUIRE_MAINTAIN_PERMISSION(HttpStatus.FORBIDDEN, "지도에 MAINTAIN 이상의 권한이 필요합니다.");
+    REQUIRE_MAINTAIN_PERMISSION(HttpStatus.FORBIDDEN, "지도에 MAINTAIN 이상의 권한이 필요합니다."),
+    OUT_OF_LIMIT_COMMENT_LENGTH(HttpStatus.BAD_REQUEST, "댓글은 1~150자 이내로만 작성할 수 있습니다."),
+    NAVER_LOGIN_ERROR(HttpStatus.BAD_REQUEST, "NAVER 로그인에 실패하였습니다."),
+    GITHUB_LOGIN_ERROR(HttpStatus.BAD_REQUEST, "GITHUB 로그인에 실패하였습니다.");
 
     private final HttpStatus httpStatus;
     private final String message;

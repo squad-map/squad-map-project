@@ -9,6 +9,8 @@ import com.squadmap.common.auth.ui.dto.LoginResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequiredArgsConstructor
 public class LoginController {
@@ -16,7 +18,7 @@ public class LoginController {
     private final LoginService loginService;
 
     @PostMapping("/login/{provider}")
-    public LoginResponse login(@PathVariable String provider, @RequestBody LoginRequest githubLogin) {
+    public LoginResponse login(@PathVariable String provider, @RequestBody @Valid LoginRequest githubLogin) {
 
         LoginInfo loginInfo = loginService.login(provider, githubLogin.getCode(), githubLogin.getState());
 

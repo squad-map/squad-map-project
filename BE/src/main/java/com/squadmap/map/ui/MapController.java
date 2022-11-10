@@ -14,6 +14,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
@@ -24,7 +25,7 @@ public class MapController {
 
     @PostMapping("/map")
     @ResponseStatus(HttpStatus.CREATED)
-    public MapCreateResponse createMap(@Login Long memberId, @RequestBody MapRequest mapCreateRequest) {
+    public MapCreateResponse createMap(@Login Long memberId, @RequestBody @Valid MapRequest mapCreateRequest) {
 
         Long mapId = mapService.create(mapCreateRequest.getMapName(), mapCreateRequest.getMapEmoji(), mapCreateRequest.getFullDisclosure(), memberId);
 
@@ -32,7 +33,7 @@ public class MapController {
     }
 
     @PutMapping("/map/{mapId}")
-    public void updateMap(@Login Long memberId, @PathVariable Long mapId, @RequestBody MapRequest mapRequest) {
+    public void updateMap(@Login Long memberId, @PathVariable Long mapId, @RequestBody @Valid MapRequest mapRequest) {
         mapService.update(memberId, mapId, mapRequest.getMapName(), mapRequest.getMapEmoji(), mapRequest.getFullDisclosure());
     }
 

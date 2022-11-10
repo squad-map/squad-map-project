@@ -168,13 +168,13 @@ class MapAcceptanceTest extends RestAssuredTest {
 
     private static final Snippet READ_GROUP_MAP_LIST_RESPONSE = responseFields(
             fieldWithPath("map_count").type(JsonFieldType.NUMBER).description("속한 그룹 지도의 갯수"),
-            fieldWithPath("maps[].id").type(JsonFieldType.NUMBER).description("지도의 아이디"),
-            fieldWithPath("maps[].map_name").type(JsonFieldType.STRING).description("지도의 이름"),
-            fieldWithPath("maps[].map_emoji").type(JsonFieldType.STRING).description("지도의 이모지"),
-            fieldWithPath("maps[].host_id").type(JsonFieldType.NUMBER).description("지도의 작성자의 닉네임"),
-            fieldWithPath("maps[].host_nickname").type(JsonFieldType.STRING).description("지도의 작성자의 닉네임"),
-            fieldWithPath("maps[].host_profile_image").type(JsonFieldType.STRING).description("지도의 작성자의 프로필 이미지"),
-            fieldWithPath("maps[].places_count").type(JsonFieldType.NUMBER).description("지도내에 등록된 장소의 갯수")
+            fieldWithPath("content[].id").type(JsonFieldType.NUMBER).description("지도의 아이디"),
+            fieldWithPath("content[].map_name").type(JsonFieldType.STRING).description("지도의 이름"),
+            fieldWithPath("content[].map_emoji").type(JsonFieldType.STRING).description("지도의 이모지"),
+            fieldWithPath("content[].host_id").type(JsonFieldType.NUMBER).description("지도의 작성자의 닉네임"),
+            fieldWithPath("content[].host_nickname").type(JsonFieldType.STRING).description("지도의 작성자의 닉네임"),
+            fieldWithPath("content[].host_profile_image").type(JsonFieldType.STRING).description("지도의 작성자의 프로필 이미지"),
+            fieldWithPath("content[].places_count").type(JsonFieldType.NUMBER).description("지도내에 등록된 장소의 갯수")
     );
 
     @Test

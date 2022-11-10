@@ -1,5 +1,6 @@
 package com.squadmap.map.domain;
 
+import com.squadmap.group.domain.GroupMember;
 import com.squadmap.place.domain.Place;
 import lombok.AccessLevel;
 import lombok.Getter;
