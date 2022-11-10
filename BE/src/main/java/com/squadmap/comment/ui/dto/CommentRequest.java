@@ -5,8 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor
@@ -14,7 +14,7 @@ import javax.validation.constraints.NotBlank;
 public class CommentRequest {
 
     @NotBlank
-    @Max(150)
+    @Size(min = 1, max = 150)
     private String contents;
 
 }
