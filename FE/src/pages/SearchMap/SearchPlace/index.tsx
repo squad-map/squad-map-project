@@ -67,7 +67,7 @@ const SearchPlace = ({
         <Text text="검색" size="small" color={theme.color.white} />
       </Button>
       {onPlaceInfos && <PlaceInfos placeInfos={placeInfos} />}
-      {onRecentSearch && <RecentSearch />}
+      {onRecentSearch && <RecentSearch searchState={searchplaceState} />}
     </S.SearchPlace>
   );
 };

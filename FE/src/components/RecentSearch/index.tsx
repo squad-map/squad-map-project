@@ -1,15 +1,18 @@
-import { useRecoilValue, useResetRecoilState } from 'recoil';
+import { RecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 
 import * as S from './RecentSearch.style';
 
 import Button from '@/components/common/Button';
 import Text from '@/components/common/Text';
-import { searchplaceState } from '@/recoil/atoms/searchplace';
 import theme from '@/styles/theme';
 
-const RecentSearch = () => {
-  const searchData = useRecoilValue(searchplaceState);
-  const resetInit = useResetRecoilState(searchplaceState);
+const RecentSearch = ({
+  searchState,
+}: {
+  searchState: RecoilState<string[]>;
+}) => {
+  const searchData = useRecoilValue(searchState);
+  const resetInit = useResetRecoilState(searchState);
 
   const handleSearchAllRemove = () => {
     resetInit();
@@ -22,7 +25,7 @@ const RecentSearch = () => {
         <S.Divider />
         <S.Content>
           {searchData &&
-            searchData.map(value => (
+            searchData.map((value: string) => (
               <Text
                 key={value}
                 text={value}
