@@ -8,7 +8,7 @@ import Icon from '@/components/common/Icon';
 import Overlay from '@/components/common/Overlay';
 
 interface IGlobalModal {
-  size: 'small' | 'medium' | 'large';
+  size: 'xSmall' | 'small' | 'medium' | 'large';
   handleCancelClick: (e?: React.MouseEvent<HTMLElement>) => void;
   children: React.ReactNode;
 }
