@@ -6,6 +6,11 @@ import theme from '@/styles/theme';
 
 const selectSize = (size: string) => {
   switch (size) {
+    case 'xSmall':
+      return css`
+        width: 20rem;
+        height: 20rem;
+      `;
     case 'small':
       return css`
         width: 25.25rem;

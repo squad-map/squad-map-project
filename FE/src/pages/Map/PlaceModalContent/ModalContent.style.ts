@@ -46,7 +46,7 @@ export const ReviewContainer = styled.div`
   gap: 1rem;
 `;
 
-export const ModalContent = styled.section`
+export const PlaceModalContent = styled.section`
   height: 100%;
   ${flexbox({ dir: 'column', jc: 'space-between', ai: 'center' })}
   gap: 1rem;
