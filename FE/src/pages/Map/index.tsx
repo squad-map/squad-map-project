@@ -21,6 +21,7 @@ const Map = () => {
     host_nickname: '',
     host_profile_image: '',
   });
+
   const { data: mapData } = useQuery(['Map'], () => {
     if (id) {
       return getMapDetailInfo(id);
@@ -51,6 +52,7 @@ const Map = () => {
       >
         <Header
           headerData={{
+            map_id: mapData.map_id,
             emoji: `${unicodeToEmoji(mapData.map_emoji)}`,
             title: mapData.map_name,
             category_info: mapData.categorized_places.map(
