@@ -30,6 +30,7 @@ module.exports = {
     'import/no-extraneous-dependencies': ['error', { devDependencies: true }], // 테스트 또는 개발환경을 구성하는 파일에서는 devDependency 사용을 허용
     'import/prefer-default-export': 'off', // export default 가 아닌 default 없이 export 할 수 있도록
     'no-nested-ternary': 'off', // 삼항연산자 2개이상 허용
+    'react/no-unknown-property': ['error', { ignore: ['css'] }], // emotion css 속성 사용 허용
     'react/function-component-definition': [
       // 함수형 컴포넌트 선언방식
       2,
