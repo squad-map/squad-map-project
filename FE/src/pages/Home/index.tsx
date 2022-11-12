@@ -16,7 +16,7 @@ import LoadingSpinner from '@/components/common/LoadingSpinner';
 import Text from '@/components/common/Text';
 import GridCards from '@/components/GridCards';
 import Input from '@/components/Input';
-import useDebounce from '@/hooks/useDebounce';
+import useDebounce from '@/hooks/UseDebounce';
 import { IMap } from '@/interfaces/IMap';
 import { userState } from '@/recoil/atoms/user';
 import theme from '@/styles/theme';

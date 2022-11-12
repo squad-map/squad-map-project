@@ -13,8 +13,7 @@ export const Item = styled.div`
 `;
 
 export const ItemHeader = styled.header`
-  ${flexbox({ jc: 'space-between', ai: 'center' })}
-  margin-top: 1rem;
+  ${flexbox({ jc: 'space-between', ai: 'center' })};
 `;
 
 export const ItemFooter = styled.footer`
