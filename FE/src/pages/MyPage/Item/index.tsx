@@ -61,13 +61,13 @@ const Item = ({ item }: ItemProps) => {
       </S.Item>
       {isOpenAuthorityModal && (
         <GlobalModal
-          size="small"
+          size="medium"
           handleCancelClick={(e: React.MouseEvent<HTMLElement> | undefined) => {
             e?.preventDefault();
             setIsOpenAuthorityModal(false);
           }}
         >
-          <Authority />
+          <Authority mapId={item.id} />
         </GlobalModal>
       )}
     </>
