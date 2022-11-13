@@ -17,8 +17,13 @@ export const AuthorityButtonWrapper = styled.div`
   margin-top: auto;
 `;
 
-export const AuthorityLiItem = styled.li`
+export const AuthorityLiItem = styled.li<{ selectedIndex: boolean }>`
   margin: 0.75rem 0;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.5rem;
+  color: ${props =>
+    props.selectedIndex ? theme.color.white : theme.color.black};
+  background-color: ${props => (props.selectedIndex ? theme.color.navy : '')};
   &:hover {
     cursor: pointer;
     text-decoration: underline;
