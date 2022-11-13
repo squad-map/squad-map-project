@@ -27,6 +27,5 @@ public class MyTestExecutionListener extends AbstractTestExecutionListener {
 
     private void insertDataScript(JdbcTemplate jdbcTemplate) {
         DataSource dataSource = jdbcTemplate.getDataSource();
-        jdbcTemplate.
     }
 }

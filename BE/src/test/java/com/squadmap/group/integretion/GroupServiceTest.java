@@ -1,18 +1,18 @@
 package com.squadmap.group.integretion;
 
+import com.squadmap.IntegrationTest;
 import com.squadmap.group.application.GroupMemberService;
 import com.squadmap.group.application.dto.GroupMemberInfo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
-class GroupServiceTest {
+
+class GroupServiceTest extends IntegrationTest {
 
     @Autowired
     private GroupMemberService groupService;

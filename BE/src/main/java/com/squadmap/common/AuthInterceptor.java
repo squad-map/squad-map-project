@@ -27,8 +27,10 @@ public class AuthInterceptor implements HandlerInterceptor {
         }
 
         String token = AuthExtractor.extract(request);
+        boolean isValidate = loginService.isLoginUser(token);
         request.setAttribute(AUTH_TOKEN, token);
-        return loginService.isLoginUser(token);
+        log.debug("token validation is {}", isValidate);
+        return isValidate;
     }
 
     private boolean isPreflightRequest(HttpServletRequest request) {

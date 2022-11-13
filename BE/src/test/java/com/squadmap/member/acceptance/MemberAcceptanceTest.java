@@ -32,14 +32,13 @@ class MemberAcceptanceTest extends RestAssuredTest {
     @Test
     @DisplayName("로그인한 멤버가 닉네임을 수정하고자 했을 때, 수정되면 200 OK를 반환한다.")
     void nicknameUpdateTest() {
-        String accessToken = jwtProvider.generateAccessToken(1L);
-        accessToken = "bearer " + accessToken;
+
         String nickname = "update nickname";
         NicknameUpdateRequest nickNameUpdateRequest = new NicknameUpdateRequest(nickname);
         given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, NICKNAME_UPDATE_REQUEST_FIELDS, NICKNAME_UPDATE_RESPONSE_FIELDS, AUTHORIZATION_HEADER))
                 .accept(ContentType.JSON)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .header(HttpHeaders.AUTHORIZATION, accessToken)
+                .header(HttpHeaders.AUTHORIZATION, this.createAuthorizationHeader(1L))
                 .body(nickNameUpdateRequest)
                 .log().all()
 

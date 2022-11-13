@@ -28,6 +28,7 @@ public class Comment {
     private Long memberId;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "place_id")
     private Place place;
 
     @Column(length = MAX_COMMENT_LENGTH)

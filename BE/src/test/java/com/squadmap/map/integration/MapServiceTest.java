@@ -1,5 +1,6 @@
 package com.squadmap.map.integration;
 
+import com.squadmap.IntegrationTest;
 import com.squadmap.map.application.MapService;
 import com.squadmap.map.application.dto.MapDetail;
 import com.squadmap.map.application.dto.MapSimpleInfo;
@@ -22,9 +23,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
-@ActiveProfiles("test")
-class MapServiceTest {
+class MapServiceTest extends IntegrationTest {
 
     @Autowired
     private MapService mapService;

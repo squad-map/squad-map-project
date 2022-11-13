@@ -24,7 +24,6 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
 
 @AutoConfigureWireMock(port = 9090)
-@ActiveProfiles("test")
 class OauthAcceptanceTest extends RestAssuredTest {
 
     @BeforeAll

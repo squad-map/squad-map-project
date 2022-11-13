@@ -11,6 +11,7 @@ import com.squadmap.group.infrastructure.GroupMemberRepository;
 import com.squadmap.map.domain.Map;
 import com.squadmap.map.infrastructure.MapRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Slf4j
 public class CategoryServiceImpl implements CategoryService{
 
     private final CategoryRepository categoryRepository;
@@ -55,6 +57,7 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public CategoryInfo readOne(Long categoryId, Long memberId) {
+        log.info("categoryId = %d, memberId= %d", categoryId, memberId);
         Category category = categoryRepository.findCategoryFetchMapById(categoryId)
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_CATEGORY));
 

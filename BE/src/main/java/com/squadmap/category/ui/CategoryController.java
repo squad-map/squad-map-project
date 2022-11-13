@@ -16,7 +16,6 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@Slf4j
 public class CategoryController {
 
     private final CategoryService categoryService;
@@ -31,8 +30,8 @@ public class CategoryController {
         return new CategoryResponse(categoryId);
     }
 
-    @GetMapping("/categories/{categoryId}")
-    public CategoryInfo readOne(@Login Long memberId, @PathVariable Long categoryId) {
+    @GetMapping("/categories/search/{category_id}")
+    public CategoryInfo readOne(@Login Long memberId, @PathVariable(value = "category_id") Long categoryId) {
         return categoryService.readOne(categoryId, memberId);
     }
 
