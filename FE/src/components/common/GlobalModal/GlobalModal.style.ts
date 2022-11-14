@@ -44,6 +44,6 @@ export const GlobalModal = styled.section<{ size: string }>`
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: ${theme.color.white};
-  z-index: 1000;
+  z-index: 999;
   border-radius: 2rem;
 `;
