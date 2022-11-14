@@ -23,6 +23,6 @@ export const GroupInfo = styled.div`
 
 export const GroupInfoWrapper = styled.article`
   height: 8rem;
-  margin: 2rem 0;
+  margin: 1rem 0;
   overflow-y: auto;
 `;
