@@ -8,7 +8,6 @@ export const SearchInput = styled.input`
   height: 3.4375rem;
   border-radius: 1rem;
   padding: 0 2.5rem;
-  margin-right: 1rem;
   color: ${theme.color.gray};
   border: 1px solid ${theme.color.black};
 `;
@@ -28,13 +27,27 @@ export const AuthorityLiItem = styled.li<{ selectedIndex: boolean }>`
   }
 `;
 
+export const AuthorityNoData = styled.div`
+  padding: 2rem;
+`;
+
+export const SearchSelectBox = styled.select`
+  width: 10rem;
+  border-radius: 1rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid ${theme.color.black};
+  cursor: pointer;
+`;
+
+export const SearchOption = styled.option``;
+
 export const AuthorityButtonWrapper = styled.div`
   margin-top: auto;
 `;
 
 export const SearchContent = styled.div`
   width: 22rem;
-  height: 10rem;
+  height: 11rem;
   padding: 0 1rem;
   position: relative;
   border-radius: 1rem;
@@ -45,7 +58,8 @@ export const SearchContent = styled.div`
 `;
 
 export const SearchForm = styled.form`
-  ${flexbox({ dir: 'column', ai: 'center' })};
+  ${flexbox({ dir: 'column', jc: 'space-between', ai: 'center' })};
   gap: 1rem;
+  height: 100%;
   padding: 1.5rem;
 `;
