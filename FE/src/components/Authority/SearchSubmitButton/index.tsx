@@ -1,6 +1,3 @@
-
-import React from 'react';
-
 import * as S from './SearchSubmitButton.style';
 
 import Button from '@/components/common/Button';

@@ -11,24 +11,29 @@ import { permitKey } from '@/constants/key';
 import UseDebounce from '@/hooks/UseDebounce';
 import { GroupPostParams } from '@/types/group';
 
+interface SearchFormProps {
+    mapId: number;
+    handleCancelClick: () => void;
+}
+
 interface AuthorityResponse {
     id: number;
     nickname: string;
     profile_image: string;
 }
 
-const SearchForm = ({ mapId }: { mapId: number }) => {
+const SearchForm = ({ mapId, handleCancelClick }: SearchFormProps) => {
     const [userNickNames, setUserNickNames] = useState<AuthorityResponse[]>([]);
-    const [onSearchContent, setOnSearchContent] = useState(false);
+    const [permission, setPermission] = useState("READ");
     const [searchName, setSearchName] = useState("");
     const debouncedValue = UseDebounce(searchName, 500);
 
     const [selectedIndex, setSelectedIndex] = useState(0);
 
-    const fetchPostGroup = useMutation(({ postMapId, groupRequestBody }: {
+    const fetchPostGroup = useMutation(({ postMapId, groupPostBody }: {
         postMapId: number;
-        groupRequestBody: GroupPostParams;
-    }) => postGroupMember(postMapId, groupRequestBody),
+        groupPostBody: GroupPostParams;
+    }) => postGroupMember(postMapId, groupPostBody),
         {
             onSuccess: (data: { member_id: number }) => {
                 if (data.member_id) {
@@ -47,12 +52,6 @@ const SearchForm = ({ mapId }: { mapId: number }) => {
         setSearchName(e.target.value);
     };
 
-    const handleFocus = () => {
-        if (!onSearchContent) {
-            setOnSearchContent(true);
-        }
-    };
-
     const handleKeyup = (e: React.KeyboardEvent<HTMLInputElement>) => {
         const { key } = e;
         if (!permitKey.includes(key)) return;
@@ -67,7 +66,6 @@ const SearchForm = ({ mapId }: { mapId: number }) => {
         } else if (key === 'Enter') {
             if (userNickNames[selectedIndex]) {
                 setSearchName(userNickNames[selectedIndex].nickname);
-                setOnSearchContent(false);
             }
             return;
         }
@@ -80,21 +78,25 @@ const SearchForm = ({ mapId }: { mapId: number }) => {
         if (dataset.id) {
             const id = +dataset.id;
             setSearchName(userNickNames[id].nickname);
-            setOnSearchContent(false);
         }
     };
 
+    const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setPermission(e.target.value);
+    }
+
     const handleSubmit = () => {
-        const newGroup = { member_id: userNickNames[selectedIndex].id, permission_level: 'READ' };
-        fetchPostGroup.mutate({ postMapId: mapId, groupRequestBody: newGroup });
+        const newGroup = { member_id: userNickNames[selectedIndex].id, permission_level: permission };
+        fetchPostGroup.mutate({ postMapId: mapId, groupPostBody: newGroup });
+        handleCancelClick();
     };
 
     useEffect(() => {
         (async () => {
             const getNicknames = await findNickName(debouncedValue);
+
             if (getNicknames) {
                 setUserNickNames(getNicknames);
-                setOnSearchContent(true);
                 setSelectedIndex(0);
             }
         })();
@@ -112,27 +114,28 @@ const SearchForm = ({ mapId }: { mapId: number }) => {
                 placeholder="Search by nickname"
                 value={searchName}
                 onKeyUp={handleKeyup}
-                onFocus={handleFocus}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                     handleOnChangeNickName(e)
                 }
             />
-            {onSearchContent && (
-                <S.SearchContent>
-                    <S.AuthorityUL>
-                        {userNickNames.map((user: AuthorityResponse, index) => (
-                            <S.AuthorityLiItem
-                                key={user.id}
-                                data-id={index}
-                                selectedIndex={index === selectedIndex}
-                                onClick={handleItemClick}
-                            >
-                                {user.nickname}
-                            </S.AuthorityLiItem>
-                        ))}
-                    </S.AuthorityUL>
-                </S.SearchContent>
-            )}
+            <S.SearchContent>
+                <S.AuthorityUL>
+                    {userNickNames.length > 0 ? userNickNames.map((user: AuthorityResponse, index) => (
+                        <S.AuthorityLiItem
+                            key={user.id}
+                            data-id={index}
+                            selectedIndex={index === selectedIndex}
+                            onClick={handleItemClick}
+                        >
+                            {user.nickname}
+                        </S.AuthorityLiItem>
+                    )) : (<S.AuthorityNoData>No Data...</S.AuthorityNoData>)}
+                </S.AuthorityUL>
+            </S.SearchContent>
+            <S.SearchSelectBox onChange={handleSelectChange}>
+                <S.SearchOption value="READ">READ</S.SearchOption>
+                <S.SearchOption value="MAINTAIN">MAINTAIN</S.SearchOption>
+            </S.SearchSelectBox>
             <SearchSubmitButton handleSubmit={handleSubmit} />
         </S.SearchForm>
     )

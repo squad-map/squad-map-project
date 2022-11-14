@@ -27,7 +27,7 @@ export const getGroupMembers = async (mapId: number) => {
 
 export const postGroupMember = async (
   mapId: number,
-  groupRequestBody: GroupPostParams
+  groupPostBody: GroupPostParams
 ) => {
   const accessToken = getCookie('access_token');
   if (!accessToken) throw new Error('accessToken is undefined');
@@ -40,7 +40,7 @@ export const postGroupMember = async (
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(groupRequestBody),
+      body: JSON.stringify(groupPostBody),
     }
   );
 
@@ -50,5 +50,61 @@ export const postGroupMember = async (
     return groupMember;
   } catch (err) {
     throw new Error(`postGroupMember api fail err: ${err}`);
+  }
+};
+
+export const putGroupMember = async (
+  mapId: number,
+  groupPutBody: { member_id: number; permission_level: string }
+) => {
+  const accessToken = getCookie('access_token');
+  if (!accessToken) throw new Error('accessToken is undefined');
+
+  const response = await fetch(
+    `${process.env.SQUAD_MAP_OAUTH_URL}/groups/${mapId}`,
+    {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(groupPutBody),
+    }
+  );
+
+  const data = await response.json();
+
+  try {
+    return data;
+  } catch (err) {
+    throw new Error(`putGroupMember api fail err: ${err}`);
+  }
+};
+
+export const deleteGroupMember = async (
+  mapId: number,
+  groupDeleteBody: { selectedMemberId: number }
+) => {
+  const accessToken = getCookie('access_token');
+  if (!accessToken) throw new Error('accessToken is undefined');
+
+  const response = await fetch(
+    `${process.env.SQUAD_MAP_OAUTH_URL}/groups/${mapId}`,
+    {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(groupDeleteBody),
+    }
+  );
+
+  const data = await response.json();
+
+  try {
+    return data;
+  } catch (err) {
+    throw new Error(`deleteGroupMember api fail err: ${err}`);
   }
 };
