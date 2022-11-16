@@ -13,7 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.restdocs.snippet.Snippet;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.io.IOException;
 
@@ -34,6 +33,7 @@ class OauthAcceptanceTest extends RestAssuredTest {
             e.printStackTrace();
         }
     }
+
     private static final Snippet LOGIN_REQUEST_FIELDS = requestFields(
             fieldWithPath("code").type(JsonFieldType.STRING).description("ResourceServer 로그인 후, 반환 받은 Authorization Code"),
             fieldWithPath("state").type(JsonFieldType.STRING).description("naver 로그인 시, code 요청할 때 전송한 UUID").optional()

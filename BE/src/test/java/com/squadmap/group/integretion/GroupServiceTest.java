@@ -12,7 +12,8 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-class GroupServiceTest extends IntegrationTest {
+@IntegrationTest
+class GroupServiceTest {
 
     @Autowired
     private GroupMemberService groupService;

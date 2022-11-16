@@ -27,6 +27,7 @@ import static org.springframework.restdocs.headers.HeaderDocumentation.requestHe
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.documentationConfiguration;
 
+
 @TestExecutionListeners(value = IsolationTestExecutionListener.class, mergeMode = TestExecutionListeners.MergeMode.MERGE_WITH_DEFAULTS)
 @ActiveProfiles("test")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -43,8 +44,6 @@ public class RestAssuredTest {
     @Autowired
     protected JwtProvider jwtProvider;
 
-    @Autowired
-    private DbConfigurator dbConfigurator;
 
     @LocalServerPort
     int port;
@@ -52,7 +51,6 @@ public class RestAssuredTest {
     @BeforeEach
     void setUp() {
         RestAssured.port = port;
-        //dbConfigurator.setUp();
     }
 
     @BeforeEach
