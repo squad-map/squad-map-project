@@ -8,7 +8,7 @@ public class IsolationTestExecutionListener extends AbstractTestExecutionListene
     private DbConfigurator dbConfigurator;
 
     @Override
-    public void prepareTestInstance(TestContext testContext) throws Exception {
+    public void beforeTestClass(TestContext testContext) throws Exception {
        this.dbConfigurator = getDbConfigurator(testContext);
     }
 
