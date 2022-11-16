@@ -79,11 +79,11 @@ public class CategoryAcceptanceTest extends RestAssuredTest {
         given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, AUTHORIZATION_HEADER, READ_PATH_PARAMETERS, READ_RESPONSE_FIELDS))
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .contentType(ContentType.JSON)
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtProvider.generateAccessToken(1L))
-                .pathParam("category_id", categoryId.intValue())
+                //.pathParam("category_id", categoryId.intValue())
+                .header(HttpHeaders.AUTHORIZATION, this.createAuthorizationHeader(1L))
                 .log().all()
 
-        .when().get("/categories/{category_id}", categoryId)
+        .when().get("/categories/{category_id}",categoryId.intValue())
 
         .then().statusCode(HttpStatus.OK.value())
                 .body("category_id", equalTo(categoryId.intValue()))
@@ -111,7 +111,7 @@ public class CategoryAcceptanceTest extends RestAssuredTest {
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .contentType(ContentType.JSON)
                 .queryParam("map", mapId.intValue())
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtProvider.generateAccessToken(1L))
+                .header(HttpHeaders.AUTHORIZATION, this.createAuthorizationHeader(1L))
                 .log().all()
 
         .when().get("/categories")

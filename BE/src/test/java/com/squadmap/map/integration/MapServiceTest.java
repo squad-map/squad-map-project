@@ -1,30 +1,26 @@
 package com.squadmap.map.integration;
 
+import com.squadmap.IntegrationTest;
 import com.squadmap.map.application.MapService;
 import com.squadmap.map.application.dto.MapDetail;
 import com.squadmap.map.application.dto.MapSimpleInfo;
 import com.squadmap.map.application.dto.MapsResponse;
 import com.squadmap.map.domain.Map;
 import com.squadmap.map.infrastructure.MapRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
-@ActiveProfiles("test")
-class MapServiceTest {
+@IntegrationTest
+class MapServiceTest  {
 
     @Autowired
     private MapService mapService;

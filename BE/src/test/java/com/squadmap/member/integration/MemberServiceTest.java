@@ -1,17 +1,17 @@
 package com.squadmap.member.integration;
 
+import com.squadmap.IntegrationTest;
 import com.squadmap.member.application.MemberService;
 import com.squadmap.member.application.dto.MemberSimpleInfo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
+@IntegrationTest
 class MemberServiceTest {
 
     @Autowired

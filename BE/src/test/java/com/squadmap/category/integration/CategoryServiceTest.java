@@ -1,15 +1,15 @@
 package com.squadmap.category.integration;
 
+import com.squadmap.IntegrationTest;
 import com.squadmap.category.application.CategoryService;
 import com.squadmap.category.application.dto.CategoryInfo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest
+@IntegrationTest
 public class CategoryServiceTest {
 
     @Autowired
@@ -34,7 +34,7 @@ public class CategoryServiceTest {
 
     @Test
     @DisplayName("로그인한 유저 중 지도에 권한이 있는 유저라면, 카테고리를 조회할 수 있다.")
-    void readOneTest() {
+    void  readOneTest() {
         //given
         Long categoryId = 1L;
         Long memberId = 1L;
