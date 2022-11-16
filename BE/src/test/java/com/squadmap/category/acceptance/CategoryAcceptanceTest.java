@@ -76,13 +76,14 @@ public class CategoryAcceptanceTest extends RestAssuredTest {
 
         Long categoryId = 1L;
 
-        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, AUTHORIZATION_HEADER, READ_PATH_PARAMETERS))
+        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, AUTHORIZATION_HEADER, READ_PATH_PARAMETERS, READ_RESPONSE_FIELDS))
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .contentType(ContentType.JSON)
+                //.pathParam("category_id", categoryId.intValue())
                 .header(HttpHeaders.AUTHORIZATION, this.createAuthorizationHeader(1L))
                 .log().all()
 
-        .when().get("/categories/search/{categoryId}", categoryId)
+        .when().get("/categories/{category_id}",categoryId.intValue())
 
         .then().statusCode(HttpStatus.OK.value())
                 .body("category_id", equalTo(categoryId.intValue()))

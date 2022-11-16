@@ -30,8 +30,8 @@ public class CategoryController {
         return new CategoryResponse(categoryId);
     }
 
-    @GetMapping("/categories/search/{category_id}")
-    public CategoryInfo readOne(@Login Long memberId, @PathVariable(value = "category_id") Long categoryId) {
+    @GetMapping("/categories/{categoryId}")
+    public CategoryInfo readOne(@Login Long memberId, @PathVariable Long categoryId) {
         return categoryService.readOne(categoryId, memberId);
     }
 
