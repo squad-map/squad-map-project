@@ -53,8 +53,12 @@ public class Comment {
         return content;
     }
 
-    private void update(String content) {
+    public void update(String content) {
         this.content = checkContentLength(content);
+    }
+
+    public boolean isWriterId(Long memberId) {
+        return this.memberId.equals(memberId);
     }
 
 }
