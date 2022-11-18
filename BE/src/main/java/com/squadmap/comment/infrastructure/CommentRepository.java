@@ -16,4 +16,6 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     Optional<Comment> findByIdFetchPlace(@Param("commentId") Long commentId);
 
     Slice<Comment> findCommentsByPlaceIdAndIdIsAfter(Long placeId, Long lastCommentId, Pageable pageable);
+
+    Slice<Comment> findTop5ByPlaceId(Long placeId);
 }
