@@ -33,7 +33,7 @@ public class SimpleSlice<T> {
         return numberOfElements;
     }
 
-    public boolean HasNext() {
+    public boolean hasNext() {
         return hasNext;
     }
 }
