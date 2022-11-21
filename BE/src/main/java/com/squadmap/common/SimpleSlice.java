@@ -1,6 +1,6 @@
 package com.squadmap.common;
 
-import lombok.Getter;
+import com.fasterxml.jackson.annotation.JsonGetter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
 
@@ -32,7 +32,7 @@ public class SimpleSlice<T> {
     public int getNumberOfElements() {
         return numberOfElements;
     }
-
+    @JsonGetter
     public boolean hasNext() {
         return hasNext;
     }

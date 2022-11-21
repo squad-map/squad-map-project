@@ -20,6 +20,7 @@ import com.squadmap.place.domain.Place;
 import com.squadmap.place.domain.Position;
 import com.squadmap.place.infrastructure.PlaceRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -99,7 +100,7 @@ public class PlaceServiceImpl implements PlaceService {
             throw new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_GROUP_MEMBER);
         };
 
-        Slice<Comment> comments = commentRepository.findTop5ByPlaceId(placeId);
+        Slice<Comment> comments = commentRepository.findCommentsByPlaceId(placeId, Pageable.ofSize(5));
         List<Long> writerIds = comments.getContent()
                 .stream()
                 .map(Comment::getMemberId)

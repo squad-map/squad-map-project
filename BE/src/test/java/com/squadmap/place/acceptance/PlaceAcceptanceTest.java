@@ -12,6 +12,8 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.restdocs.snippet.Snippet;
 
+import java.util.List;
+
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
@@ -50,13 +52,14 @@ class PlaceAcceptanceTest extends RestAssuredTest {
         String detailLink = "https://kakaomap";
         Long mapId = 1L;
         Long categoryId = 1L;
-        String tokenHeader = "Bearer " + jwtProvider.generateAccessToken(1L);
+        Long memberId = 1L;
+
         PlaceRequest placeRequest = new PlaceRequest(placeName, address, x, y, story, detailLink, mapId, categoryId);
 
         given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, CREATE_REQUEST_FIELDS, CREATE_RESPONSE_FIELDS, AUTHORIZATION_HEADER))
                 .accept(ContentType.JSON)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .header(HttpHeaders.AUTHORIZATION, tokenHeader)
+                .header(HttpHeaders.AUTHORIZATION, this.createAuthorizationHeader(memberId))
                 .body(placeRequest)
                 .log().all()
 
@@ -122,7 +125,15 @@ class PlaceAcceptanceTest extends RestAssuredTest {
             fieldWithPath("longitude").type(JsonFieldType.NUMBER).description("장소 경도"),
             fieldWithPath("story").type(JsonFieldType.STRING).description("장소 설명"),
             fieldWithPath("detail_link").type(JsonFieldType.STRING).description("장소에 대한 링크"),
-            fieldWithPath("category_id").type(JsonFieldType.NUMBER).description("카테고리의 아이디")
+            fieldWithPath("category_id").type(JsonFieldType.NUMBER).description("카테고리의 아이디"),
+            fieldWithPath("comments.content[].member_id").type(JsonFieldType.NUMBER).description("댓글 작성자 아이디"),
+            fieldWithPath("comments.content[].member_nickname").type(JsonFieldType.STRING).description("댓글 작성자 닉네임"),
+            fieldWithPath("comments.content[].member_profile_image").type(JsonFieldType.STRING).description("댓글 작성자 프로필 이미지"),
+            fieldWithPath("comments.content[].comment_id").type(JsonFieldType.NUMBER).description("댓글 아이디"),
+            fieldWithPath("comments.content[].comment").type(JsonFieldType.STRING).description("댓글 내용"),
+            fieldWithPath("comments.size").type(JsonFieldType.NUMBER).description("default size 5, (최초 장소 조회시 5개까지의 댓글만을 조회)"),
+            fieldWithPath("comments.number_of_elements").type(JsonFieldType.NUMBER).description("실제 조회된 댓글의 갯수"),
+            fieldWithPath("comments.has_next").type(JsonFieldType.BOOLEAN).description("보여진 댓글보다 많은 댓글이 존재하는지에 대한 여부")
     );
 
     @Test
