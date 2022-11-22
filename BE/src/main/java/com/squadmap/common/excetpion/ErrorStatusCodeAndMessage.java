@@ -22,7 +22,8 @@ public enum ErrorStatusCodeAndMessage {
     REQUIRE_MAINTAIN_PERMISSION(HttpStatus.FORBIDDEN, "지도에 MAINTAIN 이상의 권한이 필요합니다."),
     OUT_OF_LIMIT_COMMENT_LENGTH(HttpStatus.BAD_REQUEST, "댓글은 1~150자 이내로만 작성할 수 있습니다."),
     NAVER_LOGIN_ERROR(HttpStatus.BAD_REQUEST, "NAVER 로그인에 실패하였습니다."),
-    GITHUB_LOGIN_ERROR(HttpStatus.BAD_REQUEST, "GITHUB 로그인에 실패하였습니다.");
+    GITHUB_LOGIN_ERROR(HttpStatus.BAD_REQUEST, "GITHUB 로그인에 실패하였습니다."),
+    NO_SUCH_COMMENT(HttpStatus.NO_CONTENT, "등록된 댓글이 없습니다.");
 
     private final HttpStatus httpStatus;
     private final String message;

@@ -11,6 +11,6 @@ public class CommentInfo {
     private final String memberNickname;
     private final String memberProfileImage;
     private final Long commentId;
-    private final String comment;
+    private final String content;
 
 }

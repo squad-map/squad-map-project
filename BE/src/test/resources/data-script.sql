@@ -10,3 +10,7 @@ insert into `member` (nickname, profile_image, email, resource_server) values ('
 insert into `group_member` (map_id, member_id, permission_level) values (1, 1, 'HOST');
 insert into `group_member` (map_id, member_id, permission_level) values (1, 2, 'MAINTAIN');
 insert into `group_member` (map_id, member_id, permission_level) values (1, 3, 'MAINTAIN');
+insert into `comment` (member_id, place_id, content, written_at, modified_at) values (1, 1, "It's Good", NOW(), NOW());
+insert into `comment` (member_id, place_id, content, written_at, modified_at) values (2, 1, "It's my favorite place", NOW(), NOW());
+insert into `comment` (member_id, place_id, content, written_at, modified_at) values (3, 1, "umm... so so", NOW(), NOW());
+
