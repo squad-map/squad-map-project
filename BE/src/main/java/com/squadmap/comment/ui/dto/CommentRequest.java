@@ -15,6 +15,6 @@ public class CommentRequest {
 
     @NotBlank
     @Size(min = 1, max = 150)
-    private String contents;
+    private String content;
 
 }

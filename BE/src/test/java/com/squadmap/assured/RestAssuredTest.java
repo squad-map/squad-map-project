@@ -2,7 +2,6 @@ package com.squadmap.assured;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.squadmap.DbConfigurator;
 import com.squadmap.IsolationTestExecutionListener;
 import com.squadmap.common.auth.application.JwtProvider;
 import io.restassured.RestAssured;

@@ -7,6 +7,7 @@ import com.squadmap.comment.ui.dto.CommentRequest;
 import com.squadmap.common.SimpleSlice;
 import com.squadmap.common.auth.Login;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -18,11 +19,12 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("/places/{placeId}/comments")
+    @ResponseStatus(HttpStatus.CREATED)
     public CommentInfo writeComment(@Login Long memberId,
                                     @PathVariable Long placeId,
                                     @RequestBody @Valid CommentRequest commentRequest) {
 
-        return commentService.writeComment(memberId, placeId, commentRequest.getContents());
+        return commentService.writeComment(memberId, placeId, commentRequest.getContent());
     }
 
 
@@ -31,7 +33,7 @@ public class CommentController {
                                          @PathVariable Long commentId,
                                          @RequestBody @Valid CommentRequest commentRequest) {
 
-        return commentService.updateComment(memberId, commentId, commentRequest.getContents());
+        return commentService.updateComment(memberId, commentId, commentRequest.getContent());
     }
 
     @GetMapping("/places/{placeId}/comments")

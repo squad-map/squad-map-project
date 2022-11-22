@@ -1,7 +1,7 @@
 package com.squadmap.comment.integration;
 
 import com.squadmap.IntegrationTest;
-import com.squadmap.comment.application.CommentService;
+import com.squadmap.comment.application.CommentServiceImpl;
 import com.squadmap.comment.application.dto.CommentInfo;
 import com.squadmap.comment.application.dto.CommentResponse;
 import com.squadmap.comment.domain.Comment;
@@ -13,15 +13,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.*;
 
 @IntegrationTest
 class CommentServiceTest {
 
     @Autowired
-    private CommentService commentService;
+    private CommentServiceImpl commentService;
 
     @Autowired
     private CommentRepository commentRepository;
@@ -39,7 +37,7 @@ class CommentServiceTest {
     }
 
     @Test
-    @DisplayName("존재하는 멤버와 장소라면, 해당 장소에 대한 댓글을 작성할 수 있다.")
+    @DisplayName("댓글의 작성자는 댓글을 수정할 수 있다.")
     void updateCommentTest() {
         Long memberId = 1L;
         Long commentId = 1L;
