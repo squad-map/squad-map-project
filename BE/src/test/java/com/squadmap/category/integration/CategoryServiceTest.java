@@ -1,8 +1,8 @@
 package com.squadmap.category.integration;
 
 import com.squadmap.IntegrationTest;
-import com.squadmap.category.application.CategoryService;
-import com.squadmap.category.application.dto.CategoryInfo;
+import com.squadmap.core.category.application.CategoryService;
+import com.squadmap.core.category.application.dto.CategoryInfo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

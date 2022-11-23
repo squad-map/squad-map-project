@@ -1,7 +1,7 @@
 package com.squadmap.category.acceptance;
 
 import com.squadmap.assured.RestAssuredTest;
-import com.squadmap.category.ui.dto.CategoryRequest;
+import com.squadmap.core.category.ui.dto.CategoryRequest;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

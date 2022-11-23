@@ -1,7 +1,7 @@
 package com.squadmap.comment.acceptance;
 
 import com.squadmap.assured.RestAssuredTest;
-import com.squadmap.comment.ui.dto.CommentRequest;
+import com.squadmap.core.comment.ui.dto.CommentRequest;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

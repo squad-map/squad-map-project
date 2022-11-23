@@ -1,8 +1,11 @@
 package com.squadmap.common.config;
 
-import com.squadmap.common.AuthInterceptor;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.squadmap.common.auth.AuthInterceptor;
 import com.squadmap.common.auth.LoginArgumentResolver;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -35,5 +38,11 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(loginArgumentResolver);
+    }
+
+    @Bean
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper()
+                .setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
     }
 }

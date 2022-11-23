@@ -1,8 +1,8 @@
 package com.squadmap.place.acceptance;
 
 import com.squadmap.assured.RestAssuredTest;
-import com.squadmap.place.ui.dto.PlaceRequest;
-import com.squadmap.place.ui.dto.PlaceUpdateRequest;
+import com.squadmap.core.place.ui.dto.PlaceRequest;
+import com.squadmap.core.place.ui.dto.PlaceUpdateRequest;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

@@ -10,7 +10,7 @@ import com.squadmap.common.auth.application.dto.github.GithubToken;
 import com.squadmap.common.auth.application.dto.github.GithubUserInfo;
 import com.squadmap.common.excetpion.ClientException;
 import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
-import com.squadmap.common.properties.OauthProperties;
+import com.squadmap.common.auth.properties.OauthProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;

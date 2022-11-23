@@ -1,8 +1,8 @@
 package com.squadmap.group.acceptance;
 
 import com.squadmap.assured.RestAssuredTest;
-import com.squadmap.group.ui.dto.GroupMemberDeleteRequest;
-import com.squadmap.group.ui.dto.GroupMemberRequest;
+import com.squadmap.core.group.ui.dto.GroupMemberDeleteRequest;
+import com.squadmap.core.group.ui.dto.GroupMemberRequest;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

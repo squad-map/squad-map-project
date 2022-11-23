@@ -19,7 +19,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(new ErrorResponse<>(exception.getMessage()), exception.getHttpStatus());
     }
 
-    //@ExceptionHandler(MethodArgumentNotValidException.class)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse<Map<String, String>>> handleNotValidException(MethodArgumentNotValidException exception) {
         BindingResult bindingResult = exception.getBindingResult();
         Map<String, String> errorMessages = bindingResult.getFieldErrors().stream().collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));
