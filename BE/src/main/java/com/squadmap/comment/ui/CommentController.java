@@ -38,8 +38,8 @@ public class CommentController {
 
     @GetMapping("/places/{placeId}/comments")
     public SimpleSlice<CommentInfo> readCommentsOfPlace(@Login Long memberId,
-                                           @PathVariable Long placeId,
-                                           Long lastCommentId, Integer size) {
+                                                        @PathVariable Long placeId,
+                                                        Long lastCommentId, Integer size) {
 
         return commentService.readComments(memberId, placeId, lastCommentId, size);
     }

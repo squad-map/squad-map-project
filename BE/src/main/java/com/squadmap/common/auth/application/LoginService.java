@@ -33,7 +33,7 @@ public class LoginService {
                 member.getNickname(),
                 member.getProfileImage(),
                 new Tokens(jwtProvider.generateAccessToken(member.getId()),
-                jwtProvider.generateRefreshToken(member.getId()))
+                        jwtProvider.generateRefreshToken(member.getId()))
         );
     }
 

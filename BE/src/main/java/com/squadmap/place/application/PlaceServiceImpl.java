@@ -9,9 +9,6 @@ import com.squadmap.common.SimpleSlice;
 import com.squadmap.common.excetpion.ClientException;
 import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
 import com.squadmap.group.application.GroupMemberService;
-import com.squadmap.group.domain.GroupMember;
-import com.squadmap.group.domain.PermissionLevel;
-import com.squadmap.group.infrastructure.GroupMemberRepository;
 import com.squadmap.map.domain.Map;
 import com.squadmap.map.infrastructure.MapRepository;
 import com.squadmap.member.domain.Member;
@@ -53,7 +50,7 @@ public class PlaceServiceImpl implements PlaceService {
         groupMemberService.checkHasMaintainLevel(mapId, memberId);
 
         Category category = categoryRepository.findById(categoryId)
-                    .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_CATEGORY));
+                .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_CATEGORY));
         Position position = new Position(latitude, longitude);
         if (placeRepository.existsPlaceByPositionAndMap(position, map)) {
             throw new ClientException(ErrorStatusCodeAndMessage.ALREADY_REGISTERED_PLACE);
@@ -68,12 +65,12 @@ public class PlaceServiceImpl implements PlaceService {
     @Transactional
     public PlaceDetailInfo update(Long memberId, Long placeId, Long categoryId, String story) {
         Place place = placeRepository.findPlaceFetchAllById(placeId)
-            .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_PLACE));
+                .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_PLACE));
 
         groupMemberService.checkHasMaintainLevel(place.getMapId(), memberId);
 
         place.editDescription(story);
-        if(!place.getCategory().hasSameId(categoryId)) {
+        if (!place.getCategory().hasSameId(categoryId)) {
             Category category = categoryRepository.findByIdAndMapId(categoryId, place.getMap().getId())
                     .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_CATEGORY));
             place.changeCategory(category);
@@ -87,7 +84,7 @@ public class PlaceServiceImpl implements PlaceService {
         Place place = placeRepository.findPlaceFetchAllById(placeId)
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_PLACE));
 
-        if(!place.isFullDisclosure()) {
+        if (!place.isFullDisclosure()) {
             groupMemberService.checkHasReadLevel(place.getMapId(), memberId);
         }
 

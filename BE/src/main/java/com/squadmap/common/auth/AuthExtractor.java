@@ -14,7 +14,7 @@ public class AuthExtractor {
 
         while (headers.hasMoreElements()) {
             String value = headers.nextElement();
-            if(isBearerType(value)) {
+            if (isBearerType(value)) {
                 return extractAuthHeader(value);
             }
         }

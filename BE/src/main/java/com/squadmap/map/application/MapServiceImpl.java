@@ -4,7 +4,6 @@ import com.squadmap.category.application.dto.CategoryInfo;
 import com.squadmap.category.domain.Category;
 import com.squadmap.common.excetpion.ClientException;
 import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
-import com.squadmap.group.application.GroupMemberService;
 import com.squadmap.group.domain.GroupMember;
 import com.squadmap.group.infrastructure.GroupMemberRepository;
 import com.squadmap.map.application.dto.CategorizedPlaces;
@@ -33,7 +32,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class MapServiceImpl implements MapService{
+public class MapServiceImpl implements MapService {
 
     private final MapRepository mapRepository;
     private final MemberRepository memberRepository;
@@ -55,7 +54,7 @@ public class MapServiceImpl implements MapService{
 
         Map map = mapRepository.findById(mapId)
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_MEMBER));
-        if(!map.canAccess(memberId)) {
+        if (!map.canAccess(memberId)) {
             throw new ClientException(ErrorStatusCodeAndMessage.FORBIDDEN);
         }
 
@@ -84,8 +83,8 @@ public class MapServiceImpl implements MapService{
         Map map = mapRepository.findById(mapId)
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_MAP));
 
-        if(!map.isFullDisclosure() && !groupMemberRepository.existsByMapIdAndMemberId(mapId, memberId)) {
-           throw new ClientException(ErrorStatusCodeAndMessage.FORBIDDEN);
+        if (!map.isFullDisclosure() && !groupMemberRepository.existsByMapIdAndMemberId(mapId, memberId)) {
+            throw new ClientException(ErrorStatusCodeAndMessage.FORBIDDEN);
         }
 
         Member member = memberRepository.findById(map.getMemberId())
@@ -104,14 +103,14 @@ public class MapServiceImpl implements MapService{
 
 
     private Page<Map> searchPublicWithName(Pageable pageable, Optional<String> name) {
-        if(name.isPresent()) {
-           return mapRepository.findAllByFullDisclosureAndNameContaining(pageable, true, name.get());
+        if (name.isPresent()) {
+            return mapRepository.findAllByFullDisclosureAndNameContaining(pageable, true, name.get());
         }
         return mapRepository.findAllByFullDisclosure(true, pageable);
     }
 
     private List<Map> searchGroupMap(Optional<String> name, List<Long> mapIds) {
-        if(name.isPresent()) {
+        if (name.isPresent()) {
             return mapRepository.findAllByIdsAndNameContaining(mapIds, name.get());
         }
         return mapRepository.findAllById(mapIds);
@@ -133,15 +132,15 @@ public class MapServiceImpl implements MapService{
 
         return categorizedPlaces.entrySet()
                 .stream()
-                .map(e-> new CategorizedPlaces(CategoryInfo.from(e.getKey()),
+                .map(e -> new CategorizedPlaces(CategoryInfo.from(e.getKey()),
                         e.getValue().stream()
-                        .map(PlaceSimpleInfo::from)
-                        .collect(Collectors.toList())))
+                                .map(PlaceSimpleInfo::from)
+                                .collect(Collectors.toList())))
                 .collect(Collectors.toList());
     }
 
     private MapsResponse mapsToMapResponse(List<Map> maps) {
-        if(maps.isEmpty()) {
+        if (maps.isEmpty()) {
             return new MapsResponse(0, new ArrayList<>());
         }
 

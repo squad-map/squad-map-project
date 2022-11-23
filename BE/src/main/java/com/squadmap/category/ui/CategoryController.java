@@ -7,7 +7,6 @@ import com.squadmap.category.ui.dto.CategoryResponse;
 import com.squadmap.category.ui.dto.CategoryUpdateRequest;
 import com.squadmap.common.auth.Login;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 

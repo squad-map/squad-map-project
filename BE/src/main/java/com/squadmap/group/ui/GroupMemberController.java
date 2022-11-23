@@ -25,12 +25,12 @@ public class GroupMemberController {
     @PostMapping("/groups/{mapId}")
     public void addMemberToGroup(@Login Long memberId, @PathVariable Long mapId, @RequestBody @Valid GroupMemberRequest addMemberRequest) {
         groupMemberService.addGroupMember(memberId, mapId,
-                        addMemberRequest.getMemberId(),
-                        addMemberRequest.getPermissionLevel());
+                addMemberRequest.getMemberId(),
+                addMemberRequest.getPermissionLevel());
     }
 
     @PutMapping("/groups/{mapId}")
-    public void updateMemberPermission (@Login Long memberId, @PathVariable Long mapId, @RequestBody @Valid GroupMemberRequest updateMemberRequest) {
+    public void updateMemberPermission(@Login Long memberId, @PathVariable Long mapId, @RequestBody @Valid GroupMemberRequest updateMemberRequest) {
         groupMemberService.changeGroupMemberLevel(memberId, mapId,
                 updateMemberRequest.getMemberId(),
                 updateMemberRequest.getPermissionLevel());
@@ -40,9 +40,6 @@ public class GroupMemberController {
     public void deleteMemberInGroup(@Login Long memberId, @PathVariable Long mapId, @RequestBody @Valid GroupMemberDeleteRequest deleteRequest) {
         groupMemberService.removeGroupMember(memberId, mapId, deleteRequest.getMemberId());
     }
-
-
-
 
 
 }

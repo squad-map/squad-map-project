@@ -8,7 +8,6 @@ import com.squadmap.common.SimpleSlice;
 import com.squadmap.common.excetpion.ClientException;
 import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
 import com.squadmap.group.application.GroupMemberService;
-import com.squadmap.group.infrastructure.GroupMemberRepository;
 import com.squadmap.member.domain.Member;
 import com.squadmap.member.infrastructure.MemberRepository;
 import com.squadmap.place.domain.Place;
@@ -58,7 +57,7 @@ public class CommentServiceImpl implements CommentService {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_COMMENT));
 
-        if(!comment.isWriterId(memberId)) {
+        if (!comment.isWriterId(memberId)) {
             throw new ClientException(ErrorStatusCodeAndMessage.FORBIDDEN);
         }
 
@@ -74,7 +73,7 @@ public class CommentServiceImpl implements CommentService {
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_COMMENT));
 
-        if(!comment.isWriterId(memberId)) {
+        if (!comment.isWriterId(memberId)) {
             throw new ClientException(ErrorStatusCodeAndMessage.FORBIDDEN);
         }
         commentRepository.delete(comment);
@@ -88,7 +87,7 @@ public class CommentServiceImpl implements CommentService {
         Place place = placeRepository.findPlaceFetchMapById(placeId)
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_PLACE));
 
-        if(!place.isFullDisclosure()) {
+        if (!place.isFullDisclosure()) {
             groupMemberService.checkHasReadLevel(place.getMapId(), memberId);
         }
 

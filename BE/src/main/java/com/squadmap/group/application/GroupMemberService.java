@@ -1,7 +1,6 @@
 package com.squadmap.group.application;
 
 import com.squadmap.group.application.dto.GroupMemberInfo;
-import com.squadmap.group.domain.PermissionLevel;
 
 import java.util.List;
 

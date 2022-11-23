@@ -59,6 +59,7 @@ public class Place {
     public boolean isFullDisclosure() {
         return this.map.isFullDisclosure();
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -33,6 +33,7 @@ public class PlaceDetailInfo {
                 comments
         );
     }
+
     public static PlaceDetailInfo from(final Place place) {
         return new PlaceDetailInfo(
                 place.getId(),

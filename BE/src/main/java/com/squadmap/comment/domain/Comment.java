@@ -47,7 +47,7 @@ public class Comment {
     }
 
     private String checkContentLength(String content) {
-        if(content.isBlank() || content.length() > MAX_COMMENT_LENGTH) {
+        if (content.isBlank() || content.length() > MAX_COMMENT_LENGTH) {
             throw new ClientException(ErrorStatusCodeAndMessage.OUT_OF_LIMIT_COMMENT_LENGTH);
         }
         return content;

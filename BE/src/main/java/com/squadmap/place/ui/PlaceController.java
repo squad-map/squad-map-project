@@ -35,7 +35,7 @@ public class PlaceController {
 
     @PatchMapping("/places/{placeId}")
     public PlaceDetailInfo update(@Login Long memberId, @PathVariable Long placeId, @RequestBody @Valid PlaceUpdateRequest placeUpdateRequest) {
-         return placeService.update(
+        return placeService.update(
                 memberId,
                 placeId,
                 placeUpdateRequest.getCategoryId(),

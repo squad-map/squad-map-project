@@ -43,9 +43,9 @@ public class GroupMemberServiceImpl implements GroupMemberService {
 
         return groups.stream()
                 .map(group -> {
-            Member member = members.get(group.getMemberId());
-            return new GroupMemberInfo(member.getId(), member.getNickname(), member.getProfileImage(), group.getPermissionLevel());
-        })
+                    Member member = members.get(group.getMemberId());
+                    return new GroupMemberInfo(member.getId(), member.getNickname(), member.getProfileImage(), group.getPermissionLevel());
+                })
                 .collect(Collectors.toUnmodifiableList());
 
     }
@@ -63,7 +63,7 @@ public class GroupMemberServiceImpl implements GroupMemberService {
     @Transactional
     public void addGroupMember(Long loginMemberId, Long mapId, Long memberId, String level) {
         checkHasAuthority(mapId, loginMemberId, PermissionLevel.HOST);
-        if(!mapRepository.existsById(mapId)) {
+        if (!mapRepository.existsById(mapId)) {
             throw new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_MAP);
         }
         groupMemberRepository.save(GroupMember.of(mapId, memberId, level));
@@ -72,7 +72,7 @@ public class GroupMemberServiceImpl implements GroupMemberService {
     @Override
     @Transactional
     public void removeGroupMember(Long loginMemberId, Long mapId, Long memberId) {
-        if(!loginMemberId.equals(memberId)) {
+        if (!loginMemberId.equals(memberId)) {
             checkHasAuthority(mapId, loginMemberId, PermissionLevel.HOST);
         }
 
@@ -93,7 +93,7 @@ public class GroupMemberServiceImpl implements GroupMemberService {
         GroupMember groupMember = groupMemberRepository.findByMapIdAndMemberId(mapId, loginMemberId)
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_GROUP_MEMBER));
 
-        if(!groupMember.hasRequiredPermission(permissionLevel)) {
+        if (!groupMember.hasRequiredPermission(permissionLevel)) {
             throw new ClientException(ErrorStatusCodeAndMessage.FORBIDDEN);
         }
     }

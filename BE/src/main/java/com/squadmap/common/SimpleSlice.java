@@ -14,11 +14,11 @@ public class SimpleSlice<T> {
     private final int numberOfElements;
     private final boolean hasNext;
 
-    public SimpleSlice (Slice<T> slice) {
-       this.content = slice.getContent();
-       this.size = slice.getSize();
-       this.numberOfElements = slice.getNumberOfElements();
-       this.hasNext = slice.hasNext();
+    public SimpleSlice(Slice<T> slice) {
+        this.content = slice.getContent();
+        this.size = slice.getSize();
+        this.numberOfElements = slice.getNumberOfElements();
+        this.hasNext = slice.hasNext();
     }
 
     public List<T> getContent() {
@@ -32,6 +32,7 @@ public class SimpleSlice<T> {
     public int getNumberOfElements() {
         return numberOfElements;
     }
+
     @JsonGetter
     public boolean hasNext() {
         return hasNext;
