@@ -136,7 +136,7 @@ class MapServiceTest  {
         MapsResponse mapsResponse = mapService.searchGroup(memberId, Optional.empty());
 
         //then
-        assertThat(mapsResponse.getMapCount()).isEqualTo(1);
+        assertThat(mapsResponse.getMapCount()).isEqualTo(2);
     }
 
 
