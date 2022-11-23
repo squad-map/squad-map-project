@@ -1,11 +1,11 @@
 package com.squadmap.comment.integration;
 
 import com.squadmap.IntegrationTest;
-import com.squadmap.comment.application.CommentServiceImpl;
-import com.squadmap.comment.application.dto.CommentInfo;
-import com.squadmap.comment.application.dto.CommentResponse;
-import com.squadmap.comment.domain.Comment;
-import com.squadmap.comment.infrastructure.CommentRepository;
+import com.squadmap.core.comment.application.CommentServiceImpl;
+import com.squadmap.core.comment.application.dto.CommentInfo;
+import com.squadmap.core.comment.application.dto.CommentResponse;
+import com.squadmap.core.comment.domain.Comment;
+import com.squadmap.core.comment.infrastructure.CommentRepository;
 import com.squadmap.common.SimpleSlice;
 import com.squadmap.common.excetpion.ClientException;
 import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
@@ -13,7 +13,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @IntegrationTest
 class CommentServiceTest {

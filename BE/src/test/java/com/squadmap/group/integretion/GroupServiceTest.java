@@ -1,8 +1,8 @@
 package com.squadmap.group.integretion;
 
 import com.squadmap.IntegrationTest;
-import com.squadmap.group.application.GroupMemberService;
-import com.squadmap.group.application.dto.GroupMemberInfo;
+import com.squadmap.core.group.application.GroupMemberService;
+import com.squadmap.core.group.application.dto.GroupMemberInfo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

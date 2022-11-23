@@ -1,8 +1,8 @@
 package com.squadmap.place.acceptance;
 
 import com.squadmap.assured.RestAssuredTest;
-import com.squadmap.place.ui.dto.PlaceRequest;
-import com.squadmap.place.ui.dto.PlaceUpdateRequest;
+import com.squadmap.core.place.ui.dto.PlaceRequest;
+import com.squadmap.core.place.ui.dto.PlaceUpdateRequest;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,8 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.restdocs.snippet.Snippet;
-
-import java.util.List;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;

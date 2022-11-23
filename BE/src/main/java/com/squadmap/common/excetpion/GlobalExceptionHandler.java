@@ -8,7 +8,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -20,7 +19,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(new ErrorResponse<>(exception.getMessage()), exception.getHttpStatus());
     }
 
-    //@ExceptionHandler(MethodArgumentNotValidException.class)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse<Map<String, String>>> handleNotValidException(MethodArgumentNotValidException exception) {
         BindingResult bindingResult = exception.getBindingResult();
         Map<String, String> errorMessages = bindingResult.getFieldErrors().stream().collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));

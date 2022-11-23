@@ -1,12 +1,12 @@
 package com.squadmap.map.integration;
 
 import com.squadmap.IntegrationTest;
-import com.squadmap.map.application.MapService;
-import com.squadmap.map.application.dto.MapDetail;
-import com.squadmap.map.application.dto.MapSimpleInfo;
-import com.squadmap.map.application.dto.MapsResponse;
-import com.squadmap.map.domain.Map;
-import com.squadmap.map.infrastructure.MapRepository;
+import com.squadmap.core.map.application.MapService;
+import com.squadmap.core.map.application.dto.MapDetail;
+import com.squadmap.core.map.application.dto.MapSimpleInfo;
+import com.squadmap.core.map.application.dto.MapsResponse;
+import com.squadmap.core.map.domain.Map;
+import com.squadmap.core.map.infrastructure.MapRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

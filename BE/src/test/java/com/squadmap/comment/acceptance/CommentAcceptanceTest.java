@@ -1,7 +1,7 @@
 package com.squadmap.comment.acceptance;
 
 import com.squadmap.assured.RestAssuredTest;
-import com.squadmap.comment.ui.dto.CommentRequest;
+import com.squadmap.core.comment.ui.dto.CommentRequest;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,10 +11,8 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.restdocs.snippet.Snippet;
 
-
-
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;

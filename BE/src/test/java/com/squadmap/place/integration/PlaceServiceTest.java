@@ -2,8 +2,8 @@ package com.squadmap.place.integration;
 
 import com.squadmap.IntegrationTest;
 import com.squadmap.common.excetpion.ClientException;
-import com.squadmap.place.application.PlaceService;
-import com.squadmap.place.application.dto.PlaceDetailInfo;
+import com.squadmap.core.place.application.PlaceService;
+import com.squadmap.core.place.application.dto.PlaceDetailInfo;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

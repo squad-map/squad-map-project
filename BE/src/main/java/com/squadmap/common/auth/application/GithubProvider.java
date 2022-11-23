@@ -10,7 +10,7 @@ import com.squadmap.common.auth.application.dto.github.GithubToken;
 import com.squadmap.common.auth.application.dto.github.GithubUserInfo;
 import com.squadmap.common.excetpion.ClientException;
 import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
-import com.squadmap.common.properties.OauthProperties;
+import com.squadmap.common.auth.properties.OauthProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -102,7 +102,8 @@ public class GithubProvider implements OauthProvider {
         if (response.statusCode() != 200) {
             throw new ClientException(ErrorStatusCodeAndMessage.GITHUB_LOGIN_ERROR);
         }
-        List<GithubEmail> emails = objectMapper.readValue(response.body(), new TypeReference<>() {});
+        List<GithubEmail> emails = objectMapper.readValue(response.body(), new TypeReference<>() {
+        });
 
         return emails.get(0);
     }
@@ -114,7 +115,6 @@ public class GithubProvider implements OauthProvider {
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
     }
-
 
 
 }

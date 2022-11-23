@@ -8,7 +8,7 @@ import com.squadmap.common.auth.application.dto.naver.NaverUserInfo;
 import com.squadmap.common.auth.application.dto.naver.NaverUserProfileResponse;
 import com.squadmap.common.excetpion.ClientException;
 import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
-import com.squadmap.common.properties.OauthProperties;
+import com.squadmap.common.auth.properties.OauthProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;

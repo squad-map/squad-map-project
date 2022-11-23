@@ -1,6 +1,6 @@
 package com.squadmap.common.auth.application;
 
-import com.squadmap.common.properties.JwtProperties;
+import com.squadmap.common.auth.properties.JwtProperties;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;

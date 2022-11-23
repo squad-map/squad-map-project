@@ -1,7 +1,7 @@
 package com.squadmap.map.acceptance;
 
 import com.squadmap.assured.RestAssuredTest;
-import com.squadmap.map.ui.dto.MapRequest;
+import com.squadmap.core.map.ui.dto.MapRequest;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

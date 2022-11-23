@@ -1,5 +1,6 @@
 package com.squadmap.map.domain;
 
+import com.squadmap.core.map.domain.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

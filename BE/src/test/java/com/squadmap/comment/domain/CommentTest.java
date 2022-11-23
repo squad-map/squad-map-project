@@ -1,15 +1,16 @@
 package com.squadmap.comment.domain;
 
-import com.squadmap.category.domain.Category;
+import com.squadmap.core.category.domain.Category;
 import com.squadmap.common.excetpion.ClientException;
 import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
-import com.squadmap.map.domain.Map;
-import com.squadmap.place.domain.Place;
-import com.squadmap.place.domain.Position;
+import com.squadmap.core.comment.domain.Comment;
+import com.squadmap.core.map.domain.Map;
+import com.squadmap.core.place.domain.Place;
+import com.squadmap.core.place.domain.Position;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 class CommentTest {
 
