@@ -29,7 +29,7 @@ public class GroupMemberServiceImpl implements GroupMemberService {
 
     @Override
     public List<GroupMemberInfo> searchMembersInGroup(Long loginMemberId, Long mapId) {
-        checkHasAuthority(loginMemberId, mapId, PermissionLevel.READ);
+        checkHasReadLevel(mapId, loginMemberId);
         List<GroupMember> groups = groupMemberRepository.findByMapId(mapId);
 
         List<Long> memberIds = groups.stream()
@@ -80,14 +80,22 @@ public class GroupMemberServiceImpl implements GroupMemberService {
     }
 
     @Override
-    public void checkHasAuthority(Long mapId, Long memberId, PermissionLevel permissionLevel) {
-        GroupMember groupMember = groupMemberRepository.findByMapIdAndMemberId(mapId, memberId)
+    public void checkHasReadLevel(Long mapId, Long loginMemberId) {
+        checkHasAuthority(mapId, loginMemberId, PermissionLevel.READ);
+    }
+
+    @Override
+    public void checkHasMaintainLevel(Long mapId, Long loginMemberId) {
+        checkHasAuthority(mapId, loginMemberId, PermissionLevel.MAINTAIN);
+    }
+
+    private void checkHasAuthority(Long mapId, Long loginMemberId, PermissionLevel permissionLevel) {
+        GroupMember groupMember = groupMemberRepository.findByMapIdAndMemberId(mapId, loginMemberId)
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_GROUP_MEMBER));
 
         if(!groupMember.hasRequiredPermission(permissionLevel)) {
             throw new ClientException(ErrorStatusCodeAndMessage.FORBIDDEN);
         }
-
     }
 
 }

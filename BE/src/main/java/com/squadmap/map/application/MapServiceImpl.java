@@ -39,7 +39,6 @@ public class MapServiceImpl implements MapService{
     private final MemberRepository memberRepository;
     private final PlaceRepository placeRepository;
     private final GroupMemberRepository groupMemberRepository;
-    private final GroupMemberService groupMemberService;
 
     @Override
     @Transactional

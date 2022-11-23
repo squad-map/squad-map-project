@@ -8,6 +8,7 @@ import com.squadmap.comment.infrastructure.CommentRepository;
 import com.squadmap.common.SimpleSlice;
 import com.squadmap.common.excetpion.ClientException;
 import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
+import com.squadmap.group.application.GroupMemberService;
 import com.squadmap.group.domain.GroupMember;
 import com.squadmap.group.domain.PermissionLevel;
 import com.squadmap.group.infrastructure.GroupMemberRepository;
@@ -34,10 +35,10 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class PlaceServiceImpl implements PlaceService {
 
+    private final GroupMemberService groupMemberService;
     private final PlaceRepository placeRepository;
     private final MapRepository mapRepository;
     private final CategoryRepository categoryRepository;
-    private final GroupMemberRepository groupMemberRepository;
     private final CommentRepository commentRepository;
     private final MemberRepository memberRepository;
 
@@ -49,12 +50,7 @@ public class PlaceServiceImpl implements PlaceService {
         Map map = mapRepository.findById(mapId)
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_MAP));
 
-        GroupMember groupMember = groupMemberRepository.findByMapIdAndMemberId(mapId, memberId)
-                .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_GROUP_MEMBER));
-
-        if(!groupMember.hasRequiredPermission(PermissionLevel.MAINTAIN)) {
-            throw new ClientException(ErrorStatusCodeAndMessage.REQUIRE_MAINTAIN_PERMISSION);
-        }
+        groupMemberService.checkHasMaintainLevel(mapId, memberId);
 
         Category category = categoryRepository.findById(categoryId)
                     .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_CATEGORY));
@@ -74,12 +70,7 @@ public class PlaceServiceImpl implements PlaceService {
         Place place = placeRepository.findPlaceFetchAllById(placeId)
             .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_PLACE));
 
-        GroupMember groupMember = groupMemberRepository.findByMapIdAndMemberId(place.getMapId(), memberId)
-                .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_GROUP_MEMBER));
-
-        if(!groupMember.hasRequiredPermission(PermissionLevel.MAINTAIN)) {
-            throw new ClientException(ErrorStatusCodeAndMessage.REQUIRE_MAINTAIN_PERMISSION);
-        }
+        groupMemberService.checkHasMaintainLevel(place.getMapId(), memberId);
 
         place.editDescription(story);
         if(!place.getCategory().hasSameId(categoryId)) {
@@ -96,9 +87,9 @@ public class PlaceServiceImpl implements PlaceService {
         Place place = placeRepository.findPlaceFetchAllById(placeId)
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_PLACE));
 
-        if(!groupMemberRepository.existsByMapIdAndMemberId(place.getMapId(), memberId)) {
-            throw new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_GROUP_MEMBER);
-        };
+        if(!place.isFullDisclosure()) {
+            groupMemberService.checkHasReadLevel(place.getMapId(), memberId);
+        }
 
         Slice<Comment> comments = commentRepository.findCommentsByPlaceId(placeId, Pageable.ofSize(5));
         List<Long> writerIds = comments.getContent()

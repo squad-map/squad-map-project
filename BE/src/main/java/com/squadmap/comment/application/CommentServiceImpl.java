@@ -7,6 +7,7 @@ import com.squadmap.comment.infrastructure.CommentRepository;
 import com.squadmap.common.SimpleSlice;
 import com.squadmap.common.excetpion.ClientException;
 import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
+import com.squadmap.group.application.GroupMemberService;
 import com.squadmap.group.infrastructure.GroupMemberRepository;
 import com.squadmap.member.domain.Member;
 import com.squadmap.member.infrastructure.MemberRepository;
@@ -28,10 +29,10 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class CommentServiceImpl implements CommentService {
 
+    private final GroupMemberService groupMemberService;
     private final CommentRepository commentRepository;
     private final PlaceRepository placeRepository;
     private final MemberRepository memberRepository;
-    private final GroupMemberRepository groupMemberRepository;
 
     @Override
     @Transactional
@@ -39,9 +40,7 @@ public class CommentServiceImpl implements CommentService {
         Place place = placeRepository.findPlaceFetchAllById(placeId)
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_PLACE));
 
-        if(!groupMemberRepository.existsByMapIdAndMemberId(place.getMapId(), memberId)) {
-            throw new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_GROUP_MEMBER);
-        }
+        groupMemberService.checkHasReadLevel(place.getMapId(), memberId);
 
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_MEMBER));
@@ -89,9 +88,8 @@ public class CommentServiceImpl implements CommentService {
         Place place = placeRepository.findPlaceFetchMapById(placeId)
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_PLACE));
 
-        if(!groupMemberRepository.existsByMapIdAndMemberId(place.getMapId(), memberId)
-                || !place.getMap().isFullDisclosure()) {
-            throw new ClientException(ErrorStatusCodeAndMessage.FORBIDDEN);
+        if(!place.isFullDisclosure()) {
+            groupMemberService.checkHasReadLevel(place.getMapId(), memberId);
         }
 
         Slice<Comment> comments = commentRepository.findCommentsByPlaceIdAndIdIsAfter(placeId, lastCommentId, Pageable.ofSize(size));

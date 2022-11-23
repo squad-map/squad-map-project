@@ -5,9 +5,7 @@ import com.squadmap.category.domain.Category;
 import com.squadmap.category.infrastructure.CategoryRepository;
 import com.squadmap.common.excetpion.ClientException;
 import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
-import com.squadmap.group.domain.GroupMember;
-import com.squadmap.group.domain.PermissionLevel;
-import com.squadmap.group.infrastructure.GroupMemberRepository;
+import com.squadmap.group.application.GroupMemberService;
 import com.squadmap.map.domain.Map;
 import com.squadmap.map.infrastructure.MapRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,7 +24,7 @@ public class CategoryServiceImpl implements CategoryService{
 
     private final CategoryRepository categoryRepository;
     private final MapRepository mapRepository;
-    private final GroupMemberRepository groupMemberRepository;
+    private final GroupMemberService groupMemberService;
 
     @Override
     @Transactional
@@ -36,12 +33,8 @@ public class CategoryServiceImpl implements CategoryService{
         Map map = mapRepository.findById(mapId)
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_MAP));
 
-        GroupMember groupMember = groupMemberRepository.findByMapIdAndMemberId(mapId, memberId)
-                .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_GROUP_MEMBER));
+        groupMemberService.checkHasMaintainLevel(mapId, memberId);
 
-        if(!groupMember.hasRequiredPermission(PermissionLevel.MAINTAIN)) {
-            throw new ClientException(ErrorStatusCodeAndMessage.FORBIDDEN);
-        }
         if (isDuplicateName(name, map)) {
             throw new ClientException(ErrorStatusCodeAndMessage.DUPLICATE_CATEGORY);
         }
@@ -57,12 +50,11 @@ public class CategoryServiceImpl implements CategoryService{
 
     @Override
     public CategoryInfo readOne(Long categoryId, Long memberId) {
-        log.info("categoryId = %d, memberId= %d", categoryId, memberId);
         Category category = categoryRepository.findCategoryFetchMapById(categoryId)
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_CATEGORY));
 
-        if(!groupMemberRepository.existsByMapIdAndMemberId(category.getMap().getId(), memberId) && !category.getMap().isFullDisclosure()) {
-            throw new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_GROUP_MEMBER);
+        if (!category.getMap().isFullDisclosure()) {
+            groupMemberService.checkHasReadLevel(category.getMap().getId(), memberId);
         }
 
         return CategoryInfo.from(category);
@@ -73,8 +65,8 @@ public class CategoryServiceImpl implements CategoryService{
         Map map = mapRepository.findById(mapId)
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_MAP));
 
-        if(!groupMemberRepository.existsByMapIdAndMemberId(mapId, memberId) && !map.isFullDisclosure()) {
-            throw new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_GROUP_MEMBER);
+        if (!map.isFullDisclosure()) {
+            groupMemberService.checkHasReadLevel(mapId, memberId);
         }
 
         List<Category> categories = categoryRepository.findAllByMapId(mapId);
@@ -90,12 +82,7 @@ public class CategoryServiceImpl implements CategoryService{
         Category category = categoryRepository.findCategoryFetchMapById(categoryId)
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_CATEGORY));
 
-        GroupMember groupMember = groupMemberRepository.findByMapIdAndMemberId(category.getMap().getId(), memberId)
-                .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_GROUP_MEMBER));
-
-        if(!groupMember.hasRequiredPermission(PermissionLevel.MAINTAIN)) {
-            throw new ClientException(ErrorStatusCodeAndMessage.FORBIDDEN);
-        }
+        groupMemberService.checkHasMaintainLevel(category.getMapId(), memberId);
 
         category.update(categoryName, categoryColor);
 

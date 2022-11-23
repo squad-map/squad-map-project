@@ -40,6 +40,10 @@ public class Category {
         this.color = color;
     }
 
+    public Long getMapId() {
+        return this.getMap().getId();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
