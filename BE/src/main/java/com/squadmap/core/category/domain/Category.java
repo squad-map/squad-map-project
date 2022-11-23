@@ -24,7 +24,6 @@ public class Category {
     private String color;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "map_id")
     private Map map;
 
     public static Category of(String name, String color, Map map) {

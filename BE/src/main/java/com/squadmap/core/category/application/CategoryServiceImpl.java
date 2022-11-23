@@ -69,7 +69,7 @@ public class CategoryServiceImpl implements CategoryService {
             groupMemberService.checkHasReadLevel(mapId, memberId);
         }
 
-        List<Category> categories = categoryRepository.findAllByMapId(mapId);
+        List<Category> categories = categoryRepository.findAllByMap(mapId);
         return categories.stream()
                 .map(CategoryInfo::from)
                 .collect(Collectors.toUnmodifiableList());

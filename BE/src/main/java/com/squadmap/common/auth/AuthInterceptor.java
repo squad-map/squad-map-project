@@ -1,7 +1,6 @@
 package com.squadmap.common.auth;
 
 
-import com.squadmap.common.auth.AuthExtractor;
 import com.squadmap.common.auth.application.LoginService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

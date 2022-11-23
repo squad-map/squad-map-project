@@ -13,9 +13,10 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     boolean existsByNameAndMap(String name, Map map);
 
-    List<Category> findAllByMapId(Long mapId);
+    @Query("select c from Category c where c.map.id = :mapId")
+    List<Category> findAllByMap(@Param("mapId") Long mapId);
 
-    Optional<Category> findByIdAndMapId(Long categoryId, Long mapId);
+    Optional<Category> findByIdAndMap(Long id, Map map);
 
     @Query("select c from Category c join fetch c.map where c.id = :categoryId")
     Optional<Category> findCategoryFetchMapById(@Param("categoryId") Long categoryId);

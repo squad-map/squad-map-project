@@ -91,7 +91,7 @@ public class GroupMemberServiceImpl implements GroupMemberService {
 
     private void checkHasAuthority(Long mapId, Long loginMemberId, PermissionLevel permissionLevel) {
         GroupMember groupMember = groupMemberRepository.findByMapIdAndMemberId(mapId, loginMemberId)
-                .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_GROUP_MEMBER));
+                .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.FORBIDDEN));
 
         if (!groupMember.hasRequiredPermission(permissionLevel)) {
             throw new ClientException(ErrorStatusCodeAndMessage.FORBIDDEN);
