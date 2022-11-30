@@ -26,7 +26,7 @@ class CommentServiceTest {
     private CommentRepository commentRepository;
 
     @Test
-    @DisplayName("존재하는 멤버와 장소라면, 해당 장소에 대한 댓글을 작성할 수 있다.")
+    @DisplayName("지도 권한이 있는 멤버가 존재하는 장소라면, 해당 장소에 대한 댓글을 작성할 수 있다.")
     void writeCommentTest() {
         Long memberId = 1L;
         Long placeId = 1L;
@@ -35,6 +35,30 @@ class CommentServiceTest {
         CommentInfo commentInfo = commentService.writeComment(memberId, placeId, content);
 
         assertThat(commentInfo.getCommentId()).isPositive();
+    }
+
+    @Test
+    @DisplayName("지도 권한이 없는 멤버가 장소에 댓글을 작성하면 익셉션이 발생한다.")
+    void writeCommentTest_not_groupmember_fail() {
+        Long memberId = 4L;
+        Long placeId = 1L;
+        String content = "댓글";
+
+        assertThatThrownBy(() -> commentService.writeComment(memberId, placeId, content))
+                .isInstanceOf(ClientException.class)
+                .hasMessage(ErrorStatusCodeAndMessage.FORBIDDEN.getMessage());
+    }
+
+    @Test
+    @DisplayName("장소가 존재하지않을 때, 댓글을 작성하면 익셉션이 발생한다.")
+    void writeCommentTest_no_such_place_fail() {
+        Long memberId = 1L;
+        Long placeId = 100L;
+        String content = "댓글";
+
+        assertThatThrownBy(() -> commentService.writeComment(memberId, placeId, content))
+                .isInstanceOf(ClientException.class)
+                .hasMessage(ErrorStatusCodeAndMessage.NO_SUCH_PLACE.getMessage());
     }
 
     @Test
@@ -50,6 +74,32 @@ class CommentServiceTest {
 
         assertThat(commentResponse.getCommentId()).isEqualTo(commentId);
         assertThat(comment.getContent()).isEqualTo(content);
+
+    }
+
+    @Test
+    @DisplayName("댓글의 작성자가 아닌 멤버가 댓글을 수정하면 익셉션이 발생한다.")
+    void updateCommentTest_other_member_fail() {
+        Long memberId = 4L;
+        Long commentId = 1L;
+        String content = "수정된 댓글";
+
+        assertThatThrownBy(() -> commentService.updateComment(memberId, commentId, content))
+                .isInstanceOf(ClientException.class)
+                .hasMessage(ErrorStatusCodeAndMessage.FORBIDDEN.getMessage());
+
+    }
+
+    @Test
+    @DisplayName("존재하지 않는 댓글을 수정하려하면 익셉션이 발생한다.")
+    void updateCommentTest_no_such_comment_fail() {
+        Long memberId = 1L;
+        Long commentId = 100L;
+        String content = "수정된 댓글";
+
+        assertThatThrownBy(() -> commentService.updateComment(memberId, commentId, content))
+                .isInstanceOf(ClientException.class)
+                .hasMessage(ErrorStatusCodeAndMessage.NO_SUCH_COMMENT.getMessage());
 
     }
 
@@ -82,13 +132,24 @@ class CommentServiceTest {
 
     @Test
     @DisplayName("댓글의 작성자가 아닌 사용자가 댓글을 삭제하려하면, ClientException이 발생한다.")
-    void deleteCommentTest_not_writer_error() {
+    void deleteCommentTest_not_writer_fail() {
         Long memberId = 3L;
         Long commentId = 1L;
 
         assertThatThrownBy(() -> commentService.deleteComment(memberId, commentId))
                 .isInstanceOf(ClientException.class)
                 .hasMessage(ErrorStatusCodeAndMessage.FORBIDDEN.getMessage());
+    }
+
+    @Test
+    @DisplayName("존재하지않는 댓글을 삭제하려하면, ClientException이 발생한다.")
+    void deleteCommentTest_no_such_comment_fail() {
+        Long memberId = 3L;
+        Long commentId = 10000L;
+
+        assertThatThrownBy(() -> commentService.deleteComment(memberId, commentId))
+                .isInstanceOf(ClientException.class)
+                .hasMessage(ErrorStatusCodeAndMessage.NO_SUCH_COMMENT.getMessage());
     }
 
 
