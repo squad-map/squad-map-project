@@ -98,7 +98,7 @@ public class CategoryServiceTest {
     void readOneTest_fail_no_PermissionLevel() {
         //given
         Long categoryId = 3L;
-        Long memberId = 4L;
+        Long memberId = 5L;
 
 
         assertThatThrownBy(() -> categoryService.readOne(categoryId, memberId))

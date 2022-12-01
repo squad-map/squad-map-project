@@ -120,7 +120,7 @@ class PlaceServiceTest {
     @DisplayName("권한이 없는 사용자가 장소를 조회하면, Exception이 발생한다.")
     void placeReadOneTest_no_readPermissionLevel() {
 
-        Long memberId = 4L;
+        Long memberId = 5L;
         Long placeId = 2L;
 
         assertThatThrownBy(() -> placeService.readOne(memberId, placeId))

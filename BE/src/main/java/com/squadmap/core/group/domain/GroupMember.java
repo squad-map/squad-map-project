@@ -54,4 +54,8 @@ public class GroupMember {
         return true;
     }
 
+    public boolean isHost() {
+        return this.permissionLevel.equals(PermissionLevel.HOST);
+    }
+
 }

@@ -22,7 +22,9 @@ public enum ErrorStatusCodeAndMessage {
     OUT_OF_LIMIT_COMMENT_LENGTH(HttpStatus.BAD_REQUEST, "댓글은 1~150자 이내로만 작성할 수 있습니다."),
     NAVER_LOGIN_ERROR(HttpStatus.BAD_REQUEST, "NAVER 로그인에 실패하였습니다."),
     GITHUB_LOGIN_ERROR(HttpStatus.BAD_REQUEST, "GITHUB 로그인에 실패하였습니다."),
-    NO_SUCH_COMMENT(HttpStatus.NO_CONTENT, "등록된 댓글이 없습니다.");
+    NO_SUCH_COMMENT(HttpStatus.NO_CONTENT, "등록된 댓글이 없습니다."),
+    OUT_OF_LIMIT_NICKNAME_LENGTH(HttpStatus.BAD_REQUEST, "사용자의 닉네임은 한글자 이상, 열다섯자 이하이어야 합니다."),
+    ALREADY_REGISTERED_GROUP_MEMBER(HttpStatus.CONFLICT, "이미 등록된 회원입니다.");
 
     private final HttpStatus httpStatus;
     private final String message;
