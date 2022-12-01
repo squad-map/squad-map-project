@@ -1,6 +1,8 @@
 package com.squadmap.map.integration;
 
 import com.squadmap.IntegrationTest;
+import com.squadmap.common.excetpion.ClientException;
+import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
 import com.squadmap.core.map.application.MapService;
 import com.squadmap.core.map.application.dto.MapDetail;
 import com.squadmap.core.map.application.dto.MapSimpleInfo;
@@ -17,7 +19,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.*;
 
 @IntegrationTest
 class MapServiceTest  {
@@ -31,12 +33,12 @@ class MapServiceTest  {
     @Test
     @DisplayName("map을 새롭게 생성할 수 있다.")
     void mapCreateTest() {
+
         //given
         Long memberId = 1L;
         String emoji = "U+1F600";
         String mapName = "first map";
         Boolean fullDisclosure = false;
-
 
         //when
         Long mapId = mapService.create(mapName, emoji, fullDisclosure, memberId);
@@ -47,7 +49,7 @@ class MapServiceTest  {
 
     @Test
     @DisplayName("존재하는 지도라면, 지도를 업데이트할 수 있다.")
-    void updateTest() {
+    void updateTest_not_host_fail() {
         Long memberId = 1L;
         String mapName = "changed map";
         String emoji = "U+1F600";
@@ -69,6 +71,21 @@ class MapServiceTest  {
     }
 
     @Test
+    @DisplayName("지도의 주인이 아닌 사용자가 지도를 업데이트하려하면, 익셉션이 발생한다.")
+    void updateTest() {
+        Long memberId = 2L;
+        Long mapId = 1L;
+        String mapName = "changed map";
+        String emoji = "U+1F600";
+        boolean fullDisclosure = true;
+
+        assertThatThrownBy(() -> mapService.update(memberId, mapId, mapName, emoji, fullDisclosure))
+                .isInstanceOf(ClientException.class)
+                .hasMessage(ErrorStatusCodeAndMessage.FORBIDDEN.getMessage());
+
+    }
+
+    @Test
     @DisplayName("전체 공개 지도는, 로그인하지 않은 유저도 조회할 수 있다.")
     void searchPublicMapList() {
 
@@ -83,11 +100,40 @@ class MapServiceTest  {
     }
 
     @Test
-    @DisplayName("지도에 저장된 장소를 모두 조회할 수 있다.")
-    void getOneMapTest() {
+    @DisplayName("지도에 READ 이상의 권한을 가진 멤버는 지도의 장소 모두 조회할 수 있다.")
+    void getOneMapTest_private() {
+        // given
+        Long mapId = 2L;
+        Long memberId = 4L;
+
+        //when
+        MapDetail mapDetail = mapService.findOne(mapId, memberId);
+
+        //then
+        assertThat(mapDetail.getMapId()).isEqualTo(mapId);
+        assertThat(mapDetail.getCategorizedPlaces()).isNotNull();
+
+    }
+
+    @Test
+    @DisplayName("지도에 READ 이상의 권한을 가진 멤버는 지도의 장소 모두 조회할 수 있다.")
+    void getOneMapTest_private_no_groupmember_fail() {
+        // given
+        Long mapId = 2L;
+        Long memberId = 2L;
+
+        assertThatThrownBy(() -> mapService.findOne(mapId, memberId))
+                .isInstanceOf(ClientException.class)
+                .hasMessage(ErrorStatusCodeAndMessage.FORBIDDEN.getMessage());
+
+    }
+
+    @Test
+    @DisplayName("지도에 권한이 없는 멤버도 PUBLIC 지도의 장소 모두를 조회할 수 있다.")
+    void getOneMapTest_public() {
         // given
         Long mapId = 1L;
-        Long memberId = 1L;
+        Long memberId = 4L;
 
         //when
         MapDetail mapDetail = mapService.findOne(mapId, memberId);
@@ -136,7 +182,7 @@ class MapServiceTest  {
         MapsResponse mapsResponse = mapService.searchGroup(memberId, Optional.empty());
 
         //then
-        assertThat(mapsResponse.getMapCount()).isEqualTo(1);
+        assertThat(mapsResponse.getMapCount()).isEqualTo(2);
     }
 
 

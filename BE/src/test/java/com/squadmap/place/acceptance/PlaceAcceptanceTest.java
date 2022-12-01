@@ -84,7 +84,8 @@ class PlaceAcceptanceTest extends RestAssuredTest {
             fieldWithPath("longitude").type(JsonFieldType.NUMBER).description("장소 경도"),
             fieldWithPath("story").type(JsonFieldType.STRING).description("(수정된)장소 설명"),
             fieldWithPath("detail_link").type(JsonFieldType.STRING).description("장소에 대한 링크"),
-            fieldWithPath("category_id").type(JsonFieldType.NUMBER).description("(수정된)카테고리의 아이디")
+            fieldWithPath("category_id").type(JsonFieldType.NUMBER).description("(수정된)카테고리의 아이디"),
+            fieldWithPath("comments").type(JsonFieldType.NULL).description("기존 comment 정보를 다시 보내지 않음")
         );
 
     @Test
@@ -128,7 +129,7 @@ class PlaceAcceptanceTest extends RestAssuredTest {
             fieldWithPath("comments.content[].member_nickname").type(JsonFieldType.STRING).description("댓글 작성자 닉네임"),
             fieldWithPath("comments.content[].member_profile_image").type(JsonFieldType.STRING).description("댓글 작성자 프로필 이미지"),
             fieldWithPath("comments.content[].comment_id").type(JsonFieldType.NUMBER).description("댓글 아이디"),
-            fieldWithPath("comments.content[].comment").type(JsonFieldType.STRING).description("댓글 내용"),
+            fieldWithPath("comments.content[].content").type(JsonFieldType.STRING).description("댓글 내용"),
             fieldWithPath("comments.size").type(JsonFieldType.NUMBER).description("default size 5, (최초 장소 조회시 5개까지의 댓글만을 조회)"),
             fieldWithPath("comments.number_of_elements").type(JsonFieldType.NUMBER).description("실제 조회된 댓글의 갯수"),
             fieldWithPath("comments.has_next").type(JsonFieldType.BOOLEAN).description("보여진 댓글보다 많은 댓글이 존재하는지에 대한 여부")

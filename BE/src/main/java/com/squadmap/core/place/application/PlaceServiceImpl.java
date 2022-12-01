@@ -71,8 +71,9 @@ public class PlaceServiceImpl implements PlaceService {
 
         place.editDescription(story);
         if (!place.getCategory().hasSameId(categoryId)) {
-            Category category = categoryRepository.findByIdAndMapId(categoryId, place.getMap().getId())
+            Category category = categoryRepository.findByIdAndMap(categoryId, place.getMap())
                     .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_CATEGORY));
+
             place.changeCategory(category);
         }
 

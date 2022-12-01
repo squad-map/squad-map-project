@@ -62,11 +62,20 @@ public class GroupMemberServiceImpl implements GroupMemberService {
     @Override
     @Transactional
     public void addGroupMember(Long loginMemberId, Long mapId, Long memberId, String level) {
+
         checkHasAuthority(mapId, loginMemberId, PermissionLevel.HOST);
+        GroupMember groupMember = GroupMember.of(mapId, memberId, level);
+        if (groupMember.isHost()) {
+            throw new ClientException(ErrorStatusCodeAndMessage.UNIQUE_HOST);
+        }
         if (!mapRepository.existsById(mapId)) {
             throw new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_MAP);
         }
-        groupMemberRepository.save(GroupMember.of(mapId, memberId, level));
+        if (groupMemberRepository.existsByMapIdAndMemberId(mapId, memberId)) {
+            throw new ClientException(ErrorStatusCodeAndMessage.ALREADY_REGISTERED_GROUP_MEMBER);
+        }
+
+        groupMemberRepository.save(groupMember);
     }
 
     @Override
@@ -91,7 +100,7 @@ public class GroupMemberServiceImpl implements GroupMemberService {
 
     private void checkHasAuthority(Long mapId, Long loginMemberId, PermissionLevel permissionLevel) {
         GroupMember groupMember = groupMemberRepository.findByMapIdAndMemberId(mapId, loginMemberId)
-                .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_GROUP_MEMBER));
+                .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.FORBIDDEN));
 
         if (!groupMember.hasRequiredPermission(permissionLevel)) {
             throw new ClientException(ErrorStatusCodeAndMessage.FORBIDDEN);

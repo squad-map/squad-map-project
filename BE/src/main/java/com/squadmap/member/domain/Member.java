@@ -1,5 +1,7 @@
 package com.squadmap.member.domain;
 
+import com.squadmap.common.excetpion.ClientException;
+import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
 import lombok.*;
 
 import javax.persistence.*;
@@ -29,7 +31,11 @@ public class Member {
         this.resourceServer = ResourceServer.valueOf(resourceServer.toUpperCase());
     }
 
-    public String updateNickname(String nickname) {
+    public String updateNickname(final String nickname) {
+        int nicknameLength = nickname.length();
+        if(nickname.isBlank() || nicknameLength > 15) {
+            throw new ClientException(ErrorStatusCodeAndMessage.OUT_OF_LIMIT_NICKNAME_LENGTH);
+        }
         this.nickname = nickname;
         return this.nickname;
     }

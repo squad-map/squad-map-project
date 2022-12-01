@@ -1,12 +1,15 @@
 package com.squadmap.category.integration;
 
 import com.squadmap.IntegrationTest;
+import com.squadmap.common.excetpion.ClientException;
+import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
 import com.squadmap.core.category.application.CategoryService;
 import com.squadmap.core.category.application.dto.CategoryInfo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @IntegrationTest
@@ -31,10 +34,26 @@ public class CategoryServiceTest {
         assertThat(categoryId).isNotNull();
     }
 
+    @Test
+    @DisplayName("로그인한 유저 중 지도에 권한이 READ 유저라면, 카테고리를 생성할 수 없다.")
+    void createTest_fail_readPermission() {
+        //given
+        String name = "test category";
+        String color = "code";
+        Long mapId = 1L;
+        Long memberId = 3L;
+
+        //when
+        assertThatThrownBy(() ->categoryService.create(name, color, mapId, memberId))
+                .isInstanceOf(ClientException.class)
+                .hasMessage(ErrorStatusCodeAndMessage.FORBIDDEN.getMessage());
+
+    }
+
 
     @Test
     @DisplayName("로그인한 유저 중 지도에 권한이 있는 유저라면, 카테고리를 조회할 수 있다.")
-    void  readOneTest() {
+    void readOneTest() {
         //given
         Long categoryId = 1L;
         Long memberId = 1L;
@@ -48,7 +67,48 @@ public class CategoryServiceTest {
     }
 
     @Test
-    @DisplayName("로그인한 유저 중 지도에 권한이 있는 유저라면, 카테고리를 수정할 수 있다.")
+    @DisplayName("사용자가 존재하지 않는 카테고리를 조회하고자하면, Exception이 발생한다.")
+    void readOneTest_fail_no_exist() {
+        //given
+        Long categoryId = 100L;
+        Long memberId = 1L;
+
+        //when
+        assertThatThrownBy(() -> categoryService.readOne(categoryId, memberId))
+                .isInstanceOf(ClientException.class)
+                .hasMessage(ErrorStatusCodeAndMessage.NO_SUCH_CATEGORY.getMessage());
+
+    }
+
+    @Test
+    @DisplayName("로그인한 유저 중 지도에 권한이 없는 유저라도 지도가 public이면 조회할 수 있다.")
+    void readOneTest_public_no_PermissionLevel() {
+        //given
+        Long categoryId = 1L;
+        Long memberId = 4L;
+
+        CategoryInfo categoryInfo = categoryService.readOne(categoryId, memberId);
+
+        assertThat(categoryInfo.getCategoryId()).isEqualTo(categoryId);
+
+    }
+
+    @Test
+    @DisplayName("로그인한 유저 중 지도에 권한이 없는 유저라면 비공개 지도내의 카테고리를 조회할 수 없다.")
+    void readOneTest_fail_no_PermissionLevel() {
+        //given
+        Long categoryId = 3L;
+        Long memberId = 5L;
+
+
+        assertThatThrownBy(() -> categoryService.readOne(categoryId, memberId))
+                .isInstanceOf(ClientException.class)
+                .hasMessage(ErrorStatusCodeAndMessage.FORBIDDEN.getMessage());
+
+    }
+
+    @Test
+    @DisplayName("로그인한 유저 중 지도에 MATNTAIN 이상의 권한이 있는 유저라면, 카테고리를 수정할 수 있다.")
     void updateTest() {
         Long categoryId = 1L;
         Long memberId = 1L;
@@ -64,6 +124,34 @@ public class CategoryServiceTest {
         assertThat(updated.getCategoryColor()).isNotEqualTo(categoryInfo.getCategoryColor());
         assertThat(updated.getCategoryName()).isEqualTo(updatedName);
         assertThat(updated.getCategoryColor()).isEqualTo(updatedColor);
+
+    }
+
+    @Test
+    @DisplayName("사용자가 존재하지 않는 카테고리를 수정하려한다면, Exception이 발생한다.")
+    void updateTest_fail_not_exist_category() {
+        Long categoryId = 100L;
+        Long memberId = 1L;
+        String updatedName = "updated name";
+        String updatedColor = "updated color";
+
+        assertThatThrownBy(() -> categoryService.update(categoryId, updatedName, updatedColor, memberId))
+                .isInstanceOf(ClientException.class)
+                .hasMessage(ErrorStatusCodeAndMessage.NO_SUCH_CATEGORY.getMessage());
+
+    }
+
+    @Test
+    @DisplayName("READ 권한의 사용자가 카테고리를 수정하려한다면, Exception이 발생한다.")
+    void updateTest_fail_read_permission() {
+        Long categoryId = 1L;
+        Long memberId = 3L;
+        String updatedName = "updated name";
+        String updatedColor = "updated color";
+
+        assertThatThrownBy(() -> categoryService.update(categoryId, updatedName, updatedColor, memberId))
+                .isInstanceOf(ClientException.class)
+                .hasMessage(ErrorStatusCodeAndMessage.FORBIDDEN.getMessage());
 
     }
 
