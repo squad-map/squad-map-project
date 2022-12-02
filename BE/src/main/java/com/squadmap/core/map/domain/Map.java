@@ -22,7 +22,7 @@ public class Map {
     private String name;
 
     private String emoji;
-
+    @Column(nullable = false, columnDefinition = "BOOLEAN")
     private boolean fullDisclosure;
 
     private Long memberId;
