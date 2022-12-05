@@ -23,7 +23,7 @@ spring:
 
     properties:
       hibernate:
-        default_batch_fetch_size: 100
+        default_batch_fetch_size: 1000
         show_sql: true
         format_sql: true
 

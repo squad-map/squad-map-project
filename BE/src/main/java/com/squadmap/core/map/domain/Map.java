@@ -47,10 +47,6 @@ public class Map {
         this.fullDisclosure = fullDisclosure;
     }
 
-    public int getPlacesCount() {
-        return this.places.size();
-    }
-
     public boolean canAccess(Long memberId) {
         return this.memberId.equals(memberId);
     }

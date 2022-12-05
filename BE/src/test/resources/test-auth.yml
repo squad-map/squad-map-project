@@ -13,7 +13,7 @@ oauth:
 
 jwt:
   secret-key: testsecret1testsecret2testsecret3testsecret
-  access-expire-time: 6000000
+  access-expire-time: 600000000
   refresh-expire-time: 600000000
   access-token-subject: access
   refresh-token-subject: refresh

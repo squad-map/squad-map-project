@@ -74,7 +74,7 @@ public class MapServiceImpl implements MapService {
                     member.getId(),
                     member.getNickname(),
                     member.getProfileImage(),
-                    map.getPlacesCount());
+                    placeRepository.countPlacesByMap(map));
         });
     }
 
@@ -155,7 +155,7 @@ public class MapServiceImpl implements MapService {
                                     member.getId(),
                                     member.getNickname(),
                                     member.getProfileImage(),
-                                    map.getPlacesCount());
+                                    placeRepository.countPlacesByMap(map));
                         }
                 )
                 .collect(Collectors.toUnmodifiableList());
