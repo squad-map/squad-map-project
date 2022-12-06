@@ -1,5 +1,6 @@
 package com.squadmap.core.map.application;
 
+import com.squadmap.common.SimplePage;
 import com.squadmap.core.map.application.dto.MapDetail;
 import com.squadmap.core.map.application.dto.MapSimpleInfo;
 import com.squadmap.core.map.application.dto.MapsResponse;
@@ -15,7 +16,7 @@ public interface MapService {
 
     void update(Long memberId, Long mapId, String mapName, String emoji, boolean fullDisclosure);
 
-    Page<MapSimpleInfo> searchPublic(Pageable pageable, Optional<String> name);
+    SimplePage<MapSimpleInfo> searchPublic(Pageable pageable, Optional<String> name);
 
     MapDetail findOne(Long mapId, Long memberId);
 

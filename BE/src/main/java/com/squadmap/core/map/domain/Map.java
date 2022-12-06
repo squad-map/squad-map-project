@@ -22,7 +22,7 @@ public class Map {
     private String name;
 
     private String emoji;
-
+    @Column(nullable = false, columnDefinition = "BOOLEAN")
     private boolean fullDisclosure;
 
     private Long memberId;
@@ -45,10 +45,6 @@ public class Map {
         this.name = updateName;
         this.emoji = emoji;
         this.fullDisclosure = fullDisclosure;
-    }
-
-    public int getPlacesCount() {
-        return this.places.size();
     }
 
     public boolean canAccess(Long memberId) {

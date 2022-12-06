@@ -9,6 +9,7 @@ import com.squadmap.core.map.application.dto.MapsResponse;
 import com.squadmap.core.map.ui.dto.MapCreateResponse;
 import com.squadmap.core.map.ui.dto.MapRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -19,11 +20,13 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
+@RequestMapping("/map")
 public class MapController {
 
     private final MapService mapService;
 
-    @PostMapping("/map")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public MapCreateResponse createMap(@Login Long memberId, @RequestBody @Valid MapRequest mapCreateRequest) {
 
@@ -32,22 +35,23 @@ public class MapController {
         return new MapCreateResponse(mapId);
     }
 
-    @PutMapping("/map/{mapId}")
+    @PutMapping("/{mapId}")
     public void updateMap(@Login Long memberId, @PathVariable Long mapId, @RequestBody @Valid MapRequest mapRequest) {
         mapService.update(memberId, mapId, mapRequest.getMapName(), mapRequest.getMapEmoji(), mapRequest.getFullDisclosure());
     }
 
-    @GetMapping("/map/public")
+    @GetMapping("/public")
     public SimplePage<MapSimpleInfo> findPublicMapList(@PageableDefault Pageable pageable, Optional<String> name) {
-        return new SimplePage<>(mapService.searchPublic(pageable, name));
+        log.info("pageNumber = {}, size = {}", pageable.getPageNumber(), pageable.getPageSize());
+        return mapService.searchPublic(pageable, name);
     }
 
-    @GetMapping("/map/{mapId}")
+    @GetMapping("/{mapId}")
     public MapDetail findMapOne(@PathVariable Long mapId, @Login Long memberId) {
         return mapService.findOne(mapId, memberId);
     }
 
-    @GetMapping("/map/group")
+    @GetMapping("/group")
     public MapsResponse findGroupMapList(@Login Long memberId, Optional<String> name) {
         return mapService.searchGroup(memberId, name);
     }

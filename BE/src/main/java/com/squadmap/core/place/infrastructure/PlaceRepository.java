@@ -22,4 +22,6 @@ public interface PlaceRepository extends JpaRepository<Place, Long> {
 
     @Query("select p from Place p join fetch p.map where p.id = :placeId")
     Optional<Place> findPlaceFetchMapById(@Param("placeId") Long placeId);
+
+    Integer countPlacesByMap(Map map);
 }
