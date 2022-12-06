@@ -1,5 +1,6 @@
 package com.squadmap.core.map.application;
 
+import com.squadmap.common.SimplePage;
 import com.squadmap.core.category.application.dto.CategoryInfo;
 import com.squadmap.core.category.domain.Category;
 import com.squadmap.common.excetpion.ClientException;
@@ -18,6 +19,7 @@ import com.squadmap.core.place.application.dto.PlaceSimpleInfo;
 import com.squadmap.core.place.domain.Place;
 import com.squadmap.core.place.infrastructure.PlaceRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -61,12 +63,13 @@ public class MapServiceImpl implements MapService {
         map.update(mapName, emoji, fullDisclosure);
     }
 
+    @Cacheable(value = "pagingPublicMaps", key = "{#pageable.pageNumber, #pageable.pageSize, #name}")
     @Override
-    public Page<MapSimpleInfo> searchPublic(Pageable pageable, Optional<String> name) {
+    public SimplePage<MapSimpleInfo> searchPublic(Pageable pageable, Optional<String> name) {
         Page<Map> maps = searchPublicWithName(pageable, name);
 
         java.util.Map<Long, Member> members = getMembers(maps.getContent());
-        return maps.map(map -> {
+        Page<MapSimpleInfo> simpleInfos = maps.map(map -> {
             Member member = members.get(map.getMemberId());
             return new MapSimpleInfo(map.getId(),
                     map.getName(),
@@ -76,6 +79,7 @@ public class MapServiceImpl implements MapService {
                     member.getProfileImage(),
                     placeRepository.countPlacesByMap(map));
         });
+        return new SimplePage<>(simpleInfos);
     }
 
     @Override

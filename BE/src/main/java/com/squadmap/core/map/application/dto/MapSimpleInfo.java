@@ -1,18 +1,21 @@
 package com.squadmap.core.map.application.dto;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @Getter
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class MapSimpleInfo {
 
-    private final Long id;
-    private final String mapName;
-    private final String mapEmoji;
-    private final Long hostId;
-    private final String hostNickname;
-    private final String hostProfileImage;
-    private final int placesCount;
+    private Long id;
+    private String mapName;
+    private String mapEmoji;
+    private Long hostId;
+    private String hostNickname;
+    private String hostProfileImage;
+    private int placesCount;
 
 }

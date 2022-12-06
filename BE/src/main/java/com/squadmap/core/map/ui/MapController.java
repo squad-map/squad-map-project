@@ -43,7 +43,7 @@ public class MapController {
     @GetMapping("/public")
     public SimplePage<MapSimpleInfo> findPublicMapList(@PageableDefault Pageable pageable, Optional<String> name) {
         log.info("pageNumber = {}, size = {}", pageable.getPageNumber(), pageable.getPageSize());
-        return new SimplePage<>(mapService.searchPublic(pageable, name));
+        return mapService.searchPublic(pageable, name);
     }
 
     @GetMapping("/{mapId}")

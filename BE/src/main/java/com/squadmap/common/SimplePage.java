@@ -1,22 +1,21 @@
 package com.squadmap.common;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
 
 @Getter
-@RequiredArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SimplePage<T> {
 
-    private final int pageNumber;
-    private final int size;
-    private final int totalPages;
-    private final long totalElements;
-    private final boolean first;
-    private final boolean last;
-    private final List<T> content;
+    private int pageNumber;
+    private int size;
+    private int totalPages;
+    private long totalElements;
+    private boolean first;
+    private boolean last;
+    private List<T> content;
 
     public SimplePage(Page<T> page) {
         this.pageNumber = page.getPageable().getPageNumber();
