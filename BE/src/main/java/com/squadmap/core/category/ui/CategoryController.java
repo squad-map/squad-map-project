@@ -15,13 +15,14 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/map/{mapId}")
 public class CategoryController {
 
     private final CategoryService categoryService;
 
     @PostMapping("/categories")
     @ResponseStatus(HttpStatus.CREATED)
-    public CategoryResponse create(@Login Long memberId, @RequestBody @Valid CategoryRequest categoryRequest) {
+    public CategoryResponse create(@Login Long memberId, @PathVariable Long mapId, @RequestBody @Valid CategoryRequest categoryRequest) {
         Long categoryId = categoryService.create(categoryRequest.getCategoryName(),
                 categoryRequest.getColor(),
                 categoryRequest.getMapId(),
@@ -30,17 +31,17 @@ public class CategoryController {
     }
 
     @GetMapping("/categories/{categoryId}")
-    public CategoryInfo readOne(@Login Long memberId, @PathVariable Long categoryId) {
+    public CategoryInfo readOne(@Login Long memberId, @PathVariable Long mapId, @PathVariable Long categoryId) {
         return categoryService.readOne(categoryId, memberId);
     }
 
     @GetMapping("/categories")
-    public List<CategoryInfo> readCategories(@Login Long memberId, @RequestParam Long map) {
-        return categoryService.readAll(map, memberId);
+    public List<CategoryInfo> readCategories(@Login Long memberId, @PathVariable Long mapId) {
+        return categoryService.readAll(mapId, memberId);
     }
 
     @PostMapping("/categories/update")
-    public CategoryInfo update(@Login Long memberId, @RequestBody @Valid CategoryUpdateRequest categoryUpdateRequest) {
+    public CategoryInfo update(@Login Long memberId, @PathVariable Long mapId, @RequestBody @Valid CategoryUpdateRequest categoryUpdateRequest) {
 
         return categoryService.update(
                 categoryUpdateRequest.getCategoryId(),
