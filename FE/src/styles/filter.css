@@ -1,0 +1,11 @@
+.fill-red {
+	filter: invert(12%) sepia(89%) saturate(7406%) hue-rotate(0deg) brightness(95%) contrast(113%);
+}
+
+.fill-blue {
+    filter: invert(7%) sepia(100%) saturate(7214%) hue-rotate(246deg) brightness(123%) contrast(137%);
+}
+
+.fill-yellow {
+    filter: invert(77%) sepia(40%) saturate(7379%) hue-rotate(6deg) brightness(111%) contrast(104%);
+}
