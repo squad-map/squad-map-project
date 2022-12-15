@@ -2,6 +2,7 @@ package com.squadmap.core.group.application;
 
 import com.squadmap.common.excetpion.ClientException;
 import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
+import com.squadmap.core.group.application.dto.AccessInfo;
 import com.squadmap.core.group.application.dto.GroupMemberInfo;
 import com.squadmap.core.group.domain.GroupMember;
 import com.squadmap.core.group.domain.PermissionLevel;
@@ -96,6 +97,29 @@ public class GroupMemberServiceImpl implements GroupMemberService {
     @Override
     public void checkHasMaintainLevel(Long mapId, Long loginMemberId) {
         checkHasAuthority(mapId, loginMemberId, PermissionLevel.MAINTAIN);
+    }
+
+    @Override
+    public boolean hasRequiredLevel(AccessInfo accessInfo, PermissionLevel requiredLevel) {
+        if(requiredLevel.equals(PermissionLevel.READ)) {
+            com.squadmap.core.map.domain.Map map = mapRepository.findById(accessInfo.getMapId())
+                    .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_MAP));
+
+            if (map.isFullDisclosure()) {
+               return true;
+            }
+        }
+        return hasAuthority(accessInfo, requiredLevel);
+    }
+
+    private boolean hasAuthority(AccessInfo accessInfo, PermissionLevel permissionLevel) {
+        GroupMember groupMember = groupMemberRepository.findByMapIdAndMemberId(accessInfo.getMapId(), accessInfo.getLoginId())
+                .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.FORBIDDEN));
+
+        if (groupMember.hasRequiredPermission(permissionLevel)) {
+            return true;
+        }
+        return false;
     }
 
     private void checkHasAuthority(Long mapId, Long loginMemberId, PermissionLevel permissionLevel) {

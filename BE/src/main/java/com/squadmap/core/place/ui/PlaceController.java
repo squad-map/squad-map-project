@@ -1,6 +1,7 @@
 package com.squadmap.core.place.ui;
 
 import com.squadmap.common.auth.Login;
+import com.squadmap.core.group.application.dto.AccessInfo;
 import com.squadmap.core.place.ui.dto.PlaceRequest;
 import com.squadmap.core.place.ui.dto.PlaceUpdateRequest;
 import com.squadmap.core.place.application.PlaceService;
@@ -14,29 +15,30 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/map/{mapId}")
 public class PlaceController {
 
     private final PlaceService placeService;
 
     @PostMapping("/places")
     @ResponseStatus(HttpStatus.CREATED)
-    public PlaceResponse create(@Login Long memberId, @RequestBody @Valid PlaceRequest placeRequest) {
-        Long placeId = placeService.create(placeRequest.getName(),
+    public PlaceResponse create(@Login Long loginId, @RequestBody @Valid PlaceRequest placeRequest) {
+        Long placeId = placeService.create(AccessInfo.of(loginId, placeRequest.getMapId()),
+                placeRequest.getName(),
                 placeRequest.getAddress(),
                 placeRequest.getLatitude(),
                 placeRequest.getLongitude(),
                 placeRequest.getStory(),
                 placeRequest.getDetailLink(),
-                placeRequest.getMapId(),
-                placeRequest.getCategoryId(),
-                memberId);
+                placeRequest.getCategoryId());
         return new PlaceResponse(placeId);
     }
 
     @PatchMapping("/places/{placeId}")
-    public PlaceDetailInfo update(@Login Long memberId, @PathVariable Long placeId, @RequestBody @Valid PlaceUpdateRequest placeUpdateRequest) {
+    public PlaceDetailInfo update(@Login Long loginId, @PathVariable Long mapId, @PathVariable Long placeId,
+                                  @RequestBody @Valid PlaceUpdateRequest placeUpdateRequest) {
         return placeService.update(
-                memberId,
+                AccessInfo.of(loginId, mapId),
                 placeId,
                 placeUpdateRequest.getCategoryId(),
                 placeUpdateRequest.getStory()
@@ -44,8 +46,8 @@ public class PlaceController {
     }
 
     @GetMapping("/places/{placeId}")
-    public PlaceDetailInfo readOne(@Login Long memberId, @PathVariable Long placeId) {
+    public PlaceDetailInfo readOne(@Login Long loginId, @PathVariable Long mapId, @PathVariable Long placeId) {
 
-        return placeService.readOne(memberId, placeId);
+        return placeService.readOne(AccessInfo.of(loginId, mapId), placeId);
     }
 }

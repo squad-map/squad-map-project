@@ -1,6 +1,8 @@
 package com.squadmap.core.group.application;
 
+import com.squadmap.core.group.application.dto.AccessInfo;
 import com.squadmap.core.group.application.dto.GroupMemberInfo;
+import com.squadmap.core.group.domain.PermissionLevel;
 
 import java.util.List;
 
@@ -17,4 +19,6 @@ public interface GroupMemberService {
     void checkHasReadLevel(Long mapId, Long memberId);
 
     void checkHasMaintainLevel(Long mapId, Long memberId);
+
+    boolean hasRequiredLevel(AccessInfo accessInfo, PermissionLevel requiredLevel);
 }

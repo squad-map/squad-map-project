@@ -1,6 +1,7 @@
 package com.squadmap.map.integration;
 
 import com.squadmap.IntegrationTest;
+import com.squadmap.common.SimplePage;
 import com.squadmap.common.excetpion.ClientException;
 import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
 import com.squadmap.core.map.application.MapService;
@@ -89,7 +90,7 @@ class MapServiceTest  {
     @DisplayName("전체 공개 지도는, 로그인하지 않은 유저도 조회할 수 있다.")
     void searchPublicMapList() {
 
-        Page<MapSimpleInfo> mapSimpleInfos = mapService.searchPublic(PageRequest.of(0, 5), Optional.empty());
+        SimplePage<MapSimpleInfo> mapSimpleInfos = mapService.searchPublic(PageRequest.of(0, 5), Optional.empty());
         List<MapSimpleInfo> content = mapSimpleInfos.getContent();
 
         assertThat(content.get(0).getHostNickname()).isEqualTo("nickname");
@@ -152,7 +153,7 @@ class MapServiceTest  {
         Optional<String> searchName = Optional.of("st");
 
         //when
-        Page<MapSimpleInfo> mapSimpleInfos = mapService.searchPublic(PageRequest.of(0, 10), searchName);
+        SimplePage<MapSimpleInfo> mapSimpleInfos = mapService.searchPublic(PageRequest.of(0, 10), searchName);
 
         //then
         assertThat(mapSimpleInfos.getContent()).isNotEmpty();
