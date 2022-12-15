@@ -55,7 +55,7 @@ const ModalContent = ({ placeInfo }: { placeInfo: PlaceType }) => {
       ) : (
         <>
           <S.PrevButtonWrapper />
-          <S.Title>{placeInfo.name}</S.Title>
+          <S.Title>{placeInfo.place_name}</S.Title>
           <KakaoStaticMap placeInfo={placeInfo} />
           <S.TextArea
             placeholder="당신의 이야기를 들려주세요."
