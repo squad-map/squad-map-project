@@ -6,7 +6,7 @@ export type CategoryType = {
 
 export type PlaceType = {
   place_id: number;
-  name: string;
+  place_name: string;
   address: string;
   latitude: number;
   longitude: number;

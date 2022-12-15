@@ -37,7 +37,7 @@ const PlaceInfos = ({ placeInfos }: { placeInfos: PlaceType[] }) => {
               <S.Item>
                 <Text
                   size="xRegular"
-                  text={place.name}
+                  text={place.place_name}
                   color={theme.color.lightGreen}
                 />
                 <Text
