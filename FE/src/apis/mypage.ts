@@ -55,7 +55,7 @@ export const patchMypage = async (
   const response = await fetch(
     `${process.env.SQUAD_MAP_OAUTH_URL}/map/${patchId}`,
     {
-      method: 'PATCH',
+      method: 'PUT',
       headers: {
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
@@ -64,10 +64,8 @@ export const patchMypage = async (
     }
   );
 
-  const mypageData = await response.json();
-
   try {
-    return mypageData;
+    return response.ok;
   } catch (err) {
     throw new Error(`patchMypage get api fail err: ${err}`);
   }
