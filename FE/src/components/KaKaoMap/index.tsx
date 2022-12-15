@@ -41,7 +41,7 @@ export const KakaoMap = ({ children, placeInfos }: KakaoMapProps) => {
         map: mapRef.current,
         position: marker.getPosition(),
         content: `<button class="info-button">
-            <span>${place.name}</span>
+            <span>${place.place_name}</span>
           </button>`,
         yAnchor: 1,
       });

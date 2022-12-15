@@ -78,7 +78,7 @@ const Infos = ({ infoData }: { infoData: CategorizedPlaces[] }) => {
                   </S.ItemCategory>
                   <Text
                     size="xRegular"
-                    text={place.name}
+                    text={place.place_name}
                     color={theme.color.lightGreen}
                   />
                   <Text
