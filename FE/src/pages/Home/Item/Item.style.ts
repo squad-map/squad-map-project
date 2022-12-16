@@ -3,6 +3,11 @@ import styled from '@emotion/styled';
 import { flexbox } from '@/styles/mixin';
 import theme from '@/styles/theme';
 
+export const Title = styled.h4`
+  color: ${theme.color.gray};
+  font-size: ${theme.fontSize.md};
+`;
+
 export const Owner = styled.span`
   color: ${theme.color.gray};
   font-size: ${theme.fontSize.xs};
@@ -11,11 +16,6 @@ export const Owner = styled.span`
 export const Description = styled.span`
   color: ${theme.color.gray};
   font-size: ${theme.fontSize.sm};
-`;
-
-export const Title = styled.h4`
-  color: ${theme.color.gray};
-  font-size: ${theme.fontSize.md};
 `;
 
 export const Item = styled.div`
