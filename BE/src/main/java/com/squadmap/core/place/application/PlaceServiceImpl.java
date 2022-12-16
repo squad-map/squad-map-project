@@ -67,6 +67,8 @@ public class PlaceServiceImpl implements PlaceService {
         Place place = placeRepository.findPlaceFetchAllById(placeId)
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_PLACE));
 
+        checkPlaceInMap(place, accessInfo.getMapId());
+
         place.editDescription(story);
         if (!place.getCategory().hasSameId(categoryId)) {
             Category category = categoryRepository.findByIdAndMap(categoryId, place.getMap())
@@ -81,28 +83,35 @@ public class PlaceServiceImpl implements PlaceService {
     @Override
     @RequiredPermission(level = PermissionLevel.READ)
     public PlaceDetailInfo readOne(AccessInfo accessInfo, Long placeId) {
-        Place place = placeRepository.findPlaceFetchAllById(placeId)
-                .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_PLACE));
+            Place place = placeRepository.findPlaceFetchAllById(placeId)
+                    .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_PLACE));
 
+        checkPlaceInMap(place, accessInfo.getMapId());
 
-        Slice<Comment> comments = commentRepository.findCommentsByPlaceId(placeId, Pageable.ofSize(5));
-        List<Long> writerIds = comments.getContent()
-                .stream()
-                .map(Comment::getMemberId)
-                .collect(Collectors.toUnmodifiableList());
+            Slice<Comment> comments = commentRepository.findCommentsByPlaceId(placeId, Pageable.ofSize(5));
+            List<Long> writerIds = comments.getContent()
+                    .stream()
+                    .map(Comment::getMemberId)
+                    .collect(Collectors.toUnmodifiableList());
 
-        java.util.Map<Long, Member> memberMap = memberRepository.findAllById(writerIds)
-                .stream()
-                .collect(Collectors.toMap(Member::getId, Function.identity()));
+            java.util.Map<Long, Member> memberMap = memberRepository.findAllById(writerIds)
+                    .stream()
+                    .collect(Collectors.toMap(Member::getId, Function.identity()));
 
-        Slice<CommentInfo> commentInfos = comments.map(comment -> {
-            Member writer = memberMap.get(comment.getMemberId());
-            return new CommentInfo(writer.getId(), writer.getNickname(), writer.getProfileImage(),
-                    comment.getId(), comment.getContent());
-        });
+            Slice<CommentInfo> commentInfos = comments.map(comment -> {
+                Member writer = memberMap.get(comment.getMemberId());
+                return new CommentInfo(writer.getId(), writer.getNickname(), writer.getProfileImage(),
+                        comment.getId(), comment.getContent());
+            });
 
-        return PlaceDetailInfo.of(place, new SimpleSlice<>(commentInfos));
+            return PlaceDetailInfo.of(place, new SimpleSlice<>(commentInfos));
     }
 
+
+    private void checkPlaceInMap(Place place, Long mapId) {
+        if(!place.hasSameMapId(mapId)) {
+            throw new ClientException(ErrorStatusCodeAndMessage.FORBIDDEN);
+        }
+    }
 
 }
