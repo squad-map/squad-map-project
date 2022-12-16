@@ -26,7 +26,7 @@ public class AccessAspect {
     public void validatePermissionLevel(JoinPoint joinPoint) {
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         RequiredPermission requiredPermission = signature.getMethod().getAnnotation(RequiredPermission.class);
-        PermissionLevel permissionLevel = requiredPermission.requiredLevel();
+        PermissionLevel permissionLevel = requiredPermission.level();
         Object[] args = joinPoint.getArgs();
 
         AccessInfo accessInfo = getAccessInfo(args);

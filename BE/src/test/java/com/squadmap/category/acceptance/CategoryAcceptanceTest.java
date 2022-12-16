@@ -45,7 +45,7 @@ public class CategoryAcceptanceTest extends RestAssuredTest {
         String color = "#0000FF";
         Long mapId = 1L;
 
-        CategoryRequest categoryRequest = new CategoryRequest(categoryName, color, mapId);
+        CategoryRequest categoryRequest = new CategoryRequest(categoryName, color);
 
         given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, CREATE_REQUEST_FIELDS, CREATE_RESPONSE_FIELDS, AUTHORIZATION_HEADER))
                 .accept(ContentType.JSON)

@@ -6,6 +6,7 @@ import com.squadmap.core.category.ui.dto.CategoryRequest;
 import com.squadmap.core.category.ui.dto.CategoryResponse;
 import com.squadmap.core.category.ui.dto.CategoryUpdateRequest;
 import com.squadmap.common.auth.Login;
+import com.squadmap.core.group.application.dto.AccessInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -22,32 +23,31 @@ public class CategoryController {
 
     @PostMapping("/categories")
     @ResponseStatus(HttpStatus.CREATED)
-    public CategoryResponse create(@Login Long memberId, @PathVariable Long mapId, @RequestBody @Valid CategoryRequest categoryRequest) {
-        Long categoryId = categoryService.create(categoryRequest.getCategoryName(),
-                categoryRequest.getColor(),
-                categoryRequest.getMapId(),
-                memberId);
+    public CategoryResponse create(@Login Long loginId, @PathVariable Long mapId, @RequestBody @Valid CategoryRequest categoryRequest) {
+        Long categoryId = categoryService.create(AccessInfo.of(loginId, mapId),
+                categoryRequest.getCategoryName(),
+                categoryRequest.getColor());
         return new CategoryResponse(categoryId);
     }
 
     @GetMapping("/categories/{categoryId}")
-    public CategoryInfo readOne(@Login Long memberId, @PathVariable Long mapId, @PathVariable Long categoryId) {
-        return categoryService.readOne(categoryId, memberId);
+    public CategoryInfo readOne(@Login Long loginId, @PathVariable Long mapId, @PathVariable Long categoryId) {
+        return categoryService.readOne(AccessInfo.of(loginId, mapId), categoryId);
     }
 
     @GetMapping("/categories")
-    public List<CategoryInfo> readCategories(@Login Long memberId, @PathVariable Long mapId) {
-        return categoryService.readAll(mapId, memberId);
+    public List<CategoryInfo> readCategories(@Login Long loginId, @PathVariable Long mapId) {
+        return categoryService.readAll(AccessInfo.of(loginId, mapId));
     }
 
     @PostMapping("/categories/update")
-    public CategoryInfo update(@Login Long memberId, @PathVariable Long mapId, @RequestBody @Valid CategoryUpdateRequest categoryUpdateRequest) {
+    public CategoryInfo update(@Login Long loginId, @PathVariable Long mapId, @RequestBody @Valid CategoryUpdateRequest categoryUpdateRequest) {
 
         return categoryService.update(
+                AccessInfo.of(loginId, mapId),
                 categoryUpdateRequest.getCategoryId(),
                 categoryUpdateRequest.getCategoryName(),
-                categoryUpdateRequest.getCategoryColor(),
-                memberId);
+                categoryUpdateRequest.getCategoryColor());
     }
 
 }

@@ -1,25 +1,24 @@
 package com.squadmap.core.place.application;
 
+import com.squadmap.common.SimpleSlice;
+import com.squadmap.common.excetpion.ClientException;
+import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
 import com.squadmap.core.access.RequiredPermission;
 import com.squadmap.core.category.domain.Category;
 import com.squadmap.core.category.infrastructure.CategoryRepository;
 import com.squadmap.core.comment.application.dto.CommentInfo;
 import com.squadmap.core.comment.domain.Comment;
 import com.squadmap.core.comment.infrastructure.CommentRepository;
-import com.squadmap.common.SimpleSlice;
-import com.squadmap.common.excetpion.ClientException;
-import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
-import com.squadmap.core.group.application.GroupMemberService;
 import com.squadmap.core.group.application.dto.AccessInfo;
 import com.squadmap.core.group.domain.PermissionLevel;
 import com.squadmap.core.map.domain.Map;
 import com.squadmap.core.map.infrastructure.MapRepository;
-import com.squadmap.core.place.domain.Place;
-import com.squadmap.member.domain.Member;
-import com.squadmap.member.infrastructure.MemberRepository;
 import com.squadmap.core.place.application.dto.PlaceDetailInfo;
+import com.squadmap.core.place.domain.Place;
 import com.squadmap.core.place.domain.Position;
 import com.squadmap.core.place.infrastructure.PlaceRepository;
+import com.squadmap.member.domain.Member;
+import com.squadmap.member.infrastructure.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
@@ -35,7 +34,6 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 public class PlaceServiceImpl implements PlaceService {
 
-    private final GroupMemberService groupMemberService;
     private final PlaceRepository placeRepository;
     private final MapRepository mapRepository;
     private final CategoryRepository categoryRepository;
@@ -44,7 +42,7 @@ public class PlaceServiceImpl implements PlaceService {
 
     @Override
     @Transactional
-    @RequiredPermission(requiredLevel = PermissionLevel.MAINTAIN)
+    @RequiredPermission(level = PermissionLevel.MAINTAIN)
     public Long create(AccessInfo accessInfo, String name, String address, Double latitude, Double longitude, String story, String detailLink, Long categoryId) {
 
         Map map = mapRepository.findById(accessInfo.getMapId())
@@ -64,7 +62,7 @@ public class PlaceServiceImpl implements PlaceService {
 
     @Override
     @Transactional
-    @RequiredPermission(requiredLevel = PermissionLevel.MAINTAIN)
+    @RequiredPermission(level = PermissionLevel.MAINTAIN)
     public PlaceDetailInfo update(AccessInfo accessInfo, Long placeId, Long categoryId, String story) {
         Place place = placeRepository.findPlaceFetchAllById(placeId)
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_PLACE));
@@ -81,7 +79,7 @@ public class PlaceServiceImpl implements PlaceService {
     }
 
     @Override
-    @RequiredPermission(requiredLevel = PermissionLevel.READ)
+    @RequiredPermission(level = PermissionLevel.READ)
     public PlaceDetailInfo readOne(AccessInfo accessInfo, Long placeId) {
         Place place = placeRepository.findPlaceFetchAllById(placeId)
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_PLACE));
