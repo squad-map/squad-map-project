@@ -39,8 +39,8 @@ public class Category {
         this.color = color;
     }
 
-    public Long getMapId() {
-        return this.getMap().getId();
+    public boolean hasSameMapId(Long mapId) {
+        return this.getMap().getId().equals(mapId);
     }
 
     @Override

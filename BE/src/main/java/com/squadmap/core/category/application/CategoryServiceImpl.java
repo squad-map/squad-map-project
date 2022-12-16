@@ -55,6 +55,7 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = categoryRepository.findCategoryFetchMapById(categoryId)
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_CATEGORY));
 
+        checkCategoryInMap(category, accessInfo.getMapId());
 
         return CategoryInfo.from(category);
     }
@@ -80,8 +81,23 @@ public class CategoryServiceImpl implements CategoryService {
         Category category = categoryRepository.findCategoryFetchMapById(categoryId)
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_CATEGORY));
 
+        if(!category.hasSameMapId(accessInfo.getMapId())) {
+            throw new ClientException(ErrorStatusCodeAndMessage.FORBIDDEN);
+        }
+
+        if (isDuplicateName(categoryName, category.getMap())) {
+            throw new ClientException(ErrorStatusCodeAndMessage.DUPLICATE_CATEGORY);
+        }
+
         category.update(categoryName, categoryColor);
 
         return CategoryInfo.from(category);
+    }
+
+    private void checkCategoryInMap(Category category, Long mapId) {
+        if(!category.hasSameMapId(mapId)) {
+            throw new ClientException(ErrorStatusCodeAndMessage.FORBIDDEN);
+        }
+
     }
 }
