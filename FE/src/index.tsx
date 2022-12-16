@@ -21,12 +21,10 @@ export const queryClient = new QueryClient();
 root.render(
   <CookiesProvider>
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={theme}>
-        <RecoilRoot>
-          <GlobalStyle />
-          <App />
-        </RecoilRoot>
-      </ThemeProvider>
+      <RecoilRoot>
+        <GlobalStyle />
+        <App />
+      </RecoilRoot>
     </QueryClientProvider>
   </CookiesProvider>
 );

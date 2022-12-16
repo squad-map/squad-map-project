@@ -1,5 +1,6 @@
 import { Global, css } from '@emotion/react';
 
+import './global.css';
 import './reset.css';
 import './filter.css';
 import './map.css';

@@ -34,6 +34,7 @@ module.exports = {
           loader: 'babel-loader',
           options: {
             plugins: [
+              'babel-plugin-macros',
               isDevelopment && require.resolve('react-refresh/babel'),
             ].filter(Boolean),
           },
