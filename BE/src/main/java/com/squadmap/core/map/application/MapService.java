@@ -4,7 +4,6 @@ import com.squadmap.common.SimplePage;
 import com.squadmap.core.map.application.dto.MapDetail;
 import com.squadmap.core.map.application.dto.MapSimpleInfo;
 import com.squadmap.core.map.application.dto.MapsResponse;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;

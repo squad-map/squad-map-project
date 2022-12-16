@@ -6,6 +6,7 @@ import com.squadmap.core.comment.application.dto.CommentResponse;
 import com.squadmap.core.comment.ui.dto.CommentRequest;
 import com.squadmap.common.SimpleSlice;
 import com.squadmap.common.auth.Login;
+import com.squadmap.core.group.application.dto.AccessInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -18,13 +19,14 @@ public class CommentController {
 
     private final CommentService commentService;
 
-    @PostMapping("/places/{placeId}/comments")
+    @PostMapping("/map/{mapId}/places/{placeId}/comments")
     @ResponseStatus(HttpStatus.CREATED)
-    public CommentInfo writeComment(@Login Long memberId,
+    public CommentInfo writeComment(@Login Long loginId,
+                                    @PathVariable Long mapId,
                                     @PathVariable Long placeId,
                                     @RequestBody @Valid CommentRequest commentRequest) {
 
-        return commentService.writeComment(memberId, placeId, commentRequest.getContent());
+        return commentService.writeComment(AccessInfo.of(loginId, mapId), placeId, commentRequest.getContent());
     }
 
 
@@ -36,12 +38,13 @@ public class CommentController {
         return commentService.updateComment(memberId, commentId, commentRequest.getContent());
     }
 
-    @GetMapping("/places/{placeId}/comments")
+    @GetMapping("/map/{mapId}/places/{placeId}/comments")
     public SimpleSlice<CommentInfo> readCommentsOfPlace(@Login Long memberId,
+                                                        @PathVariable Long mapId,
                                                         @PathVariable Long placeId,
                                                         Long lastCommentId, Integer size) {
 
-        return commentService.readComments(memberId, placeId, lastCommentId, size);
+        return commentService.readComments(AccessInfo.of(memberId, mapId), placeId, lastCommentId, size);
     }
 
     @DeleteMapping("/comments/{commentId}")

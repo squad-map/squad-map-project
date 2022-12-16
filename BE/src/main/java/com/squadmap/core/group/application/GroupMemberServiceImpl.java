@@ -30,8 +30,8 @@ public class GroupMemberServiceImpl implements GroupMemberService {
 
     @Override
     public List<GroupMemberInfo> searchMembersInGroup(Long loginMemberId, Long mapId) {
-        checkHasReadLevel(mapId, loginMemberId);
         List<GroupMember> groups = groupMemberRepository.findByMapId(mapId);
+        checkHasAuthority(loginMemberId, mapId, PermissionLevel.READ);
 
         List<Long> memberIds = groups.stream()
                 .map(GroupMember::getMemberId)
@@ -87,16 +87,6 @@ public class GroupMemberServiceImpl implements GroupMemberService {
         }
 
         groupMemberRepository.deleteByMapIdAndMemberId(mapId, memberId);
-    }
-
-    @Override
-    public void checkHasReadLevel(Long mapId, Long loginMemberId) {
-        checkHasAuthority(mapId, loginMemberId, PermissionLevel.READ);
-    }
-
-    @Override
-    public void checkHasMaintainLevel(Long mapId, Long loginMemberId) {
-        checkHasAuthority(mapId, loginMemberId, PermissionLevel.MAINTAIN);
     }
 
     @Override

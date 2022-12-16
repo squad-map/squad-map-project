@@ -16,9 +16,5 @@ public interface GroupMemberService {
 
     void removeGroupMember(Long loginMemberId, Long mapId, Long memberId);
 
-    void checkHasReadLevel(Long mapId, Long memberId);
-
-    void checkHasMaintainLevel(Long mapId, Long memberId);
-
     boolean hasRequiredLevel(AccessInfo accessInfo, PermissionLevel requiredLevel);
 }
