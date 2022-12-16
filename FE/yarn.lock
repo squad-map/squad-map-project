@@ -5784,7 +5784,7 @@ __metadata:
     "@types/react-dom": ^18.0.5
     "@typescript-eslint/eslint-plugin": ^5.27.0
     "@typescript-eslint/parser": ^5.27.0
-    autoprefixer: latest
+    autoprefixer: ^10.4.13
     babel-loader: ^8.2.5
     babel-plugin-macros: ^3.1.0
     cross-env: ^7.0.3
@@ -5805,7 +5805,8 @@ __metadata:
     mini-css-extract-plugin: ^2.6.0
     msw: ^0.47.3
     msw-storybook-addon: ^1.6.3
-    postcss: latest
+    postcss: ^8.4.20
+    postcss-loader: ^7.0.2
     prettier: ^2.6.2
     react: ^18.1.0
     react-cookie: ^4.1.1
@@ -5817,6 +5818,7 @@ __metadata:
     recoil-persist: ^4.2.0
     style-loader: ^3.3.1
     tailwindcss: ^3.2.4
+    tailwindcss-convert-px-to-rem: ^1.0.4
     terser-webpack-plugin: ^5.3.3
     tsconfig-paths-webpack-plugin: ^3.5.2
     twin.macro: ^3.1.0
@@ -6548,7 +6550,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"autoprefixer@npm:^10.4.13, autoprefixer@npm:latest":
+"autoprefixer@npm:^10.4.13":
   version: 10.4.13
   resolution: "autoprefixer@npm:10.4.13"
   dependencies:
@@ -16871,6 +16873,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"postcss-loader@npm:^7.0.2":
+  version: 7.0.2
+  resolution: "postcss-loader@npm:7.0.2"
+  dependencies:
+    cosmiconfig: ^7.0.0
+    klona: ^2.0.5
+    semver: ^7.3.8
+  peerDependencies:
+    postcss: ^7.0.0 || ^8.0.1
+    webpack: ^5.0.0
+  checksum: 2d251537d482eb751f812c96c8b515f46d7c9905cad7afab33f0f34872670619b7440cefc9e2babbf89fb11b4708850d522d79fa5ff788227587645e78f16638
+  languageName: node
+  linkType: hard
+
 "postcss-logical@npm:^5.0.4":
   version: 5.0.4
   resolution: "postcss-logical@npm:5.0.4"
@@ -17397,7 +17413,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.3.5, postcss@npm:^8.4.17, postcss@npm:^8.4.18, postcss@npm:^8.4.19, postcss@npm:^8.4.4, postcss@npm:latest":
+"postcss@npm:^8.3.5, postcss@npm:^8.4.13, postcss@npm:^8.4.17, postcss@npm:^8.4.18, postcss@npm:^8.4.19, postcss@npm:^8.4.20, postcss@npm:^8.4.4":
   version: 8.4.20
   resolution: "postcss@npm:8.4.20"
   dependencies:
@@ -20266,7 +20282,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tailwindcss@npm:^3.0.2, tailwindcss@npm:^3.2.4":
+"tailwindcss-convert-px-to-rem@npm:^1.0.4":
+  version: 1.0.4
+  resolution: "tailwindcss-convert-px-to-rem@npm:1.0.4"
+  dependencies:
+    postcss: ^8.4.13
+    tailwindcss: ^3.0.24
+  checksum: 6955f4dcb2f6f211579ec2a872b901bbb1e507ad290d3cf3fd2efaae8921760f5991e83984804bad9bca36afb3a47b1fac45af7601846df558077ad29c8679f2
+  languageName: node
+  linkType: hard
+
+"tailwindcss@npm:^3.0.2, tailwindcss@npm:^3.0.24, tailwindcss@npm:^3.2.4":
   version: 3.2.4
   resolution: "tailwindcss@npm:3.2.4"
   dependencies:

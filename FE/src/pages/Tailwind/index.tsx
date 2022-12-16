@@ -1,12 +1,11 @@
-import tw from 'twin.macro'
-
-const SampleH1 = tw.h1`text-blue-500`
+/** @jsxImportSource @emotion/react */
+import tw from 'twin.macro';
 
 const TailWindPage = () => (
-    <>
-        <SampleH1>Hello world</SampleH1>
-        <span tw="text-blue-500"> Test</span>
-    </>
-)
+  <>
+    <div tw="md:flex m-12 p-8 md:p-0">Test Div Component</div>
+    <div css={tw`mt-[20px]`}>Div Component2</div>
+  </>
+);
 
 export default TailWindPage;
