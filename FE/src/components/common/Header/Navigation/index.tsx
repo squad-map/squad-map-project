@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 
 import * as S from './Navigation.style';
 
@@ -18,8 +18,12 @@ interface INavigationProps {
   handleCloseMenu: () => void;
 }
 
+let currentPath = '';
+
 const Navigation = ({ menu, handleCloseMenu }: INavigationProps) => {
+  const location = useLocation();
   const isLoggedIn = useIsLoggedIn();
+
   const [openModal, setOpenModal] = useState({
     isOpen: false,
     type: '',
@@ -29,6 +33,12 @@ const Navigation = ({ menu, handleCloseMenu }: INavigationProps) => {
     setOpenModal({ isOpen: false, type: '' });
     handleCloseMenu();
   };
+
+  useEffect(() => {
+    if (currentPath === location.pathname) window.location.reload();
+
+    currentPath = location.pathname;
+  }, [location]);
 
   return (
     <>
@@ -47,10 +57,12 @@ const Navigation = ({ menu, handleCloseMenu }: INavigationProps) => {
         </S.CloseWrapper>
         <S.InnerContainer>
           {isLoggedIn ? (
-            <S.Box>
-              <Icon size="medium" url={Icons.Home} alt="Home Icon" />
-              <S.Text>홈으로</S.Text>
-            </S.Box>
+            <Link to="/">
+              <S.Box>
+                <Icon size="medium" url={Icons.Home} alt="Home Icon" />
+                <S.Text>홈으로</S.Text>
+              </S.Box>
+            </Link>
           ) : (
             <S.Box
               onClick={() => setOpenModal({ isOpen: true, type: 'login' })}

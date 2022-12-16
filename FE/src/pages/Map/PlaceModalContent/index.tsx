@@ -6,7 +6,7 @@ import KakaoStaticMap from '@/components/KaKaoMap/staticMap';
 import { PlaceDetail } from '@/interfaces/Place';
 import theme from '@/styles/theme';
 
-const Modal = ({ placeInfo }: { placeInfo: PlaceDetail }) => (
+const PlaceModalContent = ({ placeInfo }: { placeInfo: PlaceDetail }) => (
   <S.ModalContent>
     <S.Header>
       <S.Title>{placeInfo.place_name}</S.Title>
@@ -38,4 +38,4 @@ const Modal = ({ placeInfo }: { placeInfo: PlaceDetail }) => (
   </S.ModalContent>
 );
 
-export default Modal;
+export default PlaceModalContent;

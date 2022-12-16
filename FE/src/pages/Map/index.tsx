@@ -3,7 +3,6 @@ import { Link, useParams } from 'react-router-dom';
 
 import Header from './Header';
 import Infos from './Infos';
-import * as S from './Map.style';
 
 import { getMapDetailInfo } from '@/apis/mypage';
 import { Icons } from '@/assets/icons';
@@ -44,7 +43,7 @@ const Map = () => {
           }}
         />
         <Infos infoData={mapData.categorized_places} />
-        <S.RecommendationButtonWrapper>
+        <div className="absolute bottom-8 right-8 z-[999]">
           <Link to={`/map/search/${mapData.map_id}`}>
             <Button
               size="large"
@@ -58,7 +57,7 @@ const Map = () => {
               />
             </Button>
           </Link>
-        </S.RecommendationButtonWrapper>
+        </div>
       </KakaoMap>
     )
   );
