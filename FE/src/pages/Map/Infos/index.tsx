@@ -1,9 +1,7 @@
-import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
-import ModalContent from '../ModalContent';
-
-import * as S from './Infos.style';
+import PlaceModalReview from '../PlaceModalReview';
+import PlaceModalUpdate from '../PlaceModalUpdate';
 
 import { getPlaceDeatilInfo } from '@/apis/place';
 import { Icons } from '@/assets/icons';
@@ -17,34 +15,33 @@ import theme from '@/styles/theme';
 import { CategorizedPlaces, PlaceType } from '@/types/map';
 
 const Infos = ({ infoData }: { infoData: CategorizedPlaces[] }) => {
-  const [clickedPlace, setClickedPlace] = useState<number>(0);
   const [isOpenGlobalModal, setIsOpenGlobalModal] = useState(false);
+  const [isOpenUpdateModal, setIsOpenUpdateModal] = useState(false);
 
-  const { data: placeDetailInfo, refetch } = useQuery(
-    ['DetailMap'],
-    () => {
-      if (clickedPlace) {
-        return getPlaceDeatilInfo(clickedPlace);
-      }
-      return true;
-    },
-    {
-      onSuccess: (data: PlaceDetail) => {
-        if (data.place_id) {
-          setIsOpenGlobalModal(true);
-        }
-      },
+  const [placeDetailInfo, setPlaceDetailInfo] = useState<PlaceDetail>({
+    place_id: 0,
+    name: '',
+    address: '',
+    latitude: 0,
+    longitude: 0,
+    story: '',
+    detail_link: '',
+    category_id: 0,
+  });
+
+  const handleClickPlace = async (type: 'GET' | 'UPDATE', id: number) => {
+    const data = await getPlaceDeatilInfo(id);
+    setPlaceDetailInfo(data);
+    if (type === 'GET') {
+      setIsOpenGlobalModal(true);
+    } else {
+      setIsOpenUpdateModal(true);
     }
-  );
-
-  const handleClickPlace = (id: number) => {
-    setClickedPlace(id);
-    refetch();
   };
 
   return (
     infoData && (
-      <S.MapInfos>
+      <section className="flex flex-col gap-4 max-h-[38rem] mt-8 p-1 absolute right-4 z-[999]">
         <Button size="large" color={theme.color.navy}>
           <Text size="large" text="🍞 Muffin" color={theme.color.white} />
         </Button>
@@ -56,26 +53,42 @@ const Infos = ({ infoData }: { infoData: CategorizedPlaces[] }) => {
                 key={`InfoCard-${place.place_id}`}
                 color={theme.color.white}
               >
-                <S.Item>
-                  <S.ItemCategory>
+                <div className="h-full flex flex-col gap-8">
+                  <div className="flex justify-between">
+                    <div className="flex items-center gap-4">
+                      <Button
+                        size="xSmall"
+                        color={info.category_info.category_color}
+                        key={`categoryButton-${info.category_info.category_name}`}
+                      >
+                        <Text
+                          size="xSmall"
+                          text={info.category_info.category_name}
+                          color={theme.color.white}
+                        />
+                      </Button>
+                      <Icon
+                        size="small"
+                        url={Icons.More}
+                        alt="정보 더보기"
+                        onClick={() => handleClickPlace('GET', place.place_id)}
+                      />
+                    </div>
                     <Button
                       size="xSmall"
-                      color={info.category_info.category_color}
-                      key={`categoryButton-${info.category_info.category_name}`}
+                      color={theme.color.navy}
+                      onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                        e.preventDefault();
+                        handleClickPlace('UPDATE', place.place_id);
+                      }}
                     >
                       <Text
+                        text="장소수정"
                         size="xSmall"
-                        text={info.category_info.category_name}
                         color={theme.color.white}
                       />
                     </Button>
-                    <Icon
-                      size="small"
-                      url={Icons.More}
-                      alt="정보 더보기"
-                      onClick={() => handleClickPlace(place.place_id)}
-                    />
-                  </S.ItemCategory>
+                  </div>
                   <Text
                     size="xRegular"
                     text={place.place_name}
@@ -86,12 +99,7 @@ const Infos = ({ infoData }: { infoData: CategorizedPlaces[] }) => {
                     text={place.address}
                     color={theme.color.gray}
                   />
-                  {/* <Text
-                    size="small"
-                    text={place.place_url}
-                    color={theme.color.lightGray}
-                  /> */}
-                </S.Item>
+                </div>
               </Card>
             ))
           )}
@@ -100,10 +108,21 @@ const Infos = ({ infoData }: { infoData: CategorizedPlaces[] }) => {
             size="large"
             handleCancelClick={() => setIsOpenGlobalModal(false)}
           >
-            <ModalContent placeInfo={placeDetailInfo} />
+            <PlaceModalReview placeInfo={placeDetailInfo} />
           </GlobalModal>
         )}
-      </S.MapInfos>
+        {isOpenUpdateModal && (
+          <GlobalModal
+            size="medium"
+            handleCancelClick={() => setIsOpenUpdateModal(false)}
+          >
+            <PlaceModalUpdate
+              placeInfo={placeDetailInfo}
+              categoryInfo={infoData.map(data => data.category_info)}
+            />
+          </GlobalModal>
+        )}
+      </section>
     )
   );
 };
