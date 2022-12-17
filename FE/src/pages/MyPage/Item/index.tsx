@@ -7,8 +7,10 @@ import GlobalModal from '@/components/common/GlobalModal';
 import Icon from '@/components/common/Icon';
 import Text from '@/components/common/Text';
 import { IMyMap } from '@/interfaces/IMyMap';
+import UserProfile from '@/pages/Map/Infos/UserProfile';
 import Authority from '@/pages/MyPage/Authority';
 import theme from '@/styles/theme';
+import { MapUserType } from '@/types/map';
 import { unicodeToEmoji } from '@/utils/util';
 
 interface ItemProps {
@@ -17,6 +19,11 @@ interface ItemProps {
 
 const Item = ({ item }: ItemProps) => {
   const [isOpenAuthorityModal, setIsOpenAuthorityModal] = useState(false);
+  const user: MapUserType = {
+    host_id: item.host_id,
+    host_nickname: item.host_nickname,
+    host_profile_image: item.host_profile_image,
+  };
 
   return (
     <>
@@ -49,14 +56,7 @@ const Item = ({ item }: ItemProps) => {
             </Link>
           </div>
         </header>
-        <div className="flex items-center gap-4 mt-4">
-          <img
-            className="w-8 h-8 rounded-2xl"
-            src={item.host_profile_image}
-            alt="profile_image"
-          />
-          <span className="text-gray">지도 Host: {item.host_nickname}</span>
-        </div>
+        <UserProfile user={user} />
         <footer className="flex justify-between">
           <Text
             text={`${item.places_count}개의장소 등록됨`}

@@ -11,10 +11,16 @@ import GlobalModal from '@/components/common/GlobalModal';
 import Icon from '@/components/common/Icon';
 import Text from '@/components/common/Text';
 import { PlaceDetail } from '@/interfaces/Place';
+import UserProfile from '@/pages/Map/Infos/UserProfile';
 import theme from '@/styles/theme';
-import { CategorizedPlaces, PlaceType } from '@/types/map';
+import { CategorizedPlaces, MapUserType, PlaceType } from '@/types/map';
 
-const Infos = ({ infoData }: { infoData: CategorizedPlaces[] }) => {
+interface InfosProps {
+  infoData: CategorizedPlaces[];
+  user: MapUserType;
+}
+
+const Infos = ({ infoData, user }: InfosProps) => {
   const [isOpenGlobalModal, setIsOpenGlobalModal] = useState(false);
   const [isOpenUpdateModal, setIsOpenUpdateModal] = useState(false);
 
@@ -99,6 +105,7 @@ const Infos = ({ infoData }: { infoData: CategorizedPlaces[] }) => {
                     text={place.address}
                     color={theme.color.gray}
                   />
+                  <UserProfile user={user} />
                 </div>
               </Card>
             ))
