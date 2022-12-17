@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 import Header from './Header';
@@ -10,17 +11,32 @@ import Button from '@/components/common/Button';
 import Text from '@/components/common/Text';
 import { KakaoMap } from '@/components/KaKaoMap';
 import theme from '@/styles/theme';
-import { CategorizedPlaces } from '@/types/map';
+import { CategorizedPlaces, MapUserType } from '@/types/map';
 import { unicodeToEmoji } from '@/utils/util';
 
 const Map = () => {
   const { id } = useParams();
+  const [user, setUser] = useState<MapUserType>({
+    host_id: 0,
+    host_nickname: '',
+    host_profile_image: '',
+  });
   const { data: mapData } = useQuery(['Map'], () => {
     if (id) {
       return getMapDetailInfo(id);
     }
     return true;
   });
+
+  useEffect(() => {
+    if (mapData) {
+      setUser({
+        host_id: mapData.host_id,
+        host_nickname: mapData.host_nickname,
+        host_profile_image: mapData.host_profile_image,
+      });
+    }
+  }, [mapData]);
 
   return (
     mapData && (
@@ -42,7 +58,7 @@ const Map = () => {
             ),
           }}
         />
-        <Infos infoData={mapData.categorized_places} />
+        <Infos infoData={mapData.categorized_places} user={user} />
         <div className="absolute bottom-8 right-8 z-[999]">
           <Link to={`/map/search/${mapData.map_id}`}>
             <Button
