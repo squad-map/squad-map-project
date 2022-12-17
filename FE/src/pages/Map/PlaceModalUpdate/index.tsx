@@ -34,7 +34,7 @@ const PlaceModalUpdate = ({
   };
 
   return (
-    <div className="flex flex-col gap-4 py-8">
+    <div className="h-[36.25rem] flex flex-col gap-4 py-8">
       <header className="flex flex-col items-center gap-4">
         <S.Title>{placeInfo.name}</S.Title>
         <S.Address>{placeInfo.address}</S.Address>
@@ -67,7 +67,7 @@ const PlaceModalUpdate = ({
             ))}
           </div>
         </div>
-        <div className="mt-4">
+        <div>
           <Button
             type="submit"
             size="xRegular"
