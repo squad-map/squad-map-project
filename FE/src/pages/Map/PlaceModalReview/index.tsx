@@ -6,28 +6,28 @@ import KakaoStaticMap from '@/components/KaKaoMap/staticMap';
 import { PlaceDetail } from '@/interfaces/Place';
 import theme from '@/styles/theme';
 
-const PlaceModalContent = ({ placeInfo }: { placeInfo: PlaceDetail }) => (
-  <S.ModalContent>
-    <S.Header>
+const PlaceModalReview = ({ placeInfo }: { placeInfo: PlaceDetail }) => (
+  <div className="h-full flex flex-col justify-between items-center gap-4 py-8">
+    <header className="flex flex-col items-center gap-4">
       <S.Title>{placeInfo.name}</S.Title>
       <S.Address>{placeInfo.address}</S.Address>
-    </S.Header>
+    </header>
     <KakaoStaticMap placeInfo={placeInfo} />
     {/*  리뷰 작성 Form */}
-    <S.ReviewContainer>
-      <S.ReviewForm>
+    <article className="w-full flex gap-4">
+      <form className="flex flex-col gap-4">
         <Text text="한 줄 리뷰 작성" size="small" color={theme.color.gray} />
         <S.TextArea maxLength={100} />
-      </S.ReviewForm>
-      <S.ReviewContents>
+      </form>
+      <div className="flex flex-col gap-4">
         <Text text="한 줄 리뷰들" size="small" color={theme.color.gray} />
-        <S.ReviewWrapper>
-          <S.Review>리뷰 1</S.Review>
-          <S.Review>리뷰 2</S.Review>
-          <S.Review>리뷰 3</S.Review>
-        </S.ReviewWrapper>
-      </S.ReviewContents>
-    </S.ReviewContainer>
+        <div>
+          <div>리뷰 1</div>
+          <div>리뷰 2</div>
+          <div>리뷰 3</div>
+        </div>
+      </div>
+    </article>
     <Button size="xLarge" color={theme.color.yellow}>
       <Text
         text="카카오맵으로 자세히 보기"
@@ -35,7 +35,7 @@ const PlaceModalContent = ({ placeInfo }: { placeInfo: PlaceDetail }) => (
         color={theme.color.lightBlack}
       />
     </Button>
-  </S.ModalContent>
+  </div>
 );
 
-export default PlaceModalContent;
+export default PlaceModalReview;

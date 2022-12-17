@@ -1,7 +1,7 @@
-import { useQuery } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-import PlaceModalContent from '../PlaceModalContent';
+import PlaceModalReview from '../PlaceModalReview';
+import PlaceModalUpdate from '../PlaceModalUpdate';
 
 import { getPlaceDeatilInfo } from '@/apis/place';
 import { Icons } from '@/assets/icons';
@@ -15,35 +15,29 @@ import theme from '@/styles/theme';
 import { CategorizedPlaces, PlaceType } from '@/types/map';
 
 const Infos = ({ infoData }: { infoData: CategorizedPlaces[] }) => {
-  const [clickedPlace, setClickedPlace] = useState<number>(0);
   const [isOpenGlobalModal, setIsOpenGlobalModal] = useState(false);
+  const [isOpenUpdateModal, setIsOpenUpdateModal] = useState(false);
 
-  const { data: placeDetailInfo, refetch: refetchDetailMap } = useQuery(
-    ['DetailMap'],
-    () => {
-      if (clickedPlace) {
-        return getPlaceDeatilInfo(clickedPlace);
-      }
-      return true;
-    },
-    {
-      onSuccess: (data: PlaceDetail) => {
-        if (data.place_id) {
-          setIsOpenGlobalModal(true);
-        }
-      },
+  const [placeDetailInfo, setPlaceDetailInfo] = useState<PlaceDetail>({
+    place_id: 0,
+    name: '',
+    address: '',
+    latitude: 0,
+    longitude: 0,
+    story: '',
+    detail_link: '',
+    category_id: 0,
+  });
+
+  const handleClickPlace = async (type: 'GET' | 'UPDATE', id: number) => {
+    const data = await getPlaceDeatilInfo(id);
+    setPlaceDetailInfo(data);
+    if (type === 'GET') {
+      setIsOpenGlobalModal(true);
+    } else {
+      setIsOpenUpdateModal(true);
     }
-  );
-
-  const handleClickPlace = (id: number) => {
-    setClickedPlace(id);
   };
-
-  useEffect(() => {
-    if (clickedPlace) {
-      refetchDetailMap();
-    }
-  }, [clickedPlace, refetchDetailMap]);
 
   return (
     infoData && (
@@ -77,7 +71,7 @@ const Infos = ({ infoData }: { infoData: CategorizedPlaces[] }) => {
                         size="small"
                         url={Icons.More}
                         alt="정보 더보기"
-                        onClick={() => handleClickPlace(place.place_id)}
+                        onClick={() => handleClickPlace('GET', place.place_id)}
                       />
                     </div>
                     <Button
@@ -85,6 +79,7 @@ const Infos = ({ infoData }: { infoData: CategorizedPlaces[] }) => {
                       color={theme.color.navy}
                       onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                         e.preventDefault();
+                        handleClickPlace('UPDATE', place.place_id);
                       }}
                     >
                       <Text
@@ -113,7 +108,18 @@ const Infos = ({ infoData }: { infoData: CategorizedPlaces[] }) => {
             size="large"
             handleCancelClick={() => setIsOpenGlobalModal(false)}
           >
-            <PlaceModalContent placeInfo={placeDetailInfo} />
+            <PlaceModalReview placeInfo={placeDetailInfo} />
+          </GlobalModal>
+        )}
+        {isOpenUpdateModal && (
+          <GlobalModal
+            size="medium"
+            handleCancelClick={() => setIsOpenUpdateModal(false)}
+          >
+            <PlaceModalUpdate
+              placeInfo={placeDetailInfo}
+              categoryInfo={infoData.map(data => data.category_info)}
+            />
           </GlobalModal>
         )}
       </section>
