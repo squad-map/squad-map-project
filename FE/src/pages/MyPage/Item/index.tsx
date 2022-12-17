@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import * as S from './Item.style';
-
 import { Icons } from '@/assets/icons';
 import Button from '@/components/common/Button';
 import GlobalModal from '@/components/common/GlobalModal';
@@ -22,14 +20,14 @@ const Item = ({ item }: ItemProps) => {
 
   return (
     <>
-      <S.Item>
-        <S.ItemHeader>
+      <div className="h-full flex flex-col justify-between">
+        <header className="flex justify-between items-center">
           <Text
             text={`${unicodeToEmoji(item.map_emoji)} ${item.map_name}`}
             size="xRegularFill"
             color={theme.color.darkGray}
           />
-          <S.ItemManageMent>
+          <div className="flex items-center gap-4">
             <Button
               size="xSmall"
               color={theme.color.navy}
@@ -49,16 +47,24 @@ const Item = ({ item }: ItemProps) => {
             >
               <Icon size="small" url={Icons.Edit} alt="Edit Icon" />
             </Link>
-          </S.ItemManageMent>
-        </S.ItemHeader>
-        <S.ItemFooter>
+          </div>
+        </header>
+        <div className="flex items-center gap-4 mt-4">
+          <img
+            className="w-8 h-8 rounded-2xl"
+            src={item.host_profile_image}
+            alt="profile_image"
+          />
+          <span className="text-gray">지도 Host: {item.host_nickname}</span>
+        </div>
+        <footer className="flex justify-between">
           <Text
-            text={`${item.places_count}개의장소`}
+            text={`${item.places_count}개의장소 등록됨`}
             size="xSmall"
             color={theme.color.gray}
           />
-        </S.ItemFooter>
-      </S.Item>
+        </footer>
+      </div>
       {isOpenAuthorityModal && (
         <GlobalModal
           size="large"
