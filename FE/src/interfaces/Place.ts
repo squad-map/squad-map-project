@@ -1,6 +1,6 @@
 export interface PlaceDetail {
   place_id: number;
-  place_name: string;
+  name: string;
   address: string;
   latitude: number;
   longitude: number;

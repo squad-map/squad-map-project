@@ -17,7 +17,7 @@ const ModalContent = ({ placeInfo }: { placeInfo: PlaceType }) => {
   const [story, setStory] = useState('');
   const [isCategoryForm, setIsCategoryForm] = useState(false);
 
-  const handlestoryChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handlleStoryChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setStory(e.target.value);
   };
 
@@ -60,7 +60,7 @@ const ModalContent = ({ placeInfo }: { placeInfo: PlaceType }) => {
           <S.TextArea
             placeholder="당신의 이야기를 들려주세요."
             value={story}
-            onChange={handlestoryChange}
+            onChange={handlleStoryChange}
           />
           <Button
             size="xLarge"
