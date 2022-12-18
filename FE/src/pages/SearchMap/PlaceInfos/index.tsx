@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import ModalContent from '../ModalContent';
+import SearchModalContent from '../SearchModalContent';
 
 import * as S from './Infos.style';
 
@@ -64,7 +64,7 @@ const PlaceInfos = ({ placeInfos }: { placeInfos: PlaceType[] }) => {
             size="large"
             handleCancelClick={() => setIsOpenGlobalModal(false)}
           >
-            <ModalContent placeInfo={placeInfo as PlaceType} />
+            <SearchModalContent placeInfo={placeInfo as PlaceType} />
           </GlobalModal>
         )}
       </S.PlaceInfos>

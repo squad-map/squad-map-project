@@ -7,7 +7,7 @@ import { PlaceDetail } from '@/interfaces/Place';
 import theme from '@/styles/theme';
 
 const PlaceModalContent = ({ placeInfo }: { placeInfo: PlaceDetail }) => (
-  <S.ModalContent>
+  <S.PlaceModalContent>
     <S.Header>
       <S.Title>{placeInfo.name}</S.Title>
       <S.Address>{placeInfo.address}</S.Address>
@@ -35,7 +35,7 @@ const PlaceModalContent = ({ placeInfo }: { placeInfo: PlaceDetail }) => (
         color={theme.color.lightBlack}
       />
     </Button>
-  </S.ModalContent>
+  </S.PlaceModalContent>
 );
 
 export default PlaceModalContent;

@@ -1,6 +1,23 @@
 import { CategoryPostParams } from '@/types/category';
 import { getCookie } from '@/utils/cookie';
 
+export const getMapCategories = async (map_id: number) => {
+  const accessToken = getCookie('access_token');
+  if (!accessToken) throw new Error('accesToken is undefined');
+
+  const response = await fetch(
+    `${process.env.SQUAD_MAP_OAUTH_URL}/${map_id}/categories`
+  );
+
+  const data = await response.json();
+
+  try {
+    return data;
+  } catch (err) {
+    throw new Error(`getCategory api fail err: ${err}`);
+  }
+};
+
 export const postCategory = async (categoryRequestBody: CategoryPostParams) => {
   const accessToken = getCookie('access_token');
   if (!accessToken) throw new Error('accesToken is undefined');
