@@ -6,7 +6,6 @@ import com.squadmap.core.category.domain.Category;
 import com.squadmap.core.category.infrastructure.CategoryRepository;
 import com.squadmap.common.excetpion.ClientException;
 import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
-import com.squadmap.core.group.application.GroupMemberService;
 import com.squadmap.core.group.application.dto.AccessInfo;
 import com.squadmap.core.group.domain.PermissionLevel;
 import com.squadmap.core.map.domain.Map;

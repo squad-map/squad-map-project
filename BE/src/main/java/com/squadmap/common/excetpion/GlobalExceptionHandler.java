@@ -1,5 +1,6 @@
 package com.squadmap.common.excetpion;
 
+import com.squadmap.common.CommonResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -8,21 +9,29 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    private static final String FIELD_ERROR_FORMAT = "%s : %s";
+
     @ExceptionHandler(ClientException.class)
-    public ResponseEntity<ErrorResponse<String>> handleClientException(ClientException exception) {
-        return new ResponseEntity<>(new ErrorResponse<>(exception.getMessage()), exception.getHttpStatus());
+    public ResponseEntity<CommonResponse<?>> handleClientException(ClientException exception) {
+        CommonResponse<?> response = CommonResponse.error("code", List.of(exception.getMessage()));
+        return new ResponseEntity<>(response, exception.getHttpStatus());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorResponse<Map<String, String>>> handleNotValidException(MethodArgumentNotValidException exception) {
+    public ResponseEntity<CommonResponse<?>> handleNotValidException(MethodArgumentNotValidException exception) {
         BindingResult bindingResult = exception.getBindingResult();
-        Map<String, String> errorMessages = bindingResult.getFieldErrors().stream().collect(Collectors.toMap(FieldError::getField, FieldError::getDefaultMessage));
-        return new ResponseEntity<>(new ErrorResponse<>(errorMessages), HttpStatus.BAD_REQUEST);
+        List<String> errorMessages = bindingResult.getFieldErrors()
+                .stream()
+                .map(fieldError -> String.format(FIELD_ERROR_FORMAT,
+                        fieldError.getField(),
+                        fieldError.getDefaultMessage())).collect(Collectors.toUnmodifiableList());
+        return new ResponseEntity<>(CommonResponse.error("errorCode", errorMessages), HttpStatus.BAD_REQUEST);
     }
 }

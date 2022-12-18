@@ -43,7 +43,9 @@ public class PlaceServiceImpl implements PlaceService {
     @Override
     @Transactional
     @RequiredPermission(level = PermissionLevel.MAINTAIN)
-    public Long create(AccessInfo accessInfo, String name, String address, Double latitude, Double longitude, String story, String detailLink, Long categoryId) {
+    public Long create(AccessInfo accessInfo, String name, String address,
+                       Double latitude, Double longitude, String story,
+                       String detailLink, Long categoryId) {
 
         Map map = mapRepository.findById(accessInfo.getMapId())
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_MAP));
