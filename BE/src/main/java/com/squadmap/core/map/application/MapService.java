@@ -3,6 +3,7 @@ package com.squadmap.core.map.application;
 import com.squadmap.common.dto.SimplePage;
 import com.squadmap.core.map.application.dto.MapDetail;
 import com.squadmap.core.map.application.dto.MapSimpleInfo;
+import com.squadmap.core.map.application.dto.MapUpdateInfo;
 import com.squadmap.core.map.application.dto.MapsResponse;
 import org.springframework.data.domain.Pageable;
 
@@ -13,7 +14,7 @@ public interface MapService {
 
     Long create(String mapName, String emoji, Boolean isPrivate, Long memberId);
 
-    void update(Long memberId, Long mapId, String mapName, String emoji, boolean fullDisclosure);
+    MapUpdateInfo update(Long memberId, Long mapId, String mapName, String emoji, boolean fullDisclosure);
 
     SimplePage<MapSimpleInfo> searchPublic(Pageable pageable, Optional<String> name);
 

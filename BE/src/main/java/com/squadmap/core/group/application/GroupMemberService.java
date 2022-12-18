@@ -1,6 +1,7 @@
 package com.squadmap.core.group.application;
 
 import com.squadmap.core.group.application.dto.AccessInfo;
+import com.squadmap.core.group.application.dto.GroupMemberSimpleInfo;
 import com.squadmap.core.group.application.dto.GroupMemberInfo;
 import com.squadmap.core.group.domain.PermissionLevel;
 
@@ -10,9 +11,9 @@ public interface GroupMemberService {
 
     List<GroupMemberInfo> searchMembersInGroup(Long LoginMemberId, Long memberId);
 
-    void changeGroupMemberLevel(Long loginMemberId, Long mapId, Long memberId, String level);
+    GroupMemberSimpleInfo changeGroupMemberLevel(Long loginMemberId, Long mapId, Long memberId, String level);
 
-    void addGroupMember(Long loginMemberId, Long mapId, Long memberId, String level);
+    GroupMemberSimpleInfo addGroupMember(Long loginMemberId, Long mapId, Long memberId, String level);
 
     void removeGroupMember(Long loginMemberId, Long mapId, Long memberId);
 

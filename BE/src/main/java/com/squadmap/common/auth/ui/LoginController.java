@@ -6,6 +6,8 @@ import com.squadmap.common.auth.application.dto.LoginInfo;
 import com.squadmap.common.auth.ui.dto.AccessToken;
 import com.squadmap.common.auth.ui.dto.LoginRequest;
 import com.squadmap.common.auth.ui.dto.LoginResponse;
+import com.squadmap.common.dto.CommonResponse;
+import com.squadmap.common.dto.SuccessCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,25 +15,28 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/login")
 public class LoginController {
 
     private final LoginService loginService;
 
-    @PostMapping("/login/{provider}")
-    public LoginResponse login(@PathVariable String provider, @RequestBody @Valid LoginRequest githubLogin) {
+    @PostMapping("/{provider}")
+    public CommonResponse<LoginResponse> login(@PathVariable String provider, @RequestBody @Valid LoginRequest loginRequest) {
 
-        LoginInfo loginInfo = loginService.login(provider, githubLogin.getCode(), githubLogin.getState());
-
-        return new LoginResponse(loginInfo.getAccessToken(),
+        LoginInfo loginInfo = loginService.login(provider, loginRequest.getCode(), loginRequest.getState());
+        LoginResponse loginResponse = new LoginResponse(loginInfo.getAccessToken(),
                 loginInfo.getRefreshToken(),
                 loginInfo.getMemberId(),
                 loginInfo.getNickname(),
                 loginInfo.getProfileImage());
+
+        return CommonResponse.success(SuccessCode.LOGIN, loginResponse);
     }
 
-    @GetMapping("/login")
-    public AccessToken reissueAccessToken(@Login Long memberId) {
+    @GetMapping("")
+    public CommonResponse<AccessToken> reissueAccessToken(@Login Long memberId) {
 
-        return new AccessToken(loginService.reissueAccessToken(memberId));
+        return CommonResponse.success(SuccessCode.REISSUE_TOKEN,
+                new AccessToken(loginService.reissueAccessToken(memberId)));
     }
 }

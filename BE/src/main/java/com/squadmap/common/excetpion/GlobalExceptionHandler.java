@@ -1,7 +1,6 @@
 package com.squadmap.common.excetpion;
 
 import com.squadmap.common.dto.CommonResponse;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -18,7 +17,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(ClientException.class)
     public ResponseEntity<CommonResponse<?>> handleClientException(ClientException exception) {
-        CommonResponse<?> response = CommonResponse.error("code", List.of(exception.getMessage()));
+        CommonResponse<?> response = CommonResponse.error(exception.getCode(), exception.getMessage(), null);
         return new ResponseEntity<>(response, exception.getHttpStatus());
     }
 
@@ -30,6 +29,9 @@ public class GlobalExceptionHandler {
                 .map(fieldError -> String.format(FIELD_ERROR_FORMAT,
                         fieldError.getField(),
                         fieldError.getDefaultMessage())).collect(Collectors.toUnmodifiableList());
-        return new ResponseEntity<>(CommonResponse.error("errorCode", errorMessages), HttpStatus.BAD_REQUEST);
+
+        CommonResponse<List<String>> errorResponse = CommonResponse.error(ErrorStatusCodeAndMessage.REQUEST_FIELD_NOT_VALID.getCode(),
+                ErrorStatusCodeAndMessage.REQUEST_FIELD_NOT_VALID.getMessage(), errorMessages);
+        return new ResponseEntity<>(errorResponse, ErrorStatusCodeAndMessage.REQUEST_FIELD_NOT_VALID.getHttpStatus());
     }
 }

@@ -7,9 +7,11 @@ import org.springframework.http.HttpStatus;
 public class ClientException extends RuntimeException {
 
     private final HttpStatus httpStatus;
+    private final String code;
 
     public ClientException(ErrorStatusCodeAndMessage errorStatusCodeAndMessage) {
         super(errorStatusCodeAndMessage.getMessage());
+        this.code = errorStatusCodeAndMessage.getCode();
         this.httpStatus = errorStatusCodeAndMessage.getHttpStatus();
     }
 }

@@ -4,23 +4,26 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.List;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 public class CommonResponse<T> {
 
-    private static final List<String> SUCCESS = List.of("OK");
+    private static final String SUCCESS = "OK";
 
     private final String code;
-    private final List<String> messages;
+    private final String message;
     private final T data;
 
-    public static <T> CommonResponse<T> success(String code, T data) {
-        return new CommonResponse<>(code, SUCCESS, data);
+    public static <T> CommonResponse<T> success(SuccessCode successCode, T data) {
+        return new CommonResponse<>(successCode.getCode(), SUCCESS, data);
     }
 
-    public static CommonResponse<?> error(String code, List<String> errorMessages) {
-        return new CommonResponse<>(code, errorMessages, null);
+    public static <T> CommonResponse<T> error(String errorCode, String message, T data) {
+        return new CommonResponse<>(errorCode, message, data);
+    }
+
+    public static CommonResponse<Void> emptyData(SuccessCode successCode) {
+        return new CommonResponse<>(successCode.getCode(), SUCCESS, null);
     }
 }

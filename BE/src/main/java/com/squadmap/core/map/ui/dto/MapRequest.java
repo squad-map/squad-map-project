@@ -17,6 +17,6 @@ public class MapRequest {
     @NotBlank
     private String mapEmoji;
     @NotNull
-    private Boolean fullDisclosure;
+    private boolean fullDisclosure;
 
 }

@@ -1,5 +1,7 @@
 package com.squadmap.core.category.ui;
 
+import com.squadmap.common.dto.CommonResponse;
+import com.squadmap.common.dto.SuccessCode;
 import com.squadmap.core.category.application.CategoryService;
 import com.squadmap.core.category.application.dto.CategoryInfo;
 import com.squadmap.core.category.ui.dto.CategoryRequest;
@@ -23,31 +25,35 @@ public class CategoryController {
 
     @PostMapping("/categories")
     @ResponseStatus(HttpStatus.CREATED)
-    public CategoryResponse create(@Login Long loginId, @PathVariable Long mapId, @RequestBody @Valid CategoryRequest categoryRequest) {
+    public CommonResponse<CategoryResponse> create(@Login Long loginId, @PathVariable Long mapId, @RequestBody @Valid CategoryRequest categoryRequest) {
         Long categoryId = categoryService.create(AccessInfo.of(loginId, mapId),
                 categoryRequest.getCategoryName(),
                 categoryRequest.getColor());
-        return new CategoryResponse(categoryId);
+        return CommonResponse.success(SuccessCode.CATEGORY_CREATE,
+                new CategoryResponse(categoryId));
     }
 
+    // 다시 살펴보기
     @GetMapping("/categories/{categoryId}")
-    public CategoryInfo readOne(@Login Long loginId, @PathVariable Long mapId, @PathVariable Long categoryId) {
-        return categoryService.readOne(AccessInfo.of(loginId, mapId), categoryId);
+    public CommonResponse<CategoryInfo> readOne(@Login Long loginId, @PathVariable Long mapId, @PathVariable Long categoryId) {
+        return CommonResponse.success(SuccessCode.CATEGORY_READ,
+                categoryService.readOne(AccessInfo.of(loginId, mapId), categoryId));
     }
 
     @GetMapping("/categories")
-    public List<CategoryInfo> readCategories(@Login Long loginId, @PathVariable Long mapId) {
-        return categoryService.readAll(AccessInfo.of(loginId, mapId));
+    public CommonResponse<List<CategoryInfo>> readCategories(@Login Long loginId, @PathVariable Long mapId) {
+        return CommonResponse.success(SuccessCode.CATEGORY_READ_ALL,
+                categoryService.readAll(AccessInfo.of(loginId, mapId)));
     }
 
     @PostMapping("/categories/update")
-    public CategoryInfo update(@Login Long loginId, @PathVariable Long mapId, @RequestBody @Valid CategoryUpdateRequest categoryUpdateRequest) {
+    public CommonResponse<CategoryInfo> update(@Login Long loginId, @PathVariable Long mapId, @RequestBody @Valid CategoryUpdateRequest categoryUpdateRequest) {
 
-        return categoryService.update(
-                AccessInfo.of(loginId, mapId),
+        return CommonResponse.success(SuccessCode.CATEGORY_UPDATE,
+                categoryService.update(AccessInfo.of(loginId, mapId),
                 categoryUpdateRequest.getCategoryId(),
                 categoryUpdateRequest.getCategoryName(),
-                categoryUpdateRequest.getCategoryColor());
+                categoryUpdateRequest.getCategoryColor()));
     }
 
 }

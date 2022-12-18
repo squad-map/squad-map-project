@@ -143,9 +143,8 @@ class CommentServiceTest {
         Long memberId = 1L;
         Long commentId = 1L;
 
-        Long deletedCommentId = commentService.deleteComment(memberId, commentId);
+        commentService.deleteComment(memberId, commentId);
 
-        assertThat(deletedCommentId).isEqualTo(commentId);
         assertThat(commentRepository.findById(commentId).isEmpty()).isTrue();
     }
 

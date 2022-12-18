@@ -5,13 +5,10 @@ import com.squadmap.core.category.application.dto.CategoryInfo;
 import com.squadmap.core.category.domain.Category;
 import com.squadmap.common.excetpion.ClientException;
 import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
-import com.squadmap.core.map.application.dto.CategorizedPlaces;
+import com.squadmap.core.map.application.dto.*;
 import com.squadmap.core.map.domain.Map;
 import com.squadmap.core.group.domain.GroupMember;
 import com.squadmap.core.group.infrastructure.GroupMemberRepository;
-import com.squadmap.core.map.application.dto.MapDetail;
-import com.squadmap.core.map.application.dto.MapSimpleInfo;
-import com.squadmap.core.map.application.dto.MapsResponse;
 import com.squadmap.core.map.infrastructure.MapRepository;
 import com.squadmap.member.domain.Member;
 import com.squadmap.member.infrastructure.MemberRepository;
@@ -52,7 +49,7 @@ public class MapServiceImpl implements MapService {
 
     @Override
     @Transactional
-    public void update(Long memberId, Long mapId, String mapName, String emoji, boolean fullDisclosure) {
+    public MapUpdateInfo update(Long memberId, Long mapId, String mapName, String emoji, boolean fullDisclosure) {
 
         Map map = mapRepository.findById(mapId)
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_MEMBER));
@@ -61,6 +58,8 @@ public class MapServiceImpl implements MapService {
         }
 
         map.update(mapName, emoji, fullDisclosure);
+
+        return new MapUpdateInfo(mapId, mapName, emoji, fullDisclosure);
     }
 
     @Cacheable(value = "pagingPublicMaps", key = "{#pageable.pageNumber, #pageable.pageSize, #name}")

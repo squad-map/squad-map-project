@@ -69,7 +69,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public Long deleteComment(Long loginMemberId, Long commentId) {
+    public void deleteComment(Long loginMemberId, Long commentId) {
 
         Comment comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_COMMENT));
@@ -78,8 +78,6 @@ public class CommentServiceImpl implements CommentService {
             throw new ClientException(ErrorStatusCodeAndMessage.FORBIDDEN);
         }
         commentRepository.delete(comment);
-
-        return comment.getId();
     }
 
     @Override

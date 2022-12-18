@@ -30,7 +30,9 @@ public enum ErrorStatusCodeAndMessage {
     UNIQUE_HOST("G-F03", HttpStatus.CONFLICT, "지도의 HOST 권한은 지도 생성자만 가능합니다."),
 
     OUT_OF_LIMIT_COMMENT_LENGTH("CM-F01", HttpStatus.BAD_REQUEST, "댓글은 1~150자 이내로만 작성할 수 있습니다."),
-    NO_SUCH_COMMENT("CM-F02", HttpStatus.NO_CONTENT, "등록된 댓글이 없습니다.");
+    NO_SUCH_COMMENT("CM-F02", HttpStatus.NO_CONTENT, "등록된 댓글이 없습니다."),
+
+    REQUEST_FIELD_NOT_VALID("NV-F01", HttpStatus.BAD_REQUEST, "잘못된 요청입니다. 요청 필드를 확인해주세요.");
 
 
     private final String code;

@@ -7,9 +7,11 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public enum SuccessCode {
 
-    LOGIN_GITHUB("A-S01"),
-    LOGIN_NAVER("A-S02"),
-    REISSUE_TOKEN("A-S03"),
+    LOGIN("A-S01"),
+    REISSUE_TOKEN("A-S02"),
+
+    MEMBER_UPDATE("MM-S01"),
+    MEMBER_REA_SEARCH("MM-S02"),
 
     MAP_CREATE("M-S01"),
     MAP_READ_DETAIL("M-S02"),

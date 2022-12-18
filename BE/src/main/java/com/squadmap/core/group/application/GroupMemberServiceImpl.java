@@ -3,6 +3,7 @@ package com.squadmap.core.group.application;
 import com.squadmap.common.excetpion.ClientException;
 import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
 import com.squadmap.core.group.application.dto.AccessInfo;
+import com.squadmap.core.group.application.dto.GroupMemberSimpleInfo;
 import com.squadmap.core.group.application.dto.GroupMemberInfo;
 import com.squadmap.core.group.domain.GroupMember;
 import com.squadmap.core.group.domain.PermissionLevel;
@@ -45,7 +46,7 @@ public class GroupMemberServiceImpl implements GroupMemberService {
         return groups.stream()
                 .map(group -> {
                     Member member = members.get(group.getMemberId());
-                    return new GroupMemberInfo(member.getId(), member.getNickname(), member.getProfileImage(), group.getPermissionLevel());
+                    return new GroupMemberInfo(member.getId(), member.getNickname(), member.getProfileImage(), group.getPermissionLevel().name());
                 })
                 .collect(Collectors.toUnmodifiableList());
 
@@ -53,16 +54,18 @@ public class GroupMemberServiceImpl implements GroupMemberService {
 
     @Override
     @Transactional
-    public void changeGroupMemberLevel(Long loginMemberId, Long mapId, Long memberId, String level) {
+    public GroupMemberSimpleInfo changeGroupMemberLevel(Long loginMemberId, Long mapId, Long memberId, String level) {
         checkHasAuthority(mapId, loginMemberId, PermissionLevel.HOST);
         GroupMember groupMember = groupMemberRepository.findByMapIdAndMemberId(mapId, memberId)
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_GROUP_MEMBER));
         groupMember.updatePermissionLevel(level);
+
+        return new GroupMemberSimpleInfo(groupMember.getMapId(), groupMember.getMemberId(), groupMember.getPermissionLevel().name());
     }
 
     @Override
     @Transactional
-    public void addGroupMember(Long loginMemberId, Long mapId, Long memberId, String level) {
+    public GroupMemberSimpleInfo addGroupMember(Long loginMemberId, Long mapId, Long memberId, String level) {
 
         checkHasAuthority(mapId, loginMemberId, PermissionLevel.HOST);
         GroupMember groupMember = GroupMember.of(mapId, memberId, level);
@@ -77,6 +80,9 @@ public class GroupMemberServiceImpl implements GroupMemberService {
         }
 
         groupMemberRepository.save(groupMember);
+
+        return new GroupMemberSimpleInfo(mapId, memberId, level);
+
     }
 
     @Override

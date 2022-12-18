@@ -11,7 +11,7 @@ public interface CommentService {
 
     CommentResponse updateComment(Long loginMemberId, Long commentId, String contents);
 
-    Long deleteComment(Long loginMemberId, Long commentId);
+    void deleteComment(Long loginMemberId, Long commentId);
 
     SimpleSlice<CommentInfo> readComments(AccessInfo accessInfo, Long placeId, Long lastCommentId, Integer size);
 }
