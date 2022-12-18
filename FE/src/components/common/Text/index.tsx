@@ -13,10 +13,17 @@ interface IText {
     | 'xSmall';
   color: string;
   hover?: boolean;
+  className?: string;
 }
 
-const Text = ({ text, size = 'regular', color, ...props }: IText) => (
-  <S.Text size={size} color={color} {...props}>
+const Text = ({
+  text,
+  size = 'regular',
+  color,
+  className,
+  ...props
+}: IText) => (
+  <S.Text size={size} color={color} className={className} {...props}>
     {text}
   </S.Text>
 );
