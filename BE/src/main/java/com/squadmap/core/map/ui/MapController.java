@@ -1,6 +1,6 @@
 package com.squadmap.core.map.ui;
 
-import com.squadmap.common.SimplePage;
+import com.squadmap.common.dto.SimplePage;
 import com.squadmap.common.auth.Login;
 import com.squadmap.core.map.application.MapService;
 import com.squadmap.core.map.application.dto.MapDetail;

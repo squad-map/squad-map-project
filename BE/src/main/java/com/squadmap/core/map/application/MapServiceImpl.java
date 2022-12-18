@@ -1,6 +1,6 @@
 package com.squadmap.core.map.application;
 
-import com.squadmap.common.SimplePage;
+import com.squadmap.common.dto.SimplePage;
 import com.squadmap.core.category.application.dto.CategoryInfo;
 import com.squadmap.core.category.domain.Category;
 import com.squadmap.common.excetpion.ClientException;

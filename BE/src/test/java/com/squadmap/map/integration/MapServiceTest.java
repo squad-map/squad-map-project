@@ -1,7 +1,7 @@
 package com.squadmap.map.integration;
 
 import com.squadmap.IntegrationTest;
-import com.squadmap.common.SimplePage;
+import com.squadmap.common.dto.SimplePage;
 import com.squadmap.common.excetpion.ClientException;
 import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
 import com.squadmap.core.map.application.MapService;
@@ -13,7 +13,6 @@ import com.squadmap.core.map.infrastructure.MapRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.squadmap.core.place.application;
 
-import com.squadmap.common.SimpleSlice;
+import com.squadmap.common.dto.SimpleSlice;
 import com.squadmap.common.excetpion.ClientException;
 import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
 import com.squadmap.core.access.RequiredPermission;

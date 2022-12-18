@@ -1,7 +1,7 @@
 package com.squadmap.comment.integration;
 
 import com.squadmap.IntegrationTest;
-import com.squadmap.common.SimpleSlice;
+import com.squadmap.common.dto.SimpleSlice;
 import com.squadmap.common.excetpion.ClientException;
 import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
 import com.squadmap.core.comment.application.CommentServiceImpl;

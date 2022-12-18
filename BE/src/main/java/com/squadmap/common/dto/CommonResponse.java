@@ -1,4 +1,4 @@
-package com.squadmap.common;
+package com.squadmap.common.dto;
 
 import lombok.AccessLevel;
 import lombok.Getter;
