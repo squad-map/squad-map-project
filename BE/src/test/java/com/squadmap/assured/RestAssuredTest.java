@@ -17,10 +17,15 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.restdocs.snippet.Snippet;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestExecutionListeners;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.springframework.restdocs.headers.HeaderDocumentation.headerWithName;
 import static org.springframework.restdocs.headers.HeaderDocumentation.requestHeaders;
@@ -42,12 +47,15 @@ public class RestAssuredTest {
     protected static final Snippet AUTHORIZATION_HEADER = requestHeaders(
             headerWithName(HttpHeaders.AUTHORIZATION).description("토큰, 로그인 및 권한 검증"));
 
-    protected static final Snippet COMMON_RESPONSE_FIELDS = requestFields(
+    protected static final List<FieldDescriptor> COMMON_RESPONSE_FIELDS = List.of(
             fieldWithPath("code").type(JsonFieldType.STRING).description("응답 커스텀 코드"),
             fieldWithPath("message").type(JsonFieldType.STRING).description("응답 메시지"),
-            fieldWithPath("data").type(JsonFieldType.STRING).description("응답 데이터").optional());
+            fieldWithPath("data").description("응답 데이터")
+    );
 
-    protected final static Snippet MAP_PATH_PARAMETER = pathParameters(
+    protected static final Snippet COMMON_RESPONSE_EMPTY_DATA = responseFields(COMMON_RESPONSE_FIELDS);
+
+    public static final Snippet MAP_PATH_PARAMETER = pathParameters(
             parameterWithName("map_id").description("지도의 아이디")
     );
 
@@ -60,7 +68,15 @@ public class RestAssuredTest {
     int port;
 
     protected static String makeFieldName(String name) {
-        return "data[]." + name;
+        return "data." + name;
+    }
+
+
+    protected static Snippet generateCommonResponse(FieldDescriptor... descriptors) {
+        List<FieldDescriptor> fieldDescriptors = new ArrayList<>();
+        fieldDescriptors.addAll(COMMON_RESPONSE_FIELDS);
+        fieldDescriptors.addAll(Arrays.asList(descriptors));
+        return responseFields(fieldDescriptors);
     }
 
     @BeforeEach
@@ -91,5 +107,7 @@ public class RestAssuredTest {
     protected String createAuthorizationHeader(Long memberId) {
         return "Bearer " + this.jwtProvider.generateAccessToken(memberId);
     }
+
+
 
 }

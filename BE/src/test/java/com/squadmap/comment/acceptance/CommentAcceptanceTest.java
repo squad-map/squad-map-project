@@ -21,6 +21,7 @@ import static org.springframework.restdocs.restassured3.RestAssuredRestDocumenta
 public class CommentAcceptanceTest extends RestAssuredTest {
 
     private static final Snippet COMMENT_READ_REQUEST_PATH = pathParameters(
+            parameterWithName("map_id").description("지도의 아이디"),
             parameterWithName("place_id").description("장소의 아이디")
     );
 
@@ -28,12 +29,13 @@ public class CommentAcceptanceTest extends RestAssuredTest {
             fieldWithPath("content").type(JsonFieldType.STRING).description("작성 댓글")
     );
 
-    private static final Snippet CREATE_COMMENT_RESPONSE_FIELDS = responseFields(
+    private static final Snippet CREATE_COMMENT_RESPONSE_FIELDS = generateCommonResponse(
             fieldWithPath(makeFieldName("member_id")).type(JsonFieldType.NUMBER).description("댓글 작성자 아이디"),
             fieldWithPath(makeFieldName("member_nickname")).type(JsonFieldType.STRING).description("댓글 작성자 닉네임"),
             fieldWithPath(makeFieldName("member_profile_image")).type(JsonFieldType.STRING).description("댓글 작성자 프로필 이미지 URL"),
             fieldWithPath(makeFieldName("comment_id")).type(JsonFieldType.NUMBER).description("댓글 아이디"),
-            fieldWithPath(makeFieldName("content")).type(JsonFieldType.STRING).description("작성 댓글")
+            fieldWithPath(makeFieldName("content")).type(JsonFieldType.STRING).description("작성 댓글"),
+            fieldWithPath(makeFieldName("written_at")).type(JsonFieldType.STRING).description("작성 시간")
     );
 
     @Test
@@ -45,17 +47,16 @@ public class CommentAcceptanceTest extends RestAssuredTest {
 
         CommentRequest commentRequest = new CommentRequest("Hi, I love it");
         given(this.specification)
-                .filter(document(DEFAULT_RESTDOC_PATH, AUTHORIZATION_HEADER, MAP_PATH_PARAMETER,
-                        COMMENT_READ_REQUEST_PATH, COMMENT_REQUEST_FIELDS,
-                        COMMON_RESPONSE_FIELDS, CREATE_COMMENT_RESPONSE_FIELDS))
+                .filter(document(DEFAULT_RESTDOC_PATH, AUTHORIZATION_HEADER, COMMENT_READ_REQUEST_PATH, CREATE_COMMENT_RESPONSE_FIELDS))
                 .accept(ContentType.JSON)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header(HttpHeaders.AUTHORIZATION, this.createAuthorizationHeader(memberId))
-//                .pathParam("place_id", placeId)
+                .pathParam("map_id", mapId)
+                .pathParam("place_id", placeId)
                 .body(commentRequest)
                 .log().all()
 
-        .when().post("/map/{mapId}/places/{place_id}/comments", mapId, placeId)
+        .when().post("/map/{map_id}/places/{place_id}/comments")
 
         .then()
                 .statusCode(HttpStatus.CREATED.value())
@@ -67,7 +68,7 @@ public class CommentAcceptanceTest extends RestAssuredTest {
             parameterWithName("comment_id").description("수정하고자 하는 댓글의 아이디")
     );
 
-    private static final Snippet COMMENT_UPDATE_RESPONSE_FIELD = responseFields(
+    private static final Snippet COMMENT_UPDATE_RESPONSE_FIELD = generateCommonResponse(
         fieldWithPath(makeFieldName("comment_id")).type(JsonFieldType.NUMBER).description("수정된 댓글의 아이디")
     );
 
@@ -83,7 +84,7 @@ public class CommentAcceptanceTest extends RestAssuredTest {
         given(this.specification)
                 .filter(document(DEFAULT_RESTDOC_PATH, AUTHORIZATION_HEADER,
                         COMMENT_UPDATE_REQUEST_PATH, COMMENT_REQUEST_FIELDS,
-                        COMMON_RESPONSE_FIELDS, COMMENT_UPDATE_RESPONSE_FIELD))
+                        COMMENT_UPDATE_RESPONSE_FIELD))
                 .accept(ContentType.JSON)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header(HttpHeaders.AUTHORIZATION, this.createAuthorizationHeader(memberId))
@@ -91,11 +92,11 @@ public class CommentAcceptanceTest extends RestAssuredTest {
                 .body(commentRequest)
                 .log().all()
 
-        .when().patch("/comments/{comment_id}", commentId)
+        .when().patch("/comments/{comment_id}")
 
         .then().statusCode(HttpStatus.OK.value())
                 .body("code", equalTo(SuccessCode.COMMENT_UPDATE.getCode()))
-                .body("comment_id", equalTo(commentId.intValue()))
+                .body("data.comment_id", equalTo(commentId.intValue()))
                 .log().all();
 
     }
@@ -105,7 +106,7 @@ public class CommentAcceptanceTest extends RestAssuredTest {
             parameterWithName("size").description("요청하고자하는 댓글의 갯수")
     );
 
-    private static final Snippet READ_PAGING_COMMENTS_RESPONSE_FIELDS = responseFields(
+    private static final Snippet READ_PAGING_COMMENTS_RESPONSE_FIELDS = generateCommonResponse(
             fieldWithPath(makeFieldName("size")).type(JsonFieldType.NUMBER).description("요청한 댓글의 갯수"),
             fieldWithPath(makeFieldName("number_of_elements")).type(JsonFieldType.NUMBER).description("실제 반환하는 댓글의 갯수"),
             fieldWithPath(makeFieldName("has_next")).type(JsonFieldType.BOOLEAN).description("아직 보여지지 않은 댓글들의 존재 여부"),
@@ -113,8 +114,8 @@ public class CommentAcceptanceTest extends RestAssuredTest {
             fieldWithPath(makeFieldName("content[].member_nickname")).type(JsonFieldType.STRING).description("댓글 작성자 닉네임"),
             fieldWithPath(makeFieldName("content[].member_profile_image")).type(JsonFieldType.STRING).description("댓글 작성자 프로필 이미지 URL"),
             fieldWithPath(makeFieldName("content[].comment_id")).type(JsonFieldType.NUMBER).description("댓글 아이디"),
-            fieldWithPath(makeFieldName("content[].content")).type(JsonFieldType.STRING).description("작성 댓글")
-
+            fieldWithPath(makeFieldName("content[].content")).type(JsonFieldType.STRING).description("작성 댓글"),
+            fieldWithPath(makeFieldName("content[].written_at")).type(JsonFieldType.STRING).description("작성 시간")
     );
 
     @Test
@@ -128,18 +129,19 @@ public class CommentAcceptanceTest extends RestAssuredTest {
         Integer requestSize = 5;
 
         given(this.specification)
-                .filter(document(DEFAULT_RESTDOC_PATH, AUTHORIZATION_HEADER, MAP_PATH_PARAMETER,
+                .filter(document(DEFAULT_RESTDOC_PATH, AUTHORIZATION_HEADER,
                         COMMENT_READ_REQUEST_PATH, READ_PAGING_NEXT_COMMENTS_READ_QUERY_PARAMS,
-                        COMMON_RESPONSE_FIELDS, READ_PAGING_COMMENTS_RESPONSE_FIELDS))
+                        READ_PAGING_COMMENTS_RESPONSE_FIELDS))
                 .accept(ContentType.JSON)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header(HttpHeaders.AUTHORIZATION, this.createAuthorizationHeader(memberId))
-                //.pathParam("place_id", placeId)
+                .pathParam("map_id", mapId)
+                .pathParam("place_id", placeId)
                 .queryParam("lastCommentId", lastCommentId)
                 .queryParam("size", requestSize)
                 .log().all()
 
-        .when().get("/map/{mapId}/places/{place_id}/comments", mapId, placeId)
+        .when().get("/map/{map_id}/places/{place_id}/comments")
 
         .then().statusCode(HttpStatus.OK.value())
                 .body("code", equalTo(SuccessCode.COMMENT_READ.getCode()))
@@ -151,10 +153,6 @@ public class CommentAcceptanceTest extends RestAssuredTest {
             parameterWithName("comment_id").description("삭제하고자하는 댓글의 아이디")
     );
 
-    private static final Snippet COMMENT_DELETE_RESPONSE_FIELD = responseFields(
-            fieldWithPath(makeFieldName("comment_id")).type(JsonFieldType.NUMBER).description("삭제된 댓글의 아이디")
-    );
-
     @Test
     @DisplayName("댓글 작성자는 자신이 작성한 댓글을 삭제할 수 있으며, 성공하면 상태코드 200을 반환한다.")
     void deleteCommentTest() {
@@ -164,14 +162,14 @@ public class CommentAcceptanceTest extends RestAssuredTest {
 
         given(this.specification)
                 .filter(document(DEFAULT_RESTDOC_PATH, AUTHORIZATION_HEADER,
-                        COMMENT_DELETE_REQUEST_PATH, COMMON_RESPONSE_FIELDS, COMMENT_DELETE_RESPONSE_FIELD))
+                        COMMENT_DELETE_REQUEST_PATH, COMMON_RESPONSE_EMPTY_DATA))
                 .accept(ContentType.JSON)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header(HttpHeaders.AUTHORIZATION, this.createAuthorizationHeader(memberId))
                 .pathParam("comment_id", commentId)
                 .log().all()
 
-        .when().delete("/comments/{comment_id}", commentId)
+        .when().delete("/comments/{comment_id}")
 
         .then().statusCode(HttpStatus.OK.value())
                 .body("code", equalTo(SuccessCode.COMMENT_DELETE.getCode()))

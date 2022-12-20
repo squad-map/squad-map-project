@@ -27,7 +27,7 @@ class MemberAcceptanceTest extends RestAssuredTest {
             fieldWithPath("nickname").type(JsonFieldType.STRING).description("수정하고자하는 닉네임")
     );
 
-    private static final Snippet NICKNAME_UPDATE_RESPONSE_FIELDS = responseFields(
+    private static final Snippet NICKNAME_UPDATE_RESPONSE_FIELDS = generateCommonResponse(
             fieldWithPath(makeFieldName("member_id")).type(JsonFieldType.NUMBER).description("멤버 아이디"),
             fieldWithPath(makeFieldName("nickname")).type(JsonFieldType.STRING).description("수정된 닉네임")
     );
@@ -39,7 +39,7 @@ class MemberAcceptanceTest extends RestAssuredTest {
         String nickname = "update nickname";
         NicknameUpdateRequest nickNameUpdateRequest = new NicknameUpdateRequest(nickname);
         given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, NICKNAME_UPDATE_REQUEST_FIELDS,
-                        COMMON_RESPONSE_FIELDS, NICKNAME_UPDATE_RESPONSE_FIELDS, AUTHORIZATION_HEADER))
+                        NICKNAME_UPDATE_RESPONSE_FIELDS, AUTHORIZATION_HEADER))
                 .accept(ContentType.JSON)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header(HttpHeaders.AUTHORIZATION, this.createAuthorizationHeader(1L))
@@ -58,8 +58,8 @@ class MemberAcceptanceTest extends RestAssuredTest {
            parameterWithName("nickname").description("찾고자하는 닉네임 검색어")
     );
 
-    private static final Snippet SEARCH_MEMBER_BY_NICKNAME_RESPONSE = responseFields(
-            fieldWithPath(makeFieldName("[].id")).type(JsonFieldType.NUMBER).description("멤버 아이디"),
+    private static final Snippet SEARCH_MEMBER_BY_NICKNAME_RESPONSE = generateCommonResponse(
+            fieldWithPath(makeFieldName("[].member_id")).type(JsonFieldType.NUMBER).description("멤버 아이디"),
             fieldWithPath(makeFieldName("[].nickname")).type(JsonFieldType.STRING).description("멤버 닉네임"),
             fieldWithPath(makeFieldName("[].profile_image")).type(JsonFieldType.STRING).description("멤버 프로필 이미지")
     );
@@ -71,7 +71,7 @@ class MemberAcceptanceTest extends RestAssuredTest {
         String searchNickname = "icknam";
 
         given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, AUTHORIZATION_HEADER, SEARCH_MEMBER_BY_NICKNAME_REQUEST_PARAMS,
-                        COMMON_RESPONSE_FIELDS, SEARCH_MEMBER_BY_NICKNAME_RESPONSE))
+                        SEARCH_MEMBER_BY_NICKNAME_RESPONSE))
                 .accept(ContentType.JSON)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header(HttpHeaders.AUTHORIZATION, this.createAuthorizationHeader(memberId))
@@ -81,7 +81,7 @@ class MemberAcceptanceTest extends RestAssuredTest {
 
         .then().statusCode(HttpStatus.OK.value())
                 .body("code", equalTo(SuccessCode.MEMBER_READ_SEARCH.getCode()))
-                .body("nickname", notNullValue())
+                .body("data.nickname", notNullValue())
                 .log().all();
     }
 }

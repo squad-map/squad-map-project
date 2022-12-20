@@ -40,7 +40,7 @@ class OauthAcceptanceTest extends RestAssuredTest {
             fieldWithPath("state").type(JsonFieldType.STRING).description("naver 로그인 시, code 요청할 때 전송한 UUID").optional()
     );
 
-    private static final Snippet LOGIN_RESPONSE_FIELDS = responseFields(
+    private static final Snippet LOGIN_RESPONSE_FIELDS = generateCommonResponse(
             fieldWithPath(makeFieldName("access_token")).type(JsonFieldType.STRING).description("액세스 토큰"),
             fieldWithPath(makeFieldName("refresh_token")).type(JsonFieldType.STRING).description("리프레쉬 토큰"),
             fieldWithPath(makeFieldName("member_id")).type(JsonFieldType.NUMBER).description("사용자 id"),
@@ -53,7 +53,7 @@ class OauthAcceptanceTest extends RestAssuredTest {
     @DisplayName("정상적인 github authorization_code로 로그인을 요청한다면, 토큰과 유저정보를 반환한다.")
     void githubLoginTest() {
 
-        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, LOGIN_REQUEST_FIELDS, COMMON_RESPONSE_FIELDS, LOGIN_RESPONSE_FIELDS))
+        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, LOGIN_REQUEST_FIELDS, LOGIN_RESPONSE_FIELDS))
                 .accept(ContentType.JSON)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(new LoginRequest("github_authorization_code", null))
@@ -63,21 +63,20 @@ class OauthAcceptanceTest extends RestAssuredTest {
         .when()
                 .post("login/github")
 
-        .then().log().all()
-                .statusCode(HttpStatus.OK.value())
+        .then().statusCode(HttpStatus.OK.value())
                 .body("code", equalTo(SuccessCode.LOGIN.getCode()))
-                .body("member_id", notNullValue(Long.TYPE))
-                .body("nickname", equalTo("CMSSKKK"))
-                .body("profile_image", equalTo("https://avatars.githubusercontent.com/u/81129309?v=4"))
-                .body("access_token", notNullValue(String.class))
-                .body("refresh_token", notNullValue(String.class));
+                .body("data.member_id", notNullValue(Long.TYPE))
+                .body("data.nickname", equalTo("CMSSKKK"))
+                .body("data.profile_image", equalTo("https://avatars.githubusercontent.com/u/81129309?v=4"))
+                .body("data.access_token", notNullValue(String.class))
+                .body("data.refresh_token", notNullValue(String.class)).log().all();
     }
 
     @Test
     @DisplayName("정상적인 naver authorization_code로 로그인을 요청한다면, 토큰과 유저정보를 반환한다.")
     void naverLoginTest() {
 
-        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, LOGIN_REQUEST_FIELDS, COMMON_RESPONSE_FIELDS, LOGIN_RESPONSE_FIELDS))
+        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, LOGIN_REQUEST_FIELDS, LOGIN_RESPONSE_FIELDS))
                 .accept(ContentType.JSON)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(new LoginRequest("naver_authorization_code", "state"))
@@ -88,16 +87,15 @@ class OauthAcceptanceTest extends RestAssuredTest {
                 .post("login/naver")
 
         .then().log().all()
-                .statusCode(HttpStatus.OK.value())
                 .body("code", equalTo(SuccessCode.LOGIN.getCode()))
-                .body("member_id", notNullValue(Long.TYPE))
-                .body("nickname", equalTo("최민석"))
-                .body("profile_image", equalTo("https://ssl.pstatic.net/static/pwe/address/img_profile.png"))
-                .body("access_token", notNullValue(String.class))
-                .body("refresh_token", notNullValue(String.class));
+                .body("data.member_id", notNullValue(Long.TYPE))
+                .body("data.nickname", equalTo("최민석"))
+                .body("data.profile_image", equalTo("https://ssl.pstatic.net/static/pwe/address/img_profile.png"))
+                .body("data.access_token", notNullValue(String.class))
+                .body("data.refresh_token", notNullValue(String.class));
     }
 
-    private static final Snippet REISSUE_RESPONSE_FIELDS = responseFields(
+    private static final Snippet REISSUE_RESPONSE_FIELDS = generateCommonResponse(
             fieldWithPath(makeFieldName("access_token")).type(JsonFieldType.STRING).description("엑세스 토큰")
     );
 
@@ -105,7 +103,7 @@ class OauthAcceptanceTest extends RestAssuredTest {
     @DisplayName("유효한 리프레쉬 토큰으로 액세스 토큰을 재발급 요청을 하면, 새로운 엑세스 토큰을 재발급한다.")
     void reissueTest() {
 
-        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, AUTHORIZATION_HEADER, COMMON_RESPONSE_FIELDS, REISSUE_RESPONSE_FIELDS))
+        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, AUTHORIZATION_HEADER, REISSUE_RESPONSE_FIELDS))
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .contentType(ContentType.JSON)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtProvider.generateRefreshToken(1L))
@@ -114,7 +112,7 @@ class OauthAcceptanceTest extends RestAssuredTest {
         .when().get("/login")
 
         .then().statusCode(HttpStatus.OK.value())
-                .body("access_token", notNullValue())
+                .body("data.access_token", notNullValue())
                 .log().all();
 
     }

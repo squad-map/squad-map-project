@@ -27,23 +27,22 @@ class MapAcceptanceTest extends RestAssuredTest {
             fieldWithPath("full_disclosure").type(JsonFieldType.BOOLEAN).description("접근 권한")
     );
 
-    private static final Snippet CREATE_RESPONSE_FIELDS = responseFields(
+    private static final Snippet CREATE_RESPONSE_FIELDS = generateCommonResponse(
             fieldWithPath(makeFieldName("map_id")).type(JsonFieldType.NUMBER).description("아이디")
     );
 
     @Test
     @DisplayName("정상적인 지도 생성 요청이라면, 생성된 지도 식별자와 상태코드 201을 반환한다.")
     void mapCreateTest() {
-        String accessToken = jwtProvider.generateAccessToken(1L);
 
         MapRequest mapCreateRequest = new MapRequest("first map", "U+1F600",false);
 
         given(this.specification)
                 .filter(document(DEFAULT_RESTDOC_PATH, CREATE_REQUEST_FIELDS,
-                        COMMON_RESPONSE_FIELDS, CREATE_RESPONSE_FIELDS, AUTHORIZATION_HEADER))
+                        CREATE_RESPONSE_FIELDS, AUTHORIZATION_HEADER))
                 .accept(ContentType.JSON)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
+                .header(HttpHeaders.AUTHORIZATION, this.createAuthorizationHeader(1L))
                 .body(mapCreateRequest)
                 .log().all(true)
 
@@ -51,7 +50,7 @@ class MapAcceptanceTest extends RestAssuredTest {
 
         .then().statusCode(HttpStatus.CREATED.value())
                 .body("code", equalTo(SuccessCode.MAP_CREATE.getCode()))
-                .body("map_id", notNullValue());
+                .body("data.map_id", notNullValue());
 
     }
 
@@ -62,7 +61,7 @@ class MapAcceptanceTest extends RestAssuredTest {
     );
 
 
-    private static final Snippet UPDATE_RESPONSE_FIELDS = responseFields(
+    private static final Snippet UPDATE_RESPONSE_FIELDS = generateCommonResponse(
             fieldWithPath(makeFieldName("map_id")).type(JsonFieldType.NUMBER).description("업데이트 된 지도의 아이디"),
             fieldWithPath(makeFieldName("map_name")).type(JsonFieldType.STRING).description("업데이트 된 지도의 이름"),
             fieldWithPath(makeFieldName("map_emoji")).type(JsonFieldType.STRING).description("업데이트 된 지도의 이모지"),
@@ -73,7 +72,6 @@ class MapAcceptanceTest extends RestAssuredTest {
     @Test
     @DisplayName("정상적인 지도 업데이트 요청이라면, 상태코드 200을 반환한다.")
     void mapUpdateTest() {
-        String accessToken = jwtProvider.generateAccessToken(1L);
         Long mapId = 1L;
         Boolean isPrivate = true;
         String mapName = "changed map";
@@ -84,10 +82,10 @@ class MapAcceptanceTest extends RestAssuredTest {
 
         given(this.specification)
                 .filter(document(DEFAULT_RESTDOC_PATH, UPDATE_REQUEST_FIELDS, AUTHORIZATION_HEADER,
-                        MAP_PATH_PARAMETER, COMMON_RESPONSE_FIELDS, UPDATE_RESPONSE_FIELDS))
+                        MAP_PATH_PARAMETER, UPDATE_RESPONSE_FIELDS))
                 .accept(ContentType.JSON)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
+                .header(HttpHeaders.AUTHORIZATION, this.createAuthorizationHeader(1L))
                 .body(mapUpdateRequest)
                 .log().all(true)
 
@@ -105,7 +103,7 @@ class MapAcceptanceTest extends RestAssuredTest {
             parameterWithName("name").optional().description("검색하고자 하는 지도 이름 (값을 넣어주지 않으면 전체 지도 검색)")
     );
 
-    private static final Snippet READ_MAP_LIST_RESPONSE = responseFields(
+    private static final Snippet READ_MAP_LIST_RESPONSE = generateCommonResponse(
             fieldWithPath(makeFieldName("content[].id")).type(JsonFieldType.NUMBER).description("지도의 아이디"),
             fieldWithPath(makeFieldName("content[].map_name")).type(JsonFieldType.STRING).description("지도의 이름"),
             fieldWithPath(makeFieldName("content[].map_emoji")).type(JsonFieldType.STRING).description("지도의 이모지"),
@@ -124,8 +122,7 @@ class MapAcceptanceTest extends RestAssuredTest {
     @Test
     @DisplayName("전체 지도를 조회할 수 있다.")
     void readPublicMapListTest() {
-        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, READ_MAP_LIST_REQUEST,
-                        COMMON_RESPONSE_FIELDS, READ_MAP_LIST_RESPONSE))
+        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, READ_MAP_LIST_REQUEST, READ_MAP_LIST_RESPONSE))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .queryParam("page", 0)
                 .queryParam("size", 10)
@@ -135,8 +132,8 @@ class MapAcceptanceTest extends RestAssuredTest {
         .then()
                 .statusCode(HttpStatus.OK.value())
                 .body("code", equalTo(SuccessCode.MAP_READ_PUB.getCode()))
-                .body("page_number" , equalTo(0))
-                .body("size" , equalTo(10))
+                .body("data.page_number", equalTo(0))
+                .body("data.size", equalTo(10))
                 .log().all();
     }
 
@@ -144,7 +141,7 @@ class MapAcceptanceTest extends RestAssuredTest {
             parameterWithName("map_id").description("조회할 지도의 아이디")
     );
 
-    private static final Snippet READ_MAP_DETAIL_RESPONSE = responseFields(
+    private static final Snippet READ_MAP_DETAIL_RESPONSE = generateCommonResponse(
             fieldWithPath(makeFieldName("map_id")).type(JsonFieldType.NUMBER).description("지도의 아이디"),
             fieldWithPath(makeFieldName("map_name")).type(JsonFieldType.STRING).description("지도의 이름"),
             fieldWithPath(makeFieldName("map_emoji")).type(JsonFieldType.STRING).description("지도의 이모지"),
@@ -165,12 +162,15 @@ class MapAcceptanceTest extends RestAssuredTest {
     @Test
     @DisplayName("로그인한 유저는 지도를 조회할 수 있다.")
     void readMapDetail() {
+        Long mapId = 1L;
+
         given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, READ_MAP_DETAIL_REQUEST_PATH_PARAMETER, AUTHORIZATION_HEADER,
-                        COMMON_RESPONSE_FIELDS, READ_MAP_DETAIL_RESPONSE))
+                        READ_MAP_DETAIL_RESPONSE))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .pathParam("map_id", mapId)
                 .header(HttpHeaders.AUTHORIZATION, this.createAuthorizationHeader(1L))
 
-                .when().get("/map/{map_id}", 1L)
+                .when().get("/map/{map_id}")
 
                 .then().statusCode(HttpStatus.OK.value())
                         .body("code", equalTo(SuccessCode.MAP_READ_DETAIL.getCode()))
@@ -181,7 +181,7 @@ class MapAcceptanceTest extends RestAssuredTest {
             parameterWithName("name").optional().description("검색하고자하는 그룹 지도 이름 (값을 넣어주지 않으면 속한 그룹지도 전체검색) ")
     );
 
-    private static final Snippet READ_GROUP_MAP_LIST_RESPONSE = responseFields(
+    private static final Snippet READ_GROUP_MAP_LIST_RESPONSE = generateCommonResponse(
             fieldWithPath(makeFieldName("map_count")).type(JsonFieldType.NUMBER).description("속한 그룹 지도의 갯수"),
             fieldWithPath(makeFieldName("content[].id")).type(JsonFieldType.NUMBER).description("지도의 아이디"),
             fieldWithPath(makeFieldName("content[].map_name")).type(JsonFieldType.STRING).description("지도의 이름"),
@@ -197,7 +197,7 @@ class MapAcceptanceTest extends RestAssuredTest {
     void readGroupMapsTest() {
 
         given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, AUTHORIZATION_HEADER, SEARCH_GROUP_MAP_LIST_REQUEST_PARAMS,
-                        COMMON_RESPONSE_FIELDS, READ_GROUP_MAP_LIST_RESPONSE))
+                        READ_GROUP_MAP_LIST_RESPONSE))
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .contentType(ContentType.JSON)
                 .header(HttpHeaders.AUTHORIZATION, this.createAuthorizationHeader(1L))
@@ -207,7 +207,7 @@ class MapAcceptanceTest extends RestAssuredTest {
 
         .then().statusCode(HttpStatus.OK.value())
                 .body("code", equalTo(SuccessCode.MAP_READ_PRI.getCode()))
-                .body("map_count", notNullValue())
+                .body("data.map_count", notNullValue())
                 .log().all();
     }
 

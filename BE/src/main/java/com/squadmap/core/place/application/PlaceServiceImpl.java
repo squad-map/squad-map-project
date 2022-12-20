@@ -103,7 +103,7 @@ public class PlaceServiceImpl implements PlaceService {
             Slice<CommentInfo> commentInfos = comments.map(comment -> {
                 Member writer = memberMap.get(comment.getMemberId());
                 return new CommentInfo(writer.getId(), writer.getNickname(), writer.getProfileImage(),
-                        comment.getId(), comment.getContent());
+                        comment.getId(), comment.getContent(), comment.getWrittenAt());
             });
 
             return PlaceDetailInfo.of(place, new SimpleSlice<>(commentInfos));

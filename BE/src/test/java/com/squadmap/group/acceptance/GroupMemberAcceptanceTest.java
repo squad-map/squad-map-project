@@ -23,11 +23,11 @@ import static org.springframework.restdocs.restassured3.RestAssuredRestDocumenta
 public class GroupMemberAcceptanceTest extends RestAssuredTest {
 
 
-    private final static Snippet SEARCH_GROUP_IN_MAP_RESPONSE_FIELDS = responseFields(
+    private final static Snippet SEARCH_GROUP_IN_MAP_RESPONSE_FIELDS = generateCommonResponse(
             fieldWithPath(makeFieldName("[].member_id")).type(JsonFieldType.NUMBER).description("회원의 아이디"),
             fieldWithPath(makeFieldName("[].member_nickname")).type(JsonFieldType.STRING).description("회원의 닉네임"),
             fieldWithPath(makeFieldName("[].member_profile_image")).type(JsonFieldType.STRING).description("회원의 프로필 이미지"),
-            fieldWithPath(makeFieldName("[].permission_level")).type(JsonFieldType.STRING).description("회원의 지도 권한")
+            fieldWithPath(makeFieldName("[].level")).type(JsonFieldType.STRING).description("회원의 지도 권한")
     );
 
     @Test
@@ -37,13 +37,13 @@ public class GroupMemberAcceptanceTest extends RestAssuredTest {
         Long mapId = 1L;
 
         given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, AUTHORIZATION_HEADER, MAP_PATH_PARAMETER,
-                        COMMON_RESPONSE_FIELDS, SEARCH_GROUP_IN_MAP_RESPONSE_FIELDS))
+                         SEARCH_GROUP_IN_MAP_RESPONSE_FIELDS))
                 .accept(ContentType.JSON)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header(HttpHeaders.AUTHORIZATION, this.createAuthorizationHeader(memberId))
                 .pathParam("map_id", mapId)
 
-        .when().get("/map/{mapId}/groups", mapId)
+        .when().get("/map/{map_id}/groups")
 
         .then().statusCode(HttpStatus.OK.value())
                 .body("code", equalTo(SuccessCode.GROUP_READ.getCode()))
@@ -51,9 +51,15 @@ public class GroupMemberAcceptanceTest extends RestAssuredTest {
 
     }
 
-    private final static Snippet GROUP_MEMBER_CREATE_OR_UPDATE_REQUEST_FIELDS = requestFields(
+    private static final Snippet GROUP_MEMBER_CREATE_OR_UPDATE_REQUEST_FIELDS = requestFields(
             fieldWithPath("member_id").type(JsonFieldType.NUMBER).description("멤버의 아이디"),
             fieldWithPath("permission_level").type(JsonFieldType.STRING).description("접근 권한 ('READ', 'MAINTAIN')")
+    );
+
+    private static final Snippet GROUP_MEMBER_SIMPLE_RESPONSE_FIELDS = generateCommonResponse(
+            fieldWithPath(makeFieldName("map_id")).type(JsonFieldType.NUMBER).description("포함된 지도 아이디"),
+            fieldWithPath(makeFieldName("member_id")).type(JsonFieldType.NUMBER).description("추가된 멤버의 아이디"),
+            fieldWithPath(makeFieldName("level")).description(JsonFieldType.STRING).description("그룹에서의 접근 레벨")
     );
 
     @Test
@@ -67,14 +73,14 @@ public class GroupMemberAcceptanceTest extends RestAssuredTest {
 
         GroupMemberRequest addMemberRequest = new GroupMemberRequest(addMemberId, permissionLevel);
         given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, AUTHORIZATION_HEADER, MAP_PATH_PARAMETER,
-                        COMMON_RESPONSE_FIELDS, GROUP_MEMBER_CREATE_OR_UPDATE_REQUEST_FIELDS))
+                        GROUP_MEMBER_CREATE_OR_UPDATE_REQUEST_FIELDS, GROUP_MEMBER_SIMPLE_RESPONSE_FIELDS))
                 .accept(ContentType.JSON)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header(HttpHeaders.AUTHORIZATION, this.createAuthorizationHeader(memberId))
                 .pathParam("map_id", mapId)
                 .body(addMemberRequest)
 
-        .when().post("/map/{mapId}/groups")
+        .when().post("/map/{map_id}/groups")
 
         .then().statusCode(HttpStatus.OK.value())
                 .body("code", equalTo(SuccessCode.GROUP_CREATE.getCode()))
@@ -93,14 +99,14 @@ public class GroupMemberAcceptanceTest extends RestAssuredTest {
 
         GroupMemberRequest updateRequest = new GroupMemberRequest(addMemberId, permissionLevel);
         given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, AUTHORIZATION_HEADER, MAP_PATH_PARAMETER,
-                        COMMON_RESPONSE_FIELDS, GROUP_MEMBER_CREATE_OR_UPDATE_REQUEST_FIELDS))
+                        GROUP_MEMBER_CREATE_OR_UPDATE_REQUEST_FIELDS, GROUP_MEMBER_SIMPLE_RESPONSE_FIELDS))
                 .accept(ContentType.JSON)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header(HttpHeaders.AUTHORIZATION, this.createAuthorizationHeader(memberId))
                 .pathParam("map_id", mapId)
                 .body(updateRequest)
 
-        .when().put("/map/{mapId}/groups")
+        .when().put("/map/{map_id}/groups")
 
         .then().statusCode(HttpStatus.OK.value())
                 .body("code", equalTo(SuccessCode.GROUP_UPDATE.getCode()))
@@ -123,14 +129,14 @@ public class GroupMemberAcceptanceTest extends RestAssuredTest {
         GroupMemberDeleteRequest groupMemberDeleteRequest = new GroupMemberDeleteRequest(deleteMemberId);
 
         given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, AUTHORIZATION_HEADER, MAP_PATH_PARAMETER,
-                        GROUP_MEMBER_DELETE_REQUEST, COMMON_RESPONSE_FIELDS))
+                        GROUP_MEMBER_DELETE_REQUEST, COMMON_RESPONSE_EMPTY_DATA))
                 .accept(ContentType.JSON)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header(HttpHeaders.AUTHORIZATION, this.createAuthorizationHeader(loginMemberId))
                 .pathParam("map_id", mapId)
                 .body(groupMemberDeleteRequest)
 
-        .when().delete("/map/{mapId}/groups")
+        .when().delete("/map/{map_id}/groups")
 
         .then().statusCode(HttpStatus.OK.value())
                 .body("code", equalTo(SuccessCode.GROUP_DELETE.getCode()))

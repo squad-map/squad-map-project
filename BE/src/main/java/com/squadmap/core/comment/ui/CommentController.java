@@ -40,7 +40,7 @@ public class CommentController {
 
         CommentResponse commentResponse = commentService.updateComment(memberId, commentId, commentRequest.getContent());
 
-        return CommonResponse.success(SuccessCode.CATEGORY_UPDATE, commentResponse);
+        return CommonResponse.success(SuccessCode.COMMENT_UPDATE, commentResponse);
     }
 
     @GetMapping("/map/{mapId}/places/{placeId}/comments")
@@ -49,7 +49,7 @@ public class CommentController {
                                                         @PathVariable Long placeId,
                                                         Long lastCommentId, Integer size) {
         SimpleSlice<CommentInfo> commentInfos = commentService.readComments(AccessInfo.of(memberId, mapId), placeId, lastCommentId, size);
-        return CommonResponse.success(SuccessCode.CATEGORY_READ_ALL, commentInfos);
+        return CommonResponse.success(SuccessCode.COMMENT_READ, commentInfos);
     }
 
     @DeleteMapping("/comments/{commentId}")

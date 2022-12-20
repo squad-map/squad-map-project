@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public class MemberSimpleInfo {
 
-    private final Long id;
+    private final Long member_id;
     private final String nickname;
     private final String profileImage;
 }

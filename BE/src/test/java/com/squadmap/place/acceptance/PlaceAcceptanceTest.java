@@ -35,7 +35,7 @@ class PlaceAcceptanceTest extends RestAssuredTest {
             fieldWithPath("category_id").type(JsonFieldType.NUMBER).description("장소를 등록할 카테고리의 아이디")
     );
 
-    private static final Snippet CREATE_RESPONSE_FIELDS = responseFields(
+    private static final Snippet CREATE_RESPONSE_FIELDS = generateCommonResponse(
             fieldWithPath(makeFieldName("place_id")).type(JsonFieldType.NUMBER).description("장소 아이디")
     );
 
@@ -56,22 +56,23 @@ class PlaceAcceptanceTest extends RestAssuredTest {
 
         PlaceRequest placeRequest = new PlaceRequest(placeName, address, x, y, story, detailLink, categoryId);
 
-        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, CREATE_REQUEST_FIELDS, MAP_PATH_PARAMETER,
-                        COMMON_RESPONSE_FIELDS, CREATE_RESPONSE_FIELDS, AUTHORIZATION_HEADER))
+        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, CREATE_REQUEST_FIELDS, MAP_PATH_PARAMETER, CREATE_RESPONSE_FIELDS, AUTHORIZATION_HEADER))
                 .accept(ContentType.JSON)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header(HttpHeaders.AUTHORIZATION, this.createAuthorizationHeader(memberId))
+                .pathParam("map_id", mapId)
                 .body(placeRequest)
                 .log().all()
 
-        .when().post("/map/{mapId}/places", mapId.intValue())
+        .when().post("/map/{map_id}/places")
 
         .then().statusCode(HttpStatus.CREATED.value())
                 .body("code", equalTo(SuccessCode.PLACE_CREATE.getCode()))
-                .body("place_id", notNullValue());
+                .body("data.place_id", notNullValue());
 
     }
     private static final Snippet PLACE_PATH_PARAMETER = pathParameters(
+            parameterWithName("map_id").description("지도의 아이디"),
             parameterWithName("place_id").description("장소의 아이디")
     );
 
@@ -80,9 +81,9 @@ class PlaceAcceptanceTest extends RestAssuredTest {
             fieldWithPath("story").type(JsonFieldType.STRING).description("변경할 장소에 대한 설명")
     );
 
-    private static final Snippet UPDATE_RESPONSE_FIELDS = responseFields(
+    private static final Snippet UPDATE_RESPONSE_FIELDS = generateCommonResponse(
             fieldWithPath(makeFieldName("place_id")).type(JsonFieldType.NUMBER).description("장소 아이디"),
-            fieldWithPath(makeFieldName("name")).type(JsonFieldType.STRING).description("장소 이름"),
+            fieldWithPath(makeFieldName("place_name")).type(JsonFieldType.STRING).description("장소 이름"),
             fieldWithPath(makeFieldName("address")).type(JsonFieldType.STRING).description("장소 주소"),
             fieldWithPath(makeFieldName("latitude")).type(JsonFieldType.NUMBER).description("장소 위도"),
             fieldWithPath(makeFieldName("longitude")).type(JsonFieldType.NUMBER).description("장소 경도"),
@@ -103,29 +104,30 @@ class PlaceAcceptanceTest extends RestAssuredTest {
 
         PlaceUpdateRequest placeUpdateRequest = new PlaceUpdateRequest(categoryId, description);
 
-        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, AUTHORIZATION_HEADER, MAP_PATH_PARAMETER,
-                        UPDATE_REQUEST_FIELDS, COMMON_RESPONSE_FIELDS, UPDATE_RESPONSE_FIELDS))
+        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, AUTHORIZATION_HEADER, PLACE_PATH_PARAMETER,
+                        UPDATE_REQUEST_FIELDS, UPDATE_RESPONSE_FIELDS))
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .contentType(ContentType.JSON)
                 .header(HttpHeaders.AUTHORIZATION, this.createAuthorizationHeader(memberId))
-                //.pathParam("place_id", placeId)
+                .pathParam("map_id", mapId)
+                .pathParam("place_id", placeId)
                 .body(placeUpdateRequest)
                 .log().all()
 
-        .when().patch("/map/{mapId}/places/{placeId}", mapId.intValue(), placeId.intValue())
+        .when().patch("/map/{map_id}/places/{place_id}")
 
         .then().statusCode(HttpStatus.OK.value())
                 .body("code", equalTo(SuccessCode.PLACE_UPDATE.getCode()))
-                .body("place_id", equalTo(placeId.intValue()))
-                .body("category_id", equalTo(categoryId.intValue()))
-                .body("story", equalTo(description))
+                .body("data.place_id", equalTo(placeId.intValue()))
+                .body("data.category_id", equalTo(categoryId.intValue()))
+                .body("data.story", equalTo(description))
                 .log().all();
     }
 
 
-    private static final Snippet READ_ONE_RESPONSE_FIELDS = responseFields(
+    private static final Snippet READ_ONE_RESPONSE_FIELDS = generateCommonResponse(
             fieldWithPath(makeFieldName("place_id")).type(JsonFieldType.NUMBER).description("장소 아이디"),
-            fieldWithPath(makeFieldName("name")).type(JsonFieldType.STRING).description("장소 이름"),
+            fieldWithPath(makeFieldName("place_name")).type(JsonFieldType.STRING).description("장소 이름"),
             fieldWithPath(makeFieldName("address")).type(JsonFieldType.STRING).description("장소 주소"),
             fieldWithPath(makeFieldName("latitude")).type(JsonFieldType.NUMBER).description("장소 위도"),
             fieldWithPath(makeFieldName("longitude")).type(JsonFieldType.NUMBER).description("장소 경도"),
@@ -137,6 +139,7 @@ class PlaceAcceptanceTest extends RestAssuredTest {
             fieldWithPath(makeFieldName("comments.content[].member_profile_image")).type(JsonFieldType.STRING).description("댓글 작성자 프로필 이미지"),
             fieldWithPath(makeFieldName("comments.content[].comment_id")).type(JsonFieldType.NUMBER).description("댓글 아이디"),
             fieldWithPath(makeFieldName("comments.content[].content")).type(JsonFieldType.STRING).description("댓글 내용"),
+            fieldWithPath(makeFieldName("comments.content[].written_at")).type(JsonFieldType.STRING).description("댓글 작성 시간"),
             fieldWithPath(makeFieldName("comments.size")).type(JsonFieldType.NUMBER).description("default size 5, (최초 장소 조회시 5개까지의 댓글만을 조회)"),
             fieldWithPath(makeFieldName("comments.number_of_elements")).type(JsonFieldType.NUMBER).description("실제 조회된 댓글의 갯수"),
             fieldWithPath(makeFieldName("comments.has_next")).type(JsonFieldType.BOOLEAN).description("보여진 댓글보다 많은 댓글이 존재하는지에 대한 여부")
@@ -150,25 +153,25 @@ class PlaceAcceptanceTest extends RestAssuredTest {
         Long mapId = 1L;
 
         given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, AUTHORIZATION_HEADER,
-                        MAP_PATH_PARAMETER, PLACE_PATH_PARAMETER,
-                        COMMON_RESPONSE_FIELDS, READ_ONE_RESPONSE_FIELDS))
+                        PLACE_PATH_PARAMETER, READ_ONE_RESPONSE_FIELDS))
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .contentType(ContentType.JSON)
                 .header(HttpHeaders.AUTHORIZATION, this.createAuthorizationHeader(memberId))
-                //.pathParam("place_id", placeId)
+                .pathParam("map_id", mapId)
+                .pathParam("place_id", placeId)
                 .log().all()
 
-        .when().get("/map/{mapId}/places/{placeId}", mapId, placeId)
+        .when().get("/map/{map_id}/places/{place_id}")
 
         .then().statusCode(HttpStatus.OK.value())
                 .body("code", equalTo(SuccessCode.PLACE_READ.getCode()))
-                .body("place_id", notNullValue())
-                .body("name", notNullValue())
-                .body("address", notNullValue())
-                .body("latitude", notNullValue())
-                .body("longitude", notNullValue())
-                .body("category_id", notNullValue())
-                .body("story", notNullValue())
+                .body("data.place_id", notNullValue())
+                .body("data.place_name", notNullValue())
+                .body("data.address", notNullValue())
+                .body("data.latitude", notNullValue())
+                .body("data.longitude", notNullValue())
+                .body("data.category_id", notNullValue())
+                .body("data.story", notNullValue())
                 .log().all();
 
     }

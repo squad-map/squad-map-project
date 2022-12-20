@@ -48,7 +48,7 @@ public class CommentServiceImpl implements CommentService {
         Comment comment = commentRepository.save(new Comment(member.getId(), place, content));
 
         return new CommentInfo(member.getId(), member.getNickname(), member.getProfileImage(),
-                comment.getId(), comment.getContent());
+                comment.getId(), comment.getContent(), comment.getWrittenAt());
     }
 
     @Override
@@ -100,7 +100,7 @@ public class CommentServiceImpl implements CommentService {
         Slice<CommentInfo> commentInfos = comments.map(comment -> {
             Member member = memberMap.get(comment.getMemberId());
             return new CommentInfo(member.getId(), member.getNickname(), member.getProfileImage(),
-                    comment.getId(), comment.getContent());
+                    comment.getId(), comment.getContent(), comment.getWrittenAt());
         });
 
         return new SimpleSlice<>(commentInfos);
