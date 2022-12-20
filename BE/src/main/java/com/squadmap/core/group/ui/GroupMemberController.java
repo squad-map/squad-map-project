@@ -16,16 +16,17 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("map/{mapId}/groups")
 public class GroupMemberController {
 
     private final GroupMemberService groupMemberService;
 
-    @GetMapping("/groups/{mapId}")
+    @GetMapping
     public CommonResponse<List<GroupMemberInfo>> searchMembersInMap(@Login Long memberId, @PathVariable Long mapId) {
         return CommonResponse.success(SuccessCode.GROUP_READ, groupMemberService.searchMembersInGroup(mapId, memberId));
     }
 
-    @PostMapping("/groups/{mapId}")
+    @PostMapping
     public CommonResponse<GroupMemberSimpleInfo> addMemberToGroup(@Login Long memberId, @PathVariable Long mapId, @RequestBody @Valid GroupMemberRequest addMemberRequest) {
         GroupMemberSimpleInfo groupMemberSimpleInfo = groupMemberService.addGroupMember(memberId, mapId,
                 addMemberRequest.getMemberId(),
@@ -34,7 +35,7 @@ public class GroupMemberController {
         return CommonResponse.success(SuccessCode.GROUP_CREATE, groupMemberSimpleInfo);
     }
 
-    @PutMapping("/groups/{mapId}")
+    @PutMapping
     public CommonResponse<GroupMemberSimpleInfo> updateMemberPermission(@Login Long memberId, @PathVariable Long mapId, @RequestBody @Valid GroupMemberRequest updateMemberRequest) {
         GroupMemberSimpleInfo groupMemberSimpleInfo = groupMemberService.changeGroupMemberLevel(memberId, mapId,
                 updateMemberRequest.getMemberId(),
@@ -43,7 +44,7 @@ public class GroupMemberController {
         return CommonResponse.success(SuccessCode.GROUP_UPDATE, groupMemberSimpleInfo);
     }
 
-    @DeleteMapping("/groups/{mapId}")
+    @DeleteMapping
     public CommonResponse<Void> deleteMemberInGroup(@Login Long memberId, @PathVariable Long mapId, @RequestBody @Valid GroupMemberDeleteRequest deleteRequest) {
         groupMemberService.removeGroupMember(memberId, mapId, deleteRequest.getMemberId());
         return CommonResponse.emptyData(SuccessCode.GROUP_DELETE);

@@ -1,6 +1,7 @@
 package com.squadmap.category.acceptance;
 
 import com.squadmap.assured.RestAssuredTest;
+import com.squadmap.common.dto.SuccessCode;
 import com.squadmap.core.category.ui.dto.CategoryRequest;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.DisplayName;
@@ -33,7 +34,7 @@ public class CategoryAcceptanceTest extends RestAssuredTest {
     );
 
     private static final Snippet CREATE_RESPONSE_FIELDS = responseFields(
-            fieldWithPath("category_id").type(JsonFieldType.NUMBER).description("카테고리 아이디")
+            fieldWithPath(makeFieldName("category_id")).type(JsonFieldType.NUMBER).description("카테고리 아이디")
     );
 
 
@@ -47,16 +48,18 @@ public class CategoryAcceptanceTest extends RestAssuredTest {
 
         CategoryRequest categoryRequest = new CategoryRequest(categoryName, color);
 
-        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, CREATE_REQUEST_FIELDS, CREATE_RESPONSE_FIELDS, AUTHORIZATION_HEADER))
+        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, CREATE_REQUEST_FIELDS, MAP_PATH_PARAMETER,
+                        COMMON_RESPONSE_FIELDS, CREATE_RESPONSE_FIELDS, AUTHORIZATION_HEADER))
                 .accept(ContentType.JSON)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken)
                 .body(categoryRequest)
                 .log().all()
 
-        .when().post("/categories")
+        .when().post("/map/{mapId}/categories", mapId.intValue())
 
         .then().statusCode(HttpStatus.CREATED.value())
+                .body("code", equalTo(SuccessCode.CATEGORY_CREATE.getCode()))
                 .body("category_id", notNullValue());
     }
 
@@ -65,9 +68,9 @@ public class CategoryAcceptanceTest extends RestAssuredTest {
     );
 
     private final static Snippet READ_RESPONSE_FIELDS = responseFields(
-            fieldWithPath("category_id").type(JsonFieldType.NUMBER).description("카테고리의 아이디"),
-            fieldWithPath("category_name").type(JsonFieldType.STRING).description("카테고리의 이름"),
-            fieldWithPath("category_color").type(JsonFieldType.STRING).description("카테고리의 색상")
+            fieldWithPath(makeFieldName("category_id")).type(JsonFieldType.NUMBER).description("카테고리의 아이디"),
+            fieldWithPath(makeFieldName("category_name")).type(JsonFieldType.STRING).description("카테고리의 이름"),
+            fieldWithPath(makeFieldName("category_color")).type(JsonFieldType.STRING).description("카테고리의 색상")
     );
 
     @Test
@@ -75,31 +78,31 @@ public class CategoryAcceptanceTest extends RestAssuredTest {
     void readOneTest() {
 
         Long categoryId = 1L;
+        Long mapId = 1L;
 
-        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, AUTHORIZATION_HEADER, READ_PATH_PARAMETERS, READ_RESPONSE_FIELDS))
+        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, AUTHORIZATION_HEADER, MAP_PATH_PARAMETER, READ_PATH_PARAMETERS,
+                        CREATE_RESPONSE_FIELDS, READ_RESPONSE_FIELDS))
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .contentType(ContentType.JSON)
                 //.pathParam("category_id", categoryId.intValue())
                 .header(HttpHeaders.AUTHORIZATION, this.createAuthorizationHeader(1L))
                 .log().all()
 
-        .when().get("/categories/{category_id}",categoryId.intValue())
+        .when().get("/map/{mapId}/categories/{category_id}", mapId.intValue(), categoryId.intValue())
 
         .then().statusCode(HttpStatus.OK.value())
+                .body("code", equalTo(SuccessCode.CATEGORY_READ))
                 .body("category_id", equalTo(categoryId.intValue()))
                 .body("category_name", notNullValue())
                 .body("category_color", notNullValue())
                 .log().all();
     }
 
-    private static final Snippet READ_ALL_CATEGORIES_IN_MAP_REQUEST_PARAMS = requestParameters(
-            parameterWithName("map").description("지도 아이디")
-    );
 
     private static final Snippet READ_ALL_CATEGORIES_IN_MAP_RESPONSE_FIELDS = responseFields(
-            fieldWithPath("[].category_id").type(JsonFieldType.NUMBER).description("카테고리 아이디"),
-            fieldWithPath("[].category_name").type(JsonFieldType.STRING).description("카테고리 이름"),
-            fieldWithPath("[].category_color").type(JsonFieldType.STRING).description("카테고리 색상")
+            fieldWithPath(makeFieldName("[].category_id")).type(JsonFieldType.NUMBER).description("카테고리 아이디"),
+            fieldWithPath(makeFieldName("[].category_name")).type(JsonFieldType.STRING).description("카테고리 이름"),
+            fieldWithPath(makeFieldName("[].category_color")).type(JsonFieldType.STRING).description("카테고리 색상")
     );
 
     @Test
@@ -107,16 +110,18 @@ public class CategoryAcceptanceTest extends RestAssuredTest {
     void ReadCategoriesInOneMapTest() {
         Long mapId = 1L;
 
-        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, AUTHORIZATION_HEADER, READ_ALL_CATEGORIES_IN_MAP_REQUEST_PARAMS, READ_ALL_CATEGORIES_IN_MAP_RESPONSE_FIELDS))
+        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, AUTHORIZATION_HEADER, MAP_PATH_PARAMETER,
+                        COMMON_RESPONSE_FIELDS, READ_ALL_CATEGORIES_IN_MAP_RESPONSE_FIELDS))
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .contentType(ContentType.JSON)
-                .queryParam("map", mapId.intValue())
                 .header(HttpHeaders.AUTHORIZATION, this.createAuthorizationHeader(1L))
                 .log().all()
 
-        .when().get("/categories")
+        .when().get("/map/{mapId}/categories", mapId.intValue())
 
-                .then().log().all();
+                .then()
+                .body("code", equalTo(SuccessCode.CATEGORY_READ_ALL.getCode()))
+                .log().all();
 
     }
 

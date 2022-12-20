@@ -28,8 +28,9 @@ public class MemberController {
         return CommonResponse.success(SuccessCode.MEMBER_UPDATE, nicknameUpdateInfo);
     }
 
+    // slice로 수정 필요
     @GetMapping
     public CommonResponse<List<MemberSimpleInfo>> searchMembersByNickname(String nickname) {
-        return CommonResponse.success(SuccessCode.MEMBER_UPDATE, memberService.searchMemberByNickname(nickname));
+        return CommonResponse.success(SuccessCode.MEMBER_READ_SEARCH, memberService.searchMemberByNickname(nickname));
     }
 }

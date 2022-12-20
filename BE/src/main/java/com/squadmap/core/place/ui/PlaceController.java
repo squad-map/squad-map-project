@@ -24,8 +24,8 @@ public class PlaceController {
 
     @PostMapping("/places")
     @ResponseStatus(HttpStatus.CREATED)
-    public CommonResponse<PlaceResponse> create(@Login Long loginId, @RequestBody @Valid PlaceRequest placeRequest) {
-        Long placeId = placeService.create(AccessInfo.of(loginId, placeRequest.getMapId()),
+    public CommonResponse<PlaceResponse> create(@Login Long loginId, @PathVariable Long mapId, @RequestBody @Valid PlaceRequest placeRequest) {
+        Long placeId = placeService.create(AccessInfo.of(loginId, mapId),
                 placeRequest.getName(),
                 placeRequest.getAddress(),
                 placeRequest.getLatitude(),

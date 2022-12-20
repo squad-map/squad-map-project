@@ -11,7 +11,7 @@ public enum SuccessCode {
     REISSUE_TOKEN("A-S02"),
 
     MEMBER_UPDATE("MM-S01"),
-    MEMBER_REA_SEARCH("MM-S02"),
+    MEMBER_READ_SEARCH("MM-S02"),
 
     MAP_CREATE("M-S01"),
     MAP_READ_DETAIL("M-S02"),
