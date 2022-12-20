@@ -246,17 +246,16 @@ include::{snippets}/category_acceptance_test/read_categories_in_one_map_test/htt
 === 지도 내의 모든 카테고리 조회
 
 ==== request
-include::{snippets}/category_acceptance_test/read_one_test/path-parameters.adoc[]
-include::{snippets}/category_acceptance_test/read_one_test/request-body.adoc[]
-include::{snippets}/category_acceptance_test/read_one_test/http-request.adoc[]
+include::{snippets}/category_acceptance_test/read_categories_in_one_map_test/path-parameters.adoc[]
+include::{snippets}/category_acceptance_test/read_categories_in_one_map_test/http-request.adoc[]
 
 ==== 필수 헤더
-include::{snippets}/category_acceptance_test/read_one_test/request-headers.adoc[]
+include::{snippets}/category_acceptance_test/read_categories_in_one_map_test/request-headers.adoc[]
 
 ==== response
-include::{snippets}/category_acceptance_test/read_one_test/response-fields.adoc[]
-include::{snippets}/category_acceptance_test/read_one_test/response-body.adoc[]
-include::{snippets}/category_acceptance_test/read_one_test/http-response.adoc[]
+include::{snippets}/category_acceptance_test/read_categories_in_one_map_test/response-fields.adoc[]
+include::{snippets}/category_acceptance_test/read_categories_in_one_map_test/response-body.adoc[]
+include::{snippets}/category_acceptance_test/read_categories_in_one_map_test/http-response.adoc[]
 
 
 [[resources-groupMember]]
@@ -321,3 +320,67 @@ include::{snippets}/group_member_acceptance_test/search_group_in_map_test/reques
 ==== response
 include::{snippets}/group_member_acceptance_test/search_group_in_map_test/response-fields.adoc[]
 include::{snippets}/group_member_acceptance_test/search_group_in_map_test/http-response.adoc[]
+
+
+[[resources-comment]]
+== 댓글
+
+[[resources-comment-create]]
+=== 댓글 작성
+
+==== request
+include::{snippets}/comment_acceptance_test/create_test/path-parameters.adoc[]
+include::{snippets}/comment_acceptance_test/create_test/request-fields.adoc[]
+include::{snippets}/comment_acceptance_test/create_test/http-request.adoc[]
+
+==== 필수 헤더
+include::{snippets}/comment_acceptance_test/create_test/request-headers.adoc[]
+
+==== response
+include::{snippets}/comment_acceptance_test/create_test/response-fields.adoc[]
+include::{snippets}/comment_acceptance_test/create_test/http-response.adoc[]
+
+
+[[resources-comment-read]]
+=== 댓글 조회
+
+==== request
+include::{snippets}/comment_acceptance_test/next_comment_read_test/path-parameters.adoc[]
+include::{snippets}/comment_acceptance_test/next_comment_read_test/http-request.adoc[]
+
+==== 필수 헤더
+include::{snippets}/comment_acceptance_test/next_comment_read_test/request-headers.adoc[]
+
+==== response
+include::{snippets}/comment_acceptance_test/next_comment_read_test/response-fields.adoc[]
+include::{snippets}/comment_acceptance_test/next_comment_read_test/http-response.adoc[]
+
+
+[[resources-comment-update]]
+=== 댓글 수정
+
+==== request
+include::{snippets}/comment_acceptance_test/update_test/path-parameters.adoc[]
+include::{snippets}/comment_acceptance_test/update_test/request-parameters.adoc[]
+include::{snippets}/comment_acceptance_test/update_test/http-request.adoc[]
+
+==== 필수 헤더
+include::{snippets}/comment_acceptance_test/update_test/request-headers.adoc[]
+
+==== response
+include::{snippets}/comment_acceptance_test/update_test/response-fields.adoc[]
+include::{snippets}/comment_acceptance_test/update_test/http-response.adoc[]
+
+[[resources-comment-update]]
+=== 댓글 삭제
+
+==== request
+include::{snippets}/comment_acceptance_test/delete_comment_test/path-parameters.adoc[]
+include::{snippets}/comment_acceptance_test/delete_comment_test/http-request.adoc[]
+
+==== 필수 헤더
+include::{snippets}/comment_acceptance_test/update_test/request-headers.adoc[]
+
+==== response
+include::{snippets}/comment_acceptance_test/delete_comment_test/response-fields.adoc[]
+include::{snippets}/comment_acceptance_test/delete_comment_test/http-response.adoc[]
