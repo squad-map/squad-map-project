@@ -3,6 +3,7 @@ package com.squadmap.place.integration;
 import com.squadmap.IntegrationTest;
 import com.squadmap.common.excetpion.ClientException;
 import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
+import com.squadmap.core.group.application.dto.AccessInfo;
 import com.squadmap.core.place.application.PlaceService;
 import com.squadmap.core.place.application.dto.PlaceDetailInfo;
 import org.junit.jupiter.api.DisplayName;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.InstanceOfAssertFactories.map;
 
 @IntegrationTest
 class PlaceServiceTest {
@@ -31,14 +33,14 @@ class PlaceServiceTest {
         Long categoryId = 1L;
         Long memberId = 1L;
 
-        Long placeId = placeService.create(name, address, latitude, longitude, description, detailLink,
-                mapId, categoryId, memberId);
+        Long placeId = placeService.create(AccessInfo.of(memberId, mapId), name, address,
+                latitude, longitude, description, detailLink, categoryId);
 
         assertThat(placeId).isPositive();
     }
 
     @Test
-    @DisplayName("같은 지도에 중복된 장소를 등록하면 ClientException을 던진다. ")
+    @DisplayName("같은 지도에 중복된 장소를 등록하면 ClientException 던진다.")
     void placeCreateTest_duplicate_place() {
         String name = "로니네 sweet home";
         String address = "서울시 관악구";
@@ -50,8 +52,8 @@ class PlaceServiceTest {
         Long categoryId = 1L;
         Long memberId = 1L;
 
-        assertThatThrownBy(() -> placeService.create(name, address, latitude, longitude,
-                description, detailLink, mapId, categoryId, memberId))
+        assertThatThrownBy(() -> placeService.create(AccessInfo.of(memberId, mapId), name, address,
+                latitude, longitude, description, detailLink, categoryId))
                 .isInstanceOf(ClientException.class)
                 .hasMessage(ErrorStatusCodeAndMessage.ALREADY_REGISTERED_PLACE.getMessage());
 
@@ -63,10 +65,11 @@ class PlaceServiceTest {
     void placeUpdateTest() {
         String description = "remodeled my home";
         Long categoryId = 1L;
+        Long mapId = 1L;
         Long memberId = 1L;
         Long placeId = 1L;
 
-        PlaceDetailInfo placeDetailInfo = placeService.update(memberId, categoryId, placeId, description);
+        PlaceDetailInfo placeDetailInfo = placeService.update(AccessInfo.of(memberId, mapId), categoryId, placeId, description);
 
         assertThat(placeDetailInfo.getPlaceId()).isEqualTo(placeId);
         assertThat(placeDetailInfo.getCategoryId()).isEqualTo(categoryId);
@@ -80,13 +83,14 @@ class PlaceServiceTest {
         String description = "remodeled my home";
         Long categoryId = 1L;
         Long readMemberId = 3L;
-        Long noPermissionMemberId = 4L;
+        Long noPermissionMemberId = 5L;
+        Long mapId = 2L;
         Long placeId = 1L;
 
-        assertThatThrownBy(() -> placeService.update(readMemberId, categoryId, placeId, description))
+        assertThatThrownBy(() -> placeService.update(AccessInfo.of(readMemberId, mapId), categoryId, placeId, description))
                 .isInstanceOf(ClientException.class)
                 .hasMessage(ErrorStatusCodeAndMessage.FORBIDDEN.getMessage());
-        assertThatThrownBy(() -> placeService.update(noPermissionMemberId, categoryId, placeId, description))
+        assertThatThrownBy(() -> placeService.update(AccessInfo.of(noPermissionMemberId, mapId), categoryId, placeId, description))
                 .isInstanceOf(ClientException.class)
                 .hasMessage(ErrorStatusCodeAndMessage.FORBIDDEN.getMessage());
     }
@@ -97,7 +101,9 @@ class PlaceServiceTest {
 
         Long memberId = 1L;
         Long placeId = 1L;
-        PlaceDetailInfo placeDetailInfo = placeService.readOne(memberId, placeId);
+        Long mapId = 1L;
+
+        PlaceDetailInfo placeDetailInfo = placeService.readOne(AccessInfo.of(memberId, mapId), placeId);
 
         assertThat(placeDetailInfo.getPlaceId()).isEqualTo(placeId);
 
@@ -109,8 +115,8 @@ class PlaceServiceTest {
 
         Long memberId = 4L;
         Long placeId = 1L;
-
-        PlaceDetailInfo placeDetailInfo = placeService.readOne(memberId, placeId);
+        Long mapId = 1L;
+        PlaceDetailInfo placeDetailInfo = placeService.readOne(AccessInfo.of(memberId, mapId), placeId);
 
         assertThat(placeDetailInfo.getPlaceId()).isEqualTo(placeId);
 
@@ -122,8 +128,8 @@ class PlaceServiceTest {
 
         Long memberId = 5L;
         Long placeId = 2L;
-
-        assertThatThrownBy(() -> placeService.readOne(memberId, placeId))
+        Long mapId = 2L;
+        assertThatThrownBy(() -> placeService.readOne(AccessInfo.of(memberId, mapId), placeId))
                 .isInstanceOf(ClientException.class)
                 .hasMessage(ErrorStatusCodeAndMessage.FORBIDDEN.getMessage());
 

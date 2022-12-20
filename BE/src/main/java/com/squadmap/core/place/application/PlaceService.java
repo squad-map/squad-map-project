@@ -1,13 +1,14 @@
 package com.squadmap.core.place.application;
 
+import com.squadmap.core.group.application.dto.AccessInfo;
 import com.squadmap.core.place.application.dto.PlaceDetailInfo;
 
 public interface PlaceService {
 
-    Long create(String name, String address, Double latitude, Double longitude, String story, String detailLink,
-                Long mapId, Long categoryId, Long memberId);
+    Long create(AccessInfo accessInfo, String name, String address, Double latitude, Double longitude, String story, String detailLink,
+                Long categoryId);
 
-    PlaceDetailInfo update(Long memberId, Long placeId, Long categoryId, String story);
+    PlaceDetailInfo update(AccessInfo accessInfo, Long placeId, Long categoryId, String story);
 
-    PlaceDetailInfo readOne(Long memberId, Long placeId);
+    PlaceDetailInfo readOne(AccessInfo accessInfo, Long placeId);
 }

@@ -3,6 +3,7 @@ package com.squadmap.auth.acceptance;
 import com.squadmap.assured.RestAssuredTest;
 import com.squadmap.auth.OauthMockProvider;
 import com.squadmap.common.auth.ui.dto.LoginRequest;
+import com.squadmap.common.dto.SuccessCode;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -39,12 +40,12 @@ class OauthAcceptanceTest extends RestAssuredTest {
             fieldWithPath("state").type(JsonFieldType.STRING).description("naver 로그인 시, code 요청할 때 전송한 UUID").optional()
     );
 
-    private static final Snippet LOGIN_RESPONSE_FIELDS = responseFields(
-            fieldWithPath("access_token").type(JsonFieldType.STRING).description("액세스 토큰"),
-            fieldWithPath("refresh_token").type(JsonFieldType.STRING).description("리프레쉬 토큰"),
-            fieldWithPath("member_id").type(JsonFieldType.NUMBER).description("사용자 id"),
-            fieldWithPath("nickname").type(JsonFieldType.STRING).description("사용자 닉네임"),
-            fieldWithPath("profile_image").type(JsonFieldType.STRING).description("사용자 프로필 이미지")
+    private static final Snippet LOGIN_RESPONSE_FIELDS = generateCommonResponse(
+            fieldWithPath(makeFieldName("access_token")).type(JsonFieldType.STRING).description("액세스 토큰"),
+            fieldWithPath(makeFieldName("refresh_token")).type(JsonFieldType.STRING).description("리프레쉬 토큰"),
+            fieldWithPath(makeFieldName("member_id")).type(JsonFieldType.NUMBER).description("사용자 id"),
+            fieldWithPath(makeFieldName("nickname")).type(JsonFieldType.STRING).description("사용자 닉네임"),
+            fieldWithPath(makeFieldName("profile_image")).type(JsonFieldType.STRING).description("사용자 프로필 이미지")
     );
 
 
@@ -62,13 +63,13 @@ class OauthAcceptanceTest extends RestAssuredTest {
         .when()
                 .post("login/github")
 
-        .then().log().all()
-                .statusCode(HttpStatus.OK.value())
-                .body("member_id", notNullValue(Long.TYPE))
-                .body("nickname", equalTo("CMSSKKK"))
-                .body("profile_image", equalTo("https://avatars.githubusercontent.com/u/81129309?v=4"))
-                .body("access_token", notNullValue(String.class))
-                .body("refresh_token", notNullValue(String.class));
+        .then().statusCode(HttpStatus.OK.value())
+                .body("code", equalTo(SuccessCode.LOGIN.getCode()))
+                .body("data.member_id", notNullValue(Long.TYPE))
+                .body("data.nickname", equalTo("CMSSKKK"))
+                .body("data.profile_image", equalTo("https://avatars.githubusercontent.com/u/81129309?v=4"))
+                .body("data.access_token", notNullValue(String.class))
+                .body("data.refresh_token", notNullValue(String.class)).log().all();
     }
 
     @Test
@@ -86,16 +87,16 @@ class OauthAcceptanceTest extends RestAssuredTest {
                 .post("login/naver")
 
         .then().log().all()
-                .statusCode(HttpStatus.OK.value())
-                .body("member_id", notNullValue(Long.TYPE))
-                .body("nickname", equalTo("최민석"))
-                .body("profile_image", equalTo("https://ssl.pstatic.net/static/pwe/address/img_profile.png"))
-                .body("access_token", notNullValue(String.class))
-                .body("refresh_token", notNullValue(String.class));
+                .body("code", equalTo(SuccessCode.LOGIN.getCode()))
+                .body("data.member_id", notNullValue(Long.TYPE))
+                .body("data.nickname", equalTo("최민석"))
+                .body("data.profile_image", equalTo("https://ssl.pstatic.net/static/pwe/address/img_profile.png"))
+                .body("data.access_token", notNullValue(String.class))
+                .body("data.refresh_token", notNullValue(String.class));
     }
 
-    private static final Snippet REISSUE_RESPONSE_FIELDS = responseFields(
-            fieldWithPath("access_token").type(JsonFieldType.STRING).description("엑세스 토큰")
+    private static final Snippet REISSUE_RESPONSE_FIELDS = generateCommonResponse(
+            fieldWithPath(makeFieldName("access_token")).type(JsonFieldType.STRING).description("엑세스 토큰")
     );
 
     @Test
@@ -111,7 +112,7 @@ class OauthAcceptanceTest extends RestAssuredTest {
         .when().get("/login")
 
         .then().statusCode(HttpStatus.OK.value())
-                .body("access_token", notNullValue())
+                .body("data.access_token", notNullValue())
                 .log().all();
 
     }

@@ -1,7 +1,7 @@
 package com.squadmap.core.place.application.dto;
 
 import com.squadmap.core.comment.application.dto.CommentInfo;
-import com.squadmap.common.SimpleSlice;
+import com.squadmap.common.dto.SimpleSlice;
 import com.squadmap.core.place.domain.Place;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 public class PlaceDetailInfo {
 
     private final Long placeId;
-    private final String name;
+    private final String placeName;
     private final String address;
     private final Double latitude;
     private final Double longitude;

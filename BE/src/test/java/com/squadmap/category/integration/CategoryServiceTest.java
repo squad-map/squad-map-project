@@ -5,6 +5,7 @@ import com.squadmap.common.excetpion.ClientException;
 import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
 import com.squadmap.core.category.application.CategoryService;
 import com.squadmap.core.category.application.dto.CategoryInfo;
+import com.squadmap.core.group.application.dto.AccessInfo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class CategoryServiceTest {
         Long memberId = 1L;
 
         //when
-        Long categoryId = categoryService.create(name, color, mapId, memberId);
+        Long categoryId = categoryService.create(AccessInfo.of(memberId, mapId), name, color);
 
         //then
         assertThat(categoryId).isNotNull();
@@ -44,7 +45,7 @@ public class CategoryServiceTest {
         Long memberId = 3L;
 
         //when
-        assertThatThrownBy(() ->categoryService.create(name, color, mapId, memberId))
+        assertThatThrownBy(() ->categoryService.create(AccessInfo.of(memberId, mapId), name, color))
                 .isInstanceOf(ClientException.class)
                 .hasMessage(ErrorStatusCodeAndMessage.FORBIDDEN.getMessage());
 
@@ -57,9 +58,10 @@ public class CategoryServiceTest {
         //given
         Long categoryId = 1L;
         Long memberId = 1L;
+        Long mapId = 1L;
 
         //when
-        CategoryInfo categoryInfo = categoryService.readOne(categoryId, memberId);
+        CategoryInfo categoryInfo = categoryService.readOne(AccessInfo.of(memberId, mapId), categoryId);
 
         //then
         assertThat(categoryInfo.getCategoryId()).isEqualTo(categoryId);
@@ -72,9 +74,10 @@ public class CategoryServiceTest {
         //given
         Long categoryId = 100L;
         Long memberId = 1L;
+        Long mapId = 1L;
 
         //when
-        assertThatThrownBy(() -> categoryService.readOne(categoryId, memberId))
+        assertThatThrownBy(() -> categoryService.readOne(AccessInfo.of(memberId, mapId), categoryId))
                 .isInstanceOf(ClientException.class)
                 .hasMessage(ErrorStatusCodeAndMessage.NO_SUCH_CATEGORY.getMessage());
 
@@ -86,8 +89,8 @@ public class CategoryServiceTest {
         //given
         Long categoryId = 1L;
         Long memberId = 4L;
-
-        CategoryInfo categoryInfo = categoryService.readOne(categoryId, memberId);
+        Long mapId = 1L;
+        CategoryInfo categoryInfo = categoryService.readOne(AccessInfo.of(memberId, mapId), categoryId);
 
         assertThat(categoryInfo.getCategoryId()).isEqualTo(categoryId);
 
@@ -99,9 +102,10 @@ public class CategoryServiceTest {
         //given
         Long categoryId = 3L;
         Long memberId = 5L;
+        Long mapId = 2L;
 
 
-        assertThatThrownBy(() -> categoryService.readOne(categoryId, memberId))
+        assertThatThrownBy(() -> categoryService.readOne(AccessInfo.of(memberId, mapId), categoryId))
                 .isInstanceOf(ClientException.class)
                 .hasMessage(ErrorStatusCodeAndMessage.FORBIDDEN.getMessage());
 
@@ -112,12 +116,13 @@ public class CategoryServiceTest {
     void updateTest() {
         Long categoryId = 1L;
         Long memberId = 1L;
+        Long mapId = 1L;
         String updatedName = "updated name";
         String updatedColor = "updated color";
 
-        CategoryInfo categoryInfo = categoryService.readOne(categoryId, memberId);
+        CategoryInfo categoryInfo = categoryService.readOne(AccessInfo.of(memberId, mapId), categoryId);
 
-        CategoryInfo updated = categoryService.update(categoryId, updatedName, updatedColor, memberId);
+        CategoryInfo updated = categoryService.update(AccessInfo.of(memberId, mapId), categoryId, updatedName, updatedColor);
 
         assertThat(updated.getCategoryId()).isEqualTo(categoryInfo.getCategoryId());
         assertThat(updated.getCategoryName()).isNotEqualTo(categoryInfo.getCategoryName());
@@ -132,10 +137,11 @@ public class CategoryServiceTest {
     void updateTest_fail_not_exist_category() {
         Long categoryId = 100L;
         Long memberId = 1L;
+        Long mapId = 1L;
         String updatedName = "updated name";
         String updatedColor = "updated color";
 
-        assertThatThrownBy(() -> categoryService.update(categoryId, updatedName, updatedColor, memberId))
+        assertThatThrownBy(() -> categoryService.update(AccessInfo.of(memberId, mapId), categoryId, updatedName, updatedColor))
                 .isInstanceOf(ClientException.class)
                 .hasMessage(ErrorStatusCodeAndMessage.NO_SUCH_CATEGORY.getMessage());
 
@@ -146,10 +152,11 @@ public class CategoryServiceTest {
     void updateTest_fail_read_permission() {
         Long categoryId = 1L;
         Long memberId = 3L;
+        Long mapId = 1L;
         String updatedName = "updated name";
         String updatedColor = "updated color";
 
-        assertThatThrownBy(() -> categoryService.update(categoryId, updatedName, updatedColor, memberId))
+        assertThatThrownBy(() -> categoryService.update(AccessInfo.of(memberId, mapId), categoryId, updatedName, updatedColor))
                 .isInstanceOf(ClientException.class)
                 .hasMessage(ErrorStatusCodeAndMessage.FORBIDDEN.getMessage());
 

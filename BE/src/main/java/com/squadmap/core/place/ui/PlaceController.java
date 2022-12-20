@@ -1,6 +1,9 @@
 package com.squadmap.core.place.ui;
 
 import com.squadmap.common.auth.Login;
+import com.squadmap.common.dto.CommonResponse;
+import com.squadmap.common.dto.SuccessCode;
+import com.squadmap.core.group.application.dto.AccessInfo;
 import com.squadmap.core.place.ui.dto.PlaceRequest;
 import com.squadmap.core.place.ui.dto.PlaceUpdateRequest;
 import com.squadmap.core.place.application.PlaceService;
@@ -14,38 +17,40 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/map/{mapId}")
 public class PlaceController {
 
     private final PlaceService placeService;
 
     @PostMapping("/places")
     @ResponseStatus(HttpStatus.CREATED)
-    public PlaceResponse create(@Login Long memberId, @RequestBody @Valid PlaceRequest placeRequest) {
-        Long placeId = placeService.create(placeRequest.getName(),
+    public CommonResponse<PlaceResponse> create(@Login Long loginId, @PathVariable Long mapId, @RequestBody @Valid PlaceRequest placeRequest) {
+        Long placeId = placeService.create(AccessInfo.of(loginId, mapId),
+                placeRequest.getName(),
                 placeRequest.getAddress(),
                 placeRequest.getLatitude(),
                 placeRequest.getLongitude(),
                 placeRequest.getStory(),
                 placeRequest.getDetailLink(),
-                placeRequest.getMapId(),
-                placeRequest.getCategoryId(),
-                memberId);
-        return new PlaceResponse(placeId);
+                placeRequest.getCategoryId());
+
+        return CommonResponse.success(SuccessCode.PLACE_CREATE, new PlaceResponse(placeId));
     }
 
     @PatchMapping("/places/{placeId}")
-    public PlaceDetailInfo update(@Login Long memberId, @PathVariable Long placeId, @RequestBody @Valid PlaceUpdateRequest placeUpdateRequest) {
-        return placeService.update(
-                memberId,
+    public CommonResponse<PlaceDetailInfo> update(@Login Long loginId, @PathVariable Long mapId, @PathVariable Long placeId,
+                                  @RequestBody @Valid PlaceUpdateRequest placeUpdateRequest) {
+        return CommonResponse.success(SuccessCode.PLACE_UPDATE, placeService.update(
+                AccessInfo.of(loginId, mapId),
                 placeId,
                 placeUpdateRequest.getCategoryId(),
-                placeUpdateRequest.getStory()
-        );
+                placeUpdateRequest.getStory()));
     }
 
     @GetMapping("/places/{placeId}")
-    public PlaceDetailInfo readOne(@Login Long memberId, @PathVariable Long placeId) {
+    public CommonResponse<PlaceDetailInfo> readOne(@Login Long loginId, @PathVariable Long mapId, @PathVariable Long placeId) {
 
-        return placeService.readOne(memberId, placeId);
+        return CommonResponse.success(SuccessCode.PLACE_READ,
+                placeService.readOne(AccessInfo.of(loginId, mapId), placeId));
     }
 }

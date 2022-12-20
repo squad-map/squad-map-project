@@ -44,8 +44,8 @@ public class Place {
         return new Place(null, name, address, position, description, detailLink, map, category, memberId);
     }
 
-    public Long getMapId() {
-        return this.getMap().getId();
+    public boolean hasSameMapId(Long mapId) {
+        return this.map.getId().equals(mapId);
     }
 
     public void changeCategory(Category category) {
@@ -54,10 +54,6 @@ public class Place {
 
     public void editDescription(String description) {
         this.description = description;
-    }
-
-    public boolean isFullDisclosure() {
-        return this.map.isFullDisclosure();
     }
 
     @Override

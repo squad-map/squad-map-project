@@ -17,7 +17,5 @@ public class CategoryRequest {
     private String categoryName;
     @NotBlank
     private String color;
-    @NotNull
-    private Long mapId;
 
 }

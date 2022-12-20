@@ -5,6 +5,7 @@ import com.squadmap.common.excetpion.ClientException;
 import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
 import com.squadmap.member.application.MemberService;
 import com.squadmap.member.application.dto.MemberSimpleInfo;
+import com.squadmap.member.application.dto.NicknameUpdateInfo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -42,9 +43,10 @@ class MemberServiceTest {
     void updateNicknameTest(String nickname) {
 
         Long memberId = 1L;
-        String updatedNickname = memberService.updateNickname(memberId, nickname);
+        NicknameUpdateInfo nicknameUpdateInfo = memberService.updateNickname(memberId, nickname);
 
-        assertThat(nickname).isEqualTo(updatedNickname);
+        assertThat(memberId).isEqualTo(nicknameUpdateInfo.getMemberId());
+        assertThat(nickname).isEqualTo(nicknameUpdateInfo.getNickname());
     }
 
     @ParameterizedTest

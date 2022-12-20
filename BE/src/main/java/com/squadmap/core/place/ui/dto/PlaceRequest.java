@@ -28,8 +28,6 @@ public class PlaceRequest {
     @NotBlank
     private String detailLink;
     @NotNull
-    private Long mapId;
-    @NotNull
     private Long categoryId;
 
 }

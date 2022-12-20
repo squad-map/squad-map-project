@@ -1,11 +1,13 @@
 package com.squadmap.core.category.application;
 
+import com.squadmap.core.access.RequiredPermission;
 import com.squadmap.core.category.application.dto.CategoryInfo;
 import com.squadmap.core.category.domain.Category;
 import com.squadmap.core.category.infrastructure.CategoryRepository;
 import com.squadmap.common.excetpion.ClientException;
 import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
-import com.squadmap.core.group.application.GroupMemberService;
+import com.squadmap.core.group.application.dto.AccessInfo;
+import com.squadmap.core.group.domain.PermissionLevel;
 import com.squadmap.core.map.domain.Map;
 import com.squadmap.core.map.infrastructure.MapRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,16 +26,14 @@ public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
     private final MapRepository mapRepository;
-    private final GroupMemberService groupMemberService;
 
     @Override
     @Transactional
-    public Long create(String name, String color, Long mapId, Long memberId) {
+    @RequiredPermission(level = PermissionLevel.MAINTAIN)
+    public Long create(AccessInfo accessInfo, String name, String color) {
 
-        Map map = mapRepository.findById(mapId)
+        Map map = mapRepository.findById(accessInfo.getMapId())
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_MAP));
-
-        groupMemberService.checkHasMaintainLevel(mapId, memberId);
 
         if (isDuplicateName(name, map)) {
             throw new ClientException(ErrorStatusCodeAndMessage.DUPLICATE_CATEGORY);
@@ -49,27 +49,23 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public CategoryInfo readOne(Long categoryId, Long memberId) {
+    @RequiredPermission
+    public CategoryInfo readOne(AccessInfo accessInfo, Long categoryId) {
         Category category = categoryRepository.findCategoryFetchMapById(categoryId)
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_CATEGORY));
 
-        if (!category.getMap().isFullDisclosure()) {
-            groupMemberService.checkHasReadLevel(category.getMap().getId(), memberId);
-        }
+        checkCategoryInMap(category, accessInfo.getMapId());
 
         return CategoryInfo.from(category);
     }
 
     @Override
-    public List<CategoryInfo> readAll(Long mapId, Long memberId) {
-        Map map = mapRepository.findById(mapId)
+    @RequiredPermission
+    public List<CategoryInfo> readAll(AccessInfo accessInfo) {
+        Map map = mapRepository.findById(accessInfo.getMapId())
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_MAP));
 
-        if (!map.isFullDisclosure()) {
-            groupMemberService.checkHasReadLevel(mapId, memberId);
-        }
-
-        List<Category> categories = categoryRepository.findAllByMap(mapId);
+        List<Category> categories = categoryRepository.findAllByMap(accessInfo.getMapId());
         return categories.stream()
                 .map(CategoryInfo::from)
                 .collect(Collectors.toUnmodifiableList());
@@ -77,15 +73,30 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     @Transactional
-    public CategoryInfo update(Long categoryId, String categoryName, String categoryColor, Long memberId) {
+    @RequiredPermission(level = PermissionLevel.MAINTAIN)
+    public CategoryInfo update(AccessInfo accessInfo, Long categoryId,
+                               String categoryName, String categoryColor) {
 
         Category category = categoryRepository.findCategoryFetchMapById(categoryId)
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_CATEGORY));
 
-        groupMemberService.checkHasMaintainLevel(category.getMapId(), memberId);
+        if(!category.hasSameMapId(accessInfo.getMapId())) {
+            throw new ClientException(ErrorStatusCodeAndMessage.FORBIDDEN);
+        }
+
+        if (isDuplicateName(categoryName, category.getMap())) {
+            throw new ClientException(ErrorStatusCodeAndMessage.DUPLICATE_CATEGORY);
+        }
 
         category.update(categoryName, categoryColor);
 
         return CategoryInfo.from(category);
+    }
+
+    private void checkCategoryInMap(Category category, Long mapId) {
+        if(!category.hasSameMapId(mapId)) {
+            throw new ClientException(ErrorStatusCodeAndMessage.FORBIDDEN);
+        }
+
     }
 }

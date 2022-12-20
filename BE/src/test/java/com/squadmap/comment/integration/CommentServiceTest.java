@@ -1,14 +1,15 @@
 package com.squadmap.comment.integration;
 
 import com.squadmap.IntegrationTest;
+import com.squadmap.common.dto.SimpleSlice;
+import com.squadmap.common.excetpion.ClientException;
+import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
 import com.squadmap.core.comment.application.CommentServiceImpl;
 import com.squadmap.core.comment.application.dto.CommentInfo;
 import com.squadmap.core.comment.application.dto.CommentResponse;
 import com.squadmap.core.comment.domain.Comment;
 import com.squadmap.core.comment.infrastructure.CommentRepository;
-import com.squadmap.common.SimpleSlice;
-import com.squadmap.common.excetpion.ClientException;
-import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
+import com.squadmap.core.group.application.dto.AccessInfo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,33 +31,50 @@ class CommentServiceTest {
     void writeCommentTest() {
         Long memberId = 1L;
         Long placeId = 1L;
+        Long mapId = 1L;
         String content = "댓글";
 
-        CommentInfo commentInfo = commentService.writeComment(memberId, placeId, content);
+        CommentInfo commentInfo = commentService.writeComment(AccessInfo.of(memberId, mapId), placeId, content);
 
         assertThat(commentInfo.getCommentId()).isPositive();
     }
 
     @Test
-    @DisplayName("지도 권한이 없는 멤버가 장소에 댓글을 작성하면 익셉션이 발생한다.")
-    void writeCommentTest_not_groupmember_fail() {
+    @DisplayName("지도 권한이 없는 멤버라도 지도가 공개 지도라면 댓글을 작성할 수 있다.")
+    void writeCommentTest_not_group_member_public_map() {
         Long memberId = 4L;
+        Long mapId = 1L;
         Long placeId = 1L;
         String content = "댓글";
 
-        assertThatThrownBy(() -> commentService.writeComment(memberId, placeId, content))
+        CommentInfo commentInfo = commentService.writeComment(AccessInfo.of(memberId, mapId), placeId, content);
+
+        assertThat(commentInfo.getCommentId()).isPositive();
+    }
+
+    @Test
+    @DisplayName("비공개 지도에 권한이 없는 멤버가 장소에 댓글을 작성하려하면 예외가 발생한다.")
+    void writeCommentTest_not_group_member_fail() {
+        Long memberId = 5L;
+        Long mapId = 2L;
+        Long placeId = 2L;
+        String content = "댓글";
+
+        assertThatThrownBy(() -> commentService.writeComment(AccessInfo.of(memberId, mapId), placeId, content))
                 .isInstanceOf(ClientException.class)
                 .hasMessage(ErrorStatusCodeAndMessage.FORBIDDEN.getMessage());
     }
+
 
     @Test
     @DisplayName("장소가 존재하지않을 때, 댓글을 작성하면 익셉션이 발생한다.")
     void writeCommentTest_no_such_place_fail() {
         Long memberId = 1L;
+        Long mapId = 1L;
         Long placeId = 100L;
         String content = "댓글";
 
-        assertThatThrownBy(() -> commentService.writeComment(memberId, placeId, content))
+        assertThatThrownBy(() -> commentService.writeComment(AccessInfo.of(memberId, mapId), placeId, content))
                 .isInstanceOf(ClientException.class)
                 .hasMessage(ErrorStatusCodeAndMessage.NO_SUCH_PLACE.getMessage());
     }
@@ -107,11 +125,12 @@ class CommentServiceTest {
     @DisplayName("지도를 읽을 수 있는 사용자라면, 선택 댓글 이후의 댓글들을 조회할 수 있다.")
     void readCommentTest() {
         Long memberId = 1L;
+        Long mapId = 1L;
         Long placeId = 1L;
         Long lastCommentId = 1L;
         Integer size = 5;
 
-        SimpleSlice<CommentInfo> comments = commentService.readComments(memberId, placeId, lastCommentId, size);
+        SimpleSlice<CommentInfo> comments = commentService.readComments(AccessInfo.of(memberId, mapId), placeId, lastCommentId, size);
 
         assertThat(comments.getNumberOfElements()).isEqualTo(2);
         assertThat(comments.getSize()).isEqualTo(size);
@@ -124,9 +143,8 @@ class CommentServiceTest {
         Long memberId = 1L;
         Long commentId = 1L;
 
-        Long deletedCommentId = commentService.deleteComment(memberId, commentId);
+        commentService.deleteComment(memberId, commentId);
 
-        assertThat(deletedCommentId).isEqualTo(commentId);
         assertThat(commentRepository.findById(commentId).isEmpty()).isTrue();
     }
 

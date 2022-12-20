@@ -1,4 +1,4 @@
-package com.squadmap.common;
+package com.squadmap.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import lombok.RequiredArgsConstructor;

@@ -1,7 +1,8 @@
 package com.squadmap.common.config;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.cache.CacheProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -18,7 +19,10 @@ import java.time.Duration;
 @EnableCaching
 @Configuration
 @RequiredArgsConstructor
+@EnableConfigurationProperties(CacheProperties.class)
 public class CacheConfig {
+
+    private final CacheProperties cacheProperties;
 
     @Bean
     public CacheManager cacheManager(RedisConnectionFactory redisConnectionFactory) {
@@ -29,7 +33,7 @@ public class CacheConfig {
                         .fromSerializer(new StringRedisSerializer()))
                 .serializeValuesWith(RedisSerializationContext.SerializationPair
                         .fromSerializer(RedisSerializer.json()))
-                .entryTtl(Duration.ofHours(1));
+                .entryTtl(cacheProperties.getRedis().getTimeToLive());
 
         return RedisCacheManager.RedisCacheManagerBuilder
                 .fromConnectionFactory(redisConnectionFactory)
