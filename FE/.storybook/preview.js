@@ -29,7 +29,7 @@ export const decorators = [
         <RecoilRoot>
             <ThemeProvider theme={theme}>
               <GlobalStyle />
-              <Story />
+                <Story />
             </ThemeProvider>
         </RecoilRoot>
         </QueryClientProvider>

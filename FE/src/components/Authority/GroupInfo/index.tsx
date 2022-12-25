@@ -1,7 +1,5 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
-
-import * as S from './GroupInfo.style';
 
 import {
   getGroupMembers,
@@ -25,7 +23,6 @@ const GroupInfo = ({ mapId }: { mapId: number }) => {
   const [buttonFlag, setButtonFlag] = useState(0);
 
   const [isPopup, setIsPopup] = useState(false);
-  const queryClient = useQueryClient();
 
   const { data: groupMembers, refetch } = useQuery(['GroupInfo'], () => {
     if (mapId) {
@@ -102,12 +99,19 @@ const GroupInfo = ({ mapId }: { mapId: number }) => {
 
   return (
     <>
-      <S.GroupInfoWrapper>
+      <article className="h-40 my-4 overflow-y-auto">
         {groupMembers ? (
           <>
             {groupMembers.map((member: GroupInfoRespnse) => (
-              <S.GroupInfo key={member.member_id}>
-                <S.ProfileImage src={member.member_profile_image} />
+              <div
+                key={member.member_id}
+                className="flex items-center gap-4 mb-2"
+              >
+                <img
+                  className="w-6 h-6 rounded-2xl"
+                  src={member.member_profile_image}
+                  alt="Profile"
+                />
                 <Text
                   text={member.member_nickname}
                   size="xSmall"
@@ -120,40 +124,45 @@ const GroupInfo = ({ mapId }: { mapId: number }) => {
                     color={theme.color.black}
                   />
                 ) : (
-                  <S.SearchSelectBox onChange={handleSelectChange}>
-                    <S.SearchOption
+                  <select
+                    className="w-20 rounded-2xl p-1 border-[1px] border-solid border-black cursor-pointer"
+                    onChange={handleSelectChange}
+                  >
+                    <option
                       value="READ"
                       selected={member.permission_level === 'READ'}
                     >
                       READ
-                    </S.SearchOption>
-                    <S.SearchOption
+                    </option>
+                    <option
                       value="MAINTAIN"
                       selected={member.permission_level === 'MAINTAIN'}
                     >
                       MAINTAIN
-                    </S.SearchOption>
-                  </S.SearchSelectBox>
+                    </option>
+                  </select>
                 )}
-                <S.Button
-                  bgColor={theme.color.navy}
+                <button
+                  type="button"
+                  className="w-12 h-6 rounded-2xl bg-navy"
                   onClick={() => handleButtonClick(member.member_id, 0)}
                 >
                   <Text text="수정" size="xSmall" color={theme.color.black} />
-                </S.Button>
-                <S.Button
-                  bgColor={theme.color.lightRed}
+                </button>
+                <button
+                  type="button"
+                  className="w-12 h-6 roundd-2xl bg-lightRed"
                   onClick={() => handleButtonClick(member.member_id, 1)}
                 >
                   <Text text="삭제" size="xSmall" color={theme.color.black} />
-                </S.Button>
-              </S.GroupInfo>
+                </button>
+              </div>
             ))}
           </>
         ) : (
-          <div>No Group Data</div>
+          <div className="mt-16">No Group Data</div>
         )}
-      </S.GroupInfoWrapper>
+      </article>
       {isPopup && (
         <Popup
           handleSubmitClick={handleSubmitClick}
