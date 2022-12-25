@@ -32,6 +32,7 @@ module.exports = {
     'no-nested-ternary': 'off', // 삼항연산자 2개이상 허용
     'react/no-unknown-property': ['error', { ignore: ['css', 'tw'] }], // emotion css 속성 사용 허용
     'global-require': 0,
+    camelcase: 'off',
     'react/function-component-definition': [
       // 함수형 컴포넌트 선언방식
       2,

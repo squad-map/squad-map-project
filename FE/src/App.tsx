@@ -13,14 +13,13 @@ const ModifyMapPage = lazy(() => import('@/pages/MapForm'));
 const HomePage = lazy(() => import('@/pages/Home'));
 const MapPage = lazy(() => import('@/pages/Map'));
 const SearchMapPage = lazy(() => import('@/pages/SearchMap'));
-const TailWindPage = lazy(() => import('@/pages/Tailwind'));
+const NotFoundPage = lazy(() => import('@/pages/NotFound'));
 
 export default function App() {
   return (
     <BrowserRouter>
       <Suspense fallback={<LoadingSpinner size="xLarge" />}>
         <Routes>
-          <Route path="/tailwind" element={<TailWindPage />} />
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route element={<Verification />}>
@@ -33,6 +32,7 @@ export default function App() {
           <Route path="/login/github/callback" element={<Callback />} />
           <Route path="/login/naver/callback" element={<Callback />} />
           <Route path="/logout" element={<Logout />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Suspense>
     </BrowserRouter>

@@ -23,7 +23,7 @@ module.exports = {
       lightGreen: '#BEE59A',
       brown: '#F3B778',
       lightBrown: '#F6C790',
-      yellow: '#FEE401',
+      yellow: '#F59E0B',
       titleActive: '#14142B',
       label: '#6E7191',
       placeholder: '#A0A3BD',
@@ -32,12 +32,13 @@ module.exports = {
 
       // Category Button colors
 
-      blue: '#007AFF',
+      blue: '#3B82F6',
       lightBlue: '#C7EBFF',
       darkBlue: '#004DE3',
       red: '#FF3B30',
       lightRed: '#FFD1CF',
       darkRed: '#C60B00',
+      purple: '#3f3cbb',
     },
   },
   plugins: [require('tailwindcss-convert-px-to-rem')],
