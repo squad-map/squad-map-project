@@ -4,8 +4,8 @@ import { rest } from 'msw';
 import GridCards from './index';
 
 import Card from '@/components/common/Card';
+import Item from '@/components/Item';
 import { homeMapsData } from '@/constants/dummyData';
-import Item from '@/pages/Home/Item';
 
 export default {
   title: 'GridCards',

@@ -9,7 +9,7 @@ import Button from '@/components/common/Button';
 import GlobalModal from '@/components/common/GlobalModal';
 import Icon from '@/components/common/Icon';
 import Text from '@/components/common/Text';
-import Input from '@/components/Input';
+import Input from '@/components/common/Input';
 import { CategoryColors } from '@/constants/colors';
 import { HeaderProps } from '@/pages/Map/Header';
 import theme from '@/styles/theme';

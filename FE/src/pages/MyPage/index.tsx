@@ -1,9 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 
-import Item from './Item';
-import * as S from './MyPage.style';
-
 import { getMypage } from '@/apis/mypage';
 import { Icons } from '@/assets/icons';
 import Button from '@/components/common/Button';
@@ -12,6 +9,7 @@ import Header from '@/components/common/Header';
 import Icon from '@/components/common/Icon';
 import Text from '@/components/common/Text';
 import GridCards from '@/components/GridCards';
+import Item from '@/components/MyPage/Item';
 import { IMyMap } from '@/interfaces/IMyMap';
 import theme from '@/styles/theme';
 
@@ -21,13 +19,13 @@ const MyPage = () => {
   return (
     <>
       <Header />
-      <S.TitleBox>
-        <Icon size="medium" url={Icons.Map} alt="Map Icon" />
-        <Text text="지도 관리" size="xLargeFill" color={theme.color.navy} />
-      </S.TitleBox>
-      <S.Contents>
+      <section className="w-screen flex flex-col justify-center items-center gap-12 relative">
+        <div className="flex justify-center items-end gap-2">
+          <Icon size="medium" url={Icons.Map} alt="Map Icon" />
+          <Text text="지도 관리" size="xLargeFill" color={theme.color.navy} />
+        </div>
         {myPageData && myPageData.content.length > 0 ? (
-          <S.GridWrapper>
+          <div className="mb-12">
             <GridCards size="large">
               {myPageData.content.map((item: IMyMap) => (
                 <Link to={`/map/${item.id}`} key={item.id}>
@@ -37,11 +35,11 @@ const MyPage = () => {
                 </Link>
               ))}
             </GridCards>
-          </S.GridWrapper>
+          </div>
         ) : (
-          <S.EmptyContent>
+          <div className="text-center mb-12 leading-8 text-lg">
             지도 데이터가 존재하지 않습니다. <br /> 나만의 지도를 추가해주세요.
-          </S.EmptyContent>
+          </div>
         )}
         <Link to="/mypage/create">
           <Button
@@ -56,7 +54,7 @@ const MyPage = () => {
             />
           </Button>
         </Link>
-      </S.Contents>
+      </section>
     </>
   );
 };

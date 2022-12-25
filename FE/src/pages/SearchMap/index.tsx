@@ -2,22 +2,14 @@ import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import * as S from './SearchMap.style';
-import SearchPlace from './SearchPlace';
-
 import { getMapDetailInfo } from '@/apis/mypage';
-import { KakaoMap } from '@/components/KaKaoMap';
+import KakaoMap from '@/components/KaKaoMap';
+import Header from '@/components/Map/Header';
+import SearchPlace from '@/components/SearchMap/SearchPlace';
 import { defaultCoords } from '@/constants/map';
 import { ISearchPlace } from '@/interfaces/ISearchPlace';
-import Header from '@/pages/Map/Header';
 import { CategorizedPlaces, PlaceType } from '@/types/map';
 import { unicodeToEmoji } from '@/utils/util';
-
-declare global {
-  interface Window {
-    kakao: any;
-  }
-}
 
 const { kakao } = window;
 
@@ -66,11 +58,12 @@ const SearchMap = () => {
   };
 
   return (
-    <S.SearchMap>
+    <section>
       {mapData && (
         <KakaoMap placeInfos={placeInfos}>
           <Header
             headerData={{
+              map_id: Number(id),
               emoji: `${unicodeToEmoji(mapData.map_emoji)}`,
               title: mapData.map_name,
               category_info: mapData.categorized_places.map(
@@ -84,7 +77,7 @@ const SearchMap = () => {
           />
         </KakaoMap>
       )}
-    </S.SearchMap>
+    </section>
   );
 };
 

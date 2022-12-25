@@ -5,13 +5,14 @@ import MyPage from './index';
 import { myPageMapsData } from '@/constants/dummyData';
 
 export default {
-  title: 'MyPage',
+  title: 'pages/MyPage',
   component: MyPage,
   parameters: {
     msw: {
       handlers: [
-        rest.get('/mypage', (req, res, ctx) =>
-          res(ctx.status(200), ctx.json(myPageMapsData))
+        rest.get(
+          `${process.env.SQUAD_MAP_OAUTH_URL}/map/group`,
+          (req, res, ctx) => res(ctx.status(200), ctx.json(myPageMapsData))
         ),
       ],
     },

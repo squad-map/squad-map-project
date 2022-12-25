@@ -2,14 +2,13 @@ import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
-import Header from './Header';
-import Infos from './Infos';
-
 import { getMapDetailInfo } from '@/apis/mypage';
 import { Icons } from '@/assets/icons';
 import Button from '@/components/common/Button';
 import Text from '@/components/common/Text';
-import { KakaoMap } from '@/components/KaKaoMap';
+import KakaoMap from '@/components/KaKaoMap';
+import Header from '@/components/Map/Header';
+import Infos from '@/components/Map/Infos';
 import theme from '@/styles/theme';
 import { CategorizedPlaces, MapUserType } from '@/types/map';
 import { unicodeToEmoji } from '@/utils/util';
