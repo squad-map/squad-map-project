@@ -12,7 +12,7 @@ export type PlaceType = {
   address: string;
   latitude: number;
   longitude: number;
-  detail_link: string;
+  detail_link?: string;
 };
 
 export type CategorizedPlaces = {
