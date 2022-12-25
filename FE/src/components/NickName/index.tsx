@@ -11,7 +11,7 @@ import { Images } from '@/assets/images';
 import Button from '@/components/common/Button';
 import Image from '@/components/common/Image';
 import Text from '@/components/common/Text';
-import Input from '@/components/Input';
+import Input from '@/components/common/Input';
 import { userState } from '@/recoil/atoms/user';
 import theme from '@/styles/theme';
 

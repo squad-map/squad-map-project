@@ -3,9 +3,6 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
-import * as S from './Home.style';
-import Item from './Item';
-
 import { getMaps } from '@/apis/home';
 import { getMypage } from '@/apis/mypage';
 import { Icons } from '@/assets/icons';
@@ -15,8 +12,9 @@ import Header from '@/components/common/Header';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import Text from '@/components/common/Text';
 import GridCards from '@/components/GridCards';
-import Input from '@/components/Input';
-import useDebounce from '@/hooks/UseDebounce';
+import Input from '@/components/common/Input';
+import Item from '@/components/Item';
+// import useDebounce from '@/hooks/UseDebounce';
 import { IMap } from '@/interfaces/IMap';
 import { userState } from '@/recoil/atoms/user';
 import theme from '@/styles/theme';
@@ -56,10 +54,10 @@ export default function HomePage() {
   }, [refetchMaps, searchType]);
 
   return (
-    <S.Container>
+    <section className="w-full h-full relative">
       <Header />
-      <S.Contents>
-        <S.SearchInputWrapper>
+      <div className="flex flex-col items-center mb-16">
+        <div className="text-center mb-16">
           <Input
             type="input"
             placeholderText="What kind of place are you looking for?"
@@ -68,8 +66,8 @@ export default function HomePage() {
             value={searchValue}
             onChange={handleSearchInput}
           />
-        </S.SearchInputWrapper>
-        <S.NavWrapper>
+        </div>
+        <nav className="flex gap-4 mb-8">
           <Button
             size="small"
             color={
@@ -102,11 +100,11 @@ export default function HomePage() {
               />
             </Button>
           )}
-        </S.NavWrapper>
+        </nav>
         {loading ? (
           <LoadingSpinner size="xLarge" />
         ) : (
-          <S.GridWrapper>
+          <div className="mb-16">
             <GridCards size="small">
               {mapsData.content &&
                 mapsData.content.map((item: IMap) => (
@@ -117,9 +115,9 @@ export default function HomePage() {
                   </Link>
                 ))}
             </GridCards>
-          </S.GridWrapper>
+          </div>
         )}
-      </S.Contents>
-    </S.Container>
+      </div>
+    </section>
   );
 }

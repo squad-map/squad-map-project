@@ -1,6 +1,6 @@
 import { useLocation, useParams } from 'react-router-dom';
 
-import Form from './Form';
+import Form from '../../components/Form';
 
 import Header from '@/components/common/Header';
 

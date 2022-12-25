@@ -6,13 +6,15 @@ import HomePage from './index';
 import { homeMapsData } from '@/constants/dummyData';
 
 export default {
-  title: 'HomePage',
+  title: 'pages/HomePage',
   component: HomePage,
   parameters: {
     msw: {
       handlers: [
-        rest.get('/', (req, res, ctx) =>
-          res(ctx.status(200), ctx.delay(1000), ctx.json(homeMapsData))
+        rest.get(
+          `${process.env.SQUAD_MAP_OAUTH_URL}/map/public?page=${0}&size=${0}`,
+          (req, res, ctx) =>
+            res(ctx.status(200), ctx.delay(1000), ctx.json(homeMapsData))
         ),
       ],
     },
