@@ -1,18 +1,20 @@
 package com.squadmap.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
 
 import java.util.List;
 
-@RequiredArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SimpleSlice<T> {
 
-    private final List<T> content;
-    private final int size;
-    private final int numberOfElements;
-    private final boolean hasNext;
+    private List<T> content;
+    private int size;
+    private int numberOfElements;
+    private boolean hasNext;
 
     public SimpleSlice(Slice<T> slice) {
         this.content = slice.getContent();

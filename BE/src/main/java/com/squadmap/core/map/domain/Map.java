@@ -13,6 +13,7 @@ import java.util.Objects;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Table(indexes = {@Index(name = "map_name_idx", columnList = "name")})
 public class Map {
 
     @Id

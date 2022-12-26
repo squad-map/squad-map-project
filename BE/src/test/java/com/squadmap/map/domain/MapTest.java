@@ -4,6 +4,8 @@ import com.squadmap.core.map.domain.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.Random;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 class MapTest {
@@ -23,5 +25,14 @@ class MapTest {
         assertThat(map.getName()).isEqualTo(updateName);
         assertThat(map.getEmoji()).isEqualTo(updateEmoji);
         assertThat(map.isFullDisclosure()).isTrue();
+    }
+
+    @Test
+    void randomChar() {
+        Random random = new Random();
+        for (int j = 0; j <100; j++) {
+            char i = (char) (random.nextInt(26) + 97);
+            System.out.println(i);
+        }
     }
 }
