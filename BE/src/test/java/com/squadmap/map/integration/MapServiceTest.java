@@ -1,7 +1,7 @@
 package com.squadmap.map.integration;
 
 import com.squadmap.IntegrationTest;
-import com.squadmap.common.dto.SimplePage;
+import com.squadmap.common.dto.SimpleSlice;
 import com.squadmap.common.excetpion.ClientException;
 import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
 import com.squadmap.core.map.application.MapService;
@@ -19,7 +19,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @IntegrationTest
 class MapServiceTest  {
@@ -89,13 +90,13 @@ class MapServiceTest  {
     @DisplayName("전체 공개 지도는, 로그인하지 않은 유저도 조회할 수 있다.")
     void searchPublicMapList() {
 
-        SimplePage<MapSimpleInfo> mapSimpleInfos = mapService.searchPublic(PageRequest.of(0, 5), Optional.empty());
+        SimpleSlice<MapSimpleInfo> mapSimpleInfos = mapService.searchPublic(0L, Optional.empty());
         List<MapSimpleInfo> content = mapSimpleInfos.getContent();
 
         assertThat(content.get(0).getHostNickname()).isEqualTo("nickname");
         assertThat(content.get(0).getMapName()).isEqualTo("first map");
         assertThat(content.get(0).getPlacesCount()).isPositive();
-        assertThat(mapSimpleInfos.getTotalElements()).isPositive();
+        assertThat(mapSimpleInfos.getNumberOfElements()).isPositive();
 
     }
 
@@ -149,10 +150,10 @@ class MapServiceTest  {
     @DisplayName("지도 이름에 포함되는 문자열을 보내면, 해당하는 전채 공개 지도를 반환한다.")
     void searchPublicMapTest() {
         //given
-        Optional<String> searchName = Optional.of("st");
+        Optional<String> searchName = Optional.of("fir");
 
         //when
-        SimplePage<MapSimpleInfo> mapSimpleInfos = mapService.searchPublic(PageRequest.of(0, 10), searchName);
+        SimpleSlice<MapSimpleInfo> mapSimpleInfos = mapService.searchPublic(0L, searchName);
 
         //then
         assertThat(mapSimpleInfos.getContent()).isNotEmpty();

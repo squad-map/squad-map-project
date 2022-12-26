@@ -3,6 +3,7 @@ package com.squadmap.core.map.ui;
 import com.squadmap.common.dto.CommonResponse;
 import com.squadmap.common.dto.SimplePage;
 import com.squadmap.common.auth.Login;
+import com.squadmap.common.dto.SimpleSlice;
 import com.squadmap.common.dto.SuccessCode;
 import com.squadmap.core.map.application.MapService;
 import com.squadmap.core.map.application.dto.MapDetail;
@@ -46,10 +47,10 @@ public class MapController {
     }
 
     @GetMapping("/public")
-    public CommonResponse<SimplePage<MapSimpleInfo>> findPublicMapList(@PageableDefault Pageable pageable, Optional<String> name) {
-        log.info("pageNumber = {}, size = {}", pageable.getPageNumber(), pageable.getPageSize());
+    public CommonResponse<SimpleSlice<MapSimpleInfo>> findPublicMapList(@RequestParam(defaultValue = "0") Long lastMapId, Optional<String> name) {
+
         return CommonResponse.success(SuccessCode.MAP_READ_PUB,
-                mapService.searchPublic(pageable, name));
+                mapService.searchPublic(lastMapId, name));
     }
 
     @GetMapping("/{mapId}")

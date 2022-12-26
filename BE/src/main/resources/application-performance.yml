@@ -6,7 +6,7 @@ spring:
   sql:
     init:
       mode: always
-      data-locations: classpath:bulk-data.sql
+      #data-locations: classpath:bulk-data.sql
 
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
@@ -16,9 +16,9 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: none
 
-    defer-datasource-initialization: true
+    #defer-datasource-initialization: true
 
     properties:
       hibernate:
@@ -35,4 +35,4 @@ spring:
   cache:
     type: redis
     redis:
-      time-to-live: 500
+      time-to-live: 5000000

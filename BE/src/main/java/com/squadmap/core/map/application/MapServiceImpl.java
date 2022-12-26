@@ -1,24 +1,24 @@
 package com.squadmap.core.map.application;
 
-import com.squadmap.common.dto.SimplePage;
-import com.squadmap.core.category.application.dto.CategoryInfo;
-import com.squadmap.core.category.domain.Category;
+import com.squadmap.common.dto.SimpleSlice;
 import com.squadmap.common.excetpion.ClientException;
 import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
-import com.squadmap.core.map.application.dto.*;
-import com.squadmap.core.map.domain.Map;
+import com.squadmap.core.category.application.dto.CategoryInfo;
+import com.squadmap.core.category.domain.Category;
 import com.squadmap.core.group.domain.GroupMember;
 import com.squadmap.core.group.infrastructure.GroupMemberRepository;
+import com.squadmap.core.map.application.dto.*;
+import com.squadmap.core.map.domain.Map;
 import com.squadmap.core.map.infrastructure.MapRepository;
-import com.squadmap.member.domain.Member;
-import com.squadmap.member.infrastructure.MemberRepository;
 import com.squadmap.core.place.application.dto.PlaceSimpleInfo;
 import com.squadmap.core.place.domain.Place;
 import com.squadmap.core.place.infrastructure.PlaceRepository;
+import com.squadmap.member.domain.Member;
+import com.squadmap.member.infrastructure.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -62,13 +62,13 @@ public class MapServiceImpl implements MapService {
         return new MapUpdateInfo(mapId, mapName, emoji, fullDisclosure);
     }
 
-    @Cacheable(value = "pagingPublicMaps", key = "{#pageable.pageNumber, #pageable.pageSize, #name}")
+    //@Cacheable(value = "pagingPublicMaps", key = "{#lastMapId, #name}")
     @Override
-    public SimplePage<MapSimpleInfo> searchPublic(Pageable pageable, Optional<String> name) {
-        Page<Map> maps = searchPublicWithName(pageable, name);
+    public SimpleSlice<MapSimpleInfo> searchPublic(Long lastMapId, Optional<String> name) {
+        Slice<Map> maps = searchPublicWithName(lastMapId, name);
 
         java.util.Map<Long, Member> members = getMembers(maps.getContent());
-        Page<MapSimpleInfo> simpleInfos = maps.map(map -> {
+        Slice<MapSimpleInfo> simpleInfos = maps.map(map -> {
             Member member = members.get(map.getMemberId());
             return new MapSimpleInfo(map.getId(),
                     map.getName(),
@@ -78,7 +78,7 @@ public class MapServiceImpl implements MapService {
                     member.getProfileImage(),
                     placeRepository.countPlacesByMap(map));
         });
-        return new SimplePage<>(simpleInfos);
+        return new SimpleSlice<>(simpleInfos);
     }
 
     @Override
@@ -105,11 +105,12 @@ public class MapServiceImpl implements MapService {
     }
 
 
-    private Page<Map> searchPublicWithName(Pageable pageable, Optional<String> name) {
+    private Slice<Map> searchPublicWithName(Long lastMapId, Optional<String> name) {
+        PageRequest pageRequest = PageRequest.ofSize(10);
         if (name.isPresent()) {
-            return mapRepository.findAllByFullDisclosureAndNameContaining(pageable, true, name.get());
+            return mapRepository.findMapsByFullDisclosureAndIdGreaterThanAndNameStartingWith(pageRequest, true, lastMapId, name.get());
         }
-        return mapRepository.findAllByFullDisclosure(true, pageable);
+        return mapRepository.findMapsByFullDisclosureAndIdGreaterThan(pageRequest, true, lastMapId);
     }
 
     private List<Map> searchGroupMap(Optional<String> name, List<Long> mapIds) {

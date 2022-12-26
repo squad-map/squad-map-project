@@ -12,6 +12,8 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.restdocs.snippet.Snippet;
 
+import java.util.List;
+
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
@@ -98,8 +100,7 @@ class MapAcceptanceTest extends RestAssuredTest {
     }
 
     private static final Snippet READ_MAP_LIST_REQUEST = requestParameters(
-            parameterWithName("page").optional().description("페이지 번호(default 0)"),
-            parameterWithName("size").optional().description("반환받을 지도 갯수(default 10)"),
+            parameterWithName("lastMapId").optional().description("마지막으로 표시되는 지도의 아이디"),
             parameterWithName("name").optional().description("검색하고자 하는 지도 이름 (값을 넣어주지 않으면 전체 지도 검색)")
     );
 
@@ -111,12 +112,9 @@ class MapAcceptanceTest extends RestAssuredTest {
             fieldWithPath(makeFieldName("content[].host_nickname")).type(JsonFieldType.STRING).description("지도 작성자의 닉네임"),
             fieldWithPath(makeFieldName("content[].host_profile_image")).type(JsonFieldType.STRING).description("지도 작성자의 프로필 이미지"),
             fieldWithPath(makeFieldName("content[].places_count")).type(JsonFieldType.NUMBER).description("지도내에 등록된 장소의 갯수"),
-            fieldWithPath(makeFieldName("page_number")).type(JsonFieldType.NUMBER).description("페이지 넘버"),
             fieldWithPath(makeFieldName("size")).type(JsonFieldType.NUMBER).description("요청 데이터 갯수"),
-            fieldWithPath(makeFieldName("total_pages")).type(JsonFieldType.NUMBER).description("총 페이지 갯수"),
-            fieldWithPath(makeFieldName("total_elements")).type(JsonFieldType.NUMBER).description("총 데이터 수"),
-            fieldWithPath(makeFieldName("first")).type(JsonFieldType.BOOLEAN).description("첫 페이지 여부"),
-            fieldWithPath(makeFieldName("last")).type(JsonFieldType.BOOLEAN).description("마지막 페이지 여부")
+            fieldWithPath(makeFieldName("number_of_elements")).type(JsonFieldType.NUMBER).description("데이터 갯수"),
+            fieldWithPath(makeFieldName("has_next")).type(JsonFieldType.BOOLEAN).description("추가로 요청 가능한 데이터 존재 여부")
     );
 
     @Test
@@ -124,16 +122,13 @@ class MapAcceptanceTest extends RestAssuredTest {
     void readPublicMapListTest() {
         given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, READ_MAP_LIST_REQUEST, READ_MAP_LIST_RESPONSE))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .queryParam("page", 0)
-                .queryParam("size", 10)
+                //.queryParam("lastMapId", 0)
 
         .when().get("/map/public")
 
         .then()
                 .statusCode(HttpStatus.OK.value())
                 .body("code", equalTo(SuccessCode.MAP_READ_PUB.getCode()))
-                .body("data.page_number", equalTo(0))
-                .body("data.size", equalTo(10))
                 .log().all();
     }
 
