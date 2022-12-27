@@ -34,7 +34,7 @@ public class Place {
     @ManyToOne(fetch = FetchType.LAZY)
     private Map map;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY , cascade = CascadeType.REMOVE)
     private Category category;
 
     private Long memberId;

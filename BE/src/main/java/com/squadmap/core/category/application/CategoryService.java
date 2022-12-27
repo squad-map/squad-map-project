@@ -17,4 +17,6 @@ public interface CategoryService {
     List<CategoryInfo> readAll(AccessInfo accessInfo);
 
     CategoryInfo update(AccessInfo accessInfo, Long categoryId, String categoryName, String categoryColor);
+
+    void delete(AccessInfo accessInfo, Long categoryId);
 }

@@ -17,12 +17,12 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/map/{mapId}")
+@RequestMapping("/map/{mapId}/places")
 public class PlaceController {
 
     private final PlaceService placeService;
 
-    @PostMapping("/places")
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CommonResponse<PlaceResponse> create(@Login Long loginId, @PathVariable Long mapId, @RequestBody @Valid PlaceRequest placeRequest) {
         Long placeId = placeService.create(AccessInfo.of(loginId, mapId),
@@ -37,7 +37,7 @@ public class PlaceController {
         return CommonResponse.success(SuccessCode.PLACE_CREATE, new PlaceResponse(placeId));
     }
 
-    @PatchMapping("/places/{placeId}")
+    @PatchMapping("/{placeId}")
     public CommonResponse<PlaceDetailInfo> update(@Login Long loginId, @PathVariable Long mapId, @PathVariable Long placeId,
                                   @RequestBody @Valid PlaceUpdateRequest placeUpdateRequest) {
         return CommonResponse.success(SuccessCode.PLACE_UPDATE, placeService.update(
@@ -47,10 +47,16 @@ public class PlaceController {
                 placeUpdateRequest.getStory()));
     }
 
-    @GetMapping("/places/{placeId}")
+    @GetMapping("/{placeId}")
     public CommonResponse<PlaceDetailInfo> readOne(@Login Long loginId, @PathVariable Long mapId, @PathVariable Long placeId) {
 
         return CommonResponse.success(SuccessCode.PLACE_READ,
                 placeService.readOne(AccessInfo.of(loginId, mapId), placeId));
+    }
+
+    @DeleteMapping("/{placeId}")
+    public CommonResponse<Void> delete(@Login Long loginId, @PathVariable Long mapId, @PathVariable Long placeId) {
+        placeService.delete(AccessInfo.of(loginId, mapId), placeId);
+        return CommonResponse.emptyData(SuccessCode.PLACE_DELETE);
     }
 }

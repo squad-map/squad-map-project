@@ -23,6 +23,7 @@ public enum SuccessCode {
     PLACE_CREATE("P-S01"),
     PLACE_UPDATE("P-S02"),
     PLACE_READ("P-S03"),
+    PLACE_DELETE("P-S04"),
 
     CATEGORY_CREATE("C-S01"),
     CATEGORY_READ("C-S02"),

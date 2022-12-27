@@ -44,9 +44,9 @@ public class GroupMemberController {
         return CommonResponse.success(SuccessCode.GROUP_UPDATE, groupMemberSimpleInfo);
     }
 
-    @DeleteMapping
-    public CommonResponse<Void> deleteMemberInGroup(@Login Long memberId, @PathVariable Long mapId, @RequestBody @Valid GroupMemberDeleteRequest deleteRequest) {
-        groupMemberService.removeGroupMember(memberId, mapId, deleteRequest.getMemberId());
+    @DeleteMapping("/{memberId}")
+    public CommonResponse<Void> deleteMemberInGroup(@Login Long loginId, @PathVariable Long mapId, @PathVariable Long memberId) {
+        groupMemberService.removeGroupMember(loginId, mapId, memberId);
         return CommonResponse.emptyData(SuccessCode.GROUP_DELETE);
     }
 

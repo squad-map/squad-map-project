@@ -2,6 +2,7 @@ package com.squadmap.core.group.infrastructure;
 
 import com.squadmap.core.group.domain.GroupMember;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -20,4 +21,8 @@ public interface GroupMemberRepository extends JpaRepository<GroupMember, Long> 
 
     @Query("select gm.id from GroupMember gm where gm.memberId = :memberId")
     List<Long> findMapIdByMemberId(@Param("memberId") Long memberId);
+
+    @Modifying
+    @Query("delete from GroupMember g where g.mapId = :mapId")
+    void deleteAllByMapId(@Param("mapId") Long mapId);
 }

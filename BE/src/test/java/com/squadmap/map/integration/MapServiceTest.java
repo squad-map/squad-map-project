@@ -4,16 +4,19 @@ import com.squadmap.IntegrationTest;
 import com.squadmap.common.dto.SimpleSlice;
 import com.squadmap.common.excetpion.ClientException;
 import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
+import com.squadmap.core.category.infrastructure.CategoryRepository;
+import com.squadmap.core.comment.infrastructure.CommentRepository;
+import com.squadmap.core.group.application.dto.AccessInfo;
 import com.squadmap.core.map.application.MapService;
 import com.squadmap.core.map.application.dto.MapDetail;
 import com.squadmap.core.map.application.dto.MapSimpleInfo;
 import com.squadmap.core.map.application.dto.MapsResponse;
 import com.squadmap.core.map.domain.Map;
 import com.squadmap.core.map.infrastructure.MapRepository;
+import com.squadmap.core.place.infrastructure.PlaceRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -30,6 +33,14 @@ class MapServiceTest  {
 
     @Autowired
     private MapRepository mapRepository;
+    @Autowired
+    private PlaceRepository placeRepository;
+
+    @Autowired
+    private CategoryRepository categoryRepository;
+
+    @Autowired
+    private CommentRepository commentRepository;
 
     @Test
     @DisplayName("map을 새롭게 생성할 수 있다.")
@@ -108,7 +119,7 @@ class MapServiceTest  {
         Long memberId = 4L;
 
         //when
-        MapDetail mapDetail = mapService.findOne(mapId, memberId);
+        MapDetail mapDetail = mapService.findOne(AccessInfo.of(memberId, mapId));
 
         //then
         assertThat(mapDetail.getMapId()).isEqualTo(mapId);
@@ -123,7 +134,7 @@ class MapServiceTest  {
         Long mapId = 2L;
         Long memberId = 2L;
 
-        assertThatThrownBy(() -> mapService.findOne(mapId, memberId))
+        assertThatThrownBy(() -> mapService.findOne(AccessInfo.of(memberId, mapId)))
                 .isInstanceOf(ClientException.class)
                 .hasMessage(ErrorStatusCodeAndMessage.FORBIDDEN.getMessage());
 
@@ -137,7 +148,7 @@ class MapServiceTest  {
         Long memberId = 4L;
 
         //when
-        MapDetail mapDetail = mapService.findOne(mapId, memberId);
+        MapDetail mapDetail = mapService.findOne(AccessInfo.of(memberId, mapId));
 
         //then
         assertThat(mapDetail.getMapId()).isEqualTo(1L);
@@ -164,7 +175,7 @@ class MapServiceTest  {
     void searchGroupMapListWithMapNameTest() {
         //given
         Long memberId = 1L;
-        Optional<String> searchName = Optional.of("st");
+        Optional<String> searchName = Optional.of("fi");
 
         //when
         MapsResponse mapsResponse = mapService.searchGroup(memberId, searchName);
@@ -185,6 +196,32 @@ class MapServiceTest  {
         //then
         assertThat(mapsResponse.getMapCount()).isEqualTo(2);
     }
+
+
+    @Test
+    @DisplayName("HOST가 지도를 삭제하면 지도와 관련한 모든 데이터가 다 삭제된다.")
+    void deleteMapTest() {
+        AccessInfo accessInfo = AccessInfo.of(1L, 1L);
+
+        mapService.delete(accessInfo);
+
+        assertThat(mapRepository.findById(accessInfo.getMapId())).isNotPresent();
+        assertThat(placeRepository.findAllByMapId(accessInfo.getMapId())).isEmpty();
+        assertThat(categoryRepository.findAllByMap(accessInfo.getMapId())).isEmpty();
+        assertThat(commentRepository.findAll()).isEmpty();
+
+    }
+
+    @Test
+    @DisplayName("HOST가 아닌 사용자가 지도를 삭제하면, 익셉션이 발생한다.")
+    void deleteMapTest_fail() {
+        AccessInfo accessInfo = AccessInfo.of(2L, 1L);
+
+        assertThatThrownBy(() -> mapService.delete(accessInfo)).isInstanceOf(ClientException.class)
+                .hasMessage(ErrorStatusCodeAndMessage.FORBIDDEN.getMessage());
+
+    }
+
 
 
 }

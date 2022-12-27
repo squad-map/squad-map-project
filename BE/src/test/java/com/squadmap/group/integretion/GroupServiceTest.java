@@ -93,4 +93,47 @@ class GroupServiceTest {
                 .hasMessage(ErrorStatusCodeAndMessage.UNIQUE_HOST.getMessage());
 
     }
+
+
+    @Test
+    @DisplayName("지도의 주인이라면 그룹멤버를 삭제할 수 있다.")
+    void deleteTest_success() {
+        Long loginId = 1L;
+        Long mapId = 1L;
+        Long memberId = 2L;
+
+        assertThat(groupMemberRepository.findByMapIdAndMemberId(mapId, memberId)).isPresent();
+
+        groupService.removeGroupMember(loginId, mapId, memberId);
+
+        assertThat(groupMemberRepository.findByMapIdAndMemberId(mapId, memberId)).isNotPresent();
+    }
+
+    @Test
+    @DisplayName("지도의 MAINTAIN 사용자라면 그룹멤버를 삭제할 수 없다.")
+    void deleteTest_fail_no_permission() {
+        Long loginId = 2L;
+        Long mapId = 1L;
+        Long memberId = 3L;
+
+        assertThat(groupMemberRepository.findByMapIdAndMemberId(mapId, memberId)).isPresent();
+        assertThatThrownBy(() -> groupService.removeGroupMember(loginId, mapId, memberId))
+                .isInstanceOf(ClientException.class)
+                .hasMessage(ErrorStatusCodeAndMessage.FORBIDDEN.getMessage());
+
+    }
+
+    @Test
+    @DisplayName("지도의 주인이 자신의 HOST권한을 삭제할 수 없다.")
+    void deleteTest_fail_host_to_host() {
+        Long loginId = 1L;
+        Long mapId = 1L;
+        Long memberId = 1L;
+
+        assertThat(groupMemberRepository.findByMapIdAndMemberId(mapId, memberId)).isPresent();
+        assertThatThrownBy(() -> groupService.removeGroupMember(loginId, mapId, memberId))
+                .isInstanceOf(ClientException.class)
+                .hasMessage(ErrorStatusCodeAndMessage.HOST_IMMUTABLE.getMessage());
+
+    }
 }

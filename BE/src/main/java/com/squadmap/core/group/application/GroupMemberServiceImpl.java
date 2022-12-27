@@ -88,8 +88,10 @@ public class GroupMemberServiceImpl implements GroupMemberService {
     @Override
     @Transactional
     public void removeGroupMember(Long loginMemberId, Long mapId, Long memberId) {
-        if (!loginMemberId.equals(memberId)) {
-            checkHasAuthority(mapId, loginMemberId, PermissionLevel.HOST);
+
+        checkHasAuthority(mapId, loginMemberId, PermissionLevel.HOST);
+        if(loginMemberId.equals(memberId)) {
+            throw new ClientException(ErrorStatusCodeAndMessage.HOST_IMMUTABLE);
         }
 
         groupMemberRepository.deleteByMapIdAndMemberId(mapId, memberId);

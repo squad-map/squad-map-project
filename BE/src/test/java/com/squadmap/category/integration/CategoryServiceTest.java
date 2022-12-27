@@ -5,6 +5,7 @@ import com.squadmap.common.excetpion.ClientException;
 import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
 import com.squadmap.core.category.application.CategoryService;
 import com.squadmap.core.category.application.dto.CategoryInfo;
+import com.squadmap.core.category.infrastructure.CategoryRepository;
 import com.squadmap.core.group.application.dto.AccessInfo;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,6 +19,8 @@ public class CategoryServiceTest {
 
     @Autowired
     private CategoryService categoryService;
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @Test
     @DisplayName("로그인한 유저 중 지도에 권한이 있는 유저라면, 카테고리를 생성할 수 있다.")
@@ -161,5 +164,43 @@ public class CategoryServiceTest {
                 .hasMessage(ErrorStatusCodeAndMessage.FORBIDDEN.getMessage());
 
     }
+
+
+    @Test
+    @DisplayName("삭제하고자하는 카테고리에 포함된 장소가 없고, MAINTAIN 이상의 사용자라면 카테고리를 삭제할 수 있다.")
+    void deleteTest() {
+        AccessInfo accessInfo = AccessInfo.of(1L, 1L);
+        Long categoryId = 2L;
+
+        categoryService.delete(accessInfo, categoryId);
+
+        assertThat(categoryRepository.findById(categoryId)).isNotPresent();
+
+    }
+
+    @Test
+    @DisplayName("삭제하고자하는 카테고리에 포함된 장소가 있다면, 카테고리를 삭제할 수 없다.")
+    void deleteTest_fail_has_place() {
+        AccessInfo accessInfo = AccessInfo.of(1L, 1L);
+        Long categoryId = 1L;
+
+        assertThatThrownBy(() -> categoryService.delete(accessInfo, categoryId))
+                .isInstanceOf(ClientException.class)
+                .hasMessage(ErrorStatusCodeAndMessage.CATEGORY_HAS_PLACE.getMessage());
+
+    }
+
+    @Test
+    @DisplayName("MAINTAIN 미만의 권한을 가진 사용자라면 카테고리를 삭제할 수 있다.")
+    void deleteTest_fail_have_not_level() {
+        AccessInfo accessInfo = AccessInfo.of(4L, 1L);
+        Long categoryId = 2L;
+
+        assertThatThrownBy(() -> categoryService.delete(accessInfo, categoryId))
+                .isInstanceOf(ClientException.class)
+                .hasMessage(ErrorStatusCodeAndMessage.FORBIDDEN.getMessage());
+
+    }
+
 
 }

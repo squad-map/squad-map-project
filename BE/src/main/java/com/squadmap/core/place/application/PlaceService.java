@@ -11,4 +11,6 @@ public interface PlaceService {
     PlaceDetailInfo update(AccessInfo accessInfo, Long placeId, Long categoryId, String story);
 
     PlaceDetailInfo readOne(AccessInfo accessInfo, Long placeId);
+
+    void delete(AccessInfo accessInfo, Long placeId);
 }

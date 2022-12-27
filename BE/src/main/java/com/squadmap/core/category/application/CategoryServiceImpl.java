@@ -10,6 +10,7 @@ import com.squadmap.core.group.application.dto.AccessInfo;
 import com.squadmap.core.group.domain.PermissionLevel;
 import com.squadmap.core.map.domain.Map;
 import com.squadmap.core.map.infrastructure.MapRepository;
+import com.squadmap.core.place.infrastructure.PlaceRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 @Transactional(readOnly = true)
 @Slf4j
 public class CategoryServiceImpl implements CategoryService {
+    private final PlaceRepository placeRepository;
 
     private final CategoryRepository categoryRepository;
     private final MapRepository mapRepository;
@@ -91,6 +93,22 @@ public class CategoryServiceImpl implements CategoryService {
         category.update(categoryName, categoryColor);
 
         return CategoryInfo.from(category);
+    }
+
+    @Override
+    @Transactional
+    @RequiredPermission(level = PermissionLevel.MAINTAIN)
+    public void delete(AccessInfo accessInfo, Long categoryId) {
+
+        Category category = categoryRepository.findCategoryFetchMapById(categoryId)
+                .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_CATEGORY));
+
+        checkCategoryInMap(category, accessInfo.getMapId());
+        if (placeRepository.existsByCategory(category)) {
+            throw new ClientException(ErrorStatusCodeAndMessage.CATEGORY_HAS_PLACE);
+        }
+        categoryRepository.delete(category);
+
     }
 
     private void checkCategoryInMap(Category category, Long mapId) {

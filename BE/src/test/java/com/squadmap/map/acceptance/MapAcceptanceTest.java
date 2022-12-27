@@ -132,7 +132,7 @@ class MapAcceptanceTest extends RestAssuredTest {
                 .log().all();
     }
 
-    private static final Snippet READ_MAP_DETAIL_REQUEST_PATH_PARAMETER = pathParameters(
+    private static final Snippet MAP_PATH_PARAMETER = pathParameters(
             parameterWithName("map_id").description("조회할 지도의 아이디")
     );
 
@@ -159,7 +159,7 @@ class MapAcceptanceTest extends RestAssuredTest {
     void readMapDetail() {
         Long mapId = 1L;
 
-        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, READ_MAP_DETAIL_REQUEST_PATH_PARAMETER, AUTHORIZATION_HEADER,
+        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, MAP_PATH_PARAMETER, AUTHORIZATION_HEADER,
                         READ_MAP_DETAIL_RESPONSE))
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .pathParam("map_id", mapId)
@@ -206,15 +206,24 @@ class MapAcceptanceTest extends RestAssuredTest {
                 .log().all();
     }
 
+    private static final Snippet DELETE_RESPONSE_FIELDS = generateCommonResponse();
 
+    @Test
+    @DisplayName("지도의 HOST 권한을 가진 사용자라면, 지도를 삭제할 수 있다.")
+    void mapDeleteTest() {
 
+        Long mapId = 1L;
 
+        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, MAP_PATH_PARAMETER, DELETE_RESPONSE_FIELDS))
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .header(HttpHeaders.AUTHORIZATION, this.createAuthorizationHeader(1L))
+                .pathParam("map_id", mapId)
+        .when().delete("/map/{map_id}")
 
-
-
-
-
-
-
+        .then().statusCode(HttpStatus.OK.value())
+                .body("code", equalTo(SuccessCode.MAP_DELETE.getCode()))
+                .log().all();
+    }
 
 }

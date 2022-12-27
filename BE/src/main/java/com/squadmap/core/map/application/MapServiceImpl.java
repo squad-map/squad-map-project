@@ -6,8 +6,11 @@ import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
 import com.squadmap.core.access.RequiredPermission;
 import com.squadmap.core.category.application.dto.CategoryInfo;
 import com.squadmap.core.category.domain.Category;
+import com.squadmap.core.category.infrastructure.CategoryRepository;
+import com.squadmap.core.comment.infrastructure.CommentRepository;
 import com.squadmap.core.group.application.dto.AccessInfo;
 import com.squadmap.core.group.domain.GroupMember;
+import com.squadmap.core.group.domain.PermissionLevel;
 import com.squadmap.core.group.infrastructure.GroupMemberRepository;
 import com.squadmap.core.map.application.dto.*;
 import com.squadmap.core.map.domain.Map;
@@ -39,6 +42,8 @@ public class MapServiceImpl implements MapService {
     private final MemberRepository memberRepository;
     private final PlaceRepository placeRepository;
     private final GroupMemberRepository groupMemberRepository;
+    private final CommentRepository commentRepository;
+    private final CategoryRepository categoryRepository;
 
     @Override
     @Transactional
@@ -101,6 +106,21 @@ public class MapServiceImpl implements MapService {
         List<Long> mapIds = groupMemberRepository.findMapIdByMemberId(memberId);
         List<Map> maps = searchGroupMap(name, mapIds);
         return mapsToMapResponse(maps);
+    }
+
+    @Override
+    @Transactional
+    @RequiredPermission(level = PermissionLevel.HOST)
+    public void delete(AccessInfo accessInfo) {
+        Long targetMapId = accessInfo.getMapId();
+
+        List<Long> placeIds = placeRepository.findIdsByMapId(targetMapId);
+
+        commentRepository.deleteCommentByPlaceIn(placeIds);
+        placeRepository.deleteAllByMapId(targetMapId);
+        categoryRepository.deleteCategoriesByMapId(targetMapId);
+        groupMemberRepository.deleteAllByMapId(accessInfo.getMapId());
+        mapRepository.deleteById(targetMapId);
     }
 
 
