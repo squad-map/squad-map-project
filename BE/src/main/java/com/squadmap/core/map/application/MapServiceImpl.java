@@ -3,8 +3,10 @@ package com.squadmap.core.map.application;
 import com.squadmap.common.dto.SimpleSlice;
 import com.squadmap.common.excetpion.ClientException;
 import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
+import com.squadmap.core.access.RequiredPermission;
 import com.squadmap.core.category.application.dto.CategoryInfo;
 import com.squadmap.core.category.domain.Category;
+import com.squadmap.core.group.application.dto.AccessInfo;
 import com.squadmap.core.group.domain.GroupMember;
 import com.squadmap.core.group.infrastructure.GroupMemberRepository;
 import com.squadmap.core.map.application.dto.*;
@@ -82,17 +84,14 @@ public class MapServiceImpl implements MapService {
     }
 
     @Override
-    public MapDetail findOne(Long mapId, Long memberId) {
-        Map map = mapRepository.findById(mapId)
+    @RequiredPermission
+    public MapDetail findOne(AccessInfo accessInfo) {
+        Map map = mapRepository.findById(accessInfo.getMapId())
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_MAP));
-
-        if (!map.isFullDisclosure() && !groupMemberRepository.existsByMapIdAndMemberId(mapId, memberId)) {
-            throw new ClientException(ErrorStatusCodeAndMessage.FORBIDDEN);
-        }
 
         Member member = memberRepository.findById(map.getMemberId())
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_MEMBER));
-        List<Place> places = placeRepository.findAllByMapId(mapId);
+        List<Place> places = placeRepository.findAllByMapId(map.getId());
 
         return MapDetail.of(map, member, places.size(), categorize(places));
     }

@@ -5,6 +5,7 @@ import com.squadmap.common.dto.SimplePage;
 import com.squadmap.common.auth.Login;
 import com.squadmap.common.dto.SimpleSlice;
 import com.squadmap.common.dto.SuccessCode;
+import com.squadmap.core.group.application.dto.AccessInfo;
 import com.squadmap.core.map.application.MapService;
 import com.squadmap.core.map.application.dto.MapDetail;
 import com.squadmap.core.map.application.dto.MapSimpleInfo;
@@ -54,12 +55,11 @@ public class MapController {
     }
 
     @GetMapping("/{mapId}")
-    public CommonResponse<MapDetail> findMapOne(@PathVariable Long mapId, @Login Long memberId) {
+    public CommonResponse<MapDetail> findMapOne(@PathVariable Long mapId, @Login Long loginId) {
         return CommonResponse.success(SuccessCode.MAP_READ_DETAIL,
-                mapService.findOne(mapId, memberId));
+                mapService.findOne(AccessInfo.of(loginId, mapId)));
     }
 
-    // 페이징 리팩토링시 API 합치는 거 고민해보기
     @GetMapping("/group")
     public CommonResponse<MapsResponse> findGroupMapList(@Login Long memberId, Optional<String> name) {
         return CommonResponse.success(SuccessCode.MAP_READ_PRI,
