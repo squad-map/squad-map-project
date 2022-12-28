@@ -130,10 +130,27 @@ include::{snippets}/map_acceptance_test/read_public_map_list_test/http-response.
 include::{snippets}/map_acceptance_test/read_group_maps_test/request-parameters.adoc[]
 include::{snippets}/map_acceptance_test/read_group_maps_test/http-request.adoc[]
 
+필수 헤더
+include::{snippets}/map_acceptance_test/read_group_maps_test/request-headers.adoc[]
+
 ==== response
 include::{snippets}/map_acceptance_test/read_group_maps_test/response-fields.adoc[]
 include::{snippets}/map_acceptance_test/read_group_maps_test/response-body.adoc[]
 include::{snippets}/map_acceptance_test/read_group_maps_test/http-response.adoc[]
+
+[[resources-map-delete]]
+=== 지도 삭제
+==== request
+include::{snippets}/map_acceptance_test/map_delete_test/path-parameters.adoc[]
+include::{snippets}/map_acceptance_test/map_delete_test/http-request.adoc[]
+
+필수 헤더
+include::{snippets}/map_acceptance_test/read_group_maps_test/request-headers.adoc[]
+
+==== response
+include::{snippets}/map_acceptance_test/map_delete_test/response-fields.adoc[]
+include::{snippets}/map_acceptance_test/map_delete_test/response-body.adoc[]
+include::{snippets}/map_acceptance_test/map_delete_test/http-response.adoc[]
 
 [[resources-place]]
 == 장소
@@ -189,6 +206,22 @@ include::{snippets}/place_acceptance_test/read_one_test/response-fields.adoc[]
 include::{snippets}/place_acceptance_test/read_one_test/response-body.adoc[]
 include::{snippets}/place_acceptance_test/read_one_test/http-response.adoc[]
 
+
+[[resources-delete-test]]
+=== 장소 삭제
+
+==== request
+
+include::{snippets}/place_acceptance_test/delete_test/path-parameters.adoc[]
+include::{snippets}/place_acceptance_test/delete_test/http-request.adoc[]
+
+==== 필수 헤더
+include::{snippets}/place_acceptance_test/read_one_test/request-headers.adoc[]
+
+==== response
+include::{snippets}/place_acceptance_test/delete_test/response-fields.adoc[]
+include::{snippets}/place_acceptance_test/delete_test/response-body.adoc[]
+include::{snippets}/place_acceptance_test/delete_test/http-response.adoc[]
 
 [[resources-category]]
 == 카테고리
@@ -258,6 +291,21 @@ include::{snippets}/category_acceptance_test/read_categories_in_one_map_test/res
 include::{snippets}/category_acceptance_test/read_categories_in_one_map_test/http-response.adoc[]
 
 
+[[resources-category-delete-test]]
+=== 카테고리 삭제
+
+==== request
+include::{snippets}/category_acceptance_test/delete_category_test/path-parameters.adoc[]
+include::{snippets}/category_acceptance_test/read_one_test/http-request.adoc[]
+
+==== 필수 헤더
+include::{snippets}/category_acceptance_test/delete_category_test/request-headers.adoc[]
+
+==== response
+include::{snippets}/category_acceptance_test/delete_category_test/response-fields.adoc[]
+include::{snippets}/category_acceptance_test/delete_category_test/response-body.adoc[]
+include::{snippets}/category_acceptance_test/delete_category_test/http-response.adoc[]
+
 [[resources-groupMember]]
 == 그룹
 
@@ -297,7 +345,6 @@ include::{snippets}/group_member_acceptance_test/update_group_member_permission_
 ==== request
 include::{snippets}/group_member_acceptance_test/delete_group_member_test/path-parameters.adoc[]
 include::{snippets}/group_member_acceptance_test/delete_group_member_test/request-fields.adoc[]
-include::{snippets}/group_member_acceptance_test/delete_group_member_test/request-body.adoc[]
 include::{snippets}/group_member_acceptance_test/delete_group_member_test/http-request.adoc[]
 
 ==== 필수 헤더
@@ -371,7 +418,7 @@ include::{snippets}/comment_acceptance_test/update_test/request-headers.adoc[]
 include::{snippets}/comment_acceptance_test/update_test/response-fields.adoc[]
 include::{snippets}/comment_acceptance_test/update_test/http-response.adoc[]
 
-[[resources-comment-update]]
+[[resources-comment-delete]]
 === 댓글 삭제
 
 ==== request
