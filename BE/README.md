@@ -35,19 +35,23 @@ API 문서 : [http://13.124.249.154/docs/index.html](http://13.124.249.154/docs/
 - 댓글 CRUD
 
 ---
+## DB ERD
 
+![ERD](https://user-images.githubusercontent.com/81129309/209779184-1776694c-da53-4ddc-82af-2c8af9e331d0.png)
+
+---
 ## 구현 상세
 
 ### **1. 로그인 로직 구현** [(관련PR)](https://github.com/squad-map/squad-map-project/pull/66)
 
 - Github, Naver Oauth 로그인을 구현했습니다.
 - OAuthProvider를 추상화하여 확장성을 고려하여 구현했습니다.
-- OAuthProperties(`@ConfigurationProperties` 활용)를 통해서 Map 자료구조로 민감정보를 관리하도록 구현했습니다.
+- OAuthProperties([@ConfigurationProperties](https://velog.io/@cmsskkk/SpringBoot-ConfigurationProperties) 활용)를 통해서 Map 자료구조로 민감정보를 관리하도록 구현했습니다.
 - 자바 11에 정식으로 추가된 라이브러리인 java.net.http.HttpClient를 활용하여, OAuthServer와 API 통신을 구현했습니다.
 
 ---
 
-### 2. 신뢰성 있는 테스트 [(관련PR)](https://github.com/squad-map/squad-map-project/pull/106)
+### 2. RestDocs(RestAssured) & WireMock [(관련PR)](https://github.com/squad-map/squad-map-project/pull/106)
 
 - Spring Rest Docs를 활용하여 테스트를 통한 API 문서를 자동화했습니다.
 - Rest Assured를 활용하여 Mock이 아닌 Bean 객체를 활용한 신뢰성 있는 통합 테스트 구현했습니다.
@@ -66,12 +70,13 @@ API 문서 : [http://13.124.249.154/docs/index.html](http://13.124.249.154/docs/
 
 ### 4. 권한 검증 로직에 대한 고민과 리팩토링 
 
-### [1차 리팩토링 PR](https://github.com/squad-map/squad-map-project/pull/155)
+ - [1차 리팩토링 PR](https://github.com/squad-map/squad-map-project/pull/155)
+ - [2차 리팩토링 PR](https://github.com/squad-map/squad-map-project/pull/164)
+#### [Spring AOP에서 메서드 파라미터 활용하기](https://velog.io/@cmsskkk/aop-reflection-access-controll)
+#### [회원 접근 권한 로직 분리를 위한 설계 고민과 AOP 적용기](https://velog.io/@cmsskkk/refactoring-access-controll2)
 
-### [2차 리팩토링 PR](https://github.com/squad-map/squad-map-project/pull/164)
-### [Spring AOP에서 메서드 파라미터 활용하기](https://velog.io/@cmsskkk/aop-reflection-access-controll)
 - 지도에 대한 접근 권한을 확인하는 과정이 핵심 비즈니스 로직 대부분에 포함되어 있어서 해당 로직을 분리하고자 했습니다.
-- 객체의 역할과 의존성을 분리하는 방법을 여러가지 고민하면서 AOP로 로직을 분리하여 리팩토링
+- 객체의 역할과 의존성을 분리하는 방법을 여러가지 방식에 대해서 장단점을 분석하고, AOP로 로직을 분리하여 리팩토링 했습니다.
 
 ---
 
@@ -79,7 +84,17 @@ API 문서 : [http://13.124.249.154/docs/index.html](http://13.124.249.154/docs/
 
 - local 환경에서 조회성능에 대한 테스트를 진행하였습니다.
 - 불필요한 연관관계 lazy loading으로 인한 성능 문제를 파악하고, 쿼리를 수정하였습니다.
-- 그래도 TPS가 마음에 들지않아서 Redis를 통한 캐싱을 진행하였습니다.
+- 이 후, Redis를 통한 캐싱을 진행해보고, [Redis에 대해서 학습](https://velog.io/@cmsskkk/redis-transaction-spring-and-lua-pipeline)했습니다.
 
-> 추가적인 테스트 및 리팩토링 진행 예정 
+
+### 6. Paging 성능 개선을 위한 no offset query 리팩토링 & 이름 검색 성능을 위한 index 적용
+- member 5,000,000건, map 10,000,000 건의 더미 데이터를 넣고 ngrinder로 성능을 테스트했습니다.
+
+#### [페이징 no offset 쿼리로 리팩토링하기](https://velog.io/@cmsskkk/No-Offset-Paging-ngrinder2)
+- 기존 paging 로직에서 offset 쿼리 사용의 성능 문제를 파악하고 no offset query로 리팩토링 하였습니다.
+- Vuser 30 상태에서 DB Connection timeout으로 인한 exception 발생이 지속적으로 발생했던 것과 달리, Vuser 102 환경에서 **MTT 1.6초 / TPS 63**으로의 성능 개선을 경험했습니다.     
+
+#### [이름 검색 DB INDEX 적용기](https://velog.io/@cmsskkk/like-DB-Index-NGrinder3)
+- 기존 '%{검색단어}%'로 이름을 검색하는 like 쿼리에서, `name` 컬럼에 DB INDEX를 적용하고, '{검색단어}%' like 쿼리를 수정했습니다. 
+- NGrinder를 통한 부하테스트에서 기존 **TPS 8 / MTT 12초** 의 성능에서 **TPS 99 / MTT 1초**로 10배 이상의 성능 개선을 경험했습니다.  
 ---
