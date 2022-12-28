@@ -1,0 +1,40 @@
+spring:
+
+  config:
+    import: test-auth.yml
+
+  sql:
+    init:
+      mode: always
+
+
+  datasource:
+    driverClassName: org.testcontainers.jdbc.ContainerDatabaseDriver
+    url: jdbc:tc:mysql:8.0.29:///test?TC_DAEMON=true
+    username: root
+    password: root
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+
+    defer-datasource-initialization: true
+
+    properties:
+      hibernate:
+        default_batch_fetch_size: 100
+        show_sql: true
+        format_sql: true
+
+
+  redis:
+    port: 6379
+    host: localhost
+
+  cache:
+    type: redis
+    redis:
+      time-to-live: 500
+

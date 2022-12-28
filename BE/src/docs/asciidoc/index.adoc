@@ -1,0 +1,432 @@
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+= Squad-Map API 명세
+:toc: left
+:toclevels: 2
+:sectlinks:
+
+[[resources-login]]
+== 로그인
+[[login-github]]
+=== Github Login
+==== Request
+include::{snippets}/oauth_acceptance_test/github_login_test/http-request.adoc[]
+include::{snippets}/oauth_acceptance_test/github_login_test/request-fields.adoc[]
+==== Response
+include::{snippets}/oauth_acceptance_test/github_login_test/response-body.adoc[]
+include::{snippets}/oauth_acceptance_test/github_login_test/response-fields.adoc[]
+=== Naver Login
+==== Request
+include::{snippets}/oauth_acceptance_test/naver_login_test/http-request.adoc[]
+include::{snippets}/oauth_acceptance_test/naver_login_test/request-fields.adoc[]
+==== Response
+include::{snippets}/oauth_acceptance_test/naver_login_test/response-body.adoc[]
+include::{snippets}/oauth_acceptance_test/naver_login_test/response-fields.adoc[]
+
+[[login-reissue-access-token]]
+=== 엑세스 토큰 재발급
+==== Request
+include::{snippets}/oauth_acceptance_test/reissue_test/http-request.adoc[]
+(Authoriazation header에 refresh token을 담아주세요.)
+include::{snippets}/oauth_acceptance_test/reissue_test/request-headers.adoc[]
+==== Response
+include::{snippets}/oauth_acceptance_test/reissue_test/response-body.adoc[]
+include::{snippets}/oauth_acceptance_test/reissue_test/response-fields.adoc[]
+
+
+[[resources-member]]
+== 회원
+
+[[resources-member-nickname-update]]
+=== 회원 닉네임 업데이트
+==== request
+include::{snippets}/member_acceptance_test/nickname_update_test/request-fields.adoc[]
+include::{snippets}/member_acceptance_test/nickname_update_test/http-request.adoc[]
+필수 헤더
+include::{snippets}/member_acceptance_test/nickname_update_test/request-headers.adoc[]
+
+==== response
+include::{snippets}/member_acceptance_test/nickname_update_test/http-response.adoc[]
+include::{snippets}/member_acceptance_test/nickname_update_test/response-fields.adoc[]
+
+[[resources-member-search]]
+=== 회원 nickname 조회
+==== request
+include::{snippets}/member_acceptance_test/search_member_by_nickname_test/request-parameters.adoc[]
+include::{snippets}/member_acceptance_test/search_member_by_nickname_test/http-request.adoc[]
+필수 헤더
+include::{snippets}/member_acceptance_test/search_member_by_nickname_test/request-headers.adoc[]
+
+==== response
+include::{snippets}/member_acceptance_test/search_member_by_nickname_test/response-fields.adoc[]
+include::{snippets}/member_acceptance_test/search_member_by_nickname_test/http-response.adoc[]
+
+
+[[resources-map]]
+== 지도
+
+[[resources-map-create]]
+=== 지도 생성
+
+==== request
+include::{snippets}/map_acceptance_test/map_create_test/http-request.adoc[]
+include::{snippets}/map_acceptance_test/map_create_test/request-fields.adoc[]
+필수 헤더
+include::{snippets}/map_acceptance_test/map_create_test/request-headers.adoc[]
+
+==== response
+include::{snippets}/map_acceptance_test/map_create_test/http-response.adoc[]
+include::{snippets}/map_acceptance_test/map_create_test/response-fields.adoc[]
+
+
+[[resources-map-update]]
+=== 지도 정보 변경
+
+==== request
+include::{snippets}/map_acceptance_test/map_update_test/path-parameters.adoc[]
+include::{snippets}/map_acceptance_test/map_update_test/http-request.adoc[]
+include::{snippets}/map_acceptance_test/map_update_test/request-fields.adoc[]
+
+필수 헤더
+include::{snippets}/map_acceptance_test/map_update_test/request-headers.adoc[]
+
+==== response
+include::{snippets}/map_acceptance_test/map_update_test/http-response.adoc[]
+
+
+[[resources-map-read-detail]]
+=== 지도 detail 조회
+
+==== request
+include::{snippets}/map_acceptance_test/read_map_detail/path-parameters.adoc[]
+include::{snippets}/map_acceptance_test/read_map_detail/http-request.adoc[]
+
+필수 헤더
+include::{snippets}/map_acceptance_test/read_map_detail/request-headers.adoc[]
+
+==== response
+include::{snippets}/map_acceptance_test/read_map_detail/response-fields.adoc[]
+include::{snippets}/map_acceptance_test/read_map_detail/response-body.adoc[]
+include::{snippets}/map_acceptance_test/read_map_detail/http-response.adoc[]
+
+
+[[resources-read-public-map-list]]
+=== 전체 공개 지도 리스트 조회
+
+==== request
+include::{snippets}/map_acceptance_test/read_public_map_list_test/request-parameters.adoc[]
+include::{snippets}/map_acceptance_test/read_public_map_list_test/http-request.adoc[]
+
+==== response
+include::{snippets}/map_acceptance_test/read_public_map_list_test/response-fields.adoc[]
+include::{snippets}/map_acceptance_test/read_public_map_list_test/response-body.adoc[]
+include::{snippets}/map_acceptance_test/read_public_map_list_test/http-response.adoc[]
+
+[[resources-read-group-map-list]]
+=== 그룹 지도 리스트 조회
+
+==== request
+include::{snippets}/map_acceptance_test/read_group_maps_test/request-parameters.adoc[]
+include::{snippets}/map_acceptance_test/read_group_maps_test/http-request.adoc[]
+
+필수 헤더
+include::{snippets}/map_acceptance_test/read_group_maps_test/request-headers.adoc[]
+
+==== response
+include::{snippets}/map_acceptance_test/read_group_maps_test/response-fields.adoc[]
+include::{snippets}/map_acceptance_test/read_group_maps_test/response-body.adoc[]
+include::{snippets}/map_acceptance_test/read_group_maps_test/http-response.adoc[]
+
+[[resources-map-delete]]
+=== 지도 삭제
+==== request
+include::{snippets}/map_acceptance_test/map_delete_test/path-parameters.adoc[]
+include::{snippets}/map_acceptance_test/map_delete_test/http-request.adoc[]
+
+필수 헤더
+include::{snippets}/map_acceptance_test/read_group_maps_test/request-headers.adoc[]
+
+==== response
+include::{snippets}/map_acceptance_test/map_delete_test/response-fields.adoc[]
+include::{snippets}/map_acceptance_test/map_delete_test/response-body.adoc[]
+include::{snippets}/map_acceptance_test/map_delete_test/http-response.adoc[]
+
+[[resources-place]]
+== 장소
+
+[[resources-place-create-test]]
+=== 장소 등록
+
+==== request
+include::{snippets}/place_acceptance_test/create_test/request-fields.adoc[]
+include::{snippets}/place_acceptance_test/create_test/request-body.adoc[]
+include::{snippets}/place_acceptance_test/create_test/http-request.adoc[]
+
+==== 필수 헤더
+include::{snippets}/place_acceptance_test/create_test/request-headers.adoc[]
+
+==== response
+include::{snippets}/place_acceptance_test/create_test/response-fields.adoc[]
+include::{snippets}/place_acceptance_test/create_test/response-body.adoc[]
+include::{snippets}/place_acceptance_test/create_test/http-response.adoc[]
+
+
+
+[[resources-place-update-test]]
+=== 장소의 카테고리 및 설명 수정
+
+==== request
+include::{snippets}/place_acceptance_test/update_test/request-fields.adoc[]
+include::{snippets}/place_acceptance_test/update_test/request-body.adoc[]
+include::{snippets}/place_acceptance_test/update_test/http-request.adoc[]
+
+==== 필수 헤더
+include::{snippets}/place_acceptance_test/update_test/request-headers.adoc[]
+
+==== response
+include::{snippets}/place_acceptance_test/update_test/response-fields.adoc[]
+include::{snippets}/place_acceptance_test/update_test/response-body.adoc[]
+include::{snippets}/place_acceptance_test/update_test/http-response.adoc[]
+
+
+[[resources-read-one-test]]
+=== 장소 디테일 조회
+
+==== request
+
+include::{snippets}/place_acceptance_test/read_one_test/path-parameters.adoc[]
+include::{snippets}/place_acceptance_test/read_one_test/http-request.adoc[]
+
+==== 필수 헤더
+include::{snippets}/place_acceptance_test/read_one_test/request-headers.adoc[]
+
+==== response
+include::{snippets}/place_acceptance_test/read_one_test/response-fields.adoc[]
+include::{snippets}/place_acceptance_test/read_one_test/response-body.adoc[]
+include::{snippets}/place_acceptance_test/read_one_test/http-response.adoc[]
+
+
+[[resources-delete-test]]
+=== 장소 삭제
+
+==== request
+
+include::{snippets}/place_acceptance_test/delete_test/path-parameters.adoc[]
+include::{snippets}/place_acceptance_test/delete_test/http-request.adoc[]
+
+==== 필수 헤더
+include::{snippets}/place_acceptance_test/read_one_test/request-headers.adoc[]
+
+==== response
+include::{snippets}/place_acceptance_test/delete_test/response-fields.adoc[]
+include::{snippets}/place_acceptance_test/delete_test/response-body.adoc[]
+include::{snippets}/place_acceptance_test/delete_test/http-response.adoc[]
+
+[[resources-category]]
+== 카테고리
+
+[[resources-category-create-test]]
+=== 카테고리 등록
+
+==== request
+include::{snippets}/category_acceptance_test/create_test/request-fields.adoc[]
+include::{snippets}/category_acceptance_test/create_test/request-body.adoc[]
+include::{snippets}/category_acceptance_test/create_test/http-request.adoc[]
+
+==== 필수 헤더
+include::{snippets}/category_acceptance_test/create_test/request-headers.adoc[]
+
+==== response
+include::{snippets}/category_acceptance_test/create_test/response-fields.adoc[]
+include::{snippets}/category_acceptance_test/create_test/response-body.adoc[]
+include::{snippets}/category_acceptance_test/create_test/http-response.adoc[]
+
+
+[[resources-category-read-test]]
+=== 카테고리 조회
+
+==== request
+include::{snippets}/category_acceptance_test/read_one_test/path-parameters.adoc[]
+include::{snippets}/category_acceptance_test/read_one_test/request-body.adoc[]
+include::{snippets}/category_acceptance_test/read_one_test/http-request.adoc[]
+
+==== 필수 헤더
+include::{snippets}/category_acceptance_test/read_one_test/request-headers.adoc[]
+
+==== response
+include::{snippets}/category_acceptance_test/read_one_test/response-fields.adoc[]
+include::{snippets}/category_acceptance_test/read_one_test/response-body.adoc[]
+include::{snippets}/category_acceptance_test/read_one_test/http-response.adoc[]
+
+[[resources-category-update-test]]
+=== 카테고리 수정
+
+==== request
+include::{snippets}/category_acceptance_test/read_categories_in_one_map_test/path-parameters.adoc[]
+include::{snippets}/category_acceptance_test/read_categories_in_one_map_test/request-body.adoc[]
+include::{snippets}/category_acceptance_test/read_categories_in_one_map_test/http-request.adoc[]
+
+==== 필수 헤더
+include::{snippets}/category_acceptance_test/read_categories_in_one_map_test/request-headers.adoc[]
+
+==== response
+include::{snippets}/category_acceptance_test/read_categories_in_one_map_test/response-fields.adoc[]
+include::{snippets}/category_acceptance_test/read_categories_in_one_map_test/response-body.adoc[]
+include::{snippets}/category_acceptance_test/read_categories_in_one_map_test/http-response.adoc[]
+
+[[resources-categoryAll-read-in-map-test]]
+=== 지도 내의 모든 카테고리 조회
+
+==== request
+include::{snippets}/category_acceptance_test/read_categories_in_one_map_test/path-parameters.adoc[]
+include::{snippets}/category_acceptance_test/read_categories_in_one_map_test/http-request.adoc[]
+
+==== 필수 헤더
+include::{snippets}/category_acceptance_test/read_categories_in_one_map_test/request-headers.adoc[]
+
+==== response
+include::{snippets}/category_acceptance_test/read_categories_in_one_map_test/response-fields.adoc[]
+include::{snippets}/category_acceptance_test/read_categories_in_one_map_test/response-body.adoc[]
+include::{snippets}/category_acceptance_test/read_categories_in_one_map_test/http-response.adoc[]
+
+
+[[resources-category-delete-test]]
+=== 카테고리 삭제
+
+==== request
+include::{snippets}/category_acceptance_test/delete_category_test/path-parameters.adoc[]
+include::{snippets}/category_acceptance_test/read_one_test/http-request.adoc[]
+
+==== 필수 헤더
+include::{snippets}/category_acceptance_test/delete_category_test/request-headers.adoc[]
+
+==== response
+include::{snippets}/category_acceptance_test/delete_category_test/response-fields.adoc[]
+include::{snippets}/category_acceptance_test/delete_category_test/response-body.adoc[]
+include::{snippets}/category_acceptance_test/delete_category_test/http-response.adoc[]
+
+[[resources-groupMember]]
+== 그룹
+
+[[resources-groupMember-create-test]]
+=== 그룹 멤버 추가
+
+==== request
+include::{snippets}/group_member_acceptance_test/add_group_member_test/request-fields.adoc[]
+include::{snippets}/group_member_acceptance_test/add_group_member_test/request-body.adoc[]
+include::{snippets}/group_member_acceptance_test/add_group_member_test/http-request.adoc[]
+
+==== 필수 헤더
+include::{snippets}/group_member_acceptance_test/add_group_member_test/request-headers.adoc[]
+
+==== response
+include::{snippets}/group_member_acceptance_test/add_group_member_test/http-response.adoc[]
+
+
+[[resources-groupMember-update-test]]
+=== 그룹 멤버 권한 수정
+
+==== request
+include::{snippets}/group_member_acceptance_test/update_group_member_permission_test/request-fields.adoc[]
+include::{snippets}/group_member_acceptance_test/update_group_member_permission_test/request-body.adoc[]
+include::{snippets}/group_member_acceptance_test/update_group_member_permission_test/http-request.adoc[]
+
+==== 필수 헤더
+include::{snippets}/group_member_acceptance_test/update_group_member_permission_test/request-headers.adoc[]
+
+==== response
+include::{snippets}/group_member_acceptance_test/update_group_member_permission_test/http-response.adoc[]
+
+
+[[resources-groupMember-delete-test]]
+=== 그룹 멤버 삭제
+
+==== request
+include::{snippets}/group_member_acceptance_test/delete_group_member_test/path-parameters.adoc[]
+include::{snippets}/group_member_acceptance_test/delete_group_member_test/http-request.adoc[]
+
+==== 필수 헤더
+include::{snippets}/group_member_acceptance_test/delete_group_member_test/request-headers.adoc[]
+
+==== response
+include::{snippets}/group_member_acceptance_test/delete_group_member_test/http-response.adoc[]
+
+
+[[resources-groupMember-search-test]]
+=== 그룹 멤버 조회
+
+==== request
+include::{snippets}/group_member_acceptance_test/search_group_in_map_test/path-parameters.adoc[]
+include::{snippets}/group_member_acceptance_test/search_group_in_map_test/http-request.adoc[]
+
+==== 필수 헤더
+include::{snippets}/group_member_acceptance_test/search_group_in_map_test/request-headers.adoc[]
+
+==== response
+include::{snippets}/group_member_acceptance_test/search_group_in_map_test/response-fields.adoc[]
+include::{snippets}/group_member_acceptance_test/search_group_in_map_test/http-response.adoc[]
+
+
+[[resources-comment]]
+== 댓글
+
+[[resources-comment-create]]
+=== 댓글 작성
+
+==== request
+include::{snippets}/comment_acceptance_test/create_test/path-parameters.adoc[]
+include::{snippets}/comment_acceptance_test/create_test/request-fields.adoc[]
+include::{snippets}/comment_acceptance_test/create_test/http-request.adoc[]
+
+==== 필수 헤더
+include::{snippets}/comment_acceptance_test/create_test/request-headers.adoc[]
+
+==== response
+include::{snippets}/comment_acceptance_test/create_test/response-fields.adoc[]
+include::{snippets}/comment_acceptance_test/create_test/http-response.adoc[]
+
+
+[[resources-comment-read]]
+=== 댓글 조회
+
+==== request
+include::{snippets}/comment_acceptance_test/next_comment_read_test/path-parameters.adoc[]
+include::{snippets}/comment_acceptance_test/next_comment_read_test/http-request.adoc[]
+
+==== 필수 헤더
+include::{snippets}/comment_acceptance_test/next_comment_read_test/request-headers.adoc[]
+
+==== response
+include::{snippets}/comment_acceptance_test/next_comment_read_test/response-fields.adoc[]
+include::{snippets}/comment_acceptance_test/next_comment_read_test/http-response.adoc[]
+
+
+[[resources-comment-update]]
+=== 댓글 수정
+
+==== request
+include::{snippets}/comment_acceptance_test/update_test/path-parameters.adoc[]
+include::{snippets}/comment_acceptance_test/update_test/request-fields.adoc[]
+include::{snippets}/comment_acceptance_test/update_test/http-request.adoc[]
+
+==== 필수 헤더
+include::{snippets}/comment_acceptance_test/update_test/request-headers.adoc[]
+
+==== response
+include::{snippets}/comment_acceptance_test/update_test/response-fields.adoc[]
+include::{snippets}/comment_acceptance_test/update_test/http-response.adoc[]
+
+[[resources-comment-delete]]
+=== 댓글 삭제
+
+==== request
+include::{snippets}/comment_acceptance_test/delete_comment_test/path-parameters.adoc[]
+include::{snippets}/comment_acceptance_test/delete_comment_test/http-request.adoc[]
+
+==== 필수 헤더
+include::{snippets}/comment_acceptance_test/update_test/request-headers.adoc[]
+
+==== response
+include::{snippets}/comment_acceptance_test/delete_comment_test/response-fields.adoc[]
+include::{snippets}/comment_acceptance_test/delete_comment_test/http-response.adoc[]

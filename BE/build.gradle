@@ -1,0 +1,112 @@
+plugins {
+    id 'org.springframework.boot' version '2.7.2'
+    id 'io.spring.dependency-management' version '1.0.12.RELEASE'
+    id 'org.asciidoctor.jvm.convert' version '3.3.2'
+    id 'java'
+}
+
+group = 'com.squadmap'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+    asciidoctorExtensions
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+ext {
+    springCloudVersion = '2021.0.3'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    runtimeOnly 'mysql:mysql-connector-java'
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    // redis
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+    // jwt
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5', 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+    // test & restDocs & restAssured
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.restdocs:spring-restdocs-restassured'
+    testImplementation 'io.rest-assured:rest-assured'
+    asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+
+    // wiremock
+    testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-stub-runner'
+
+    // testContainer
+    testImplementation 'org.testcontainers:junit-jupiter:1.17.4'
+    testImplementation 'org.testcontainers:mysql:1.17.4'
+}
+
+// RestDocs 설정 시작
+
+ext {
+    snippetsDir = file("${project.buildDir}/generated-snippets")
+}
+
+test {
+    useJUnitPlatform()
+}
+
+asciidoctor {
+    dependsOn test
+    configurations 'asciidoctorExtensions'
+    inputs.dir snippetsDir
+
+    sources {
+        include '**/index.adoc'
+    }
+
+    baseDirFollowsSourceFile()
+}
+
+asciidoctor.doFirst {
+    delete file("${project.rootDir}/src/main/resources/static/docs")
+}
+
+task copyDocument(type: Copy) {
+    dependsOn asciidoctor
+
+    from "${project.buildDir}/docs/asciidoc"
+    into "${project.rootDir}/src/main/resources/static/docs"
+}
+
+bootJar {
+    dependsOn copyDocument
+    copy {
+        from "${project.buildDir}/docs/asciidoc"
+        into "${project.buildDir}/resources/main/static/docs"
+    }
+}
+
+// RestDocs 설정 끝
+
+
+
+
