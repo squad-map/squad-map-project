@@ -48,7 +48,7 @@ public class CommentAcceptanceTest extends RestAssuredTest {
 
         CommentRequest commentRequest = new CommentRequest("Hi, I love it");
         given(this.specification)
-                .filter(document(DEFAULT_RESTDOC_PATH, AUTHORIZATION_HEADER, COMMENT_READ_REQUEST_PATH, CREATE_COMMENT_RESPONSE_FIELDS))
+                .filter(document(DEFAULT_RESTDOC_PATH, AUTHORIZATION_HEADER, COMMENT_READ_REQUEST_PATH, COMMENT_REQUEST_FIELDS,CREATE_COMMENT_RESPONSE_FIELDS))
                 .accept(ContentType.JSON)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header(HttpHeaders.AUTHORIZATION, this.createAuthorizationHeader(memberId))

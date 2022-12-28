@@ -263,7 +263,7 @@ include::{snippets}/category_acceptance_test/read_one_test/http-response.adoc[]
 === 카테고리 수정
 
 ==== request
-include::{snippets}/category_acceptance_test/read_categories_in_one_map_test/request-parameters.adoc[]
+include::{snippets}/category_acceptance_test/read_categories_in_one_map_test/path-parameters.adoc[]
 include::{snippets}/category_acceptance_test/read_categories_in_one_map_test/request-body.adoc[]
 include::{snippets}/category_acceptance_test/read_categories_in_one_map_test/http-request.adoc[]
 
@@ -344,7 +344,6 @@ include::{snippets}/group_member_acceptance_test/update_group_member_permission_
 
 ==== request
 include::{snippets}/group_member_acceptance_test/delete_group_member_test/path-parameters.adoc[]
-include::{snippets}/group_member_acceptance_test/delete_group_member_test/request-fields.adoc[]
 include::{snippets}/group_member_acceptance_test/delete_group_member_test/http-request.adoc[]
 
 ==== 필수 헤더
@@ -408,7 +407,7 @@ include::{snippets}/comment_acceptance_test/next_comment_read_test/http-response
 
 ==== request
 include::{snippets}/comment_acceptance_test/update_test/path-parameters.adoc[]
-include::{snippets}/comment_acceptance_test/update_test/request-parameters.adoc[]
+include::{snippets}/comment_acceptance_test/update_test/request-fields.adoc[]
 include::{snippets}/comment_acceptance_test/update_test/http-request.adoc[]
 
 ==== 필수 헤더
