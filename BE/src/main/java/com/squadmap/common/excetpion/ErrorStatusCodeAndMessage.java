@@ -24,10 +24,13 @@ public enum ErrorStatusCodeAndMessage {
 
     NO_SUCH_CATEGORY("C-F01", HttpStatus.NO_CONTENT, "등록된 카테고리가 아닙니다."),
     DUPLICATE_CATEGORY("C-F02", HttpStatus.CONFLICT, "지도 내에 카테고리가 중복됩니다."),
+    CATEGORY_HAS_PLACE("C-F03", HttpStatus.CONFLICT, "카테고리에 포함된 장소가 있습니다. 해당 카테고리에 등록된 지도가 있다면 삭제할 수 없습니다."),
 
     FORBIDDEN("G-F01", HttpStatus.FORBIDDEN, "접근 권한이 없습니다"),
     NO_SUCH_GROUP_MEMBER("G-F02", HttpStatus.NO_CONTENT, "그룹에 속한 회원이 아닙니다."),
     UNIQUE_HOST("G-F03", HttpStatus.CONFLICT, "지도의 HOST 권한은 지도 생성자만 가능합니다."),
+
+    HOST_IMMUTABLE("G-F04", HttpStatus.CONFLICT, "지도의 HOST는 변경될 수 없습니다."),
 
     OUT_OF_LIMIT_COMMENT_LENGTH("CM-F01", HttpStatus.BAD_REQUEST, "댓글은 1~150자 이내로만 작성할 수 있습니다."),
     NO_SUCH_COMMENT("CM-F02", HttpStatus.NO_CONTENT, "등록된 댓글이 없습니다."),

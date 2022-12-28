@@ -4,9 +4,8 @@ import com.squadmap.common.auth.Login;
 import com.squadmap.common.dto.CommonResponse;
 import com.squadmap.common.dto.SuccessCode;
 import com.squadmap.core.group.application.GroupMemberService;
-import com.squadmap.core.group.application.dto.GroupMemberSimpleInfo;
 import com.squadmap.core.group.application.dto.GroupMemberInfo;
-import com.squadmap.core.group.ui.dto.GroupMemberDeleteRequest;
+import com.squadmap.core.group.application.dto.GroupMemberSimpleInfo;
 import com.squadmap.core.group.ui.dto.GroupMemberRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -44,9 +43,9 @@ public class GroupMemberController {
         return CommonResponse.success(SuccessCode.GROUP_UPDATE, groupMemberSimpleInfo);
     }
 
-    @DeleteMapping
-    public CommonResponse<Void> deleteMemberInGroup(@Login Long memberId, @PathVariable Long mapId, @RequestBody @Valid GroupMemberDeleteRequest deleteRequest) {
-        groupMemberService.removeGroupMember(memberId, mapId, deleteRequest.getMemberId());
+    @DeleteMapping("/{memberId}")
+    public CommonResponse<Void> deleteMemberInGroup(@Login Long loginId, @PathVariable Long mapId, @PathVariable Long memberId) {
+        groupMemberService.removeGroupMember(loginId, mapId, memberId);
         return CommonResponse.emptyData(SuccessCode.GROUP_DELETE);
     }
 

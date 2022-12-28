@@ -16,7 +16,8 @@ import org.springframework.restdocs.snippet.Snippet;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
@@ -175,5 +176,29 @@ class PlaceAcceptanceTest extends RestAssuredTest {
                 .log().all();
 
     }
+
+    private static final Snippet DELETE_RESPONSE_FIELDS = generateCommonResponse();
+
+    @Test
+    @DisplayName("로그인한 지도에 권한이 있는 멤버가 장소를 삭제 요청하면, 장소를 삭제하고 200 OK를 반환한다.")
+    void deleteTest() {
+
+        Long mapId = 1L;
+        Long placeId = 1L;
+
+        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, PLACE_PATH_PARAMETER, DELETE_RESPONSE_FIELDS))
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .header(HttpHeaders.AUTHORIZATION, this.createAuthorizationHeader(1L))
+                .pathParam("map_id", mapId)
+                .pathParam("place_id", placeId)
+
+        .when().delete("/map/{map_id}/places/{place_id}")
+
+        .then().statusCode(HttpStatus.OK.value())
+                .body("code", equalTo(SuccessCode.PLACE_DELETE.getCode()))
+                .log().all();
+    }
+
 
 }

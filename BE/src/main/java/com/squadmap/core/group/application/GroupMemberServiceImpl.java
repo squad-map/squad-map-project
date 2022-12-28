@@ -3,8 +3,8 @@ package com.squadmap.core.group.application;
 import com.squadmap.common.excetpion.ClientException;
 import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
 import com.squadmap.core.group.application.dto.AccessInfo;
-import com.squadmap.core.group.application.dto.GroupMemberSimpleInfo;
 import com.squadmap.core.group.application.dto.GroupMemberInfo;
+import com.squadmap.core.group.application.dto.GroupMemberSimpleInfo;
 import com.squadmap.core.group.domain.GroupMember;
 import com.squadmap.core.group.domain.PermissionLevel;
 import com.squadmap.core.group.infrastructure.GroupMemberRepository;
@@ -88,8 +88,10 @@ public class GroupMemberServiceImpl implements GroupMemberService {
     @Override
     @Transactional
     public void removeGroupMember(Long loginMemberId, Long mapId, Long memberId) {
-        if (!loginMemberId.equals(memberId)) {
-            checkHasAuthority(mapId, loginMemberId, PermissionLevel.HOST);
+
+        checkHasAuthority(mapId, loginMemberId, PermissionLevel.HOST);
+        if(loginMemberId.equals(memberId)) {
+            throw new ClientException(ErrorStatusCodeAndMessage.HOST_IMMUTABLE);
         }
 
         groupMemberRepository.deleteByMapIdAndMemberId(mapId, memberId);

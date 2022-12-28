@@ -2,7 +2,6 @@ package com.squadmap.group.acceptance;
 
 import com.squadmap.assured.RestAssuredTest;
 import com.squadmap.common.dto.SuccessCode;
-import com.squadmap.core.group.ui.dto.GroupMemberDeleteRequest;
 import com.squadmap.core.group.ui.dto.GroupMemberRequest;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.DisplayName;
@@ -16,7 +15,10 @@ import org.springframework.test.context.ActiveProfiles;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
-import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
 
 @ActiveProfiles("test")
@@ -113,30 +115,28 @@ public class GroupMemberAcceptanceTest extends RestAssuredTest {
                 .log().all();
     }
 
-    private static final Snippet GROUP_MEMBER_DELETE_REQUEST = requestFields(
-            fieldWithPath("member_id").type(JsonFieldType.NUMBER).description("그룹에서 삭제할 멤버의 아이디")
+    private static final Snippet GROUP_MEMBER_DELETE_PATH_PARAMETERS = pathParameters(
+            parameterWithName("map_id").description("지도의 아이디"),
+            parameterWithName("member_id").description("회원의 아이디")
     );
 
-    // group member 삭제
     @Test
-    @DisplayName("지도의 주인(HOST 권한)을 가진 사용자는 그룹 내 사용자를 삭제할 수 있다.")
+    @DisplayName("지도의 주인(HOST 권한)을 가진 로그인 사용자가 그룹멤버를 삭제를 요청하면 삭제 후 200 OK를 반환한다.")
     void deleteGroupMemberTest() {
         Long loginMemberId = 1L;
         Long mapId = 1L;
 
         Long deleteMemberId = 3L;
 
-        GroupMemberDeleteRequest groupMemberDeleteRequest = new GroupMemberDeleteRequest(deleteMemberId);
-
-        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, AUTHORIZATION_HEADER, MAP_PATH_PARAMETER,
-                        GROUP_MEMBER_DELETE_REQUEST, COMMON_RESPONSE_EMPTY_DATA))
+        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, AUTHORIZATION_HEADER,
+                        GROUP_MEMBER_DELETE_PATH_PARAMETERS, COMMON_RESPONSE_EMPTY_DATA))
                 .accept(ContentType.JSON)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header(HttpHeaders.AUTHORIZATION, this.createAuthorizationHeader(loginMemberId))
                 .pathParam("map_id", mapId)
-                .body(groupMemberDeleteRequest)
+                .pathParam("member_id", deleteMemberId)
 
-        .when().delete("/map/{map_id}/groups")
+        .when().delete("/map/{map_id}/groups/{member_id}")
 
         .then().statusCode(HttpStatus.OK.value())
                 .body("code", equalTo(SuccessCode.GROUP_DELETE.getCode()))

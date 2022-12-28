@@ -3,6 +3,7 @@ package com.squadmap.core.category.infrastructure;
 import com.squadmap.core.category.domain.Category;
 import com.squadmap.core.map.domain.Map;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -20,4 +21,12 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     @Query("select c from Category c join fetch c.map where c.id = :categoryId")
     Optional<Category> findCategoryFetchMapById(@Param("categoryId") Long categoryId);
+
+    @Modifying
+    @Query("delete from Category c where c.map.id = :mapId")
+    void deleteCategoriesByMapId(@Param("mapId") Long map);
+
+    @Modifying
+    @Query("delete from Category c where c.id = :categoryId")
+    void deleteCategoryById(@Param("categoryId") Long categoryId);
 }

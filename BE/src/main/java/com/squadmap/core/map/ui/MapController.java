@@ -1,10 +1,10 @@
 package com.squadmap.core.map.ui;
 
-import com.squadmap.common.dto.CommonResponse;
-import com.squadmap.common.dto.SimplePage;
 import com.squadmap.common.auth.Login;
+import com.squadmap.common.dto.CommonResponse;
 import com.squadmap.common.dto.SimpleSlice;
 import com.squadmap.common.dto.SuccessCode;
+import com.squadmap.core.group.application.dto.AccessInfo;
 import com.squadmap.core.map.application.MapService;
 import com.squadmap.core.map.application.dto.MapDetail;
 import com.squadmap.core.map.application.dto.MapSimpleInfo;
@@ -14,8 +14,6 @@ import com.squadmap.core.map.ui.dto.MapCreateResponse;
 import com.squadmap.core.map.ui.dto.MapRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -54,16 +52,22 @@ public class MapController {
     }
 
     @GetMapping("/{mapId}")
-    public CommonResponse<MapDetail> findMapOne(@PathVariable Long mapId, @Login Long memberId) {
+    public CommonResponse<MapDetail> findMapOne(@PathVariable Long mapId, @Login Long loginId) {
         return CommonResponse.success(SuccessCode.MAP_READ_DETAIL,
-                mapService.findOne(mapId, memberId));
+                mapService.findOne(AccessInfo.of(loginId, mapId)));
     }
 
-    // 페이징 리팩토링시 API 합치는 거 고민해보기
     @GetMapping("/group")
     public CommonResponse<MapsResponse> findGroupMapList(@Login Long memberId, Optional<String> name) {
         return CommonResponse.success(SuccessCode.MAP_READ_PRI,
                 mapService.searchGroup(memberId, name));
+    }
+
+    @DeleteMapping("/{mapId}")
+    public CommonResponse<Void> deleteMap(@Login Long memberId, @PathVariable Long mapId) {
+        mapService.delete(AccessInfo.of(memberId, mapId));
+
+        return CommonResponse.emptyData(SuccessCode.MAP_DELETE);
     }
 
 

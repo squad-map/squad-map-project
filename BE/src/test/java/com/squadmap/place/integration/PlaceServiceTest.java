@@ -3,22 +3,29 @@ package com.squadmap.place.integration;
 import com.squadmap.IntegrationTest;
 import com.squadmap.common.excetpion.ClientException;
 import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
+import com.squadmap.core.comment.infrastructure.CommentRepository;
 import com.squadmap.core.group.application.dto.AccessInfo;
 import com.squadmap.core.place.application.PlaceService;
 import com.squadmap.core.place.application.dto.PlaceDetailInfo;
+import com.squadmap.core.place.infrastructure.PlaceRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.assertj.core.api.InstanceOfAssertFactories.map;
 
 @IntegrationTest
 class PlaceServiceTest {
 
     @Autowired
     private PlaceService placeService;
+
+    @Autowired
+    private PlaceRepository placeRepository;
+
+    @Autowired
+    private CommentRepository commentRepository;
 
     @Test
     @DisplayName("로그인된 유저이고, 지도에 대한 권한이 있고, 중복되지 않은 장소라면 장소를 등록할 수 있다.")
@@ -111,7 +118,7 @@ class PlaceServiceTest {
 
     @Test
     @DisplayName("권한이 없는 사용자여도 전체공개 지도의 장소이면 조회할 수 있다.")
-    void placeReadOneTest_no_() {
+    void placeReadOneTest_no_permission() {
 
         Long memberId = 4L;
         Long placeId = 1L;
@@ -132,6 +139,29 @@ class PlaceServiceTest {
         assertThatThrownBy(() -> placeService.readOne(AccessInfo.of(memberId, mapId), placeId))
                 .isInstanceOf(ClientException.class)
                 .hasMessage(ErrorStatusCodeAndMessage.FORBIDDEN.getMessage());
+
+    }
+
+    @Test
+    @DisplayName("MAINTAIN 권한 이상의 사용자라면 장소를 삭제할 수 있다.")
+    void placeDeleteTest() {
+        AccessInfo accessInfo = AccessInfo.of(1L, 1L);
+        Long placeId = 1L;
+
+        placeService.delete(accessInfo, placeId);
+        assertThat(placeRepository.existsById(placeId)).isFalse();
+
+    }
+
+    @Test
+    @DisplayName("MAINTAIN 권한 미만의 사용자라면 장소를 삭제하면 익셉션이 발생한다.")
+    void placeDeleteTest_fail() {
+        AccessInfo accessInfo = AccessInfo.of(3L, 1L);
+        Long placeId = 1L;
+
+        assertThatThrownBy(() -> placeService.delete(accessInfo, placeId)).isInstanceOf(ClientException.class)
+                .hasMessage(ErrorStatusCodeAndMessage.FORBIDDEN.getMessage());
+
 
     }
 }

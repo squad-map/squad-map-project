@@ -109,6 +109,15 @@ public class PlaceServiceImpl implements PlaceService {
             return PlaceDetailInfo.of(place, new SimpleSlice<>(commentInfos));
     }
 
+    @Override
+    @Transactional
+    @RequiredPermission(level = PermissionLevel.MAINTAIN)
+    public void delete(AccessInfo accessInfo, Long placeId) {
+        commentRepository.deleteCommentByPlaceIdQuery(placeId);
+        placeRepository.deleteById(placeId);
+
+    }
+
 
     private void checkPlaceInMap(Place place, Long mapId) {
         if(!place.hasSameMapId(mapId)) {

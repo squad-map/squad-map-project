@@ -15,8 +15,10 @@ import org.springframework.restdocs.snippet.Snippet;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.payload.PayloadDocumentation.requestFields;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.restassured3.RestAssuredRestDocumentation.document;
 
 public class CategoryAcceptanceTest extends RestAssuredTest {
@@ -27,7 +29,7 @@ public class CategoryAcceptanceTest extends RestAssuredTest {
       color : String
       mapId : Long
      */
-    private static final Snippet CREATE_REQUEST_FIELDS = requestFields(
+    private static final Snippet CREATE_UPDATE_REQUEST_FIELDS = requestFields(
             fieldWithPath("category_name").type(JsonFieldType.STRING).description("카테고리 이름"),
             fieldWithPath("color").type(JsonFieldType.STRING).description("색상 코드")
     );
@@ -46,7 +48,7 @@ public class CategoryAcceptanceTest extends RestAssuredTest {
 
         CategoryRequest categoryRequest = new CategoryRequest(categoryName, color);
 
-        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, MAP_PATH_PARAMETER, CREATE_REQUEST_FIELDS, CREATE_RESPONSE_FIELDS, AUTHORIZATION_HEADER))
+        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, MAP_PATH_PARAMETER, CREATE_UPDATE_REQUEST_FIELDS, CREATE_RESPONSE_FIELDS, AUTHORIZATION_HEADER))
                 .accept(ContentType.JSON)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header(HttpHeaders.AUTHORIZATION, this.createAuthorizationHeader(memberId))
@@ -61,7 +63,7 @@ public class CategoryAcceptanceTest extends RestAssuredTest {
                 .body("data.category_id", notNullValue());
     }
 
-    private final static Snippet READ_PATH_PARAMETERS = pathParameters(
+    private final static Snippet CATEGORY_PATH_PARAMETERS = pathParameters(
             parameterWithName("map_id").description("지도의 아이디"),
             parameterWithName("category_id").description("카테고리의 아이디")
     );
@@ -80,7 +82,7 @@ public class CategoryAcceptanceTest extends RestAssuredTest {
         Long mapId = 1L;
 
         given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, AUTHORIZATION_HEADER,
-                        READ_PATH_PARAMETERS, READ_RESPONSE_FIELDS))
+                        CATEGORY_PATH_PARAMETERS, READ_RESPONSE_FIELDS))
                 .accept(MediaType.APPLICATION_JSON_VALUE)
                 .contentType(ContentType.JSON)
                 .pathParam("map_id", mapId)
@@ -119,9 +121,60 @@ public class CategoryAcceptanceTest extends RestAssuredTest {
                 .log().all()
 
         .when().get("/map/{map_id}/categories")
-                .then()
-                .body("code", equalTo(SuccessCode.CATEGORY_READ_ALL.getCode()))
+
+        .then().body("code", equalTo(SuccessCode.CATEGORY_READ_ALL.getCode()))
                 .log().all();
+
+    }
+
+    private static final Snippet UPDATE_RESPONSE_FIELDS = generateCommonResponse(
+            fieldWithPath(makeFieldName("category_id")).type(JsonFieldType.NUMBER).description("업데이트된 카테고리 아이디"),
+            fieldWithPath(makeFieldName("category_name")).type(JsonFieldType.STRING).description("업데이트된 카테고리 이름"),
+            fieldWithPath(makeFieldName("category_color")).type(JsonFieldType.STRING).description("업데이트된 카테고리 색상")
+    );
+    @Test
+    @DisplayName("로그인한 유저가 권한이 있는 카테고리를 수정하면 200 OK를 반환한다.")
+    void updateTest() {
+        Long mapId = 1L;
+        Long categoryId = 1L;
+        CategoryRequest categoryRequest = new CategoryRequest("categoryName", "color");
+        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, AUTHORIZATION_HEADER, CREATE_UPDATE_REQUEST_FIELDS, UPDATE_RESPONSE_FIELDS))
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .header(HttpHeaders.AUTHORIZATION, this.createAuthorizationHeader(1L))
+                .body(categoryRequest)
+                .pathParam("map_id", mapId)
+                .pathParam("category_id", categoryId)
+
+        .when().put("/map/{map_id}/categories/{category_id}")
+
+        .then().statusCode(HttpStatus.OK.value())
+                .body("code", equalTo(SuccessCode.CATEGORY_UPDATE.getCode()))
+                .body("data.category_name", equalTo(categoryRequest.getCategoryName()))
+                .body("data.category_color", equalTo(categoryRequest.getColor()));
+
+
+    }
+
+    private static final Snippet DELETE_RESPONSE_FIELDS = generateCommonResponse();
+
+    @Test
+    @DisplayName("로그인한 유저가 권한이 있는 카테고리를 삭제하면 200 OK를 반환한다.")
+    void deleteCategoryTest() {
+        Long mapId = 1L;
+        Long categoryId = 2L;
+
+        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, AUTHORIZATION_HEADER, CATEGORY_PATH_PARAMETERS, DELETE_RESPONSE_FIELDS))
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+                .header(HttpHeaders.AUTHORIZATION, this.createAuthorizationHeader(1L))
+                .pathParam("map_id", mapId)
+                .pathParam("category_id", categoryId)
+
+        .when().delete("/map/{map_id}/categories/{category_id}")
+
+        .then().statusCode(HttpStatus.OK.value())
+                .body("code", equalTo(SuccessCode.CATEGORY_DELETE.getCode()));
 
     }
 

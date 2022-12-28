@@ -1,13 +1,13 @@
 package com.squadmap.core.comment.ui;
 
+import com.squadmap.common.auth.Login;
 import com.squadmap.common.dto.CommonResponse;
+import com.squadmap.common.dto.SimpleSlice;
 import com.squadmap.common.dto.SuccessCode;
 import com.squadmap.core.comment.application.CommentService;
 import com.squadmap.core.comment.application.dto.CommentInfo;
 import com.squadmap.core.comment.application.dto.CommentResponse;
 import com.squadmap.core.comment.ui.dto.CommentRequest;
-import com.squadmap.common.dto.SimpleSlice;
-import com.squadmap.common.auth.Login;
 import com.squadmap.core.group.application.dto.AccessInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
