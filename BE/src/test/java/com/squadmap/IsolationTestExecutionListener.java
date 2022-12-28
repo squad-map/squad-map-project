@@ -19,7 +19,6 @@ public class IsolationTestExecutionListener extends AbstractTestExecutionListene
 
     @Override
     public void afterTestMethod(TestContext testContext) throws Exception {
-        //getDbConfigurator(testContext).cleanUp();
     }
 
     private DbConfigurator getDbConfigurator(TestContext testContext) {

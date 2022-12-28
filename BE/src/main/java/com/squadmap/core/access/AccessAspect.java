@@ -3,7 +3,6 @@ package com.squadmap.core.access;
 import com.squadmap.common.excetpion.ClientException;
 import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
 import com.squadmap.core.group.application.GroupMemberService;
-
 import com.squadmap.core.group.application.dto.AccessInfo;
 import com.squadmap.core.group.domain.PermissionLevel;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,5 @@
 package com.squadmap.core.group.application.dto;
 
-import com.squadmap.core.group.domain.PermissionLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

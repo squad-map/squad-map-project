@@ -1,8 +1,8 @@
 package com.squadmap.core.comment.application;
 
+import com.squadmap.common.dto.SimpleSlice;
 import com.squadmap.core.comment.application.dto.CommentInfo;
 import com.squadmap.core.comment.application.dto.CommentResponse;
-import com.squadmap.common.dto.SimpleSlice;
 import com.squadmap.core.group.application.dto.AccessInfo;
 
 public interface CommentService {

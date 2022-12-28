@@ -1,8 +1,8 @@
 package com.squadmap.comment.domain;
 
-import com.squadmap.core.category.domain.Category;
 import com.squadmap.common.excetpion.ClientException;
 import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
+import com.squadmap.core.category.domain.Category;
 import com.squadmap.core.comment.domain.Comment;
 import com.squadmap.core.map.domain.Map;
 import com.squadmap.core.place.domain.Place;

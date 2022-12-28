@@ -1,12 +1,12 @@
 package com.squadmap.core.category.ui;
 
+import com.squadmap.common.auth.Login;
 import com.squadmap.common.dto.CommonResponse;
 import com.squadmap.common.dto.SuccessCode;
 import com.squadmap.core.category.application.CategoryService;
 import com.squadmap.core.category.application.dto.CategoryInfo;
 import com.squadmap.core.category.ui.dto.CategoryRequest;
 import com.squadmap.core.category.ui.dto.CategoryResponse;
-import com.squadmap.common.auth.Login;
 import com.squadmap.core.group.application.dto.AccessInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

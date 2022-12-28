@@ -1,8 +1,8 @@
 package com.squadmap.core.group.application;
 
 import com.squadmap.core.group.application.dto.AccessInfo;
-import com.squadmap.core.group.application.dto.GroupMemberSimpleInfo;
 import com.squadmap.core.group.application.dto.GroupMemberInfo;
+import com.squadmap.core.group.application.dto.GroupMemberSimpleInfo;
 import com.squadmap.core.group.domain.PermissionLevel;
 
 import java.util.List;

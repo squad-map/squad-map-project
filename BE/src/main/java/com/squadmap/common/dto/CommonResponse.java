@@ -1,6 +1,5 @@
 package com.squadmap.common.dto;
 
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 

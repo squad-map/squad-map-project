@@ -7,7 +7,6 @@ import com.squadmap.core.map.application.dto.MapSimpleInfo;
 import com.squadmap.core.map.application.dto.MapUpdateInfo;
 import com.squadmap.core.map.application.dto.MapsResponse;
 
-
 import java.util.Optional;
 
 

@@ -1,7 +1,6 @@
 package com.squadmap.core.comment.infrastructure;
 
 import com.squadmap.core.comment.domain.Comment;
-import com.squadmap.core.place.domain.Place;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;

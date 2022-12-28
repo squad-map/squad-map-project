@@ -3,7 +3,6 @@ package com.squadmap.common.dto;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Slice;
 
 import java.util.List;

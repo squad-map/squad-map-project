@@ -1,7 +1,7 @@
 package com.squadmap.core.map.ui;
 
-import com.squadmap.common.dto.CommonResponse;
 import com.squadmap.common.auth.Login;
+import com.squadmap.common.dto.CommonResponse;
 import com.squadmap.common.dto.SimpleSlice;
 import com.squadmap.common.dto.SuccessCode;
 import com.squadmap.core.group.application.dto.AccessInfo;
