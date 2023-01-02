@@ -11,7 +11,7 @@ import Header from '@/components/Map/Header';
 import Infos from '@/components/Map/Infos';
 import { SUCCESS_GET_DETAIL_MAP } from '@/constants/code';
 import theme from '@/styles/theme';
-import { CategorizedPlaces, MapUserType } from '@/types/map';
+import { CategorizedPlaces, MapUserType, PlaceType } from '@/types/map';
 import { unicodeToEmoji } from '@/utils/util';
 
 const Map = () => {
@@ -30,14 +30,14 @@ const Map = () => {
   });
 
   useEffect(() => {
-    if (mapData) {
+    if (mapData && !user) {
       setUser({
         host_id: mapData.data.host_id,
         host_nickname: mapData.data.host_nickname,
         host_profile_image: mapData.data.host_profile_image,
       });
     }
-  }, [mapData]);
+  }, [mapData, user]);
 
   if (mapData && mapData.code !== SUCCESS_GET_DETAIL_MAP)
     return <div>API Error</div>;
@@ -46,7 +46,7 @@ const Map = () => {
     mapData && (
       <KakaoMap
         placeInfos={mapData.data.categorized_places.reduce(
-          (acc: any, placeInfo: CategorizedPlaces) => {
+          (acc: PlaceType[], placeInfo: CategorizedPlaces) => {
             acc.push(...placeInfo.places);
             return acc;
           },

@@ -1,32 +1,39 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 
-import ModalContent from '../ModalContent';
-
-import { getMapCategories, postCategory } from '@/apis/category';
+import { postCategory } from '@/apis/category';
 import { Icons } from '@/assets/icons';
 import Button from '@/components/common/Button';
 import GlobalModal from '@/components/common/GlobalModal';
 import Icon from '@/components/common/Icon';
 import Input from '@/components/common/Input';
 import Text from '@/components/common/Text';
-import { SUCCESS_GET_CATEGORIES } from '@/constants/code';
+import ModalContent from '@/components/ModalContent';
+import { SUCCESS_POST_CATEGORY } from '@/constants/code';
 import { CategoryColors } from '@/constants/colors';
 import theme from '@/styles/theme';
 import { CategoryType, MapHeaderType } from '@/types/map';
-import { unicodeToEmoji } from '@/utils/util';
+import {
+  unicodeToEmoji,
+  isExistBgColor,
+  checkDuplicateColor,
+} from '@/utils/util';
 
 interface CategoryModalInfoProps {
   headerData: MapHeaderType;
+  mapCategories: CategoryType[];
   setIsCategoryModal: React.Dispatch<React.SetStateAction<boolean>>;
+  refetchMapCategories: () => void;
 }
 
 const CategoryModalInfo = ({
   headerData,
+  mapCategories,
   setIsCategoryModal,
+  refetchMapCategories,
 }: CategoryModalInfoProps) => {
   // category_info가 아닌 getMapCategories API 호출을 통해 받아온 카테고리는 disabeld 처리
-  const { map_id, category_info, emoji, title } = headerData;
+  const { map_id, emoji, title } = headerData;
 
   const [categoryFormData, setCategoryFormData] = useState({
     name: '',
@@ -41,16 +48,9 @@ const CategoryModalInfo = ({
     handleButtonClick: () => true,
   });
 
-  const { data: mapCategory } = useQuery(['MapCategory'], () => {
-    if (map_id) {
-      return getMapCategories(map_id);
-    }
-    return true;
-  });
-
   const fetchPostCategory = useMutation(postCategory, {
-    onSuccess: (data: { category_id: number }) => {
-      if (data.category_id) {
+    onSuccess: ({ code }: { code: string }) => {
+      if (code === SUCCESS_POST_CATEGORY) {
         setModalText({
           title: '카테고리가 등록되었습니다.',
           description: '카테고리 등록 완료',
@@ -58,6 +58,7 @@ const CategoryModalInfo = ({
           handleButtonClick: () => {
             setIsModal(false);
             setIsCategoryModal(false);
+            refetchMapCategories();
             return true;
           },
         });
@@ -77,36 +78,35 @@ const CategoryModalInfo = ({
     setCategoryFormData({ ...categoryFormData, color });
   };
 
-  const checkDupliCateColor = (color: string) => {
-    const existColors = mapCategory.data.map(
-      (category: CategoryType) => category.category_color
-    );
-
-    if (existColors.includes(color)) return true;
-    return false;
-  };
-
   const isExistName = () => {
-    const existName = mapCategory.data.map(
+    const existName = mapCategories.map(
       (category: CategoryType) => category.category_name
     );
     if (existName.includes(categoryFormData.name)) return true;
     return false;
   };
 
-  const isExistBgColor = () => {
-    const existColors = mapCategory.data.map(
-      (category: CategoryType) => category.category_color
-    );
-    if (existColors.includes(categoryFormData.color)) return true;
-    return false;
-  };
-
   const handleCreateCategory = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!categoryFormData.name || isExistName() || isExistBgColor()) {
+    if (!categoryFormData.name || isExistName()) {
       setModalText({
-        title: '이름 또는 색상을 확인해주세요.',
+        title: '이름을 확인해주세요.',
+        description: '카테고리 등록 실패',
+        buttonText: '다시시도',
+        handleButtonClick: () => {
+          setIsModal(false);
+          return true;
+        },
+      });
+      setIsModal(true);
+      return;
+    }
+    if (
+      !categoryFormData.color ||
+      isExistBgColor(mapCategories, categoryFormData.color)
+    ) {
+      setModalText({
+        title: '색상을 확인해주세요.',
         description: '카테고리 등록 실패',
         buttonText: '다시시도',
         handleButtonClick: () => {
@@ -121,18 +121,14 @@ const CategoryModalInfo = ({
     const newCategory = {
       category_name: categoryFormData.name,
       color: categoryFormData.color,
-      map_id,
     };
 
-    fetchPostCategory.mutate(newCategory);
+    fetchPostCategory.mutate({ map_id, categoryRequestBody: newCategory });
   };
-
-  if (mapCategory && mapCategory.code !== SUCCESS_GET_CATEGORIES)
-    return <div>API Error</div>;
 
   return (
     <>
-      {mapCategory && (
+      {mapCategories && (
         <section className="h-full flex flex-col items-center justify-center">
           <header className="flex flex-col items-center gap-4 mb-4">
             <h1 className="text-2xl text-navy">
@@ -185,14 +181,12 @@ const CategoryModalInfo = ({
                       backgroundColor: color,
                     }}
                     className={`w-8 h-8 rounded-full hover:opactiy-80 ${
-                      mapCategory.data.includes(
-                        (category: any) => category.category_color === color
-                      )
-                        ? 'opacity-100'
-                        : 'opacity-60'
+                      isExistBgColor(mapCategories, color)
+                        ? 'opacity-10'
+                        : 'opacity-100'
                     }`}
                     onClick={() => handleColorClick(color)}
-                    disabled={checkDupliCateColor(color)}
+                    disabled={checkDuplicateColor(mapCategories, color)}
                   />
                 ))}
               </div>

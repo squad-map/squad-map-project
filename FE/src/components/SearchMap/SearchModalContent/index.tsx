@@ -1,38 +1,28 @@
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { getMapCategories } from '@/apis/category';
-import { getMapDetailInfo } from '@/apis/mypage';
 import { postPlace } from '@/apis/place';
 import Button from '@/components/common/Button';
 import Text from '@/components/common/Text';
 import KakaoStaticMap from '@/components/KaKaoMap/KakaoStaticMap';
-import { SUCCESS_GET_PLACE } from '@/constants/code';
-import { CategoryColors } from '@/constants/colors';
+import { SUCCESS_GET_CATEGORIES, SUCCESS_POST_PLACE } from '@/constants/code';
 import theme from '@/styles/theme';
 import { CategoryType, PlaceType } from '@/types/map';
 
-const SearchModalContent = ({ placeInfo }: { placeInfo: PlaceType }) => {
-  // TODO: API가 도착하면 테스트 필요
+interface SearchModalContentprops {
+  placeInfo: PlaceType;
+}
+
+const SearchModalContent = ({ placeInfo }: SearchModalContentprops) => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [placeForm, setPlaceForm] = useState({
     story: '',
     category_id: 0,
     color: '',
   });
-
-  const { data: mapData } = useQuery(
-    ['Map'],
-    () => {
-      if (id) {
-        getMapDetailInfo(+id);
-      }
-    },
-    {
-      staleTime: 5 * 60 * 1000,
-    }
-  );
 
   const { data: mapCategory } = useQuery(['MapCategory'], () => {
     if (id) {
@@ -43,8 +33,8 @@ const SearchModalContent = ({ placeInfo }: { placeInfo: PlaceType }) => {
 
   const fetchPostPlace = useMutation(postPlace, {
     onSuccess: ({ code }: { code: string }) => {
-      if (code === SUCCESS_GET_PLACE) {
-        // 팝업닫기.
+      if (code === SUCCESS_POST_PLACE) {
+        navigate(`/map/${id}`);
       }
     },
     onError: (error: unknown) => {
@@ -56,17 +46,8 @@ const SearchModalContent = ({ placeInfo }: { placeInfo: PlaceType }) => {
     setPlaceForm({ ...placeForm, story: e.target.value });
   };
 
-  const handleColorClick = (color: string) => {
-    setPlaceForm({ ...placeForm, color });
-  };
-
-  const checkDupliCateColor = (color: string) => {
-    const existColors = mapCategory.map(
-      (category: CategoryType) => category.category_color
-    );
-
-    if (existColors.includes(color)) return true;
-    return false;
+  const handleColorClick = (category_id: number, color: string) => {
+    setPlaceForm({ ...placeForm, category_id, color });
   };
 
   const handleCreatePlace = (e: React.SyntheticEvent<HTMLButtonElement>) => {
@@ -84,6 +65,9 @@ const SearchModalContent = ({ placeInfo }: { placeInfo: PlaceType }) => {
     fetchPostPlace.mutate({ map_id: id, placeRequestBody: newPlace });
   };
 
+  if (mapCategory && mapCategory.code !== SUCCESS_GET_CATEGORIES)
+    return <div>API Error</div>;
+
   return (
     <section className="h-full flex flex-col gap-4 items-center p-8">
       <h1 className="text-2xl">{placeInfo.place_name}</h1>
@@ -92,24 +76,32 @@ const SearchModalContent = ({ placeInfo }: { placeInfo: PlaceType }) => {
         <textarea
           placeholder="당신의 이야기를 들려주세요."
           value={placeForm.story}
-          className="w-96 h-48 p-4 resize-none rounded-2xl bg-inputBackground"
+          className="w-full h-52 p-4 resize-none rounded-2xl bg-inputBackground"
           onChange={handlleStoryChange}
         />
-        <div className="flex flex-col gap-4 mb-4">
+        <div className="flex flex-col gap-4 mb-2">
           <span className="text-lightGray">카테고리 색상</span>
-          <div className="flex flex-wrap gap-2">
-            {CategoryColors.map((color: string) => (
-              <button
-                type="button"
-                aria-label="color-button"
-                style={{
-                  backgroundColor: color,
-                }}
-                className="w-8 h-8 rounded-full  hover:opactiy-80"
-                onClick={() => handleColorClick(color)}
-                // disabled={checkDupliCateColor(color)}
-              />
-            ))}
+          <div className="flex flex-wrap">
+            {mapCategory &&
+              mapCategory.data.map((category: CategoryType) => (
+                <button
+                  type="button"
+                  aria-label="color-button"
+                  style={{
+                    backgroundColor: category.category_color,
+                  }}
+                  className="w-8 h-8 rounded-full hover:opactiy-80"
+                  onClick={() =>
+                    handleColorClick(
+                      category.category_id,
+                      category.category_color
+                    )
+                  }
+                />
+              ))}
+            {mapCategory && mapCategory.data.length === 0 && (
+              <p className="text-xs">등록된 카테고리가 없습니다.</p>
+            )}
           </div>
           <span className="text-lightGray">
             현재 선택된 카테고리 : {placeForm.color || '미선택'}
