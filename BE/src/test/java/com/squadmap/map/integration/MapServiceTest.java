@@ -188,13 +188,14 @@ class MapServiceTest  {
     @DisplayName("유저 아이디로 지도를 검색하면, 그 유저가 속해있는 그룹 지도를 반환한다.")
     void searchGroupMapListTest() {
         //given
-        Long memberId = 1L;
+        Long memberId = 4L;
 
         //when
         MapsResponse mapsResponse = mapService.searchGroup(memberId, Optional.empty());
 
+        assertThat(mapsResponse.getContent().get(0).getId()).isEqualTo(2);
         //then
-        assertThat(mapsResponse.getMapCount()).isEqualTo(2);
+        assertThat(mapsResponse.getMapCount()).isEqualTo(1);
     }
 
 

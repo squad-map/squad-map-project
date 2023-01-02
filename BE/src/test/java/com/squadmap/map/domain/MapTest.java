@@ -27,12 +27,4 @@ class MapTest {
         assertThat(map.isFullDisclosure()).isTrue();
     }
 
-    @Test
-    void randomChar() {
-        Random random = new Random();
-        for (int j = 0; j <100; j++) {
-            char i = (char) (random.nextInt(26) + 97);
-            System.out.println(i);
-        }
-    }
 }

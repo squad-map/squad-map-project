@@ -19,7 +19,7 @@ public interface GroupMemberRepository extends JpaRepository<GroupMember, Long> 
 
     boolean existsByMapIdAndMemberId(Long mapId, Long memberId);
 
-    @Query("select gm.id from GroupMember gm where gm.memberId = :memberId")
+    @Query("select gm.mapId from GroupMember gm where gm.memberId = :memberId")
     List<Long> findMapIdByMemberId(@Param("memberId") Long memberId);
 
     @Modifying
