@@ -9,6 +9,7 @@ import Text from '@/components/common/Text';
 import KakaoMap from '@/components/KaKaoMap';
 import Header from '@/components/Map/Header';
 import Infos from '@/components/Map/Infos';
+import { SUCCESS_GET_DETAIL_MAP } from '@/constants/code';
 import theme from '@/styles/theme';
 import { CategorizedPlaces, MapUserType } from '@/types/map';
 import { unicodeToEmoji } from '@/utils/util';
@@ -23,7 +24,7 @@ const Map = () => {
 
   const { data: mapData } = useQuery(['Map'], () => {
     if (id) {
-      return getMapDetailInfo(id);
+      return getMapDetailInfo(+id);
     }
     return true;
   });
@@ -31,17 +32,20 @@ const Map = () => {
   useEffect(() => {
     if (mapData) {
       setUser({
-        host_id: mapData.host_id,
-        host_nickname: mapData.host_nickname,
-        host_profile_image: mapData.host_profile_image,
+        host_id: mapData.data.host_id,
+        host_nickname: mapData.data.host_nickname,
+        host_profile_image: mapData.data.host_profile_image,
       });
     }
   }, [mapData]);
 
+  if (mapData && mapData.code !== SUCCESS_GET_DETAIL_MAP)
+    return <div>API Error</div>;
+
   return (
     mapData && (
       <KakaoMap
-        placeInfos={mapData.categorized_places.reduce(
+        placeInfos={mapData.data.categorized_places.reduce(
           (acc: any, placeInfo: CategorizedPlaces) => {
             acc.push(...placeInfo.places);
             return acc;
@@ -51,17 +55,17 @@ const Map = () => {
       >
         <Header
           headerData={{
-            map_id: mapData.map_id,
-            emoji: `${unicodeToEmoji(mapData.map_emoji)}`,
-            title: mapData.map_name,
-            category_info: mapData.categorized_places.map(
+            map_id: mapData.data.map_id,
+            emoji: `${unicodeToEmoji(mapData.data.map_emoji)}`,
+            title: mapData.data.map_name,
+            category_info: mapData.data.categorized_places.map(
               (placeInfo: CategorizedPlaces) => placeInfo.category_info
             ),
           }}
         />
-        <Infos infoData={mapData.categorized_places} user={user} />
+        <Infos infoData={mapData.data.categorized_places} user={user} />
         <div className="absolute bottom-8 right-8 z-[999]">
-          <Link to={`/map/search/${mapData.map_id}`}>
+          <Link to={`/map/search/${mapData.data.map_id}`}>
             <Button
               size="large"
               color={theme.color.navy}

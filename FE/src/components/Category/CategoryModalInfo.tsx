@@ -8,16 +8,16 @@ import { Icons } from '@/assets/icons';
 import Button from '@/components/common/Button';
 import GlobalModal from '@/components/common/GlobalModal';
 import Icon from '@/components/common/Icon';
-import Text from '@/components/common/Text';
 import Input from '@/components/common/Input';
+import Text from '@/components/common/Text';
+import { SUCCESS_GET_CATEGORIES } from '@/constants/code';
 import { CategoryColors } from '@/constants/colors';
-import { HeaderProps } from '@/pages/Map/Header';
 import theme from '@/styles/theme';
-import { CategoryType } from '@/types/map';
+import { CategoryType, MapHeaderType } from '@/types/map';
 import { unicodeToEmoji } from '@/utils/util';
 
 interface CategoryModalInfoProps {
-  headerData: HeaderProps;
+  headerData: MapHeaderType;
   setIsCategoryModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
@@ -78,7 +78,7 @@ const CategoryModalInfo = ({
   };
 
   const checkDupliCateColor = (color: string) => {
-    const existColors = mapCategory.map(
+    const existColors = mapCategory.data.map(
       (category: CategoryType) => category.category_color
     );
 
@@ -87,7 +87,7 @@ const CategoryModalInfo = ({
   };
 
   const isExistName = () => {
-    const existName = category_info.map(
+    const existName = mapCategory.data.map(
       (category: CategoryType) => category.category_name
     );
     if (existName.includes(categoryFormData.name)) return true;
@@ -95,7 +95,7 @@ const CategoryModalInfo = ({
   };
 
   const isExistBgColor = () => {
-    const existColors = category_info.map(
+    const existColors = mapCategory.data.map(
       (category: CategoryType) => category.category_color
     );
     if (existColors.includes(categoryFormData.color)) return true;
@@ -127,84 +127,99 @@ const CategoryModalInfo = ({
     fetchPostCategory.mutate(newCategory);
   };
 
+  if (mapCategory && mapCategory.code !== SUCCESS_GET_CATEGORIES)
+    return <div>API Error</div>;
+
   return (
     <>
-      <section className="h-full flex flex-col items-center justify-center">
-        <header className="flex flex-col items-center gap-4 mb-4">
-          <h1 className="text-2xl text-navy">
-            {`${unicodeToEmoji(emoji)} ${title}`}
-          </h1>
-        </header>
-        <div className="flex items-center gap-1 mb-8">
-          <Icon size="small" url={Icons.Exclamation} alt="카테고리 추가 문구" />
-          <Text
-            text="카테고리를 추가 할 수 있습니다. (장소당 1개)"
-            size="xSmall"
-            color={theme.color.gray}
-          />
-        </div>
-        <form className="flex flex-col items-center">
-          <div className="w-60 flex flex-col gap-4 mb-8">
-            <span className="text-lightGray">카테고리명</span>
-            <Input
-              id="name"
-              width="15rem"
-              height="2.5rem"
-              placeholderText="카테고리 이름"
-              color={theme.color.placeholder}
-              background={theme.color.inputBackground}
-              type="text"
-              value={categoryFormData.name}
-              onChange={handleNameChange}
+      {mapCategory && (
+        <section className="h-full flex flex-col items-center justify-center">
+          <header className="flex flex-col items-center gap-4 mb-4">
+            <h1 className="text-2xl text-navy">
+              {`${unicodeToEmoji(emoji)} ${title}`}
+            </h1>
+          </header>
+          <div className="flex items-center gap-1 mb-8">
+            <Icon
+              size="small"
+              url={Icons.Exclamation}
+              alt="카테고리 추가 문구"
             />
-            {isExistName() && (
-              <Text
-                text="중복되는 카테고리 이름입니다."
-                size="xSmall"
-                color={theme.color.red}
-              />
-            )}
+            <Text
+              text="카테고리를 추가 할 수 있습니다. (장소당 1개)"
+              size="xSmall"
+              color={theme.color.gray}
+            />
           </div>
-          <div className="w-60 flex flex-col gap-4 mb-8">
-            <span className="text-lightGray">카테고리 색상</span>
-            <div className="flex flex-wrap gap-2">
-              {CategoryColors.map((color: string) => (
-                <button
-                  key={`category-${color}`}
-                  type="button"
-                  aria-label="color-button"
-                  style={{
-                    backgroundColor: color,
-                  }}
-                  className="w-8 h-8 rounded-full hover:opactiy-80"
-                  onClick={() => handleColorClick(color)}
-                  disabled={checkDupliCateColor(color)}
+          <form className="flex flex-col items-center">
+            <div className="w-60 flex flex-col gap-4 mb-8">
+              <span className="text-lightGray">카테고리명</span>
+              <Input
+                id="name"
+                width="15rem"
+                height="2.5rem"
+                placeholderText="카테고리 이름"
+                color={theme.color.placeholder}
+                background={theme.color.inputBackground}
+                type="text"
+                value={categoryFormData.name}
+                onChange={handleNameChange}
+              />
+              {isExistName() && (
+                <Text
+                  text="중복되는 카테고리 이름입니다."
+                  size="xSmall"
+                  color={theme.color.red}
                 />
-              ))}
+              )}
             </div>
-            <span className="text-lightGray">
-              현재 선택된 카테고리 : {categoryFormData.color || '미선택'}
-            </span>
-          </div>
+            <div className="w-60 flex flex-col gap-4 mb-8">
+              <span className="text-lightGray">카테고리 색상</span>
+              <div className="flex flex-wrap gap-2">
+                {CategoryColors.map((color: string) => (
+                  <button
+                    key={`category-${color}`}
+                    type="button"
+                    aria-label="color-button"
+                    style={{
+                      backgroundColor: color,
+                    }}
+                    className={`w-8 h-8 rounded-full hover:opactiy-80 ${
+                      mapCategory.data.includes(
+                        (category: any) => category.category_color === color
+                      )
+                        ? 'opacity-100'
+                        : 'opacity-60'
+                    }`}
+                    onClick={() => handleColorClick(color)}
+                    disabled={checkDupliCateColor(color)}
+                  />
+                ))}
+              </div>
+              <span className="text-lightGray">
+                현재 선택된 카테고리 : {categoryFormData.color || '미선택'}
+              </span>
+            </div>
 
-          <div className="mt-4">
-            <Button
-              type="submit"
-              size="xRegular"
-              color={theme.color.black}
-              onClick={(e: React.SyntheticEvent<HTMLFormElement>) =>
-                handleCreateCategory(e)
-              }
-            >
-              <Text
-                text="카테고리 생성"
-                size="regular"
-                color={theme.color.white}
-              />
-            </Button>
-          </div>
-        </form>
-      </section>
+            <div className="mt-4">
+              <Button
+                type="submit"
+                size="xRegular"
+                color={theme.color.black}
+                onClick={(e: React.SyntheticEvent<HTMLFormElement>) =>
+                  handleCreateCategory(e)
+                }
+              >
+                <Text
+                  text="카테고리 생성"
+                  size="regular"
+                  color={theme.color.white}
+                />
+              </Button>
+            </div>
+          </form>
+        </section>
+      )}
       {isModal && (
         <GlobalModal size="xSmall" handleCancelClick={() => setIsModal(false)}>
           <ModalContent

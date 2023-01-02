@@ -23,20 +23,21 @@ export const UseLogin = () => {
       );
       const loginData = await response.json();
 
-      if (!Object.hasOwn(loginData, 'nickname')) {
+      if (!Object.hasOwn(loginData.data, 'nickname')) {
         reportError({ message: `로그인 실패` });
       }
 
-      setCookie('access_token', loginData.access_token, {
+      setCookie('access_token', loginData.data.access_token, {
         path: '/',
       });
-      setCookie('refresh_token', loginData.refresh_token, {
+      setCookie('refresh_token', loginData.data.refresh_token, {
         path: '/',
       });
 
       setUser({
-        nickname: loginData.nickname,
-        profileImageUrl: loginData.profileImageUrl,
+        member_id: loginData.data.member_id,
+        nickname: loginData.data.nickname,
+        profileImageUrl: loginData.data.profileImageUrl,
       });
     } catch (err) {
       reportError({ message: getErrorMessage(err) });
@@ -76,6 +77,7 @@ export const UseSilentRefresh = () => {
       });
       // setUser
       setUser({
+        member_id: refreshData.member_id,
         nickname: refreshData.nickname,
         profileImageUrl: refreshData.profileImageUrl,
       });

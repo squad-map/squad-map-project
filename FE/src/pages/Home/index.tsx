@@ -9,12 +9,13 @@ import { Icons } from '@/assets/icons';
 import Button from '@/components/common/Button';
 import Card from '@/components/common/Card';
 import Header from '@/components/common/Header';
+import Input from '@/components/common/Input';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import Text from '@/components/common/Text';
 import GridCards from '@/components/GridCards';
-import Input from '@/components/common/Input';
 import Item from '@/components/Item';
 // import useDebounce from '@/hooks/UseDebounce';
+import { SUCCESS_MAPS_DATA, SUCCESS_MAPS_GROUP_DATA } from '@/constants/code';
 import { IMap } from '@/interfaces/IMap';
 import { userState } from '@/recoil/atoms/user';
 import theme from '@/styles/theme';
@@ -36,7 +37,7 @@ export default function HomePage() {
     isLoading: loading,
     refetch: refetchMaps,
   } = useQuery(['allMaps'], () =>
-    searchType === 'public' ? getMaps(0, 10) : getMypage()
+    searchType === 'public' ? getMaps(0) : getMypage('')
   );
 
   const handleSearchInput = ({
@@ -52,6 +53,13 @@ export default function HomePage() {
   useEffect(() => {
     refetchMaps();
   }, [refetchMaps, searchType]);
+
+  if (
+    mapsData &&
+    mapsData.code !== SUCCESS_MAPS_DATA &&
+    mapsData.code !== SUCCESS_MAPS_GROUP_DATA
+  )
+    return <div>API Error</div>;
 
   return (
     <section className="w-full h-full relative">
@@ -106,8 +114,8 @@ export default function HomePage() {
         ) : (
           <div className="mb-16">
             <GridCards size="small">
-              {mapsData.content &&
-                mapsData.content.map((item: IMap) => (
+              {mapsData.data.content &&
+                mapsData.data.content.map((item: IMap) => (
                   <Link to={`/map/${item.id}`} key={`map-${item.id}`}>
                     <Card size="small" key={`HomeCard-${item.id}`}>
                       <Item item={item} key={`Card-${item.id}`} />

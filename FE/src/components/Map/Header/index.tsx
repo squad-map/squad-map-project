@@ -8,16 +8,9 @@ import GlobalModal from '@/components/common/GlobalModal';
 import Icon from '@/components/common/Icon';
 import Text from '@/components/common/Text';
 import theme from '@/styles/theme';
-import { CategoryType } from '@/types/map';
+import { CategoryType, MapHeaderType } from '@/types/map';
 
-export interface HeaderProps {
-  map_id: number;
-  emoji: string;
-  title: string;
-  category_info: CategoryType[];
-}
-
-const Header = ({ headerData }: { headerData: HeaderProps }) => {
+const Header = ({ headerData }: { headerData: MapHeaderType }) => {
   const [isCategoryModal, setIsCategoryModal] = useState(false);
   const navigte = useNavigate();
 
