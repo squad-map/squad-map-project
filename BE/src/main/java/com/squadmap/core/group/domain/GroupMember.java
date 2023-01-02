@@ -34,6 +34,7 @@ public class GroupMember {
     }
 
     public void updatePermissionLevel(String level) {
+        this.permissionLevel.checkChangeable();
         PermissionLevel permissionLevel = PermissionLevel.valueOf(level);
         if (permissionLevel.equals(PermissionLevel.HOST)) {
             throw new ClientException(ErrorStatusCodeAndMessage.UNIQUE_HOST);

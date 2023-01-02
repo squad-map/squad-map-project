@@ -137,4 +137,18 @@ class GroupServiceTest {
                 .hasMessage(ErrorStatusCodeAndMessage.HOST_IMMUTABLE.getMessage());
 
     }
+
+    @Test
+    @DisplayName("지도의 주인이 자신의 권한을 수정할 수 없다.")
+    void updateTest_fail_host_to_other_level() {
+        Long loginId = 1L;
+        Long mapId = 1L;
+        Long memberId = 1L;
+
+        assertThat(groupMemberRepository.findByMapIdAndMemberId(mapId, memberId)).isPresent();
+        assertThatThrownBy(() -> groupService.changeGroupMemberLevel(loginId, mapId, memberId, "MAINTAIN"))
+                .isInstanceOf(ClientException.class)
+                .hasMessage(ErrorStatusCodeAndMessage.HOST_IMMUTABLE.getMessage());
+
+    }
 }
