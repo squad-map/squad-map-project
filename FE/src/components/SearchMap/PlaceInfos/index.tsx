@@ -2,8 +2,6 @@ import { useState } from 'react';
 
 import SearchModalContent from '../SearchModalContent';
 
-import * as S from './Infos.stories';
-
 import Button from '@/components/common/Button';
 import Card from '@/components/common/Card';
 import GlobalModal from '@/components/common/GlobalModal';

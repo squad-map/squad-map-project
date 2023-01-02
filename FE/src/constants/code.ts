@@ -13,6 +13,8 @@ export const SUCCESS_PUT_GROUP_MEMBER = 'G-S02';
 export const SUCCESS_GET_GROUP_MEMBERS = 'G-S03';
 export const SUCCESS_DELETE_GROUP_MEMBER = 'G-S04';
 
-export const SUCCESS_GET_PLACE = 'P-S01';
+export const SUCCESS_POST_PLACE = 'P-S01';
 
+export const SUCCESS_POST_CATEGORY = 'C-S01';
 export const SUCCESS_GET_CATEGORIES = 'C-S03';
+// export const SUCCESS_PUT_CATEGORY = 'C-S03';
