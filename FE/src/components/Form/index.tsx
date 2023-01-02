@@ -4,10 +4,15 @@ import { useNavigate } from 'react-router-dom';
 
 import * as S from './Form.style';
 
-import { postMypage, patchMypage } from '@/apis/mypage';
+import { postMypage, patchMypage, deleteMypage } from '@/apis/mypage';
 import Button from '@/components/common/Button';
-import Text from '@/components/common/Text';
 import Input from '@/components/common/Input';
+import Text from '@/components/common/Text';
+import {
+  SUCCESS_POST_MAP,
+  SUCCESS_PATCH_MAP,
+  SUCCESS_DELETE_MAP,
+} from '@/constants/code';
 import theme from '@/styles/theme';
 import { MypagePostParams, MypagePatchParams } from '@/types/mypage';
 import { emojiToUnicode } from '@/utils/util';
@@ -29,11 +34,11 @@ const Form = ({ mapId, state, type }: FormProps) => {
   });
 
   const fetchPostMypage = useMutation(postMypage, {
-    onSuccess: (data: { map_id: number }) => {
-      if (data.map_id) {
+    onSuccess: ({ code, data }: { code: string; data: { map_id: number } }) => {
+      if (code === SUCCESS_POST_MAP) {
         queryClient.invalidateQueries('mypageData');
         // 성공 popup 띄우기.
-        navigate('/mypage');
+        navigate(`/map/${data.map_id}`);
       }
     },
     onError: (error: unknown) => {
@@ -43,16 +48,33 @@ const Form = ({ mapId, state, type }: FormProps) => {
 
   const fetchPatchMypage = useMutation(
     ({
-      patchId,
+      paramId,
       mypageRequestBody,
     }: {
-      patchId: number;
+      paramId: number;
       mypageRequestBody: MypagePostParams;
-    }) => patchMypage(patchId, mypageRequestBody),
+    }) => patchMypage(paramId, mypageRequestBody),
     {
-      onSuccess: () => {
-        queryClient.invalidateQueries('mypageData');
-        navigate('/mypage');
+      onSuccess: ({ code }: { code: string }) => {
+        if (code === SUCCESS_PATCH_MAP) {
+          queryClient.invalidateQueries('mypageData');
+          navigate('/mypage');
+        }
+      },
+      onError: (error: unknown) => {
+        throw new Error(`error is ${error}`);
+      },
+    }
+  );
+
+  const fetchDeleteMypage = useMutation(
+    (paramId: number) => deleteMypage(paramId),
+    {
+      onSuccess: ({ code }: { code: string }) => {
+        if (code === SUCCESS_DELETE_MAP) {
+          queryClient.invalidateQueries('mypageData');
+          navigate('/mypage');
+        }
       },
       onError: (error: unknown) => {
         throw new Error(`error is ${error}`);
@@ -75,8 +97,10 @@ const Form = ({ mapId, state, type }: FormProps) => {
 
   const handleSubmit = (
     e: React.SyntheticEvent<HTMLButtonElement>,
-    patchId?: string
+    paramId?: string,
+    method?: string
   ) => {
+    // 여기서 post, patch, delete 모두 다뤄야하나?
     e.preventDefault();
     const newMypage = {
       map_name: formData.map_name,
@@ -84,8 +108,10 @@ const Form = ({ mapId, state, type }: FormProps) => {
       full_disclosure: formData.authority,
     };
 
-    if (patchId) {
-      fetchPatchMypage.mutate({ patchId, mypageRequestBody: newMypage });
+    if (paramId) {
+      if (method === 'patch')
+        fetchPatchMypage.mutate({ paramId, mypageRequestBody: newMypage });
+      else if (method === 'delete') fetchDeleteMypage.mutate(paramId);
     } else {
       fetchPostMypage.mutate(newMypage);
     }
@@ -127,7 +153,7 @@ const Form = ({ mapId, state, type }: FormProps) => {
           size="large"
           color={theme.color.lightGray}
         />
-        <S.RadioBox>
+        <div className="flex justify-between px-6">
           <label htmlFor="public">
             <input
               type="radio"
@@ -150,7 +176,7 @@ const Form = ({ mapId, state, type }: FormProps) => {
             />
             Group
           </label>
-        </S.RadioBox>
+        </div>
       </S.ColumnBox>
 
       {type ? (
@@ -160,12 +186,18 @@ const Form = ({ mapId, state, type }: FormProps) => {
             size="regular"
             color={theme.color.darkBlue}
             onClick={(e: React.SyntheticEvent<HTMLButtonElement>) =>
-              handleSubmit(e, mapId)
+              handleSubmit(e, mapId, 'patch')
             }
           >
             <Text text="수정하기" size="regular" color="#fff" />
           </Button>
-          <Button size="regular" color={theme.color.darkRed}>
+          <Button
+            size="regular"
+            color={theme.color.darkRed}
+            onClick={(e: React.SyntheticEvent<HTMLButtonElement>) =>
+              handleSubmit(e, mapId, 'delete')
+            }
+          >
             <Text text="삭제하기" size="regular" color="#fff" />
           </Button>
         </S.ButtonWrapper>

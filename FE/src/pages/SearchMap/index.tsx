@@ -6,6 +6,7 @@ import { getMapDetailInfo } from '@/apis/mypage';
 import KakaoMap from '@/components/KaKaoMap';
 import Header from '@/components/Map/Header';
 import SearchPlace from '@/components/SearchMap/SearchPlace';
+import { SUCCESS_GET_DETAIL_MAP } from '@/constants/code';
 import { defaultCoords } from '@/constants/map';
 import { ISearchPlace } from '@/interfaces/ISearchPlace';
 import { CategorizedPlaces, PlaceType } from '@/types/map';
@@ -21,7 +22,7 @@ const SearchMap = () => {
     ['Map'],
     () => {
       if (id) {
-        return getMapDetailInfo(id);
+        return getMapDetailInfo(+id);
       }
       return true;
     },
@@ -57,6 +58,9 @@ const SearchMap = () => {
     });
   };
 
+  if (mapData && mapData.code !== SUCCESS_GET_DETAIL_MAP)
+    return <div>API Error</div>;
+
   return (
     <section>
       {mapData && (
@@ -64,9 +68,9 @@ const SearchMap = () => {
           <Header
             headerData={{
               map_id: Number(id),
-              emoji: `${unicodeToEmoji(mapData.map_emoji)}`,
-              title: mapData.map_name,
-              category_info: mapData.categorized_places.map(
+              emoji: `${unicodeToEmoji(mapData.data.map_emoji)}`,
+              title: mapData.data.map_name,
+              category_info: mapData.data.categorized_places.map(
                 (placeInfo: CategorizedPlaces) => placeInfo.category_info
               ),
             }}

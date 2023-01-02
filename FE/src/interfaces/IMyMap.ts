@@ -5,6 +5,5 @@ export interface IMyMap {
   host_profile_image: string;
   map_name: string;
   map_emoji: string;
-  categories: { name: string; color: string }[];
   places_count: number;
 }
