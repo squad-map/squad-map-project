@@ -31,7 +31,7 @@ export const patchNickName = async (nickName: string) => {
   const response = await fetch(`${process.env.SQUAD_MAP_OAUTH_URL}/members`, {
     method: 'PATCH',
     headers: {
-      Authorization: `bearer ${accessToken}`,
+      Authorization: `Bearer ${accessToken}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ nickname: nickName }),
