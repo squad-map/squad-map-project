@@ -5,6 +5,7 @@ import com.squadmap.common.excetpion.ClientException;
 import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
 import com.squadmap.core.category.application.CategoryService;
 import com.squadmap.core.category.application.dto.CategoryInfo;
+import com.squadmap.core.category.domain.Category;
 import com.squadmap.core.category.infrastructure.CategoryRepository;
 import com.squadmap.core.group.application.dto.AccessInfo;
 import org.junit.jupiter.api.DisplayName;
@@ -147,6 +148,39 @@ public class CategoryServiceTest {
         assertThatThrownBy(() -> categoryService.update(AccessInfo.of(memberId, mapId), categoryId, updatedName, updatedColor))
                 .isInstanceOf(ClientException.class)
                 .hasMessage(ErrorStatusCodeAndMessage.NO_SUCH_CATEGORY.getMessage());
+
+    }
+
+    @Test
+    @DisplayName("권한이 있는 사용자라면 카테고리 색상만 수정할 수 있다.")
+    void updateTest_success_only_category_color() {
+        Long categoryId = 1L;
+        Long memberId = 1L;
+        Long mapId = 1L;
+        String updatedName = "first category";
+        String updatedColor = "updated color";
+        Category category = categoryRepository.findById(categoryId).get();
+
+        CategoryInfo updatedInfo = categoryService.update(AccessInfo.of(memberId, mapId), categoryId, updatedName, updatedColor);
+
+        assertThat(updatedInfo.getCategoryId()).isEqualTo(categoryId);
+        assertThat(updatedInfo.getCategoryName()).isEqualTo(category.getName());
+        assertThat(updatedInfo.getCategoryColor()).isEqualTo(updatedColor);
+    }
+
+
+    @Test
+    @DisplayName("사용자가 중복되는 카테고리 이름으로 수정하려고하면, Exception이 발생한다.")
+    void updateTest_fail_duplicate_category_name() {
+        Long categoryId = 1L;
+        Long memberId = 1L;
+        Long mapId = 1L;
+        String updatedName = "second category";
+        String updatedColor = "updated color";
+
+        assertThatThrownBy(() -> categoryService.update(AccessInfo.of(memberId, mapId), categoryId, updatedName, updatedColor))
+                .isInstanceOf(ClientException.class)
+                .hasMessage(ErrorStatusCodeAndMessage.DUPLICATE_CATEGORY.getMessage());
 
     }
 

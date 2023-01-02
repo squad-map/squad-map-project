@@ -31,7 +31,7 @@ public class CategoryAcceptanceTest extends RestAssuredTest {
      */
     private static final Snippet CREATE_UPDATE_REQUEST_FIELDS = requestFields(
             fieldWithPath("category_name").type(JsonFieldType.STRING).description("카테고리 이름"),
-            fieldWithPath("color").type(JsonFieldType.STRING).description("색상 코드")
+            fieldWithPath("category_color").type(JsonFieldType.STRING).description("색상 코드")
     );
 
     private static final Snippet CREATE_RESPONSE_FIELDS = generateCommonResponse(
@@ -138,7 +138,7 @@ public class CategoryAcceptanceTest extends RestAssuredTest {
         Long mapId = 1L;
         Long categoryId = 1L;
         CategoryRequest categoryRequest = new CategoryRequest("categoryName", "color");
-        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, AUTHORIZATION_HEADER, CREATE_UPDATE_REQUEST_FIELDS, UPDATE_RESPONSE_FIELDS))
+        given(this.specification).filter(document(DEFAULT_RESTDOC_PATH, AUTHORIZATION_HEADER, CATEGORY_PATH_PARAMETERS, CREATE_UPDATE_REQUEST_FIELDS, UPDATE_RESPONSE_FIELDS))
                 .accept(ContentType.JSON)
                 .contentType(ContentType.JSON)
                 .header(HttpHeaders.AUTHORIZATION, this.createAuthorizationHeader(1L))
@@ -151,7 +151,7 @@ public class CategoryAcceptanceTest extends RestAssuredTest {
         .then().statusCode(HttpStatus.OK.value())
                 .body("code", equalTo(SuccessCode.CATEGORY_UPDATE.getCode()))
                 .body("data.category_name", equalTo(categoryRequest.getCategoryName()))
-                .body("data.category_color", equalTo(categoryRequest.getColor()));
+                .body("data.category_color", equalTo(categoryRequest.getCategoryColor()));
 
 
     }

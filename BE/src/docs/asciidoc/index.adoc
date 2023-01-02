@@ -263,17 +263,17 @@ include::{snippets}/category_acceptance_test/read_one_test/http-response.adoc[]
 === 카테고리 수정
 
 ==== request
-include::{snippets}/category_acceptance_test/read_categories_in_one_map_test/path-parameters.adoc[]
-include::{snippets}/category_acceptance_test/read_categories_in_one_map_test/request-body.adoc[]
-include::{snippets}/category_acceptance_test/read_categories_in_one_map_test/http-request.adoc[]
+include::{snippets}/category_acceptance_test/update_test/path-parameters.adoc[]
+include::{snippets}/category_acceptance_test/update_test/request-body.adoc[]
+include::{snippets}/category_acceptance_test/update_test/http-request.adoc[]
 
 ==== 필수 헤더
-include::{snippets}/category_acceptance_test/read_categories_in_one_map_test/request-headers.adoc[]
+include::{snippets}/category_acceptance_test/update_test/request-headers.adoc[]
 
 ==== response
-include::{snippets}/category_acceptance_test/read_categories_in_one_map_test/response-fields.adoc[]
-include::{snippets}/category_acceptance_test/read_categories_in_one_map_test/response-body.adoc[]
-include::{snippets}/category_acceptance_test/read_categories_in_one_map_test/http-response.adoc[]
+include::{snippets}/category_acceptance_test/update_test/response-fields.adoc[]
+include::{snippets}/category_acceptance_test/update_test/response-body.adoc[]
+include::{snippets}/category_acceptance_test/update_test/http-response.adoc[]
 
 [[resources-categoryAll-read-in-map-test]]
 === 지도 내의 모든 카테고리 조회
@@ -296,7 +296,7 @@ include::{snippets}/category_acceptance_test/read_categories_in_one_map_test/htt
 
 ==== request
 include::{snippets}/category_acceptance_test/delete_category_test/path-parameters.adoc[]
-include::{snippets}/category_acceptance_test/read_one_test/http-request.adoc[]
+include::{snippets}/category_acceptance_test/delete_category_test/http-request.adoc[]
 
 ==== 필수 헤더
 include::{snippets}/category_acceptance_test/delete_category_test/request-headers.adoc[]

@@ -15,6 +15,6 @@ public class CategoryRequest {
     @NotBlank
     private String categoryName;
     @NotBlank
-    private String color;
+    private String categoryColor;
 
 }
