@@ -10,24 +10,28 @@ import Icon from '@/components/common/Icon';
 import Text from '@/components/common/Text';
 import GridCards from '@/components/GridCards';
 import Item from '@/components/MyPage/Item';
+import { SUCCESS_MAPS_GROUP_DATA } from '@/constants/code';
 import { IMyMap } from '@/interfaces/IMyMap';
 import theme from '@/styles/theme';
 
 const MyPage = () => {
-  const { data: myPageData } = useQuery(['myMaps'], getMypage);
+  const { data: myPageData } = useQuery(['myMaps'], () => getMypage());
+
+  if (myPageData && myPageData.code !== SUCCESS_MAPS_GROUP_DATA)
+    return <div>API Error</div>;
 
   return (
     <>
       <Header />
       <section className="w-screen flex flex-col justify-center items-center gap-12 relative">
-        <div className="flex justify-center items-end gap-2">
+        <div className="flex items-end">
           <Icon size="medium" url={Icons.Map} alt="Map Icon" />
           <Text text="지도 관리" size="xLargeFill" color={theme.color.navy} />
         </div>
-        {myPageData && myPageData.content.length > 0 ? (
+        {myPageData && myPageData.data.content.length > 0 ? (
           <div className="mb-12">
             <GridCards size="large">
-              {myPageData.content.map((item: IMyMap) => (
+              {myPageData.data.content.map((item: IMyMap) => (
                 <Link to={`/map/${item.id}`} key={item.id}>
                   <Card size="large">
                     <Item item={item} />
@@ -37,7 +41,7 @@ const MyPage = () => {
             </GridCards>
           </div>
         ) : (
-          <div className="text-center mb-12 leading-8 text-lg">
+          <div className="text-center mb-8 text-lg">
             지도 데이터가 존재하지 않습니다. <br /> 나만의 지도를 추가해주세요.
           </div>
         )}

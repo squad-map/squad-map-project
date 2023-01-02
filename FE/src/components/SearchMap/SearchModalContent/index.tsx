@@ -8,6 +8,7 @@ import { postPlace } from '@/apis/place';
 import Button from '@/components/common/Button';
 import Text from '@/components/common/Text';
 import KakaoStaticMap from '@/components/KaKaoMap/KakaoStaticMap';
+import { SUCCESS_GET_PLACE } from '@/constants/code';
 import { CategoryColors } from '@/constants/colors';
 import theme from '@/styles/theme';
 import { CategoryType, PlaceType } from '@/types/map';
@@ -25,7 +26,7 @@ const SearchModalContent = ({ placeInfo }: { placeInfo: PlaceType }) => {
     ['Map'],
     () => {
       if (id) {
-        getMapDetailInfo(id);
+        getMapDetailInfo(+id);
       }
     },
     {
@@ -41,8 +42,8 @@ const SearchModalContent = ({ placeInfo }: { placeInfo: PlaceType }) => {
   });
 
   const fetchPostPlace = useMutation(postPlace, {
-    onSuccess: (data: { place_id: number }) => {
-      if (data.place_id) {
+    onSuccess: ({ code }: { code: string }) => {
+      if (code === SUCCESS_GET_PLACE) {
         // 팝업닫기.
       }
     },
@@ -68,7 +69,8 @@ const SearchModalContent = ({ placeInfo }: { placeInfo: PlaceType }) => {
     return false;
   };
 
-  const handleCreatePlace = () => {
+  const handleCreatePlace = (e: React.SyntheticEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     const newPlace = {
       name: placeInfo.place_name,
       address: placeInfo.address,
@@ -76,11 +78,10 @@ const SearchModalContent = ({ placeInfo }: { placeInfo: PlaceType }) => {
       longitude: placeInfo.longitude,
       story: placeForm.story,
       detail_link: placeInfo.detail_link,
-      map_id: id,
       category_id: placeForm.category_id,
     };
 
-    fetchPostPlace.mutate(newPlace);
+    fetchPostPlace.mutate({ map_id: id, placeRequestBody: newPlace });
   };
 
   return (
@@ -94,7 +95,7 @@ const SearchModalContent = ({ placeInfo }: { placeInfo: PlaceType }) => {
           className="w-96 h-48 p-4 resize-none rounded-2xl bg-inputBackground"
           onChange={handlleStoryChange}
         />
-        <div className="flex flex-col gap-4 mb-8">
+        <div className="flex flex-col gap-4 mb-4">
           <span className="text-lightGray">카테고리 색상</span>
           <div className="flex flex-wrap gap-2">
             {CategoryColors.map((color: string) => (
@@ -118,7 +119,9 @@ const SearchModalContent = ({ placeInfo }: { placeInfo: PlaceType }) => {
           type="submit"
           size="xLarge"
           color={theme.color.darkNavy}
-          onClick={handleCreatePlace}
+          onClick={(e: React.SyntheticEvent<HTMLButtonElement>) =>
+            handleCreatePlace(e)
+          }
         >
           <Text text="장소 생성" size="regular" color={theme.color.white} />
         </Button>
