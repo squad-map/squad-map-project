@@ -6,7 +6,7 @@ export const getGroupMembers = async (mapId: number) => {
   if (!accessToken) throw new Error('accessToken is undefined');
 
   const response = await fetch(
-    `${process.env.SQUAD_MAP_OAUTH_URL}/groups/${mapId}`,
+    `${process.env.SQUAD_MAP_OAUTH_URL}/map/${mapId}/groups`,
     {
       method: 'GET',
       headers: {
@@ -33,7 +33,7 @@ export const postGroupMember = async (
   if (!accessToken) throw new Error('accessToken is undefined');
 
   const response = await fetch(
-    `${process.env.SQUAD_MAP_OAUTH_URL}/groups/${mapId}`,
+    `${process.env.SQUAD_MAP_OAUTH_URL}/map/${mapId}/groups`,
     {
       method: 'POST',
       headers: {
@@ -61,7 +61,7 @@ export const putGroupMember = async (
   if (!accessToken) throw new Error('accessToken is undefined');
 
   const response = await fetch(
-    `${process.env.SQUAD_MAP_OAUTH_URL}/groups/${mapId}`,
+    `${process.env.SQUAD_MAP_OAUTH_URL}/map/${mapId}/groups`,
     {
       method: 'PUT',
       headers: {
@@ -81,22 +81,18 @@ export const putGroupMember = async (
   }
 };
 
-export const deleteGroupMember = async (
-  mapId: number,
-  groupDeleteBody: { selectedMemberId: number }
-) => {
+export const deleteGroupMember = async (mapId: number, member_id: number) => {
   const accessToken = getCookie('access_token');
   if (!accessToken) throw new Error('accessToken is undefined');
 
   const response = await fetch(
-    `${process.env.SQUAD_MAP_OAUTH_URL}/groups/${mapId}`,
+    `${process.env.SQUAD_MAP_OAUTH_URL}/map/${mapId}/groups/${member_id}`,
     {
       method: 'DELETE',
       headers: {
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(groupDeleteBody),
     }
   );
 
