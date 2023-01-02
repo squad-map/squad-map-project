@@ -1,7 +1,6 @@
+import styled from '@emotion/styled/macro';
 import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-
-import * as S from './Navigation.style';
 
 import { Icons } from '@/assets/icons';
 import GlobalModal from '@/components/common/GlobalModal';
@@ -12,6 +11,8 @@ import Manual from '@/components/Manual';
 import NickName from '@/components/NickName';
 import ReportError from '@/components/ReportError';
 import { useIsLoggedIn } from '@/hooks/useIsLoggedIn';
+import { flexbox } from '@/styles/mixin';
+import theme from '@/styles/theme';
 
 interface INavigationProps {
   menu: boolean;
@@ -19,6 +20,25 @@ interface INavigationProps {
 }
 
 let currentPath = '';
+
+const Box = styled.div`
+  ${flexbox({ ai: 'center' })}
+  gap: 2rem;
+  margin: 2rem 0;
+  cursor: pointer;
+`;
+
+export const Divider = styled.div`
+  width: 15.25rem;
+  height: 1px;
+  background-color: ${theme.color.lightGray};
+`;
+
+export const Text = styled.span`
+  color: ${theme.color.lightGray};
+  font-size: 1.25rem;
+  font-weight: bold;
+`;
 
 const Navigation = ({ menu, handleCloseMenu }: INavigationProps) => {
   const location = useLocation();
@@ -45,8 +65,12 @@ const Navigation = ({ menu, handleCloseMenu }: INavigationProps) => {
       {menu && openModal.isOpen === false && (
         <Overlay handleCancelClick={() => handleCancelClick()} />
       )}
-      <S.Container menu={menu}>
-        <S.CloseWrapper>
+      <div
+        className={`w-[19.5rem] h-full px-8 flex flex-col justify-start items-end fixed top-0 right-0 bg-white z-[1000] ${
+          menu ? 'translate-x-0' : 'translate-x-full'
+        } duration-500`}
+      >
+        <div className="absolute top-8 right-8">
           <Icon
             data-testid="closeBtn"
             size="medium"
@@ -54,38 +78,33 @@ const Navigation = ({ menu, handleCloseMenu }: INavigationProps) => {
             alt="Close Icon"
             onClick={handleCloseMenu}
           />
-        </S.CloseWrapper>
-        <S.InnerContainer>
+        </div>
+        <section className="mt-[8.25rem]">
           {isLoggedIn ? (
             <Link to="/">
-              <S.Box>
+              <Box>
                 <Icon size="medium" url={Icons.Home} alt="Home Icon" />
-                <S.Text>홈으로</S.Text>
-              </S.Box>
+                <Text>홈으로</Text>
+              </Box>
             </Link>
           ) : (
-            <S.Box
-              onClick={() => setOpenModal({ isOpen: true, type: 'login' })}
-            >
+            <Box onClick={() => setOpenModal({ isOpen: true, type: 'login' })}>
               <Icon size="medium" url={Icons.Login} alt="Login Icon" />
-              <S.Text>로그인</S.Text>
-            </S.Box>
+              <Text>로그인</Text>
+            </Box>
           )}
-          <S.Divider />
-          <S.Box>
-            <Icon size="medium" url={Icons.Map} alt="Map Icon" />
-            <S.Text>전체지도</S.Text>
-          </S.Box>
+          <Divider />
+
           {isLoggedIn && (
             <>
               <Link to="/mypage">
-                <S.Box>
+                <Box>
                   <Icon size="medium" url={Icons.Map} alt="Map Icon" />
-                  <S.Text>나의지도</S.Text>
-                </S.Box>
+                  <Text>나의지도</Text>
+                </Box>
               </Link>
-              <S.Divider />
-              <S.Box
+              <Divider />
+              <Box
                 onClick={() => setOpenModal({ isOpen: true, type: 'nickname' })}
               >
                 <Icon
@@ -93,29 +112,29 @@ const Navigation = ({ menu, handleCloseMenu }: INavigationProps) => {
                   url={Icons.MyProfile}
                   alt="MyProfile Icon"
                 />
-                <S.Text>닉네임 변경</S.Text>
-              </S.Box>
+                <Text>닉네임 변경</Text>
+              </Box>
               <Link to="/logout">
-                <S.Box>
+                <Box>
                   <Icon size="medium" url={Icons.Logout} alt="Logout Icon" />
-                  <S.Text>로그아웃</S.Text>
-                </S.Box>
+                  <Text>로그아웃</Text>
+                </Box>
               </Link>
             </>
           )}
-          <S.Divider />
-          <S.Box onClick={() => setOpenModal({ isOpen: true, type: 'manual' })}>
+          <Divider />
+          <Box onClick={() => setOpenModal({ isOpen: true, type: 'manual' })}>
             <Icon size="medium" url={Icons.Menual} alt="Manual Icon" />
-            <S.Text>사용설명서</S.Text>
-          </S.Box>
-          <S.Box
+            <Text>사용설명서</Text>
+          </Box>
+          <Box
             onClick={() => setOpenModal({ isOpen: true, type: 'reporting' })}
           >
             <Icon size="medium" url={Icons.Error} alt="Error Icon" />
-            <S.Text>오류사항 제보</S.Text>
-          </S.Box>
-        </S.InnerContainer>
-      </S.Container>
+            <Text>오류사항 제보</Text>
+          </Box>
+        </section>
+      </div>
       {openModal.isOpen && (
         <GlobalModal
           size="medium"

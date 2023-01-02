@@ -1,4 +1,5 @@
 import { CategoryPostParams } from '@/types/category';
+import { CategoryType } from '@/types/map';
 import { getCookie } from '@/utils/cookie';
 
 export const getMapCategories = async (map_id: number) => {
@@ -25,12 +26,18 @@ export const getMapCategories = async (map_id: number) => {
   }
 };
 
-export const postCategory = async (categoryRequestBody: CategoryPostParams) => {
+export const postCategory = async ({
+  map_id,
+  categoryRequestBody,
+}: {
+  map_id: number;
+  categoryRequestBody: CategoryPostParams;
+}) => {
   const accessToken = getCookie('access_token');
   if (!accessToken) throw new Error('accesToken is undefined');
 
   const response = await fetch(
-    `${process.env.SQUAD_MAP_OAUTH_URL}/categories`,
+    `${process.env.SQUAD_MAP_OAUTH_URL}/map/${map_id}/categories`,
     {
       method: 'POST',
       headers: {
@@ -47,5 +54,56 @@ export const postCategory = async (categoryRequestBody: CategoryPostParams) => {
     return data;
   } catch (err) {
     throw new Error(`postCategry api fail err: ${err}`);
+  }
+};
+
+export const patchCategory = async (
+  patchId: number,
+  categoryRequestBody: CategoryType
+) => {
+  const accessToken = getCookie('access_token');
+  if (!accessToken) throw new Error('accesToken is undefined');
+  if (!patchId) throw new Error('id is undefined');
+
+  const response = await fetch(
+    `${process.env.SQUAD_MAP_OAUTH_URL}/map/${patchId}/categories`,
+    {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(categoryRequestBody),
+    }
+  );
+
+  const myMapData = await response.json();
+
+  try {
+    return myMapData;
+  } catch (err) {
+    throw new Error(`patchCategory api fail err: ${err}`);
+  }
+};
+
+export const deleteCategory = async (deleteId: number) => {
+  const accessToken = getCookie('access_token');
+  if (!accessToken) throw new Error('accesToken is undefined');
+  const response = await fetch(
+    `${process.env.SQUAD_MAP_OAUTH_URL}/map/${deleteId}/categories`,
+    {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+    }
+  );
+  const mypageData = await response.json();
+
+  try {
+    return mypageData;
+  } catch (err) {
+    throw new Error(`deleteCategory api fail err: ${err}`);
   }
 };
