@@ -6,13 +6,20 @@ export const getMapCategories = async (map_id: number) => {
   if (!accessToken) throw new Error('accesToken is undefined');
 
   const response = await fetch(
-    `${process.env.SQUAD_MAP_OAUTH_URL}/${map_id}/categories`
+    `${process.env.SQUAD_MAP_OAUTH_URL}/map/${map_id}/categories`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+    }
   );
 
-  const data = await response.json();
+  const categoriesData = await response.json();
 
   try {
-    return data;
+    return categoriesData;
   } catch (err) {
     throw new Error(`getCategory api fail err: ${err}`);
   }

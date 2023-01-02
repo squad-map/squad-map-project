@@ -1,11 +1,15 @@
 import { MypagePostParams } from '@/types/mypage';
 import { getCookie } from '@/utils/cookie';
 
-export const getMypage = async () => {
+export const getMypage = async (name = '') => {
+  const getMapURL = name
+    ? `${process.env.SQUAD_MAP_OAUTH_URL}/map/group?name=${name}`
+    : `${process.env.SQUAD_MAP_OAUTH_URL}/map/group`;
+
   const accessToken = getCookie('access_token');
   if (!accessToken) throw new Error('accesToken is undefined');
 
-  const response = await fetch(`${process.env.SQUAD_MAP_OAUTH_URL}/map/group`, {
+  const response = await fetch(getMapURL, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -34,10 +38,10 @@ export const postMypage = async (mypageRequestBody: MypagePostParams) => {
     },
     body: JSON.stringify(mypageRequestBody),
   });
-  const mypageData = await response.json();
+  const myMapData = await response.json();
 
   try {
-    return mypageData;
+    return myMapData;
   } catch (err) {
     throw new Error(`postMypage get api fail err: ${err}`);
   }
@@ -64,8 +68,10 @@ export const patchMypage = async (
     }
   );
 
+  const myMapData = await response.json();
+
   try {
-    return response.ok;
+    return myMapData;
   } catch (err) {
     throw new Error(`patchMypage get api fail err: ${err}`);
   }
@@ -93,7 +99,7 @@ export const deleteMypage = async (deleteId: number) => {
   }
 };
 
-export const getMapDetailInfo = async (id: string) => {
+export const getMapDetailInfo = async (id: number) => {
   const accessToken = getCookie('access_token');
   if (!accessToken) throw new Error('accesToken is undefined');
 
@@ -104,6 +110,7 @@ export const getMapDetailInfo = async (id: string) => {
       'Content-Type': 'application/json',
     },
   });
+
   const mapData = await response.json();
 
   try {
