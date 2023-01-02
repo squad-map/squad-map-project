@@ -1,18 +1,46 @@
+import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { getMapCategories } from '@/apis/category';
 import { Icons } from '@/assets/icons';
 import CategoryModalInfo from '@/components/Category/CategoryModalInfo';
+import ModifyCategoryModalInfo from '@/components/Category/ModifyCategforyModalInfo';
 import Button from '@/components/common/Button';
 import GlobalModal from '@/components/common/GlobalModal';
 import Icon from '@/components/common/Icon';
 import Text from '@/components/common/Text';
+import { SUCCESS_GET_CATEGORIES } from '@/constants/code';
 import theme from '@/styles/theme';
 import { CategoryType, MapHeaderType } from '@/types/map';
 
 const Header = ({ headerData }: { headerData: MapHeaderType }) => {
   const [isCategoryModal, setIsCategoryModal] = useState(false);
+  const [isModifyCategoryModal, setIsModifyCategoryModal] = useState(false);
+  const [clickedCategory, setClickedCategory] = useState({
+    category_id: 0,
+    category_name: '',
+    category_color: '',
+  });
   const navigte = useNavigate();
+
+  const handleCategoryClick = (category: CategoryType) => {
+    setClickedCategory(category);
+    setIsModifyCategoryModal(true);
+  };
+
+  const { data: mapCategories, refetch: refetchMapCategories } = useQuery(
+    ['MapCategories'],
+    () => {
+      if (headerData.map_id) {
+        return getMapCategories(headerData.map_id);
+      }
+      return true;
+    }
+  );
+
+  if (mapCategories && mapCategories.code !== SUCCESS_GET_CATEGORIES)
+    return <div>API Error</div>;
 
   return (
     headerData && (
@@ -53,6 +81,7 @@ const Header = ({ headerData }: { headerData: MapHeaderType }) => {
                 size="regular"
                 color={theme.color.white}
                 key={category.category_id}
+                onClick={() => handleCategoryClick(category)}
               >
                 <Text
                   size="regular"
@@ -69,7 +98,22 @@ const Header = ({ headerData }: { headerData: MapHeaderType }) => {
           >
             <CategoryModalInfo
               headerData={headerData}
+              mapCategories={mapCategories.data}
               setIsCategoryModal={setIsCategoryModal}
+              refetchMapCategories={refetchMapCategories}
+            />
+          </GlobalModal>
+        )}
+        {isModifyCategoryModal && (
+          <GlobalModal
+            size="small"
+            handleCancelClick={() => setIsModifyCategoryModal(false)}
+          >
+            <ModifyCategoryModalInfo
+              mapCategories={mapCategories.data}
+              clickedCategory={clickedCategory}
+              setIsCategoryModal={setIsCategoryModal}
+              refetchMapCategories={refetchMapCategories}
             />
           </GlobalModal>
         )}
