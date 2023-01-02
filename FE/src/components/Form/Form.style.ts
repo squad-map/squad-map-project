@@ -23,11 +23,6 @@ export const EmailBox = styled.div`
   margin-bottom: 1rem;
 `;
 
-export const RadioBox = styled.div`
-  ${flexbox({ dir: 'row', jc: 'space-between' })}
-  padding: 0 1.5rem;
-`;
-
 export const ShareBox = styled.div`
   ${flexbox({ dir: 'column' })}
 `;

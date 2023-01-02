@@ -28,10 +28,17 @@ export type MapType = {
   host_nickname: string;
   host_profile_image: string;
   places_count: number;
-  categorized_places: CategorizedPlaces;
+  categorized_places: CategorizedPlaces[];
 };
 
 export type MapUserType = Pick<
   IMap,
   'host_id' | 'host_nickname' | 'host_profile_image'
 >;
+
+export type MapHeaderType = {
+  map_id: number;
+  emoji: string;
+  title: string;
+  category_info: CategoryType[];
+};

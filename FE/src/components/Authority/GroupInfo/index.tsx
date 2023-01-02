@@ -1,47 +1,43 @@
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
+import { useRecoilValue } from 'recoil';
 
-import {
-  getGroupMembers,
-  putGroupMember,
-  deleteGroupMember,
-} from '@/apis/group';
+import { putGroupMember, deleteGroupMember } from '@/apis/group';
 import Popup from '@/components/common/Popup';
 import Text from '@/components/common/Text';
+import {
+  SUCCESS_DELETE_GROUP_MEMBER,
+  SUCCESS_PUT_GROUP_MEMBER,
+} from '@/constants/code';
+import { GroupMember } from '@/interfaces/group';
+import { userState } from '@/recoil/atoms/user';
 import theme from '@/styles/theme';
 
-interface GroupInfoRespnse {
-  member_id: number;
-  member_nickname: string;
-  member_profile_image: string;
-  permission_level: string;
-}
-
-const GroupInfo = ({ mapId }: { mapId: number }) => {
+const GroupInfo = ({
+  mapId,
+  groupMembers,
+  refetchGorupMembers,
+}: {
+  mapId: number;
+  groupMembers: GroupMember[];
+  refetchGorupMembers: () => void;
+}) => {
   const [permission, setPermission] = useState('READ');
   const [selectedMemberId, setSelectedMemberId] = useState(0);
   const [buttonFlag, setButtonFlag] = useState(0);
 
   const [isPopup, setIsPopup] = useState(false);
-
-  const { data: groupMembers, refetch } = useQuery(['GroupInfo'], () => {
-    if (mapId) {
-      return getGroupMembers(mapId);
-    }
-    return true;
-  });
+  const user = useRecoilValue(userState);
 
   const fetchDeleteGroup = useMutation(
-    ({
-      deleteMapId,
-      groupDeleteBody,
-    }: {
-      deleteMapId: number;
-      groupDeleteBody: { selectedMemberId: number };
-    }) => deleteGroupMember(deleteMapId, groupDeleteBody),
+    ({ deleteMapId, member_id }: { deleteMapId: number; member_id: number }) =>
+      deleteGroupMember(deleteMapId, member_id),
     {
-      onSuccess: () => {
+      onSuccess: ({ code }: { code: string }) => {
         // queryClient.invalidateQueries('GroupInfo');
+        if (code === SUCCESS_DELETE_GROUP_MEMBER) {
+          alert('성공적으로 삭제되었습니다.');
+        }
       },
       onError: (error: unknown) => {
         throw new Error(`error is ${error}`);
@@ -58,8 +54,11 @@ const GroupInfo = ({ mapId }: { mapId: number }) => {
       groupPutBody: { member_id: number; permission_level: string };
     }) => putGroupMember(putMapId, groupPutBody),
     {
-      onSuccess: () => {
+      onSuccess: ({ code }: { code: string }) => {
         // queryClient.invalidateQueries('GroupInfo');
+        if (code === SUCCESS_PUT_GROUP_MEMBER) {
+          alert('성공적으로 수정되었습니다.');
+        }
       },
       onError: (error: unknown) => {
         throw new Error(`error is ${error}`);
@@ -91,9 +90,9 @@ const GroupInfo = ({ mapId }: { mapId: number }) => {
     else if (buttonFlag === 1)
       fetchDeleteGroup.mutate({
         deleteMapId: mapId,
-        groupDeleteBody: { member_id: selectedMemberId },
+        member_id: selectedMemberId,
       });
-    refetch();
+    refetchGorupMembers();
     setIsPopup(false);
   };
 
@@ -102,7 +101,7 @@ const GroupInfo = ({ mapId }: { mapId: number }) => {
       <article className="h-40 my-4 overflow-y-auto">
         {groupMembers ? (
           <>
-            {groupMembers.map((member: GroupInfoRespnse) => (
+            {groupMembers.map((member: GroupMember) => (
               <div
                 key={member.member_id}
                 className="flex items-center gap-4 mb-2"
@@ -117,9 +116,9 @@ const GroupInfo = ({ mapId }: { mapId: number }) => {
                   size="xSmall"
                   color={theme.color.black}
                 />
-                {member.permission_level === 'HOST' ? (
+                {member.level === 'HOST' ? (
                   <Text
-                    text={member.permission_level}
+                    text={member.level}
                     size="xSmall"
                     color={theme.color.black}
                   />
@@ -128,20 +127,18 @@ const GroupInfo = ({ mapId }: { mapId: number }) => {
                     className="w-20 rounded-2xl p-1 border-[1px] border-solid border-black cursor-pointer"
                     onChange={handleSelectChange}
                   >
-                    <option
-                      value="READ"
-                      selected={member.permission_level === 'READ'}
-                    >
+                    <option value="READ" selected={member.level === 'READ'}>
                       READ
                     </option>
                     <option
                       value="MAINTAIN"
-                      selected={member.permission_level === 'MAINTAIN'}
+                      selected={member.level === 'MAINTAIN'}
                     >
                       MAINTAIN
                     </option>
                   </select>
                 )}
+
                 <button
                   type="button"
                   className="w-12 h-6 rounded-2xl bg-navy"
@@ -151,7 +148,7 @@ const GroupInfo = ({ mapId }: { mapId: number }) => {
                 </button>
                 <button
                   type="button"
-                  className="w-12 h-6 roundd-2xl bg-lightRed"
+                  className="w-12 h-6 rounded-2xl bg-lightRed"
                   onClick={() => handleButtonClick(member.member_id, 1)}
                 >
                   <Text text="삭제" size="xSmall" color={theme.color.black} />
