@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
-import PlaceModalReview from '../PlaceModalReview';
+import PlaceModalComment from '../PlaceModalComment';
 import PlaceModalUpdate from '../PlaceModalUpdate';
 
 import { getMapCategories } from '@/apis/category';
@@ -52,6 +52,7 @@ const Infos = ({
     story: '',
     detail_link: '',
     category_id: 0,
+    comments: { content: [], size: 0, number_of_elements: 0, has_next: false },
   });
 
   const [isModal, setIsModal] = useState(false);
@@ -214,7 +215,7 @@ const Infos = ({
             size="large"
             handleCancelClick={() => setIsOpenGlobalModal(false)}
           >
-            <PlaceModalReview placeInfo={placeDetailInfo} />
+            <PlaceModalComment placeInfo={placeDetailInfo} />
           </GlobalModal>
         )}
         {isOpenUpdateModal && (
