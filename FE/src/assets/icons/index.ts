@@ -16,6 +16,7 @@ import Plus from '@/assets/icons/plus.svg';
 import Refresh from '@/assets/icons/refresh.svg';
 import Sample from '@/assets/icons/sample.svg';
 import Search from '@/assets/icons/search.svg';
+import Trash from '@/assets/icons/trash.svg';
 
 export const Icons = {
   ArrowBack,
@@ -36,4 +37,5 @@ export const Icons = {
   MyProfile,
   Exclamation,
   Refresh,
+  Trash,
 } as const;

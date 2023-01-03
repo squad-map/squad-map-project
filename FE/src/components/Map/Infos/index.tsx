@@ -1,26 +1,45 @@
+import { useQuery, useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 
 import PlaceModalReview from '../PlaceModalReview';
 import PlaceModalUpdate from '../PlaceModalUpdate';
 
-import { getPlaceDeatilInfo } from '@/apis/place';
+import { getMapCategories } from '@/apis/category';
+import { deletePlace, getPlaceDeatilInfo } from '@/apis/place';
 import { Icons } from '@/assets/icons';
 import Button from '@/components/common/Button';
 import Card from '@/components/common/Card';
 import GlobalModal from '@/components/common/GlobalModal';
 import Icon from '@/components/common/Icon';
 import Text from '@/components/common/Text';
+import ModalContent from '@/components/ModalContent';
 import UserProfile from '@/components/UserProfile';
+import {
+  SUCCESS_DELETE_PLACE,
+  SUCCESS_GET_CATEGORIES,
+  SUCCESS_GET_PLACE,
+} from '@/constants/code';
 import { PlaceDetail } from '@/interfaces/Place';
+import { userState } from '@/recoil/atoms/user';
 import theme from '@/styles/theme';
 import { CategorizedPlaces, MapUserType, PlaceType } from '@/types/map';
 
 interface InfosProps {
+  mapHostId: number;
   infoData: CategorizedPlaces[];
   userProfile: MapUserType;
+  refetchMap: () => void;
 }
 
-const Infos = ({ infoData, userProfile }: InfosProps) => {
+const Infos = ({
+  mapHostId,
+  infoData,
+  userProfile,
+  refetchMap,
+}: InfosProps) => {
+  const { id } = useParams();
   const [isOpenGlobalModal, setIsOpenGlobalModal] = useState(false);
   const [isOpenUpdateModal, setIsOpenUpdateModal] = useState(false);
 
@@ -35,16 +54,81 @@ const Infos = ({ infoData, userProfile }: InfosProps) => {
     category_id: 0,
   });
 
-  const handleClickPlace = async (type: 'GET' | 'UPDATE', id: number) => {
-    const data = await getPlaceDeatilInfo(id);
+  const [isModal, setIsModal] = useState(false);
+  const [modalText, setModalText] = useState({
+    title: '',
+    description: '',
+    buttonText: '',
+    handleButtonClick: () => true,
+  });
 
-    setPlaceDetailInfo(data);
-    if (type === 'GET') {
-      setIsOpenGlobalModal(true);
-    } else {
-      setIsOpenUpdateModal(true);
+  const user = useRecoilValue(userState);
+
+  const { data: mapCategory } = useQuery(['MapCategory'], () => {
+    if (id) {
+      return getMapCategories(+id);
+    }
+    return true;
+  });
+
+  const fetchDeleteMypage = useMutation(
+    (place_id: number) => {
+      if (id) return deletePlace(+id, place_id);
+      return true;
+    },
+    {
+      onSuccess: ({ code }: { code: string }) => {
+        if (code === SUCCESS_DELETE_PLACE) {
+          setModalText({
+            title: '지도가 성공적으로 삭제되었습니다.',
+            description: '지도 삭제',
+            buttonText: '확인',
+            handleButtonClick: () => {
+              setIsModal(false);
+              refetchMap();
+              return true;
+            },
+          });
+          setIsModal(true);
+        }
+      },
+      onError: (error: unknown) => {
+        throw new Error(`error is ${error}`);
+      },
+    }
+  );
+
+  const handleClickPlace = async (type: 'GET' | 'UPDATE', placeId: number) => {
+    if (id) {
+      const response = await getPlaceDeatilInfo(+id, placeId);
+
+      if (response.code === SUCCESS_GET_PLACE) {
+        setPlaceDetailInfo(response.data);
+        if (type === 'GET') {
+          setIsOpenGlobalModal(true);
+        } else {
+          setIsOpenUpdateModal(true);
+        }
+      }
     }
   };
+
+  const handleDeletePlace = (place_id: number) => {
+    setModalText({
+      title: '지도를 삭제하시겠습니까?.',
+      description: '삭제한 지도는 복구가 불가능합니다.',
+      buttonText: '확인',
+      handleButtonClick: () => {
+        setIsModal(false);
+        fetchDeleteMypage.mutate(place_id);
+        return true;
+      },
+    });
+    setIsModal(true);
+  };
+
+  if (mapCategory && mapCategory.code !== SUCCESS_GET_CATEGORIES)
+    return <div>API Error</div>;
 
   return (
     infoData && (
@@ -81,20 +165,34 @@ const Infos = ({ infoData, userProfile }: InfosProps) => {
                         onClick={() => handleClickPlace('GET', place.place_id)}
                       />
                     </div>
-                    <Button
-                      size="xSmall"
-                      color={theme.color.navy}
-                      onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-                        e.preventDefault();
-                        handleClickPlace('UPDATE', place.place_id);
-                      }}
-                    >
-                      <Text
-                        text="장소수정"
-                        size="xSmall"
-                        color={theme.color.white}
-                      />
-                    </Button>
+                    {mapHostId === user?.member_id && (
+                      <div className="flex gap-4">
+                        <Button
+                          size="xSmall"
+                          color={theme.color.navy}
+                          onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                            e.preventDefault();
+                            handleClickPlace('UPDATE', place.place_id);
+                          }}
+                        >
+                          <Text
+                            text="장소수정"
+                            size="xSmall"
+                            color={theme.color.white}
+                          />
+                        </Button>
+                        <button
+                          type="button"
+                          onClick={() => handleDeletePlace(place.place_id)}
+                        >
+                          <Icon
+                            size="small"
+                            url={Icons.Trash}
+                            alt="삭제아이콘"
+                          />
+                        </button>
+                      </div>
+                    )}
                   </div>
                   <Text
                     size="xRegular"
@@ -126,7 +224,22 @@ const Infos = ({ infoData, userProfile }: InfosProps) => {
           >
             <PlaceModalUpdate
               placeInfo={placeDetailInfo}
-              categoryInfo={infoData.map(data => data.category_info)}
+              categoryInfo={mapCategory.data}
+              setIsOpenUpdateModal={setIsOpenUpdateModal}
+              refetchMap={refetchMap}
+            />
+          </GlobalModal>
+        )}
+        {isModal && (
+          <GlobalModal
+            size="xSmall"
+            handleCancelClick={() => setIsModal(false)}
+          >
+            <ModalContent
+              title={modalText.title}
+              description={modalText.description}
+              buttonText={modalText.buttonText}
+              handleButtonClick={modalText.handleButtonClick}
             />
           </GlobalModal>
         )}
