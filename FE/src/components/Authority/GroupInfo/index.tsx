@@ -3,8 +3,10 @@ import { useState } from 'react';
 import { useRecoilValue } from 'recoil';
 
 import { putGroupMember, deleteGroupMember } from '@/apis/group';
+import GlobalModal from '@/components/common/GlobalModal';
 import Popup from '@/components/common/Popup';
 import Text from '@/components/common/Text';
+import ModalContent from '@/components/ModalContent';
 import {
   SUCCESS_DELETE_GROUP_MEMBER,
   SUCCESS_PUT_GROUP_MEMBER,
@@ -16,11 +18,11 @@ import theme from '@/styles/theme';
 const GroupInfo = ({
   mapId,
   groupMembers,
-  refetchGorupMembers,
+  refetchGroupMembers,
 }: {
   mapId: number;
   groupMembers: GroupMember[];
-  refetchGorupMembers: () => void;
+  refetchGroupMembers: () => void;
 }) => {
   const [permission, setPermission] = useState('READ');
   const [selectedMemberId, setSelectedMemberId] = useState(0);
@@ -29,14 +31,31 @@ const GroupInfo = ({
   const [isPopup, setIsPopup] = useState(false);
   const user = useRecoilValue(userState);
 
+  const [isModal, setIsModal] = useState(false);
+  const [modalText, setModalText] = useState({
+    title: '',
+    description: '',
+    buttonText: '',
+    handleButtonClick: () => true,
+  });
+
   const fetchDeleteGroup = useMutation(
     ({ deleteMapId, member_id }: { deleteMapId: number; member_id: number }) =>
       deleteGroupMember(deleteMapId, member_id),
     {
       onSuccess: ({ code }: { code: string }) => {
-        // queryClient.invalidateQueries('GroupInfo');
         if (code === SUCCESS_DELETE_GROUP_MEMBER) {
-          alert('성공적으로 삭제되었습니다.');
+          setModalText({
+            title: '그룹이 삭제 되었습니다.',
+            description: '그룹 삭제 완료',
+            buttonText: '확인',
+            handleButtonClick: () => {
+              setIsModal(false);
+              refetchGroupMembers();
+              return true;
+            },
+          });
+          setIsModal(true);
         }
       },
       onError: (error: unknown) => {
@@ -55,9 +74,18 @@ const GroupInfo = ({
     }) => putGroupMember(putMapId, groupPutBody),
     {
       onSuccess: ({ code }: { code: string }) => {
-        // queryClient.invalidateQueries('GroupInfo');
         if (code === SUCCESS_PUT_GROUP_MEMBER) {
-          alert('성공적으로 수정되었습니다.');
+          setModalText({
+            title: '그룹이 수정 되었습니다.',
+            description: '그룹 수정 완료',
+            buttonText: '확인',
+            handleButtonClick: () => {
+              setIsModal(false);
+              refetchGroupMembers();
+              return true;
+            },
+          });
+          setIsModal(true);
         }
       },
       onError: (error: unknown) => {
@@ -92,7 +120,7 @@ const GroupInfo = ({
         deleteMapId: mapId,
         member_id: selectedMemberId,
       });
-    refetchGorupMembers();
+    refetchGroupMembers();
     setIsPopup(false);
   };
 
@@ -138,21 +166,32 @@ const GroupInfo = ({
                     </option>
                   </select>
                 )}
-
-                <button
-                  type="button"
-                  className="w-12 h-6 rounded-2xl bg-navy"
-                  onClick={() => handleButtonClick(member.member_id, 0)}
-                >
-                  <Text text="수정" size="xSmall" color={theme.color.black} />
-                </button>
-                <button
-                  type="button"
-                  className="w-12 h-6 rounded-2xl bg-lightRed"
-                  onClick={() => handleButtonClick(member.member_id, 1)}
-                >
-                  <Text text="삭제" size="xSmall" color={theme.color.black} />
-                </button>
+                {user && user.member_id !== member.member_id && (
+                  <>
+                    <button
+                      type="button"
+                      className="w-12 h-6 rounded-2xl bg-navy"
+                      onClick={() => handleButtonClick(member.member_id, 0)}
+                    >
+                      <Text
+                        text="수정"
+                        size="xSmall"
+                        color={theme.color.black}
+                      />
+                    </button>
+                    <button
+                      type="button"
+                      className="w-12 h-6 rounded-2xl bg-lightRed"
+                      onClick={() => handleButtonClick(member.member_id, 1)}
+                    >
+                      <Text
+                        text="삭제"
+                        size="xSmall"
+                        color={theme.color.black}
+                      />
+                    </button>
+                  </>
+                )}
               </div>
             ))}
           </>
@@ -171,6 +210,16 @@ const GroupInfo = ({
             color={theme.color.black}
           />
         </Popup>
+      )}
+      {isModal && (
+        <GlobalModal size="xSmall" handleCancelClick={() => setIsModal(false)}>
+          <ModalContent
+            title={modalText.title}
+            description={modalText.description}
+            buttonText={modalText.buttonText}
+            handleButtonClick={modalText.handleButtonClick}
+          />
+        </GlobalModal>
       )}
     </>
   );

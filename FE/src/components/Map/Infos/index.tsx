@@ -17,10 +17,10 @@ import { CategorizedPlaces, MapUserType, PlaceType } from '@/types/map';
 
 interface InfosProps {
   infoData: CategorizedPlaces[];
-  user: MapUserType;
+  userProfile: MapUserType;
 }
 
-const Infos = ({ infoData, user }: InfosProps) => {
+const Infos = ({ infoData, userProfile }: InfosProps) => {
   const [isOpenGlobalModal, setIsOpenGlobalModal] = useState(false);
   const [isOpenUpdateModal, setIsOpenUpdateModal] = useState(false);
 
@@ -105,7 +105,7 @@ const Infos = ({ infoData, user }: InfosProps) => {
                     text={place.address}
                     color={theme.color.gray}
                   />
-                  <UserProfile user={user} />
+                  <UserProfile ususerProfileer={userProfile} />
                 </div>
               </Card>
             ))

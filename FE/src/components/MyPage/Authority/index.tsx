@@ -11,11 +11,10 @@ import theme from '@/styles/theme';
 
 interface AuthorityProps {
   mapId: number;
-  handleCancelClick: () => void;
 }
 
-const Authority = ({ mapId, handleCancelClick }: AuthorityProps) => {
-  const { data: groupMembers, refetch: refetchGorupMembers } = useQuery(
+const Authority = ({ mapId }: AuthorityProps) => {
+  const { data: groupMembers, refetch: refetchGroupMembers } = useQuery(
     ['GroupInfo'],
     () => {
       if (mapId) {
@@ -44,13 +43,13 @@ const Authority = ({ mapId, handleCancelClick }: AuthorityProps) => {
         <GroupInfo
           mapId={mapId}
           groupMembers={groupMembers.data}
-          refetchGorupMembers={refetchGorupMembers}
+          refetchGroupMembers={refetchGroupMembers}
         />
       )}
       {groupMembers && (
         <SearchForm
           mapId={mapId}
-          handleCancelClick={handleCancelClick}
+          refetchGroupMembers={refetchGroupMembers}
           groupMembers={groupMembers.data.map(
             (member: GroupMember) => member.member_nickname
           )}
