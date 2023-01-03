@@ -4,7 +4,9 @@ import React, { useEffect, useState } from 'react';
 import { postGroupMember } from '@/apis/group';
 import { findNickName } from '@/apis/user';
 import Button from '@/components/common/Button';
+import GlobalModal from '@/components/common/GlobalModal';
 import Text from '@/components/common/Text';
+import ModalContent from '@/components/ModalContent';
 import {
   SUCCESS_GET_NICKNAMES,
   SUCCESS_POST_GROUP_MEMBER,
@@ -16,7 +18,7 @@ import { GroupPostParams } from '@/types/group';
 
 interface SearchFormProps {
   mapId: number;
-  handleCancelClick: () => void;
+  refetchGroupMembers: () => boolean;
   groupMembers: string[];
 }
 
@@ -28,7 +30,7 @@ interface AuthorityResponse {
 
 const SearchForm = ({
   mapId,
-  handleCancelClick,
+  refetchGroupMembers,
   groupMembers,
 }: SearchFormProps) => {
   const [userNickNames, setUserNickNames] = useState<AuthorityResponse[]>([]);
@@ -37,6 +39,14 @@ const SearchForm = ({
   const debouncedValue = UseDebounce(searchName, 500);
 
   const [selectedIndex, setSelectedIndex] = useState(0);
+
+  const [isModal, setIsModal] = useState(false);
+  const [modalText, setModalText] = useState({
+    title: '',
+    description: '',
+    buttonText: '',
+    handleButtonClick: () => true,
+  });
 
   const fetchPostGroup = useMutation(
     ({
@@ -50,7 +60,19 @@ const SearchForm = ({
       onSuccess: ({ code }: { code: string }) => {
         if (code === SUCCESS_POST_GROUP_MEMBER) {
           // 팝업닫기.
-          alert('성공적으로 추가되었습니다.');
+          setModalText({
+            title: '그룹이 등록 되었습니다.',
+            description: '그룹 등록 완료',
+            buttonText: '확인',
+            handleButtonClick: () => {
+              setIsModal(false);
+              setSearchName('');
+              setSelectedIndex(0);
+              refetchGroupMembers();
+              return true;
+            },
+          });
+          setIsModal(true);
         }
       },
       onError: (error: unknown) => {
@@ -101,7 +123,19 @@ const SearchForm = ({
   };
 
   const handleSubmit = () => {
-    if (userNickNames[selectedIndex].member_id === undefined) return;
+    if (userNickNames[selectedIndex] === undefined) {
+      setModalText({
+        title: '선택된 사용자가 없습니다.',
+        description: '',
+        buttonText: '다시시도',
+        handleButtonClick: () => {
+          setIsModal(false);
+          return true;
+        },
+      });
+      setIsModal(true);
+      return;
+    }
 
     const newGroup = {
       member_id: userNickNames[selectedIndex].member_id,
@@ -109,7 +143,6 @@ const SearchForm = ({
     };
 
     fetchPostGroup.mutate({ postMapId: mapId, groupPostBody: newGroup });
-    handleCancelClick();
   };
 
   useEffect(() => {
@@ -117,80 +150,98 @@ const SearchForm = ({
       const response = await findNickName(debouncedValue);
 
       if (response.code === SUCCESS_GET_NICKNAMES) {
+        // 이미 그룹에 등록된 유저들을 필터하기
         const filteredMembers = response.data.filter(
           (v: AuthorityResponse) => !groupMembers.includes(v.nickname)
         );
 
         setUserNickNames(filteredMembers);
+        if (filteredMembers[0]) {
+          setSearchName(filteredMembers[0].nickname);
+        }
         setSelectedIndex(0);
       }
     })();
   }, [debouncedValue, groupMembers, setUserNickNames]);
 
   return (
-    <form
-      aria-hidden="true"
-      className="h-full flex flex-col justify-between items-center gap-4 p-6"
-      onKeyDown={e => {
-        if (e.key === 'Enter') {
-          e.preventDefault();
-        }
-        return true;
-      }}
-    >
-      <input
-        type="input"
-        className="w-80 h-14 px-10 rounded-2xl text-gray border-[1px] border-solid border-black"
-        placeholder="Search by nickname"
-        value={searchName}
-        onKeyUp={handleKeyup}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          handleOnChangeNickName(e)
-        }
-      />
-      <div className="w-[22rem] h-[11rem] px-4 relative rounded-2xl overflow-hidden z-[1000] bg-white border-[1px] border-solid border-black">
-        <ul>
-          {userNickNames.length > 0 ? (
-            userNickNames.map((user: AuthorityResponse, index) => (
-              <li
-                aria-hidden="true"
-                key={user.member_id}
-                className={`my-3 py-[0.2rem] px-2 ${
-                  index === selectedIndex ? 'text-white bg-navy' : 'text-black'
-                } hover:cursor-pointer hover:underline`}
-                data-id={index}
-                onClick={handleItemClick}
-              >
-                {user.nickname}
-              </li>
-            ))
-          ) : (
-            <div className="p-8">No Data...</div>
-          )}
-        </ul>
-      </div>
-      <select
-        className="w-40 rounded-2xl py-2 px-4 border-[1px] border-solid border-black cursor-pointer"
-        onChange={handleSelectChange}
+    <>
+      <form
+        aria-hidden="true"
+        className="h-full flex flex-col justify-between items-center gap-4 p-6"
+        onKeyDown={e => {
+          if (e.key === 'Enter') {
+            e.preventDefault();
+          }
+          return true;
+        }}
       >
-        <option value="READ">READ</option>
-        <option value="MAINTAIN">MAINTAIN</option>
-      </select>
-      <div>
-        <Button
-          type="submit"
-          size="xRegular"
-          color={theme.color.clearOrange}
-          onClick={handleSubmit}
+        <input
+          type="input"
+          className="w-80 h-14 px-10 rounded-2xl text-gray border-[1px] border-solid border-black"
+          placeholder="Search by nickname"
+          value={searchName}
+          onKeyUp={handleKeyup}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            handleOnChangeNickName(e)
+          }
+        />
+        <div className="w-[22rem] h-[11rem] px-4 relative rounded-2xl overflow-hidden z-[1000] bg-white border-[1px] border-solid border-black">
+          <ul>
+            {userNickNames.length > 0 ? (
+              userNickNames.map((user: AuthorityResponse, index) => (
+                <li
+                  aria-hidden="true"
+                  key={user.member_id}
+                  className={`my-3 py-[0.2rem] px-2 ${
+                    index === selectedIndex
+                      ? 'text-white bg-navy'
+                      : 'text-black'
+                  } hover:cursor-pointer hover:underline`}
+                  data-id={index}
+                  onClick={handleItemClick}
+                >
+                  {user.nickname}
+                </li>
+              ))
+            ) : (
+              <div className="p-8">No Data...</div>
+            )}
+          </ul>
+        </div>
+        <select
+          className="w-40 rounded-2xl py-2 px-4 border-[1px] border-solid border-black cursor-pointer"
+          onChange={handleSelectChange}
         >
-          <Text
-            text="ADD MEMBER"
-            size="xRegularFill"
-            color={theme.color.white}
+          <option value="READ">READ</option>
+          <option value="MAINTAIN">MAINTAIN</option>
+        </select>
+        <div>
+          <Button
+            type="submit"
+            size="xRegular"
+            color={theme.color.clearOrange}
+            onClick={handleSubmit}
+          >
+            <Text
+              text="ADD MEMBER"
+              size="xRegularFill"
+              color={theme.color.white}
+            />
+          </Button>
+        </div>
+      </form>
+      {isModal && (
+        <GlobalModal size="xSmall" handleCancelClick={() => setIsModal(false)}>
+          <ModalContent
+            title={modalText.title}
+            description={modalText.description}
+            buttonText={modalText.buttonText}
+            handleButtonClick={modalText.handleButtonClick}
           />
-        </Button>
-      </div>
-    </form>
+        </GlobalModal>
+      )}
+    </>
   );
 };
 

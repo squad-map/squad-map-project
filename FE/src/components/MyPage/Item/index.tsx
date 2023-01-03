@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useRecoilState, useRecoilValue } from 'recoil';
 
 import { Icons } from '@/assets/icons';
 import Button from '@/components/common/Button';
@@ -9,6 +10,7 @@ import Text from '@/components/common/Text';
 import Authority from '@/components/MyPage/Authority';
 import UserProfile from '@/components/UserProfile';
 import { IMyMap } from '@/interfaces/IMyMap';
+import { userState } from '@/recoil/atoms/user';
 import theme from '@/styles/theme';
 import { MapUserType } from '@/types/map';
 import { unicodeToEmoji } from '@/utils/util';
@@ -19,11 +21,12 @@ interface ItemProps {
 
 const Item = ({ item }: ItemProps) => {
   const [isOpenAuthorityModal, setIsOpenAuthorityModal] = useState(false);
-  const user: MapUserType = {
+  const userProfile: MapUserType = {
     host_id: item.host_id,
     host_nickname: item.host_nickname,
     host_profile_image: item.host_profile_image,
   };
+  const user = useRecoilValue(userState);
 
   return (
     <>
@@ -35,16 +38,18 @@ const Item = ({ item }: ItemProps) => {
             color={theme.color.darkGray}
           />
           <div className="flex items-center gap-4">
-            <Button
-              size="xSmall"
-              color={theme.color.navy}
-              onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-                e.preventDefault();
-                setIsOpenAuthorityModal(true);
-              }}
-            >
-              <Text text="그룹관리" size="small" color={theme.color.white} />
-            </Button>
+            {item.host_id === user?.member_id && (
+              <Button
+                size="xSmall"
+                color={theme.color.navy}
+                onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                  e.preventDefault();
+                  setIsOpenAuthorityModal(true);
+                }}
+              >
+                <Text text="그룹관리" size="small" color={theme.color.white} />
+              </Button>
+            )}
             <Link
               to={`/mypage/modify/${item.id}`}
               state={{
@@ -56,7 +61,7 @@ const Item = ({ item }: ItemProps) => {
             </Link>
           </div>
         </header>
-        <UserProfile user={user} />
+        <UserProfile userProfile={userProfile} />
         <footer className="flex justify-between">
           <Text
             text={`${item.places_count}개의장소 등록됨`}
@@ -73,10 +78,7 @@ const Item = ({ item }: ItemProps) => {
             setIsOpenAuthorityModal(false);
           }}
         >
-          <Authority
-            mapId={item.id}
-            handleCancelClick={() => setIsOpenAuthorityModal(false)}
-          />
+          <Authority mapId={item.id} />
         </GlobalModal>
       )}
     </>
