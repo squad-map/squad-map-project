@@ -65,8 +65,10 @@ const Map = () => {
           refetchMap={refetchMap}
         />
         <Infos
+          mapHostId={mapData.data.host_id}
           infoData={mapData.data.categorized_places}
           userProfile={userProfile}
+          refetchMap={refetchMap}
         />
         <div className="absolute bottom-8 right-8 z-[999]">
           <Link to={`/map/search/${mapData.data.map_id}`}>
