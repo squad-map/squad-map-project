@@ -36,8 +36,8 @@ const CategoryModalInfo = ({
   const { map_id, emoji, title } = headerData;
 
   const [categoryFormData, setCategoryFormData] = useState({
-    name: '',
-    color: '',
+    category_name: '',
+    category_color: '',
   });
 
   const [isModal, setIsModal] = useState(false);
@@ -71,24 +71,24 @@ const CategoryModalInfo = ({
   });
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCategoryFormData({ ...categoryFormData, name: e.target.value });
+    setCategoryFormData({ ...categoryFormData, category_name: e.target.value });
   };
 
-  const handleColorClick = (color: string) => {
-    setCategoryFormData({ ...categoryFormData, color });
+  const handleColorClick = (category_color: string) => {
+    setCategoryFormData({ ...categoryFormData, category_color });
   };
 
   const isExistName = () => {
     const existName = mapCategories.map(
       (category: CategoryType) => category.category_name
     );
-    if (existName.includes(categoryFormData.name)) return true;
+    if (existName.includes(categoryFormData.category_name)) return true;
     return false;
   };
 
   const handleCreateCategory = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!categoryFormData.name || isExistName()) {
+    if (!categoryFormData.category_name || isExistName()) {
       setModalText({
         title: '이름을 확인해주세요.',
         description: '카테고리 등록 실패',
@@ -102,8 +102,8 @@ const CategoryModalInfo = ({
       return;
     }
     if (
-      !categoryFormData.color ||
-      isExistBgColor(mapCategories, categoryFormData.color)
+      !categoryFormData.category_color ||
+      isExistBgColor(mapCategories, categoryFormData.category_color)
     ) {
       setModalText({
         title: '색상을 확인해주세요.',
@@ -119,8 +119,8 @@ const CategoryModalInfo = ({
     }
 
     const newCategory = {
-      category_name: categoryFormData.name,
-      category_color: categoryFormData.color,
+      category_name: categoryFormData.category_name,
+      category_color: categoryFormData.category_color,
     };
 
     fetchPostCategory.mutate({ map_id, categoryRequestBody: newCategory });
@@ -158,7 +158,7 @@ const CategoryModalInfo = ({
                 color={theme.color.placeholder}
                 background={theme.color.inputBackground}
                 type="text"
-                value={categoryFormData.name}
+                value={categoryFormData.category_name}
                 onChange={handleNameChange}
               />
               {isExistName() && (
@@ -191,7 +191,8 @@ const CategoryModalInfo = ({
                 ))}
               </div>
               <span className="text-lightGray">
-                현재 선택된 카테고리 : {categoryFormData.color || '미선택'}
+                현재 선택된 카테고리 :{' '}
+                {categoryFormData.category_color || '미선택'}
               </span>
             </div>
 
