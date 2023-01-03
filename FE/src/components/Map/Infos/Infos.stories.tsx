@@ -14,8 +14,9 @@ const Template: ComponentStory<typeof Infos> = args => <Infos {...args} />;
 export const Default = Template.bind({});
 
 Default.args = {
+  mapHostId: 1,
   infoData: [categorized_places],
-  user: {
+  userProfile: {
     host_id: 1,
     host_nickname: 'Muffin',
     host_profile_image: 'https://avatars.githubusercontent.com/u/45479309?v=4',

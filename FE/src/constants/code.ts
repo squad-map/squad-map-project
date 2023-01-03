@@ -14,6 +14,9 @@ export const SUCCESS_GET_GROUP_MEMBERS = 'G-S03';
 export const SUCCESS_DELETE_GROUP_MEMBER = 'G-S04';
 
 export const SUCCESS_POST_PLACE = 'P-S01';
+export const SUCCESS_PUT_PLACE = 'P-S02';
+export const SUCCESS_GET_PLACE = 'P-S03';
+export const SUCCESS_DELETE_PLACE = 'P-S04';
 
 export const SUCCESS_POST_CATEGORY = 'C-S01';
 export const SUCCESS_GET_CATEGORIES = 'C-S03';
