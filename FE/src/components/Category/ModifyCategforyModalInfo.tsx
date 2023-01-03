@@ -9,6 +9,7 @@ import Input from '@/components/common/Input';
 import Text from '@/components/common/Text';
 import ModalContent from '@/components/ModalContent';
 import {
+  FAIL_DELETE_CATEGORY,
   SUCCESS_DELETE_CATEGORY,
   SUCCESS_PUT_CATEGORY,
 } from '@/constants/code';
@@ -21,6 +22,7 @@ interface ModifyCategoryModalInfoProps {
   mapCategories: CategoryType[];
   clickedCategory: CategoryType;
   setIsCategoryModal: React.Dispatch<React.SetStateAction<boolean>>;
+  refetchMap: () => void;
   refetchMapCategories: () => void;
 }
 
@@ -28,6 +30,7 @@ const ModifyCategoryModalInfo = ({
   mapCategories,
   clickedCategory,
   setIsCategoryModal,
+  refetchMap,
   refetchMapCategories,
 }: ModifyCategoryModalInfoProps) => {
   const { id } = useParams();
@@ -72,6 +75,7 @@ const ModifyCategoryModalInfo = ({
               setIsModal(false);
               setIsCategoryModal(false);
               refetchMapCategories();
+              refetchMap();
               return true;
             },
           });
@@ -100,6 +104,18 @@ const ModifyCategoryModalInfo = ({
               setIsModal(false);
               setIsCategoryModal(false);
               refetchMapCategories();
+              return true;
+            },
+          });
+          setIsModal(true);
+        } else if (code === FAIL_DELETE_CATEGORY) {
+          setModalText({
+            title: '카테고리가 삭제 불가',
+            description: '이미 사용중인 카테고리 입니다.',
+            buttonText: '확인',
+            handleButtonClick: () => {
+              setIsModal(false);
+              setIsCategoryModal(false);
               return true;
             },
           });
@@ -141,7 +157,7 @@ const ModifyCategoryModalInfo = ({
       <section className="h-full flex flex-col items-center p-16">
         <h1 className="text-2xl text-navy mb-8">카테고리 수정</h1>
         <form className="flex flex-col items-center">
-          <div className="w-60 flex flex-col gap-4 mb-8">
+          <div className="w-60 flex flex-col gap-4 mb-4">
             <span className="text-lightGray">카테고리명</span>
             <Input
               id="name"
@@ -179,9 +195,12 @@ const ModifyCategoryModalInfo = ({
               ))}
             </div>
           </div>
-          <span className="text-lightGray mb-4">
+          <span className="text-lightGray mb-2">
             현재 선택된 카테고리 : {categoryForm.category_color || '미선택'}
           </span>
+          <p className="flex items-center text-xs text-gray mb-4">
+            장소에서 사용되어 지는 카테고리는 삭제할 수 없습니다.
+          </p>
           <div className="flex gap-4">
             <Button
               type="button"
@@ -191,7 +210,11 @@ const ModifyCategoryModalInfo = ({
                 handleUpdateCategory(e)
               }
             >
-              <Text text="장소 수정" size="xSmall" color={theme.color.white} />
+              <Text
+                text="카테고리 수정"
+                size="xSmall"
+                color={theme.color.white}
+              />
             </Button>
             <Button
               type="button"
@@ -201,7 +224,11 @@ const ModifyCategoryModalInfo = ({
                 handleDeleteCategory(e)
               }
             >
-              <Text text="장소 삭제" size="xSmall" color={theme.color.white} />
+              <Text
+                text="카테고리 삭제"
+                size="xSmall"
+                color={theme.color.white}
+              />
             </Button>
           </div>
         </form>
