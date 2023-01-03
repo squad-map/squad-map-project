@@ -120,7 +120,7 @@ const CategoryModalInfo = ({
 
     const newCategory = {
       category_name: categoryFormData.name,
-      color: categoryFormData.color,
+      category_color: categoryFormData.color,
     };
 
     fetchPostCategory.mutate({ map_id, categoryRequestBody: newCategory });

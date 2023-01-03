@@ -6,6 +6,8 @@ export type CategoryType = {
   category_color: string;
 };
 
+export type CategoryRequestPatchBody = Omit<CategoryType, 'category_id'>;
+
 export type PlaceType = {
   place_id: number;
   place_name: string;
