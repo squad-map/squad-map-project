@@ -16,7 +16,7 @@ import { unicodeToEmoji } from '@/utils/util';
 
 const Map = () => {
   const { id } = useParams();
-  const [user, setUser] = useState<MapUserType>({
+  const [userProfile, setUserProfile] = useState<MapUserType>({
     host_id: 0,
     host_nickname: '',
     host_profile_image: '',
@@ -30,14 +30,14 @@ const Map = () => {
   });
 
   useEffect(() => {
-    if (mapData && !user) {
-      setUser({
+    if (mapData && !userProfile) {
+      setUserProfile({
         host_id: mapData.data.host_id,
         host_nickname: mapData.data.host_nickname,
         host_profile_image: mapData.data.host_profile_image,
       });
     }
-  }, [mapData, user]);
+  }, [mapData, userProfile]);
 
   if (mapData && mapData.code !== SUCCESS_GET_DETAIL_MAP)
     return <div>API Error</div>;
@@ -63,7 +63,10 @@ const Map = () => {
             ),
           }}
         />
-        <Infos infoData={mapData.data.categorized_places} user={user} />
+        <Infos
+          infoData={mapData.data.categorized_places}
+          userProfile={userProfile}
+        />
         <div className="absolute bottom-8 right-8 z-[999]">
           <Link to={`/map/search/${mapData.data.map_id}`}>
             <Button
