@@ -1,5 +1,5 @@
 import { CategoryPostParams } from '@/types/category';
-import { CategoryType } from '@/types/map';
+import { CategoryRequestPatchBody } from '@/types/map';
 import { getCookie } from '@/utils/cookie';
 
 export const getMapCategories = async (map_id: number) => {
@@ -57,16 +57,21 @@ export const postCategory = async ({
   }
 };
 
-export const patchCategory = async (
-  patchId: number,
-  categoryRequestBody: CategoryType
-) => {
+export const patchCategory = async ({
+  mapId,
+  patchId,
+  categoryRequestBody,
+}: {
+  mapId: number;
+  patchId: number;
+  categoryRequestBody: CategoryRequestPatchBody;
+}) => {
   const accessToken = getCookie('access_token');
   if (!accessToken) throw new Error('accesToken is undefined');
-  if (!patchId) throw new Error('id is undefined');
+  if (!patchId) throw new Error('patchId is undefined');
 
   const response = await fetch(
-    `${process.env.SQUAD_MAP_OAUTH_URL}/map/${patchId}/categories`,
+    `${process.env.SQUAD_MAP_OAUTH_URL}/map/${mapId}/categories/${patchId}`,
     {
       method: 'PUT',
       headers: {
@@ -86,11 +91,17 @@ export const patchCategory = async (
   }
 };
 
-export const deleteCategory = async (deleteId: number) => {
+export const deleteCategory = async ({
+  mapId,
+  deleteId,
+}: {
+  mapId: number;
+  deleteId: number;
+}) => {
   const accessToken = getCookie('access_token');
   if (!accessToken) throw new Error('accesToken is undefined');
   const response = await fetch(
-    `${process.env.SQUAD_MAP_OAUTH_URL}/map/${deleteId}/categories`,
+    `${process.env.SQUAD_MAP_OAUTH_URL}/map/${mapId}/categories/${deleteId}`,
     {
       method: 'DELETE',
       headers: {
