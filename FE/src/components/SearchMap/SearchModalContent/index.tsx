@@ -42,7 +42,7 @@ const SearchModalContent = ({ placeInfo }: SearchModalContentprops) => {
     },
   });
 
-  const handlleStoryChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleStoryChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setPlaceForm({ ...placeForm, story: e.target.value });
   };
 
@@ -77,7 +77,7 @@ const SearchModalContent = ({ placeInfo }: SearchModalContentprops) => {
           placeholder="당신의 이야기를 들려주세요."
           value={placeForm.story}
           className="w-full h-52 p-4 resize-none rounded-2xl bg-inputBackground"
-          onChange={handlleStoryChange}
+          onChange={handleStoryChange}
         />
         <div className="flex flex-col gap-4 mb-2">
           <span className="text-lightGray">카테고리 색상</span>
