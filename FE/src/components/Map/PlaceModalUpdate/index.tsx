@@ -34,7 +34,7 @@ const PlaceModalUpdate = ({
   return (
     <div className="h-[36.25rem] flex flex-col gap-4 py-8">
       <header className="flex flex-col items-center gap-4">
-        <h1 className="text-lg">{placeInfo.name}</h1>
+        <h1 className="text-lg">{placeInfo.place_name}</h1>
         <p className="text-md text-darkGray">{placeInfo.address}</p>
       </header>
       <form className="h-full flex flex-col justify-between items-center">

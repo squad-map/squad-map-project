@@ -37,6 +37,7 @@ const Infos = ({ infoData, userProfile }: InfosProps) => {
 
   const handleClickPlace = async (type: 'GET' | 'UPDATE', id: number) => {
     const data = await getPlaceDeatilInfo(id);
+
     setPlaceDetailInfo(data);
     if (type === 'GET') {
       setIsOpenGlobalModal(true);
@@ -105,7 +106,7 @@ const Infos = ({ infoData, userProfile }: InfosProps) => {
                     text={place.address}
                     color={theme.color.gray}
                   />
-                  <UserProfile ususerProfileer={userProfile} />
+                  <UserProfile userProfile={userProfile} />
                 </div>
               </Card>
             ))

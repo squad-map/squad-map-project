@@ -11,7 +11,7 @@ const ModalContent = ({
   buttonText,
   handleButtonClick,
 }: ModalContentProps) => (
-  <div className="h-full flex flex-col justify-between items-center gap-8 py-16">
+  <div className="h-full flex flex-col justify-between items-center gap-8 pt-16 pb-8">
     <div className="flex flex-col items-center gap-8">
       <h1 className="text-xl font-bold">{title}</h1>
       {description && <span className="text-xs text-label">{description}</span>}
