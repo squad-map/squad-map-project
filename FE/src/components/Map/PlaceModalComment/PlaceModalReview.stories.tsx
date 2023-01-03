@@ -1,18 +1,18 @@
 import { action } from '@storybook/addon-actions';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-import PlaceModalReview from './index';
+import PlaceModalComment from './index';
 
 import GlobalModal from '@/components/common/GlobalModal';
 
 export default {
-  title: 'components/Map/PlaceModalReview',
-  component: PlaceModalReview,
-} as ComponentMeta<typeof PlaceModalReview>;
+  title: 'components/Map/PlaceModalComment',
+  component: PlaceModalComment,
+} as ComponentMeta<typeof PlaceModalComment>;
 
-const Template: ComponentStory<typeof PlaceModalReview> = args => (
+const Template: ComponentStory<typeof PlaceModalComment> = args => (
   <GlobalModal size="large" handleCancelClick={action('Cancel clicked')}>
-    <PlaceModalReview {...args} />
+    <PlaceModalComment {...args} />
   </GlobalModal>
 );
 
@@ -28,5 +28,6 @@ Default.args = {
     place_name: '양재천',
     place_id: 1,
     story: '양재천',
+    comments: {},
   },
 };
