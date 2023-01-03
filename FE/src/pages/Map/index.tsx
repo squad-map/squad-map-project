@@ -22,7 +22,7 @@ const Map = () => {
     host_profile_image: '',
   });
 
-  const { data: mapData } = useQuery(['Map'], () => {
+  const { data: mapData, refetch: refetchMap } = useQuery(['Map'], () => {
     if (id) {
       return getMapDetailInfo(+id);
     }
@@ -30,7 +30,7 @@ const Map = () => {
   });
 
   useEffect(() => {
-    if (mapData && !userProfile) {
+    if (mapData && !userProfile.host_id) {
       setUserProfile({
         host_id: mapData.data.host_id,
         host_nickname: mapData.data.host_nickname,
@@ -62,6 +62,7 @@ const Map = () => {
               (placeInfo: CategorizedPlaces) => placeInfo.category_info
             ),
           }}
+          refetchMap={refetchMap}
         />
         <Infos
           infoData={mapData.data.categorized_places}

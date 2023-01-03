@@ -14,7 +14,12 @@ import { SUCCESS_GET_CATEGORIES } from '@/constants/code';
 import theme from '@/styles/theme';
 import { CategoryType, MapHeaderType } from '@/types/map';
 
-const Header = ({ headerData }: { headerData: MapHeaderType }) => {
+interface HeaderProps {
+  headerData: MapHeaderType;
+  refetchMap: () => void;
+}
+
+const Header = ({ headerData, refetchMap }: HeaderProps) => {
   const [isCategoryModal, setIsCategoryModal] = useState(false);
   const [isModifyCategoryModal, setIsModifyCategoryModal] = useState(false);
   const [clickedCategory, setClickedCategory] = useState({
@@ -113,6 +118,7 @@ const Header = ({ headerData }: { headerData: MapHeaderType }) => {
               mapCategories={mapCategories.data}
               clickedCategory={clickedCategory}
               setIsCategoryModal={setIsCategoryModal}
+              refetchMap={refetchMap}
               refetchMapCategories={refetchMapCategories}
             />
           </GlobalModal>
