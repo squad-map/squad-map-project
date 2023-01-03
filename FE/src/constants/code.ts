@@ -24,3 +24,5 @@ export const SUCCESS_PUT_CATEGORY = 'C-S04';
 export const SUCCESS_DELETE_CATEGORY = 'C-S05';
 
 export const FAIL_DELETE_CATEGORY = 'C-F03';
+
+export const SUCCESS_POST_COMMENT = 'CM-S01';
