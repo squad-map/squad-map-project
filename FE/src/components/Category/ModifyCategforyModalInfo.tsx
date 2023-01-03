@@ -1,5 +1,6 @@
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 import { deleteCategory, patchCategory } from '@/apis/category';
 import Button from '@/components/common/Button';
@@ -7,9 +8,13 @@ import GlobalModal from '@/components/common/GlobalModal';
 import Input from '@/components/common/Input';
 import Text from '@/components/common/Text';
 import ModalContent from '@/components/ModalContent';
+import {
+  SUCCESS_DELETE_CATEGORY,
+  SUCCESS_PUT_CATEGORY,
+} from '@/constants/code';
 import { CategoryColors } from '@/constants/colors';
 import theme from '@/styles/theme';
-import { CategoryType } from '@/types/map';
+import { CategoryRequestPatchBody, CategoryType } from '@/types/map';
 import { checkDuplicateColor, isExistBgColor } from '@/utils/util';
 
 interface ModifyCategoryModalInfoProps {
@@ -25,6 +30,7 @@ const ModifyCategoryModalInfo = ({
   setIsCategoryModal,
   refetchMapCategories,
 }: ModifyCategoryModalInfoProps) => {
+  const { id } = useParams();
   const [categoryForm, setCategoryForm] = useState({
     category_id: clickedCategory.category_id,
     category_name: clickedCategory.category_name,
@@ -42,15 +48,22 @@ const ModifyCategoryModalInfo = ({
   const fetchPatchCategory = useMutation(
     ({
       paramId,
-      categoryrRequestBody,
+      categoryRequestBody,
     }: {
       paramId: number;
-      categoryrRequestBody: CategoryType;
-    }) => patchCategory(paramId, categoryrRequestBody),
+      categoryRequestBody: CategoryRequestPatchBody;
+    }) => {
+      if (id)
+        return patchCategory({
+          mapId: +id,
+          patchId: paramId,
+          categoryRequestBody,
+        });
+      return true;
+    },
     {
       onSuccess: ({ code }: { code: string }) => {
-        // TODO: patchCategory code 확인 필요
-        if (code === '') {
+        if (code === SUCCESS_PUT_CATEGORY) {
           setModalText({
             title: '카테고리가 수정되었습니다.',
             description: '카테고리 수정 완료',
@@ -72,11 +85,13 @@ const ModifyCategoryModalInfo = ({
   );
 
   const fetchDeleteCategory = useMutation(
-    (paramId: number) => deleteCategory(paramId),
+    (paramId: number) => {
+      if (id) return deleteCategory({ mapId: +id, deleteId: paramId });
+      return true;
+    },
     {
       onSuccess: ({ code }: { code: string }) => {
-        // TODO: deleteCategory code 확인 필요
-        if (code === '') {
+        if (code === SUCCESS_DELETE_CATEGORY) {
           setModalText({
             title: '카테고리가 삭제되었습니다.',
             description: '카테고리 삭제 완료',
@@ -100,14 +115,16 @@ const ModifyCategoryModalInfo = ({
   const handleUpdateCategory = (e: React.SyntheticEvent<HTMLButtonElement>) => {
     e.preventDefault();
     const newCategory = {
-      category_id: clickedCategory.category_id,
-      category_name: clickedCategory.category_name,
-      category_color: clickedCategory.category_color,
+      category_name: categoryForm.category_name,
+      category_color: categoryForm.category_color,
     };
-    fetchPatchCategory.mutate({
-      paramId: categoryForm.category_id,
-      categoryrRequestBody: newCategory,
-    });
+
+    if (id) {
+      fetchPatchCategory.mutate({
+        paramId: categoryForm.category_id,
+        categoryRequestBody: newCategory,
+      });
+    }
   };
 
   const handleDeleteCategory = (e: React.SyntheticEvent<HTMLButtonElement>) => {

@@ -17,4 +17,5 @@ export const SUCCESS_POST_PLACE = 'P-S01';
 
 export const SUCCESS_POST_CATEGORY = 'C-S01';
 export const SUCCESS_GET_CATEGORIES = 'C-S03';
-// export const SUCCESS_PUT_CATEGORY = 'C-S03';
+export const SUCCESS_PUT_CATEGORY = 'C-S04';
+export const SUCCESS_DELETE_CATEGORY = 'C-S05';
