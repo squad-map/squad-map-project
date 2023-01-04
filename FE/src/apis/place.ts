@@ -1,9 +1,9 @@
 import { PlacePostParams } from '@/types/place';
 import { getCookie } from '@/utils/cookie';
 
-export const getPlaceDeatilInfo = async (mapId: number, placeId: number) => {
+export const getPlaceDeatil = async (mapId: number, placeId: number) => {
   const accessToken = getCookie('access_token');
-  if (!accessToken) throw new Error('accesToken is undefined');
+  if (!accessToken) throw new Error('accessToken is undefined');
 
   const response = await fetch(
     `${process.env.SQUAD_MAP_OAUTH_URL}/map/${mapId}/places/${placeId}`,
@@ -15,41 +15,41 @@ export const getPlaceDeatilInfo = async (mapId: number, placeId: number) => {
       },
     }
   );
-  const mapData = await response.json();
+  const placeDetail = await response.json();
 
   try {
-    return mapData;
+    return placeDetail;
   } catch (err) {
-    throw new Error(`getPlaceDetailInfo get api fail err: ${err}`);
+    throw new Error(`getPlaceDetail api fail err: ${err}`);
   }
 };
 
 export const postPlace = async ({
-  map_id,
-  placeRequestBody,
+  mapId,
+  placePostParams,
 }: {
-  map_id: number;
-  placeRequestBody: PlacePostParams;
+  mapId: number;
+  placePostParams: PlacePostParams;
 }) => {
   const accessToken = getCookie('access_token');
-  if (!accessToken) throw new Error('accesToken is undefined');
+  if (!accessToken) throw new Error('accessToken is undefined');
 
   const response = await fetch(
-    `${process.env.SQUAD_MAP_OAUTH_URL}/map/${map_id}/places`,
+    `${process.env.SQUAD_MAP_OAUTH_URL}/map/${mapId}/places`,
     {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(placeRequestBody),
+      body: JSON.stringify(placePostParams),
     }
   );
 
-  const mapData = await response.json();
+  const place = await response.json();
 
   try {
-    return mapData;
+    return place;
   } catch (err) {
     throw new Error(`postPlace api fail err: ${err}`);
   }
@@ -58,14 +58,14 @@ export const postPlace = async ({
 export const patchPlace = async ({
   mapId,
   patchId,
-  placeRequestBody,
+  placePatchParams,
 }: {
   mapId: number;
   patchId: number;
-  placeRequestBody: { category_id: number; story: string };
+  placePatchParams: { category_id: number; story: string };
 }) => {
   const accessToken = getCookie('access_token');
-  if (!accessToken) throw new Error('accesToken is undefined');
+  if (!accessToken) throw new Error('accessToken is undefined');
   if (!patchId) throw new Error('patchId is undefined');
 
   const response = await fetch(
@@ -76,7 +76,7 @@ export const patchPlace = async ({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(placeRequestBody),
+      body: JSON.stringify(placePatchParams),
     }
   );
 
@@ -89,13 +89,13 @@ export const patchPlace = async ({
   }
 };
 
-export const deletePlace = async (map_id: number, place_id: number) => {
+export const deletePlace = async (mapId: number, placeId: number) => {
   const accessToken = getCookie('access_token');
-  if (!accessToken) throw new Error('accesToken is undefined');
-  if (!place_id) throw new Error('place_id is undefined');
+  if (!accessToken) throw new Error('accessToken is undefined');
+  if (!placeId) throw new Error('placeId is undefined');
 
   const response = await fetch(
-    `${process.env.SQUAD_MAP_OAUTH_URL}/map/${map_id}/places/${place_id}`,
+    `${process.env.SQUAD_MAP_OAUTH_URL}/map/${mapId}/places/${placeId}`,
     {
       method: 'DELETE',
       headers: {
@@ -105,10 +105,10 @@ export const deletePlace = async (map_id: number, place_id: number) => {
     }
   );
 
-  const placeData = await response.json();
+  const place = await response.json();
 
   try {
-    return placeData;
+    return place;
   } catch (err) {
     throw new Error(`deletePlace api fail err: ${err}`);
   }

@@ -1,19 +1,19 @@
 import { getCookie } from '@/utils/cookie';
 
 export const postComment = async ({
-  map_id,
-  place_id,
+  mapId,
+  placeId,
   content,
 }: {
-  map_id: number;
-  place_id: number;
+  mapId: number;
+  placeId: number;
   content: string;
 }) => {
   const accessToken = getCookie('access_token');
-  if (!accessToken) throw new Error('accesToken is undefined');
+  if (!accessToken) throw new Error('accessToken is undefined');
 
   const response = await fetch(
-    `${process.env.SQUAD_MAP_OAUTH_URL}/map/${map_id}/places/${place_id}/comments`,
+    `${process.env.SQUAD_MAP_OAUTH_URL}/map/${mapId}/places/${placeId}/comments`,
     {
       method: 'POST',
       headers: {
@@ -24,22 +24,22 @@ export const postComment = async ({
     }
   );
 
-  const commentData = await response.json();
+  const comment = await response.json();
 
   try {
-    return commentData;
+    return comment;
   } catch (err) {
     throw new Error(`postComment api fail err: ${err}`);
   }
 };
 
-export const deleteComment = async (comment_id: number) => {
+export const deleteComment = async (commentId: number) => {
   const accessToken = getCookie('access_token');
-  if (!accessToken) throw new Error('accesToken is undefined');
-  if (!comment_id) throw new Error('place_id is undefined');
+  if (!accessToken) throw new Error('accessToken is undefined');
+  if (!commentId) throw new Error('placeId is undefined');
 
   const response = await fetch(
-    `${process.env.SQUAD_MAP_OAUTH_URL}/comments/${comment_id}`,
+    `${process.env.SQUAD_MAP_OAUTH_URL}/comments/${commentId}`,
     {
       method: 'DELETE',
       headers: {
@@ -49,10 +49,10 @@ export const deleteComment = async (comment_id: number) => {
     }
   );
 
-  const commentData = await response.json();
+  const comment = await response.json();
 
   try {
-    return commentData;
+    return comment;
   } catch (err) {
     throw new Error(`deleteComment api fail err: ${err}`);
   }

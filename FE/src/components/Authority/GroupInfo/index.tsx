@@ -39,60 +39,47 @@ const GroupInfo = ({
     handleButtonClick: () => true,
   });
 
-  const fetchDeleteGroup = useMutation(
-    ({ deleteMapId, member_id }: { deleteMapId: number; member_id: number }) =>
-      deleteGroupMember(deleteMapId, member_id),
-    {
-      onSuccess: ({ code }: { code: string }) => {
-        if (code === SUCCESS_DELETE_GROUP_MEMBER) {
-          setModalText({
-            title: '그룹이 삭제 되었습니다.',
-            description: '그룹 삭제 완료',
-            buttonText: '확인',
-            handleButtonClick: () => {
-              setIsModal(false);
-              refetchGroupMembers();
-              return true;
-            },
-          });
-          setIsModal(true);
-        }
-      },
-      onError: (error: unknown) => {
-        throw new Error(`error is ${error}`);
-      },
-    }
-  );
+  const fetchDeleteGroup = useMutation(deleteGroupMember, {
+    onSuccess: ({ code }: { code: string }) => {
+      if (code === SUCCESS_DELETE_GROUP_MEMBER) {
+        setModalText({
+          title: '그룹이 삭제 되었습니다.',
+          description: '그룹 삭제 완료',
+          buttonText: '확인',
+          handleButtonClick: () => {
+            setIsModal(false);
+            refetchGroupMembers();
+            return true;
+          },
+        });
+        setIsModal(true);
+      }
+    },
+    onError: (error: unknown) => {
+      throw new Error(`error is ${error}`);
+    },
+  });
 
-  const fetchPutGroup = useMutation(
-    ({
-      putMapId,
-      groupPutBody,
-    }: {
-      putMapId: number;
-      groupPutBody: { member_id: number; permission_level: string };
-    }) => putGroupMember(putMapId, groupPutBody),
-    {
-      onSuccess: ({ code }: { code: string }) => {
-        if (code === SUCCESS_PUT_GROUP_MEMBER) {
-          setModalText({
-            title: '그룹이 수정 되었습니다.',
-            description: '그룹 수정 완료',
-            buttonText: '확인',
-            handleButtonClick: () => {
-              setIsModal(false);
-              refetchGroupMembers();
-              return true;
-            },
-          });
-          setIsModal(true);
-        }
-      },
-      onError: (error: unknown) => {
-        throw new Error(`error is ${error}`);
-      },
-    }
-  );
+  const fetchPutGroup = useMutation(putGroupMember, {
+    onSuccess: ({ code }: { code: string }) => {
+      if (code === SUCCESS_PUT_GROUP_MEMBER) {
+        setModalText({
+          title: '그룹이 수정 되었습니다.',
+          description: '그룹 수정 완료',
+          buttonText: '확인',
+          handleButtonClick: () => {
+            setIsModal(false);
+            refetchGroupMembers();
+            return true;
+          },
+        });
+        setIsModal(true);
+      }
+    },
+    onError: (error: unknown) => {
+      throw new Error(`error is ${error}`);
+    },
+  });
 
   const handleButtonClick = (memberId: number, flag: number) => {
     // flag: 0 : 수정, 1: 삭제
@@ -109,7 +96,7 @@ const GroupInfo = ({
     if (!selectedMemberId) return;
     if (buttonFlag === 0)
       fetchPutGroup.mutate({
-        putMapId: mapId,
+        mapId,
         groupPutBody: {
           member_id: selectedMemberId,
           permission_level: permission,
@@ -117,8 +104,8 @@ const GroupInfo = ({
       });
     else if (buttonFlag === 1)
       fetchDeleteGroup.mutate({
-        deleteMapId: mapId,
-        member_id: selectedMemberId,
+        mapId,
+        memberId: selectedMemberId,
       });
     refetchGroupMembers();
     setIsPopup(false);
