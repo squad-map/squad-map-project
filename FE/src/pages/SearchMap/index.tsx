@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
 
 import { getMapDetailInfo } from '@/apis/mypage';
 import KakaoMap from '@/components/KaKaoMap';
@@ -8,6 +7,7 @@ import Header from '@/components/Map/Header';
 import SearchPlace from '@/components/SearchMap/SearchPlace';
 import { SUCCESS_GET_DETAIL_MAP } from '@/constants/code';
 import { defaultCoords } from '@/constants/map';
+import { UseGetMapId } from '@/hooks/UseGetMapId';
 import { SearchPlaceType } from '@/interfaces/SearchPlace';
 import { CategorizedPlaces, PlaceType } from '@/types/map';
 import { unicodeToEmoji } from '@/utils/util';
@@ -15,21 +15,12 @@ import { unicodeToEmoji } from '@/utils/util';
 const { kakao } = window;
 
 const SearchMap = () => {
-  const { id } = useParams();
+  const mapId = UseGetMapId();
   const [placeInfos, setPlaceInfos] = useState<PlaceType[]>([]);
 
-  const { data: mapData } = useQuery(
-    ['Map'],
-    () => {
-      if (id) {
-        return getMapDetailInfo(+id);
-      }
-      return true;
-    },
-    {
-      staleTime: 5 * 60 * 1000, // 5분
-    }
-  );
+  const { data: mapData } = useQuery(['Map'], () => getMapDetailInfo(mapId), {
+    staleTime: 5 * 60 * 1000, // 5분
+  });
 
   const placesSearchCallBack = (data: SearchPlaceType[], status: string) => {
     if (status === kakao.maps.services.Status.OK) {
@@ -67,7 +58,7 @@ const SearchMap = () => {
         <KakaoMap placeInfos={placeInfos}>
           <Header
             headerData={{
-              map_id: Number(id),
+              map_id: mapId,
               emoji: `${unicodeToEmoji(mapData.data.map_emoji)}`,
               title: mapData.data.map_name,
               category_info: mapData.data.categorized_places.map(

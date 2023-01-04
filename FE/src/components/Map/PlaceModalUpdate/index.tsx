@@ -1,6 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
 
 import { patchPlace } from '@/apis/place';
 import Button from '@/components/common/Button';
@@ -8,6 +7,7 @@ import GlobalModal from '@/components/common/GlobalModal';
 import Text from '@/components/common/Text';
 import ModalContent from '@/components/ModalContent';
 import { SUCCESS_PUT_PLACE } from '@/constants/code';
+import { UseGetMapId } from '@/hooks/UseGetMapId';
 import { PlaceDetail } from '@/interfaces/Place';
 import theme from '@/styles/theme';
 import { CategoryType } from '@/types/map';
@@ -29,7 +29,7 @@ const PlaceModalUpdate = ({
     (category: CategoryType) => category.category_id === placeInfo.category_id
   ) as CategoryType;
 
-  const { id } = useParams();
+  const mapId = UseGetMapId();
   const [updateForm, setUpdateForm] = useState({
     id: 0,
     story: placeInfo.story,
@@ -91,13 +91,12 @@ const PlaceModalUpdate = ({
       category_id: updateForm.category_id,
       story: updateForm.story,
     };
-    if (id) {
-      fetchPatchPlace.mutate({
-        mapId: +id,
-        patchId: placeInfo.place_id,
-        placePatchParams: newPlace,
-      });
-    }
+
+    fetchPatchPlace.mutate({
+      mapId,
+      patchId: placeInfo.place_id,
+      placePatchParams: newPlace,
+    });
   };
 
   const handleColorClick = (category_id: number, category_color: string) => {

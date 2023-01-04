@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { getMapDetailInfo } from '@/apis/mypage';
 import { Icons } from '@/assets/icons';
@@ -10,24 +10,22 @@ import KakaoMap from '@/components/KaKaoMap';
 import Header from '@/components/Map/Header';
 import Infos from '@/components/Map/Infos';
 import { SUCCESS_GET_DETAIL_MAP } from '@/constants/code';
+import { UseGetMapId } from '@/hooks/UseGetMapId';
 import theme from '@/styles/theme';
 import { CategorizedPlaces, MapUserType, PlaceType } from '@/types/map';
 import { unicodeToEmoji } from '@/utils/util';
 
 const Map = () => {
-  const { id } = useParams();
+  const mapId = UseGetMapId();
   const [userProfile, setUserProfile] = useState<MapUserType>({
     host_id: 0,
     host_nickname: '',
     host_profile_image: '',
   });
 
-  const { data: mapData, refetch: refetchMap } = useQuery(['Map'], () => {
-    if (id) {
-      return getMapDetailInfo(+id);
-    }
-    return true;
-  });
+  const { data: mapData, refetch: refetchMap } = useQuery(['Map'], () =>
+    getMapDetailInfo(mapId)
+  );
 
   useEffect(() => {
     if (mapData && !userProfile.host_id) {
