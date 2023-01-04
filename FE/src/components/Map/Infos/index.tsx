@@ -7,7 +7,7 @@ import PlaceModalComment from '../PlaceModalComment';
 import PlaceModalUpdate from '../PlaceModalUpdate';
 
 import { getMapCategories } from '@/apis/category';
-import { deletePlace, getPlaceDeatilInfo } from '@/apis/place';
+import { deletePlace, getPlaceDeatil } from '@/apis/place';
 import { Icons } from '@/assets/icons';
 import Button from '@/components/common/Button';
 import Card from '@/components/common/Card';
@@ -73,8 +73,8 @@ const Infos = ({
   });
 
   const fetchDeletePlace = useMutation(
-    (place_id: number) => {
-      if (id) return deletePlace(+id, place_id);
+    (placeId: number) => {
+      if (id) return deletePlace(+id, placeId);
       return true;
     },
     {
@@ -101,7 +101,7 @@ const Infos = ({
 
   const handleClickPlace = async (type: 'GET' | 'UPDATE', placeId: number) => {
     if (id) {
-      const response = await getPlaceDeatilInfo(+id, placeId);
+      const response = await getPlaceDeatil(+id, placeId);
 
       if (response.code === SUCCESS_GET_PLACE) {
         setPlaceDetailInfo(response.data);
@@ -114,14 +114,14 @@ const Infos = ({
     }
   };
 
-  const handleDeletePlace = (place_id: number) => {
+  const handleDeletePlace = (placeId: number) => {
     setModalText({
       title: '지도를 삭제하시겠습니까?.',
       description: '삭제한 지도는 복구가 불가능합니다.',
       buttonText: '확인',
       handleButtonClick: () => {
         setIsModal(false);
-        fetchDeletePlace.mutate(place_id);
+        fetchDeletePlace.mutate(placeId);
         return true;
       },
     });

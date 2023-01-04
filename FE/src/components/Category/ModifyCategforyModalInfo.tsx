@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { deleteCategory, patchCategory } from '@/apis/category';
+import { deleteCategory, putCategory } from '@/apis/category';
 import Button from '@/components/common/Button';
 import GlobalModal from '@/components/common/GlobalModal';
 import Input from '@/components/common/Input';
@@ -15,14 +15,15 @@ import {
 } from '@/constants/code';
 import { CategoryColors } from '@/constants/colors';
 import theme from '@/styles/theme';
-import { CategoryRequestPatchBody, CategoryType } from '@/types/map';
+import { CategoryPutParams } from '@/types/category';
+import { CategoryType } from '@/types/map';
 import { checkDuplicateColor, isExistBgColor } from '@/utils/util';
 
 interface ModifyCategoryModalInfoProps {
   mapCategories: CategoryType[];
   clickedCategory: CategoryType;
   setIsCategoryModal: React.Dispatch<React.SetStateAction<boolean>>;
-  refetchMap: () => void;
+  refetchMap?: () => void;
   refetchMapCategories: () => void;
 }
 
@@ -48,19 +49,19 @@ const ModifyCategoryModalInfo = ({
     handleButtonClick: () => true,
   });
 
-  const fetchPatchCategory = useMutation(
+  const fetchPutCategory = useMutation(
     ({
       paramId,
-      categoryRequestBody,
+      categoryPutParams,
     }: {
       paramId: number;
-      categoryRequestBody: CategoryRequestPatchBody;
+      categoryPutParams: CategoryPutParams;
     }) => {
       if (id)
-        return patchCategory({
+        return putCategory({
           mapId: +id,
           patchId: paramId,
-          categoryRequestBody,
+          categoryPutParams,
         });
       return true;
     },
@@ -75,7 +76,7 @@ const ModifyCategoryModalInfo = ({
               setIsModal(false);
               setIsCategoryModal(false);
               refetchMapCategories();
-              refetchMap();
+              if (refetchMap) refetchMap();
               return true;
             },
           });
@@ -136,9 +137,9 @@ const ModifyCategoryModalInfo = ({
     };
 
     if (id) {
-      fetchPatchCategory.mutate({
+      fetchPutCategory.mutate({
         paramId: categoryForm.category_id,
-        categoryRequestBody: newCategory,
+        categoryPutParams: newCategory,
       });
     }
   };
