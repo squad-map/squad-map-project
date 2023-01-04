@@ -11,7 +11,7 @@ import Text from '@/components/common/Text';
 import GridCards from '@/components/GridCards';
 import Item from '@/components/MyPage/Item';
 import { SUCCESS_MAPS_GROUP_DATA } from '@/constants/code';
-import { IMyMap } from '@/interfaces/IMyMap';
+import { MyMapType } from '@/interfaces/MyMap';
 import theme from '@/styles/theme';
 
 const MyPage = () => {
@@ -31,7 +31,7 @@ const MyPage = () => {
         {myPageData && myPageData.data.content.length > 0 ? (
           <div className="mb-12">
             <GridCards size="large">
-              {myPageData.data.content.map((item: IMyMap) => (
+              {myPageData.data.content.map((item: MyMapType) => (
                 <Link to={`/map/${item.id}`} key={item.id}>
                   <Card size="large">
                     <Item item={item} />

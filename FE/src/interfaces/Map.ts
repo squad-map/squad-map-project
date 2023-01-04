@@ -1,4 +1,4 @@
-export interface IMap {
+export interface MapType {
   id: number;
   host_id: number;
   host_nickname: string;

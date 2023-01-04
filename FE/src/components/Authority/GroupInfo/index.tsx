@@ -11,7 +11,7 @@ import {
   SUCCESS_DELETE_GROUP_MEMBER,
   SUCCESS_PUT_GROUP_MEMBER,
 } from '@/constants/code';
-import { GroupMember } from '@/interfaces/group';
+import { GroupMemberType } from '@/interfaces/group';
 import { userState } from '@/recoil/atoms/user';
 import theme from '@/styles/theme';
 
@@ -21,7 +21,7 @@ const GroupInfo = ({
   refetchGroupMembers,
 }: {
   mapId: number;
-  groupMembers: GroupMember[];
+  groupMembers: GroupMemberType[];
   refetchGroupMembers: () => void;
 }) => {
   const [permission, setPermission] = useState('READ');
@@ -116,7 +116,7 @@ const GroupInfo = ({
       <article className="h-40 my-4 overflow-y-auto">
         {groupMembers ? (
           <>
-            {groupMembers.map((member: GroupMember) => (
+            {groupMembers.map((member: GroupMemberType) => (
               <div
                 key={member.member_id}
                 className="flex items-center gap-4 mb-2"

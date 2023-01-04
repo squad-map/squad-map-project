@@ -16,7 +16,7 @@ import GridCards from '@/components/GridCards';
 import Item from '@/components/Item';
 // import useDebounce from '@/hooks/UseDebounce';
 import { SUCCESS_MAPS_DATA, SUCCESS_MAPS_GROUP_DATA } from '@/constants/code';
-import { IMap } from '@/interfaces/IMap';
+import { IMap } from '@/interfaces/Map';
 import { userState } from '@/recoil/atoms/user';
 import theme from '@/styles/theme';
 

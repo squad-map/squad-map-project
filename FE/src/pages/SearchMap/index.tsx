@@ -8,7 +8,7 @@ import Header from '@/components/Map/Header';
 import SearchPlace from '@/components/SearchMap/SearchPlace';
 import { SUCCESS_GET_DETAIL_MAP } from '@/constants/code';
 import { defaultCoords } from '@/constants/map';
-import { ISearchPlace } from '@/interfaces/ISearchPlace';
+import { SearchPlaceType } from '@/interfaces/SearchPlace';
 import { CategorizedPlaces, PlaceType } from '@/types/map';
 import { unicodeToEmoji } from '@/utils/util';
 
@@ -31,9 +31,9 @@ const SearchMap = () => {
     }
   );
 
-  const placesSearchCallBack = (data: ISearchPlace[], status: string) => {
+  const placesSearchCallBack = (data: SearchPlaceType[], status: string) => {
     if (status === kakao.maps.services.Status.OK) {
-      const searchPlaceInfos = data.map((place: ISearchPlace) => ({
+      const searchPlaceInfos = data.map((place: SearchPlaceType) => ({
         place_id: +place.id,
         place_name: place.place_name,
         address: place.address_name,
