@@ -72,7 +72,7 @@ const Infos = ({
     return true;
   });
 
-  const fetchDeleteMypage = useMutation(
+  const fetchDeletePlace = useMutation(
     (place_id: number) => {
       if (id) return deletePlace(+id, place_id);
       return true;
@@ -121,7 +121,7 @@ const Infos = ({
       buttonText: '확인',
       handleButtonClick: () => {
         setIsModal(false);
-        fetchDeleteMypage.mutate(place_id);
+        fetchDeletePlace.mutate(place_id);
         return true;
       },
     });
@@ -215,7 +215,10 @@ const Infos = ({
             size="large"
             handleCancelClick={() => setIsOpenGlobalModal(false)}
           >
-            <PlaceModalComment placeInfo={placeDetailInfo} />
+            <PlaceModalComment
+              mapHostId={mapHostId}
+              placeInfo={placeDetailInfo}
+            />
           </GlobalModal>
         )}
         {isOpenUpdateModal && (
