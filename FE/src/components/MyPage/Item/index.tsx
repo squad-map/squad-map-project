@@ -9,14 +9,14 @@ import Icon from '@/components/common/Icon';
 import Text from '@/components/common/Text';
 import Authority from '@/components/MyPage/Authority';
 import UserProfile from '@/components/UserProfile';
-import { IMyMap } from '@/interfaces/IMyMap';
+import { MyMapType } from '@/interfaces/MyMap';
 import { userState } from '@/recoil/atoms/user';
 import theme from '@/styles/theme';
 import { MapUserType } from '@/types/map';
 import { unicodeToEmoji } from '@/utils/util';
 
 interface ItemProps {
-  item: IMyMap;
+  item: MyMapType;
 }
 
 const Item = ({ item }: ItemProps) => {

@@ -6,7 +6,7 @@ import SearchForm from '../../Authority/SearchForm';
 import { getGroupMembers } from '@/apis/group';
 import Text from '@/components/common/Text';
 import { SUCCESS_GET_GROUP_MEMBERS } from '@/constants/code';
-import { GroupMember } from '@/interfaces/group';
+import { GroupMemberType } from '@/interfaces/group';
 import theme from '@/styles/theme';
 
 interface AuthorityProps {
@@ -51,7 +51,7 @@ const Authority = ({ mapId }: AuthorityProps) => {
           mapId={mapId}
           refetchGroupMembers={refetchGroupMembers}
           groupMembers={groupMembers.data.map(
-            (member: GroupMember) => member.member_nickname
+            (member: GroupMemberType) => member.member_nickname
           )}
         />
       )}

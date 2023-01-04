@@ -1,10 +1,10 @@
 import Text from '@/components/common/Text';
-import { IMap } from '@/interfaces/IMap';
+import { MapType } from '@/interfaces/Map';
 import theme from '@/styles/theme';
 import { unicodeToEmoji } from '@/utils/util';
 
 interface ItemProps {
-  item: IMap;
+  item: MapType;
 }
 
 const Item = ({ item }: ItemProps) => (

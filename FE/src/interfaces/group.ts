@@ -1,4 +1,4 @@
-export interface GroupMember {
+export interface GroupMemberType {
   level: string;
   member_id: number;
   member_nickname: string;

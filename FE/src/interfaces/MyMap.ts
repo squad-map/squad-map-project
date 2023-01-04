@@ -1,4 +1,4 @@
-export interface IMyMap {
+export interface MyMapType {
   id: number;
   host_id: number;
   host_nickname: string;
