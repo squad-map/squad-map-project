@@ -62,7 +62,7 @@ const SearchModalContent = ({ placeInfo }: SearchModalContentprops) => {
       category_id: placeForm.category_id,
     };
 
-    fetchPostPlace.mutate({ map_id: id, placeRequestBody: newPlace });
+    fetchPostPlace.mutate({ mapId: id, placePostParams: newPlace });
   };
 
   if (mapCategory && mapCategory.code !== SUCCESS_GET_CATEGORIES)

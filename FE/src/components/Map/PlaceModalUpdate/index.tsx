@@ -95,7 +95,7 @@ const PlaceModalUpdate = ({
       fetchPatchPlace.mutate({
         mapId: +id,
         patchId: placeInfo.place_id,
-        placeRequestBody: newPlace,
+        placePatchParams: newPlace,
       });
     }
   };

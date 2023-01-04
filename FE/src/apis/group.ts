@@ -1,4 +1,4 @@
-import { GroupPostParams } from '@/types/group';
+import { GroupPostParams, GroupPutParams } from '@/types/group';
 import { getCookie } from '@/utils/cookie';
 
 export const getGroupMembers = async (mapId: number) => {
@@ -55,7 +55,7 @@ export const postGroupMember = async (
 
 export const putGroupMember = async (
   mapId: number,
-  groupPutBody: { member_id: number; permission_level: string }
+  groupPutBody: GroupPutParams
 ) => {
   const accessToken = getCookie('access_token');
   if (!accessToken) throw new Error('accessToken is undefined');
@@ -72,21 +72,21 @@ export const putGroupMember = async (
     }
   );
 
-  const data = await response.json();
+  const groupMember = await response.json();
 
   try {
-    return data;
+    return groupMember;
   } catch (err) {
     throw new Error(`putGroupMember api fail err: ${err}`);
   }
 };
 
-export const deleteGroupMember = async (mapId: number, member_id: number) => {
+export const deleteGroupMember = async (mapId: number, memberId: number) => {
   const accessToken = getCookie('access_token');
   if (!accessToken) throw new Error('accessToken is undefined');
 
   const response = await fetch(
-    `${process.env.SQUAD_MAP_OAUTH_URL}/map/${mapId}/groups/${member_id}`,
+    `${process.env.SQUAD_MAP_OAUTH_URL}/map/${mapId}/groups/${memberId}`,
     {
       method: 'DELETE',
       headers: {
@@ -96,10 +96,10 @@ export const deleteGroupMember = async (mapId: number, member_id: number) => {
     }
   );
 
-  const data = await response.json();
+  const groupMember = await response.json();
 
   try {
-    return data;
+    return groupMember;
   } catch (err) {
     throw new Error(`deleteGroupMember api fail err: ${err}`);
   }

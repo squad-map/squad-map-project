@@ -15,16 +15,16 @@ export const findNickName = async (nickname: string) => {
     }
   );
 
-  const nickNameData = await response.json();
+  const nickName = await response.json();
 
   try {
-    return nickNameData;
+    return nickName;
   } catch (err) {
-    throw new Error(`postNickName api fail err: ${err}`);
+    throw new Error(`findNickName api fail err: ${err}`);
   }
 };
 
-export const patchNickName = async (nickName: string) => {
+export const patchNickName = async (nickname: string) => {
   const accessToken = getCookie('access_token');
   if (!accessToken) throw new Error('accessToken is undefined');
 
@@ -34,7 +34,7 @@ export const patchNickName = async (nickName: string) => {
       Authorization: `Bearer ${accessToken}`,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ nickname: nickName }),
+    body: JSON.stringify({ nickname }),
   });
 
   const updatedData = await response.json();
@@ -42,6 +42,6 @@ export const patchNickName = async (nickName: string) => {
   try {
     return updatedData;
   } catch (err) {
-    throw new Error(`postNickName api fail err: ${err}`);
+    throw new Error(`patchNickName api fail err: ${err}`);
   }
 };

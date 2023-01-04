@@ -3,11 +3,11 @@ export const getMaps = async (lastMapId: number) => {
     `${process.env.SQUAD_MAP_OAUTH_URL}/map/public?lastMapId=${lastMapId}`
   );
 
-  const mapsData = await response.json();
+  const maps = await response.json();
 
   try {
-    return mapsData;
+    return maps;
   } catch (err) {
-    throw new Error(`getMypage get api fail err: ${err}`);
+    throw new Error(`getMypage api fail err: ${err}`);
   }
 };
