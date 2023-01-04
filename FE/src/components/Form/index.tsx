@@ -1,9 +1,9 @@
 import styled from '@emotion/styled/macro';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { postMypage, patchMypage, deleteMypage } from '@/apis/mypage';
+import { postMypage, putMyPage, deleteMypage } from '@/apis/mypage';
 import Button from '@/components/common/Button';
 import GlobalModal from '@/components/common/GlobalModal';
 import Input from '@/components/common/Input';
@@ -16,12 +16,12 @@ import {
 } from '@/constants/code';
 import { flexbox } from '@/styles/mixin';
 import theme from '@/styles/theme';
-import { MypagePostParams, MypagePatchParams } from '@/types/mypage';
+import { MypagePutParams } from '@/types/mypage';
 import { emojiToUnicode } from '@/utils/util';
 
 interface FormProps {
   mapId?: string;
-  state?: MypagePatchParams;
+  state?: MypagePutParams;
   type: boolean;
 }
 
@@ -81,35 +81,26 @@ const Form = ({ mapId, state, type }: FormProps) => {
     },
   });
 
-  const fetchPatchMypage = useMutation(
-    ({
-      paramId,
-      mypageRequestBody,
-    }: {
-      paramId: number;
-      mypageRequestBody: MypagePostParams;
-    }) => patchMypage(paramId, mypageRequestBody),
-    {
-      onSuccess: ({ code }: { code: string }) => {
-        if (code === SUCCESS_PATCH_MAP) {
-          setModalText({
-            title: '지도가 성공적으로 수정되었습니다.',
-            description: '지도 수정 성공',
-            buttonText: '확인',
-            handleButtonClick: () => {
-              setIsModal(false);
-              navigate('/mypage');
-              return true;
-            },
-          });
-          setIsModal(true);
-        }
-      },
-      onError: (error: unknown) => {
-        throw new Error(`error is ${error}`);
-      },
-    }
-  );
+  const fetchPutMypage = useMutation(putMyPage, {
+    onSuccess: ({ code }: { code: string }) => {
+      if (code === SUCCESS_PATCH_MAP) {
+        setModalText({
+          title: '지도가 성공적으로 수정되었습니다.',
+          description: '지도 수정 성공',
+          buttonText: '확인',
+          handleButtonClick: () => {
+            setIsModal(false);
+            navigate('/mypage');
+            return true;
+          },
+        });
+        setIsModal(true);
+      }
+    },
+    onError: (error: unknown) => {
+      throw new Error(`error is ${error}`);
+    },
+  });
 
   const fetchDeleteMypage = useMutation(
     (paramId: number) => deleteMypage(paramId),
@@ -177,7 +168,7 @@ const Form = ({ mapId, state, type }: FormProps) => {
 
     if (paramId) {
       if (method === 'patch') {
-        fetchPatchMypage.mutate({ paramId, mypageRequestBody: newMypage });
+        fetchPutMypage.mutate({ paramId, mypagePutParams: newMypage });
       } else if (method === 'delete') {
         fetchDeleteMypage.mutate(paramId);
       }

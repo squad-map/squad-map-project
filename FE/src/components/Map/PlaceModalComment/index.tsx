@@ -23,7 +23,7 @@ interface PlaceModalComment {
 
 const PlaceModalComment = ({ mapHostId, placeInfo }: PlaceModalComment) => {
   // 기존 placeInfo 데이터에 이미 해당 장소에 대한 댓글들이 존재한다.
-  // 댓글을 작성하면 placeInfo 데이터도 업데이트 해야한다. -> 상위 컴포넌트 getPlaceDeatilInfo 함수 부분을 useMutation으로 수정후 refetch 함수를 전달받도록 수정하자.
+  // 댓글을 작성하면 placeInfo 데이터도 업데이트 해야한다. -> 상위 컴포넌트 getPlaceDeatil 함수 부분을 useMutation으로 수정후 refetch 함수를 전달받도록 수정하자.
   const { id } = useParams();
   const {
     place_id,
@@ -60,8 +60,8 @@ const PlaceModalComment = ({ mapHostId, placeInfo }: PlaceModalComment) => {
   });
 
   const fetchDeleteComment = useMutation(
-    (comment_id: number) => {
-      if (id) return deleteComment(comment_id);
+    (commentId: number) => {
+      if (id) return deleteComment(commentId);
       return true;
     },
     {
@@ -100,7 +100,11 @@ const PlaceModalComment = ({ mapHostId, placeInfo }: PlaceModalComment) => {
       return;
     }
     if (id) {
-      fetchPostComment.mutate({ map_id: +id, place_id, content: comment });
+      fetchPostComment.mutate({
+        mapId: +id,
+        placeId: place_id,
+        content: comment,
+      });
     }
   };
 
@@ -108,14 +112,14 @@ const PlaceModalComment = ({ mapHostId, placeInfo }: PlaceModalComment) => {
     setcomment(e.target.value);
   };
 
-  const handleDeleteComment = (comment_id: number) => {
+  const handleDeleteComment = (commentId: number) => {
     setModalText({
       title: '댓글을 삭제하시겠습니까?.',
       description: '삭제한 댓글은 복구가 불가능합니다.',
       buttonText: '확인',
       handleButtonClick: () => {
         setIsModal(false);
-        fetchDeleteComment.mutate(comment_id);
+        fetchDeleteComment.mutate(commentId);
         return true;
       },
     });

@@ -1,13 +1,12 @@
-import { CategoryPostParams } from '@/types/category';
-import { CategoryRequestPatchBody } from '@/types/map';
+import { CategoryPostParams, CategoryPutParams } from '@/types/category';
 import { getCookie } from '@/utils/cookie';
 
-export const getMapCategories = async (map_id: number) => {
+export const getMapCategories = async (mapId: number) => {
   const accessToken = getCookie('access_token');
-  if (!accessToken) throw new Error('accesToken is undefined');
+  if (!accessToken) throw new Error('accessToken is undefined');
 
   const response = await fetch(
-    `${process.env.SQUAD_MAP_OAUTH_URL}/map/${map_id}/categories`,
+    `${process.env.SQUAD_MAP_OAUTH_URL}/map/${mapId}/categories`,
     {
       method: 'GET',
       headers: {
@@ -17,24 +16,24 @@ export const getMapCategories = async (map_id: number) => {
     }
   );
 
-  const categoriesData = await response.json();
+  const categories = await response.json();
 
   try {
-    return categoriesData;
+    return categories;
   } catch (err) {
-    throw new Error(`getCategory api fail err: ${err}`);
+    throw new Error(`getMapCategories api fail err: ${err}`);
   }
 };
 
 export const postCategory = async ({
   map_id,
-  categoryRequestBody,
+  categoryPostParams,
 }: {
   map_id: number;
-  categoryRequestBody: CategoryPostParams;
+  categoryPostParams: CategoryPostParams;
 }) => {
   const accessToken = getCookie('access_token');
-  if (!accessToken) throw new Error('accesToken is undefined');
+  if (!accessToken) throw new Error('accessToken is undefined');
 
   const response = await fetch(
     `${process.env.SQUAD_MAP_OAUTH_URL}/map/${map_id}/categories`,
@@ -44,30 +43,30 @@ export const postCategory = async ({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(categoryRequestBody),
+      body: JSON.stringify(categoryPostParams),
     }
   );
 
-  const data = await response.json();
+  const category = await response.json();
 
   try {
-    return data;
+    return category;
   } catch (err) {
     throw new Error(`postCategry api fail err: ${err}`);
   }
 };
 
-export const patchCategory = async ({
+export const putCategory = async ({
   mapId,
   patchId,
-  categoryRequestBody,
+  categoryPutParams,
 }: {
   mapId: number;
   patchId: number;
-  categoryRequestBody: CategoryRequestPatchBody;
+  categoryPutParams: CategoryPutParams;
 }) => {
   const accessToken = getCookie('access_token');
-  if (!accessToken) throw new Error('accesToken is undefined');
+  if (!accessToken) throw new Error('accessToken is undefined');
   if (!patchId) throw new Error('patchId is undefined');
 
   const response = await fetch(
@@ -78,14 +77,14 @@ export const patchCategory = async ({
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(categoryRequestBody),
+      body: JSON.stringify(categoryPutParams),
     }
   );
 
-  const myMapData = await response.json();
+  const category = await response.json();
 
   try {
-    return myMapData;
+    return category;
   } catch (err) {
     throw new Error(`patchCategory api fail err: ${err}`);
   }
@@ -99,7 +98,7 @@ export const deleteCategory = async ({
   deleteId: number;
 }) => {
   const accessToken = getCookie('access_token');
-  if (!accessToken) throw new Error('accesToken is undefined');
+  if (!accessToken) throw new Error('accessToken is undefined');
   const response = await fetch(
     `${process.env.SQUAD_MAP_OAUTH_URL}/map/${mapId}/categories/${deleteId}`,
     {
@@ -110,10 +109,10 @@ export const deleteCategory = async ({
       },
     }
   );
-  const mypageData = await response.json();
+  const category = await response.json();
 
   try {
-    return mypageData;
+    return category;
   } catch (err) {
     throw new Error(`deleteCategory api fail err: ${err}`);
   }
