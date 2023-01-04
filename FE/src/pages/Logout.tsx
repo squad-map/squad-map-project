@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 
-import { LoadingSpinner } from '@/components/common/LoadingSpinner/LoadingSpinner.style';
+import LoadingSpinner from '@/components/common/LoadingSpinner';
 import { userState } from '@/recoil/atoms/user';
 import { removeCookie } from '@/utils/cookie';
 

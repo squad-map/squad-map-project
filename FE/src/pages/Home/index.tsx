@@ -16,7 +16,7 @@ import GridCards from '@/components/GridCards';
 import Item from '@/components/Item';
 // import useDebounce from '@/hooks/UseDebounce';
 import { SUCCESS_MAPS_DATA, SUCCESS_MAPS_GROUP_DATA } from '@/constants/code';
-import { IMap } from '@/interfaces/Map';
+import { MapType } from '@/interfaces/Map';
 import { userState } from '@/recoil/atoms/user';
 import theme from '@/styles/theme';
 
@@ -69,7 +69,6 @@ export default function HomePage() {
           <Input
             type="input"
             placeholderText="What kind of place are you looking for?"
-            color={theme.color.white}
             background={`${theme.color.white} url(${Icons.Search}) no-repeat 1rem`}
             value={searchValue}
             onChange={handleSearchInput}
@@ -113,9 +112,9 @@ export default function HomePage() {
           <LoadingSpinner size="xLarge" />
         ) : (
           <div className="mb-16">
-            <GridCards size="small">
+            <GridCards>
               {mapsData.data.content &&
-                mapsData.data.content.map((item: IMap) => (
+                mapsData.data.content.map((item: MapType) => (
                   <Link to={`/map/${item.id}`} key={`map-${item.id}`}>
                     <Card size="small" key={`HomeCard-${item.id}`}>
                       <Item item={item} key={`Card-${item.id}`} />

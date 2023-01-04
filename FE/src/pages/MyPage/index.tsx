@@ -30,7 +30,7 @@ const MyPage = () => {
         </div>
         {myPageData && myPageData.data.content.length > 0 ? (
           <div className="mb-12">
-            <GridCards size="large">
+            <GridCards>
               {myPageData.data.content.map((item: MyMapType) => (
                 <Link to={`/map/${item.id}`} key={item.id}>
                   <Card size="large">

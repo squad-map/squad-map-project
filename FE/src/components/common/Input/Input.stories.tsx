@@ -5,7 +5,7 @@ import Input from './index';
 import theme from '@/styles/theme';
 
 export default {
-  title: 'Input',
+  title: 'common/Input',
   component: Input,
   args: {
     width: '29.5rem',

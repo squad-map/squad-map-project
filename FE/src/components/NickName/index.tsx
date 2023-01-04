@@ -61,10 +61,9 @@ const NickName = ({ handleCancelClick }: NickNameProps) => {
           <Image url={Images.LoginBackground} alt="Login Background" />
           <Input
             id="nickname"
-            width="19rem"
-            height="2.5rem"
+            width="20rem"
+            height="2rem"
             placeholderText="변경할 닉네임을 입력해주세요."
-            color={theme.color.placeholder}
             background={theme.color.inputBackground}
             type="text"
             value={nickName}

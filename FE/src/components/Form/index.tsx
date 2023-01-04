@@ -187,7 +187,6 @@ const Form = ({ mapId, state, type }: FormProps) => {
             width="19rem"
             height="2.5rem"
             placeholderText="코드스쿼드 주변 맛집"
-            color={theme.color.placeholder}
             background={theme.color.inputBackground}
             type="text"
             value={formData.map_name}
@@ -201,7 +200,6 @@ const Form = ({ mapId, state, type }: FormProps) => {
             width="19rem"
             height="2.5rem"
             placeholderText="&#x1f6a7; 과 같은 이모지 입력"
-            color={theme.color.placeholder}
             background={theme.color.inputBackground}
             type="text"
             value={formData.map_emoji}

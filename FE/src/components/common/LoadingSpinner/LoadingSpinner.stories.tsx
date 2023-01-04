@@ -1,21 +1,19 @@
-import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import LoadingSpinner from './index';
+import LoadingSpinner from '.';
 
 export default {
-  title: 'LoadingSpinner',
+  title: 'common/LoadingSpinner',
   component: LoadingSpinner,
-  argTypes: {
-    size: {
-      control: {
-        type: 'select',
-        options: ['small', 'medium', 'large'],
-      },
-      defaultValue: 'small',
-    },
-  },
 } as ComponentMeta<typeof LoadingSpinner>;
 
-export const Template: ComponentStory<typeof LoadingSpinner> = args => (
-  <LoadingSpinner {...args} />
+const Template: ComponentStory<typeof LoadingSpinner> = () => (
+  <LoadingSpinner size="small" />
 );
+export const Default = Template.bind({});
+
+export const MediumSpinner = () => <LoadingSpinner size="medium" />;
+
+export const LargeSpinner = () => <LoadingSpinner size="large" />;
+
+export const XLargeSpinner = () => <LoadingSpinner size="xLarge" />;

@@ -3,8 +3,6 @@ import ReactDom from 'react-dom';
 import Button from '../Button';
 import Overlay from '../Overlay';
 
-import * as S from './Popup.style';
-
 import theme from '@/styles/theme';
 
 interface PopupProps {
@@ -21,9 +19,9 @@ const Popup = ({
   ReactDom.createPortal(
     <>
       <Overlay handleCancelClick={handleCancelClick} />
-      <S.Popup>
+      <section className="w-[20rem] h-[10rem] absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%] flex flex-col justify-center items-center gap-8 bg-white rounded-3xl z-[1005]">
         {children}
-        <S.PopupButtonWrapper>
+        <div className="flex gap-4">
           <Button
             size="xSmall"
             color={theme.color.navy}
@@ -38,8 +36,8 @@ const Popup = ({
           >
             취소
           </Button>
-        </S.PopupButtonWrapper>
-      </S.Popup>
+        </div>
+      </section>
     </>,
     document.getElementById('globalModal-root') as HTMLElement
   );
