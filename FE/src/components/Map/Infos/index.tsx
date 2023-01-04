@@ -1,6 +1,5 @@
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
 import PlaceModalComment from '../PlaceModalComment';
@@ -21,6 +20,7 @@ import {
   SUCCESS_GET_CATEGORIES,
   SUCCESS_GET_PLACE,
 } from '@/constants/code';
+import { UseGetMapId } from '@/hooks/UseGetMapId';
 import { PlaceDetail } from '@/interfaces/Place';
 import { userState } from '@/recoil/atoms/user';
 import theme from '@/styles/theme';
@@ -39,7 +39,7 @@ const Infos = ({
   userProfile,
   refetchMap,
 }: InfosProps) => {
-  const { id } = useParams();
+  const mapId = UseGetMapId();
   const [isOpenGlobalModal, setIsOpenGlobalModal] = useState(false);
   const [isOpenUpdateModal, setIsOpenUpdateModal] = useState(false);
 
@@ -65,18 +65,12 @@ const Infos = ({
 
   const user = useRecoilValue(userState);
 
-  const { data: mapCategory } = useQuery(['MapCategory'], () => {
-    if (id) {
-      return getMapCategories(+id);
-    }
-    return true;
-  });
+  const { data: mapCategory } = useQuery(['MapCategory'], () =>
+    getMapCategories(mapId)
+  );
 
   const fetchDeletePlace = useMutation(
-    (placeId: number) => {
-      if (id) return deletePlace(+id, placeId);
-      return true;
-    },
+    (placeId: number) => deletePlace(mapId, placeId),
     {
       onSuccess: ({ code }: { code: string }) => {
         if (code === SUCCESS_DELETE_PLACE) {
@@ -100,16 +94,14 @@ const Infos = ({
   );
 
   const handleClickPlace = async (type: 'GET' | 'UPDATE', placeId: number) => {
-    if (id) {
-      const response = await getPlaceDeatil(+id, placeId);
+    const response = await getPlaceDeatil(mapId, placeId);
 
-      if (response.code === SUCCESS_GET_PLACE) {
-        setPlaceDetailInfo(response.data);
-        if (type === 'GET') {
-          setIsOpenGlobalModal(true);
-        } else {
-          setIsOpenUpdateModal(true);
-        }
+    if (response.code === SUCCESS_GET_PLACE) {
+      setPlaceDetailInfo(response.data);
+      if (type === 'GET') {
+        setIsOpenGlobalModal(true);
+      } else {
+        setIsOpenUpdateModal(true);
       }
     }
   };
