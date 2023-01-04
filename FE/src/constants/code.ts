@@ -26,3 +26,5 @@ export const SUCCESS_DELETE_CATEGORY = 'C-S05';
 export const FAIL_DELETE_CATEGORY = 'C-F03';
 
 export const SUCCESS_POST_COMMENT = 'CM-S01';
+
+export const FAIL_AUTHORITY = 'G-F01';
