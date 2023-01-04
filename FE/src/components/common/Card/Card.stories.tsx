@@ -28,7 +28,6 @@ export default {
 const Template: ComponentStory<typeof Card> = args => <Card {...args} />;
 
 export const DefaultCard = Template.bind({});
-
 export const MediumCard = Template.bind({});
 MediumCard.args = { ...DefaultCard, size: 'medium' };
 MediumCard.parameters = {
@@ -38,6 +37,7 @@ MediumCard.parameters = {
     },
   },
 };
+
 export const LargeCard = Template.bind({});
 LargeCard.args = { ...DefaultCard, size: 'large' };
 LargeCard.parameters = {

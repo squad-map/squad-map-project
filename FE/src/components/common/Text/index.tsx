@@ -1,6 +1,6 @@
 import * as S from './Text.style';
 
-interface IText {
+interface TextProps {
   text: string;
   size:
     | 'xLargeFill'
@@ -22,7 +22,7 @@ const Text = ({
   color,
   className,
   ...props
-}: IText) => (
+}: TextProps) => (
   <S.Text size={size} color={color} className={className} {...props}>
     {text}
   </S.Text>

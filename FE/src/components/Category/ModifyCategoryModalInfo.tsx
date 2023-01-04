@@ -147,7 +147,6 @@ const ModifyCategoryModalInfo = ({
               width="15rem"
               height="2.5rem"
               placeholderText="카테고리 이름"
-              color={theme.color.placeholder}
               background={theme.color.inputBackground}
               type="text"
               value={categoryForm.category_name}

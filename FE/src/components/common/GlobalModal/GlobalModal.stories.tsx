@@ -1,7 +1,6 @@
-import { action } from '@storybook/addon-actions';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
 
-import GlobalModal from './index';
+import GlobalModal from '.';
 
 export default {
   title: 'common/GlobalModal',
@@ -14,14 +13,17 @@ export default {
       },
       defaultValue: 'small',
     },
-    handleCancelClick: action('Modal Closed'),
+    children: {
+      control: { type: 'text' },
+      defaultValue: 'GlobalModal',
+    },
+    handleCancelClick: { action: 'clicked' },
   },
 } as ComponentMeta<typeof GlobalModal>;
 
 const Template: ComponentStory<typeof GlobalModal> = args => (
   <GlobalModal {...args} />
 );
-
 export const Default = Template.bind({});
 
 Default.parameters = {

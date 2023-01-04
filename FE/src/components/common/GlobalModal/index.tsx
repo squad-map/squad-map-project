@@ -13,7 +13,7 @@ const selectSize = {
   large: tw`w-[31.625rem] h-[42.25rem]`,
 };
 
-interface IGlobalModal {
+interface GlobalModalProps {
   size: 'xSmall' | 'small' | 'medium' | 'large';
   handleCancelClick: (e?: React.MouseEvent<HTMLElement>) => void;
   children: React.ReactNode;
@@ -23,7 +23,7 @@ const GlobalModal = ({
   size = 'small',
   handleCancelClick,
   children,
-}: IGlobalModal) =>
+}: GlobalModalProps) =>
   ReactDom.createPortal(
     <>
       <Overlay handleCancelClick={handleCancelClick} />

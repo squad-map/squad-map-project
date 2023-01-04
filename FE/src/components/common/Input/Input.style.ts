@@ -5,7 +5,6 @@ import theme from '@/styles/theme';
 export const Input = styled.input<{
   width: string;
   height: string;
-  color: string;
   background?: string;
 }>`
   width: ${props => props.width};
