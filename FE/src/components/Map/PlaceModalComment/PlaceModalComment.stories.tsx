@@ -19,6 +19,7 @@ const Template: ComponentStory<typeof PlaceModalComment> = args => (
 export const Default = Template.bind({});
 
 Default.args = {
+  mapHostId: 1,
   placeInfo: {
     address: '서울 강남구 도곡동',
     category_id: 4,
@@ -28,6 +29,11 @@ Default.args = {
     place_name: '양재천',
     place_id: 1,
     story: '양재천',
-    comments: {},
+    comments: {
+      content: [],
+      has_next: false,
+      number_of_elements: 4,
+      size: 5,
+    },
   },
 };

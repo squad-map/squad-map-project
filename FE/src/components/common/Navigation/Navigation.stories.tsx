@@ -4,7 +4,7 @@ import { userEvent, within } from '@storybook/testing-library';
 import Navigation from './index';
 
 export default {
-  title: 'Navigation',
+  title: 'common/Navigation',
   component: Navigation,
   argTypes: {
     menu: {

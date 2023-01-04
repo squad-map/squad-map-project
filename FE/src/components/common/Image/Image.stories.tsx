@@ -5,11 +5,11 @@ import Image from './index';
 import { Images } from '@/assets/images';
 
 export default {
-  title: 'Image',
+  title: 'common/Image',
   component: Image,
   args: {
-    url: Images.Logo,
-    alt: 'SquadMap Logo',
+    url: Images.Menu,
+    alt: 'SquadMap Navigation Menu',
   },
 } as ComponentMeta<typeof Image>;
 

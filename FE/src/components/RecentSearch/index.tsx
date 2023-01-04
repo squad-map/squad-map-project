@@ -1,7 +1,5 @@
 import { RecoilState, useRecoilValue, useResetRecoilState } from 'recoil';
 
-import * as S from './RecentSearch.style';
-
 import Button from '@/components/common/Button';
 import Text from '@/components/common/Text';
 import theme from '@/styles/theme';
@@ -19,11 +17,11 @@ const RecentSearch = ({
   };
 
   return (
-    <S.RecentSearch>
-      <S.RecentSearchInner>
+    <section className="w-[30rem] h-[37.5rem] relative rounded-2xl mt-4 overflow-hidden bg-white z-[1000]">
+      <div className="p-10">
         <Text text="최근검색어" size="xRegularFill" color={theme.color.black} />
-        <S.Divider />
-        <S.Content>
+        <div className="w-[25rem] h-[1px] my-4 bg-gray" />
+        <div className="flex flex-col gap-4">
           {searchData &&
             searchData.map((value: string) => (
               <Text
@@ -34,9 +32,9 @@ const RecentSearch = ({
                 hover
               />
             ))}
-        </S.Content>
-      </S.RecentSearchInner>
-      <S.Bottom>
+        </div>
+      </div>
+      <div className="w-full h-8 p-4 absolute bottom-0 flex justify-between items-center border-[1px] border-solid border-navy bg-darkNavy">
         <Button
           size="xSmall"
           color={theme.color.transparent}
@@ -55,8 +53,8 @@ const RecentSearch = ({
           color={theme.color.white}
           hover
         />
-      </S.Bottom>
-    </S.RecentSearch>
+      </div>
+    </section>
   );
 };
 
