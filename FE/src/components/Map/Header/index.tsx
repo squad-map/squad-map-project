@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { getMapCategories } from '@/apis/category';
 import { Icons } from '@/assets/icons';
 import CategoryModalInfo from '@/components/Category/CategoryModalInfo';
-import ModifyCategoryModalInfo from '@/components/Category/ModifyCategforyModalInfo';
+import ModifyCategoryModalInfo from '@/components/Category/ModifyCategoryModalInfo';
 import Button from '@/components/common/Button';
 import GlobalModal from '@/components/common/GlobalModal';
 import Icon from '@/components/common/Icon';

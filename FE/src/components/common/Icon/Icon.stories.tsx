@@ -5,7 +5,7 @@ import Icon from './index';
 import { Icons } from '@/assets/icons';
 
 export default {
-  title: 'Icon',
+  title: 'common/Icon',
   component: Icon,
   args: {
     size: 'small',

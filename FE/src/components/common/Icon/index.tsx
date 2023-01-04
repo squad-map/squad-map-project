@@ -1,4 +1,10 @@
-import * as S from './Icon.style';
+import tw from 'twin.macro';
+
+const selectSize = {
+  small: tw`w-4 h-4`,
+  medium: tw`w-8 h-8`,
+  large: tw`w-12 h-12`,
+};
 
 interface IIcon {
   size: 'small' | 'medium' | 'large';
@@ -8,7 +14,13 @@ interface IIcon {
 }
 
 const Icon = ({ size, url, alt, ...props }: IIcon) => (
-  <S.Icon size={size} src={url} alt={alt} {...props} />
+  <img
+    className="display-block cursor-pointer"
+    css={selectSize[size]}
+    src={url}
+    alt={alt}
+    {...props}
+  />
 );
 
 export default Icon;

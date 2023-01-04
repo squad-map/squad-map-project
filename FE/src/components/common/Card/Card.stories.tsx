@@ -5,7 +5,7 @@ import Card from './index';
 import theme from '@/styles/theme';
 
 export default {
-  title: 'Card',
+  title: 'common/Card',
   component: Card,
   argTypes: {
     size: {
