@@ -15,7 +15,6 @@ import {
 } from '@/constants/code';
 import { CategoryColors } from '@/constants/colors';
 import theme from '@/styles/theme';
-import { CategoryPutParams } from '@/types/category';
 import { CategoryType } from '@/types/map';
 import { checkDuplicateColor, isExistBgColor } from '@/utils/util';
 
@@ -49,85 +48,62 @@ const ModifyCategoryModalInfo = ({
     handleButtonClick: () => true,
   });
 
-  const fetchPutCategory = useMutation(
-    ({
-      paramId,
-      categoryPutParams,
-    }: {
-      paramId: number;
-      categoryPutParams: CategoryPutParams;
-    }) => {
-      if (id)
-        return putCategory({
-          mapId: +id,
-          patchId: paramId,
-          categoryPutParams,
+  const fetchPutCategory = useMutation(putCategory, {
+    onSuccess: ({ code }: { code: string }) => {
+      if (code === SUCCESS_PUT_CATEGORY) {
+        setModalText({
+          title: '카테고리가 수정되었습니다.',
+          description: '카테고리 수정 완료',
+          buttonText: '확인',
+          handleButtonClick: () => {
+            setIsModal(false);
+            setIsCategoryModal(false);
+            refetchMapCategories();
+            if (refetchMap) refetchMap();
+            return true;
+          },
         });
-      return true;
+        setIsModal(true);
+      }
     },
-    {
-      onSuccess: ({ code }: { code: string }) => {
-        if (code === SUCCESS_PUT_CATEGORY) {
-          setModalText({
-            title: '카테고리가 수정되었습니다.',
-            description: '카테고리 수정 완료',
-            buttonText: '확인',
-            handleButtonClick: () => {
-              setIsModal(false);
-              setIsCategoryModal(false);
-              refetchMapCategories();
-              if (refetchMap) refetchMap();
-              return true;
-            },
-          });
-          setIsModal(true);
-        }
-      },
-      onError: (error: unknown) => {
-        throw new Error(`error is ${error}`);
-      },
-    }
-  );
+    onError: (error: unknown) => {
+      throw new Error(`error is ${error}`);
+    },
+  });
 
-  const fetchDeleteCategory = useMutation(
-    (paramId: number) => {
-      if (id) return deleteCategory({ mapId: +id, deleteId: paramId });
-      return true;
+  const fetchDeleteCategory = useMutation(deleteCategory, {
+    onSuccess: ({ code }: { code: string }) => {
+      if (code === SUCCESS_DELETE_CATEGORY) {
+        setModalText({
+          title: '카테고리가 삭제되었습니다.',
+          description: '카테고리 삭제 완료',
+          buttonText: '확인',
+          handleButtonClick: () => {
+            setIsModal(false);
+            setIsCategoryModal(false);
+            refetchMapCategories();
+            return true;
+          },
+        });
+        setIsModal(true);
+      } else if (code === FAIL_DELETE_CATEGORY) {
+        setModalText({
+          title: '카테고리가 삭제 불가',
+          description: '이미 사용중인 카테고리 입니다.',
+          buttonText: '확인',
+          handleButtonClick: () => {
+            setIsModal(false);
+            setIsCategoryModal(false);
+            return true;
+          },
+        });
+        setIsModal(true);
+      }
     },
-    {
-      onSuccess: ({ code }: { code: string }) => {
-        if (code === SUCCESS_DELETE_CATEGORY) {
-          setModalText({
-            title: '카테고리가 삭제되었습니다.',
-            description: '카테고리 삭제 완료',
-            buttonText: '확인',
-            handleButtonClick: () => {
-              setIsModal(false);
-              setIsCategoryModal(false);
-              refetchMapCategories();
-              return true;
-            },
-          });
-          setIsModal(true);
-        } else if (code === FAIL_DELETE_CATEGORY) {
-          setModalText({
-            title: '카테고리가 삭제 불가',
-            description: '이미 사용중인 카테고리 입니다.',
-            buttonText: '확인',
-            handleButtonClick: () => {
-              setIsModal(false);
-              setIsCategoryModal(false);
-              return true;
-            },
-          });
-          setIsModal(true);
-        }
-      },
-      onError: (error: unknown) => {
-        throw new Error(`error is ${error}`);
-      },
-    }
-  );
+    onError: (error: unknown) => {
+      throw new Error(`error is ${error}`);
+    },
+  });
 
   const handleUpdateCategory = (e: React.SyntheticEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -138,6 +114,7 @@ const ModifyCategoryModalInfo = ({
 
     if (id) {
       fetchPutCategory.mutate({
+        mapId: +id,
         paramId: categoryForm.category_id,
         categoryPutParams: newCategory,
       });
@@ -146,7 +123,12 @@ const ModifyCategoryModalInfo = ({
 
   const handleDeleteCategory = (e: React.SyntheticEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    fetchDeleteCategory.mutate(categoryForm.category_id);
+    if (id) {
+      fetchDeleteCategory.mutate({
+        mapId: +id,
+        deleteId: categoryForm.category_id,
+      });
+    }
   };
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -165,7 +147,6 @@ const ModifyCategoryModalInfo = ({
               width="15rem"
               height="2.5rem"
               placeholderText="카테고리 이름"
-              color={theme.color.placeholder}
               background={theme.color.inputBackground}
               type="text"
               value={categoryForm.category_name}

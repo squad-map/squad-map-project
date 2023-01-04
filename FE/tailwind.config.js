@@ -40,6 +40,9 @@ module.exports = {
       darkRed: '#C60B00',
       purple: '#3f3cbb',
     },
+    animation: {
+      spinner: 'spinner 1s ease infinite',
+    },
   },
-  plugins: [require('tailwindcss-convert-px-to-rem')],
+  plugins: [],
 };

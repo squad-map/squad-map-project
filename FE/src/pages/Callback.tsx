@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { LoadingSpinner } from '@/components/common/LoadingSpinner/LoadingSpinner.style';
+import LoadingSpinner from '@/components/common/LoadingSpinner';
 import { UseLogin } from '@/hooks/UseLogin';
 import { getErrorMessage } from '@/utils/util';
 

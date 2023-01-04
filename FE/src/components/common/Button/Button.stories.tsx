@@ -9,7 +9,7 @@ import theme from '@/styles/theme';
 const imageUrl = `url(${Icons.Plus}) no-repeat right 1rem`;
 
 export default {
-  title: 'Button',
+  title: 'common/Button',
   component: Button,
   disabled: false,
   loading: false,

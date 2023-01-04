@@ -16,5 +16,4 @@ export const Default = Template.bind({});
 
 Default.args = {
   mapId: 1,
-  handleCancelClick: action('Popup Closed'),
 };

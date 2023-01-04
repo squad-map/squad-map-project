@@ -1,15 +1,25 @@
 import { ComponentStory, ComponentMeta } from '@storybook/react';
+import { atom } from 'recoil';
 
 import RecentSearch from './index';
 
 export default {
-  title: 'RecentSearch',
+  title: 'components/RecentSearch',
   component: RecentSearch,
 } as ComponentMeta<typeof RecentSearch>;
 
-const Template: ComponentStory<typeof RecentSearch> = () => <RecentSearch />;
+const Template: ComponentStory<typeof RecentSearch> = args => (
+  <RecentSearch {...args} />
+);
 
 export const Default = Template.bind({});
+
+Default.args = {
+  searchState: atom({
+    key: 'searchplaceState',
+    default: ['맛집', '카페', '빵집'] as string[],
+  }),
+};
 
 Default.parameters = {
   docs: {
