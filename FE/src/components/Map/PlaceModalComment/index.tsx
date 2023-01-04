@@ -1,6 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
 import { deleteComment, postComment } from '@/apis/comment';
@@ -12,6 +11,7 @@ import Text from '@/components/common/Text';
 import KakaoStaticMap from '@/components/KaKaoMap/KakaoStaticMap';
 import ModalContent from '@/components/ModalContent';
 import { SUCCESS_POST_COMMENT } from '@/constants/code';
+import { UseGetMapId } from '@/hooks/UseGetMapId';
 import { PlaceDetail } from '@/interfaces/Place';
 import { userState } from '@/recoil/atoms/user';
 import theme from '@/styles/theme';
@@ -24,7 +24,7 @@ interface PlaceModalComment {
 const PlaceModalComment = ({ mapHostId, placeInfo }: PlaceModalComment) => {
   // 기존 placeInfo 데이터에 이미 해당 장소에 대한 댓글들이 존재한다.
   // 댓글을 작성하면 placeInfo 데이터도 업데이트 해야한다. -> 상위 컴포넌트 getPlaceDeatil 함수 부분을 useMutation으로 수정후 refetch 함수를 전달받도록 수정하자.
-  const { id } = useParams();
+  const mapId = UseGetMapId();
   const {
     place_id,
     comments: { content },
@@ -60,10 +60,7 @@ const PlaceModalComment = ({ mapHostId, placeInfo }: PlaceModalComment) => {
   });
 
   const fetchDeleteComment = useMutation(
-    (commentId: number) => {
-      if (id) return deleteComment(commentId);
-      return true;
-    },
+    (commentId: number) => deleteComment(commentId),
     {
       onSuccess: ({ code }: { code: string }) => {
         if (code === 'SM-S04') {
@@ -99,13 +96,12 @@ const PlaceModalComment = ({ mapHostId, placeInfo }: PlaceModalComment) => {
       setIsModal(true);
       return;
     }
-    if (id) {
-      fetchPostComment.mutate({
-        mapId: +id,
-        placeId: place_id,
-        content: comment,
-      });
-    }
+
+    fetchPostComment.mutate({
+      mapId,
+      placeId: place_id,
+      content: comment,
+    });
   };
 
   const handlecommentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {

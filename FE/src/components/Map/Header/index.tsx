@@ -16,7 +16,7 @@ import { CategoryType, MapHeaderType } from '@/types/map';
 
 interface HeaderProps {
   headerData: MapHeaderType;
-  refetchMap: () => void;
+  refetchMap?: () => void;
 }
 
 const Header = ({ headerData, refetchMap }: HeaderProps) => {

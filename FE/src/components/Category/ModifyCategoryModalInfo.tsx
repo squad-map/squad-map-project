@@ -1,6 +1,5 @@
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
-import { useParams } from 'react-router-dom';
 
 import { deleteCategory, putCategory } from '@/apis/category';
 import Button from '@/components/common/Button';
@@ -14,6 +13,7 @@ import {
   SUCCESS_PUT_CATEGORY,
 } from '@/constants/code';
 import { CategoryColors } from '@/constants/colors';
+import { UseGetMapId } from '@/hooks/UseGetMapId';
 import theme from '@/styles/theme';
 import { CategoryType } from '@/types/map';
 import { checkDuplicateColor, isExistBgColor } from '@/utils/util';
@@ -33,7 +33,7 @@ const ModifyCategoryModalInfo = ({
   refetchMap,
   refetchMapCategories,
 }: ModifyCategoryModalInfoProps) => {
-  const { id } = useParams();
+  const mapId = UseGetMapId();
   const [categoryForm, setCategoryForm] = useState({
     category_id: clickedCategory.category_id,
     category_name: clickedCategory.category_name,
@@ -112,23 +112,20 @@ const ModifyCategoryModalInfo = ({
       category_color: categoryForm.category_color,
     };
 
-    if (id) {
-      fetchPutCategory.mutate({
-        mapId: +id,
-        paramId: categoryForm.category_id,
-        categoryPutParams: newCategory,
-      });
-    }
+    fetchPutCategory.mutate({
+      mapId,
+      paramId: categoryForm.category_id,
+      categoryPutParams: newCategory,
+    });
   };
 
   const handleDeleteCategory = (e: React.SyntheticEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    if (id) {
-      fetchDeleteCategory.mutate({
-        mapId: +id,
-        deleteId: categoryForm.category_id,
-      });
-    }
+
+    fetchDeleteCategory.mutate({
+      mapId,
+      deleteId: categoryForm.category_id,
+    });
   };
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {

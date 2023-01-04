@@ -1,6 +1,6 @@
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { getMapCategories } from '@/apis/category';
 import { postPlace } from '@/apis/place';
@@ -8,6 +8,7 @@ import Button from '@/components/common/Button';
 import Text from '@/components/common/Text';
 import KakaoStaticMap from '@/components/KaKaoMap/KakaoStaticMap';
 import { SUCCESS_GET_CATEGORIES, SUCCESS_POST_PLACE } from '@/constants/code';
+import { UseGetMapId } from '@/hooks/UseGetMapId';
 import theme from '@/styles/theme';
 import { CategoryType, PlaceType } from '@/types/map';
 
@@ -16,7 +17,7 @@ interface SearchModalContentprops {
 }
 
 const SearchModalContent = ({ placeInfo }: SearchModalContentprops) => {
-  const { id } = useParams();
+  const mapId = UseGetMapId();
   const navigate = useNavigate();
   const [placeForm, setPlaceForm] = useState({
     story: '',
@@ -24,17 +25,14 @@ const SearchModalContent = ({ placeInfo }: SearchModalContentprops) => {
     color: '',
   });
 
-  const { data: mapCategory } = useQuery(['MapCategory'], () => {
-    if (id) {
-      return getMapCategories(+id);
-    }
-    return true;
-  });
+  const { data: mapCategory } = useQuery(['MapCategory'], () =>
+    getMapCategories(mapId)
+  );
 
   const fetchPostPlace = useMutation(postPlace, {
     onSuccess: ({ code }: { code: string }) => {
       if (code === SUCCESS_POST_PLACE) {
-        navigate(`/map/${id}`);
+        navigate(`/map/${mapId}`);
       }
     },
     onError: (error: unknown) => {
@@ -62,7 +60,7 @@ const SearchModalContent = ({ placeInfo }: SearchModalContentprops) => {
       category_id: placeForm.category_id,
     };
 
-    fetchPostPlace.mutate({ mapId: id, placePostParams: newPlace });
+    fetchPostPlace.mutate({ mapId, placePostParams: newPlace });
   };
 
   if (mapCategory && mapCategory.code !== SUCCESS_GET_CATEGORIES)
