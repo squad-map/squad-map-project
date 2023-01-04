@@ -1,4 +1,4 @@
-export interface ISearchPlace {
+export interface SearchPlaceType {
   address_name: string;
   category_color: string;
   category_group_code: string;

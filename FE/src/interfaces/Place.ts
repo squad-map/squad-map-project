@@ -1,4 +1,4 @@
-import { Comments } from '@/interfaces/Comments';
+import { CommentsType } from '@/interfaces/Comments';
 
 export interface PlaceDetail {
   place_id: number;
@@ -9,5 +9,5 @@ export interface PlaceDetail {
   story: string;
   detail_link: string;
   category_id: number;
-  comments: Comments;
+  comments: CommentsType;
 }

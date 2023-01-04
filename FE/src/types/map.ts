@@ -1,5 +1,3 @@
-import { IMap } from '@/interfaces/IMap';
-
 export type CategoryType = {
   category_id: number;
   category_name: string;
@@ -20,21 +18,11 @@ export type CategorizedPlaces = {
   places: PlaceType[];
 };
 
-export type MapType = {
-  map_id: number;
-  map_name: string;
-  map_emoji: string;
+export type MapUserType = {
   host_id: number;
   host_nickname: string;
   host_profile_image: string;
-  places_count: number;
-  categorized_places: CategorizedPlaces[];
 };
-
-export type MapUserType = Pick<
-  IMap,
-  'host_id' | 'host_nickname' | 'host_profile_image'
->;
 
 export type MapHeaderType = {
   map_id: number;
