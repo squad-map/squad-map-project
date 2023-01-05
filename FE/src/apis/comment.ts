@@ -1,3 +1,4 @@
+import { API_URL } from '@/constants/url';
 import { getCookie } from '@/utils/cookie';
 
 export const postComment = async ({
@@ -13,7 +14,7 @@ export const postComment = async ({
   if (!accessToken) window.location.href = '/login';
 
   const response = await fetch(
-    `${process.env.SQUAD_MAP_OAUTH_URL}/map/${mapId}/places/${placeId}/comments`,
+    `${API_URL}/map/${mapId}/places/${placeId}/comments`,
     {
       method: 'POST',
       headers: {
@@ -38,16 +39,13 @@ export const deleteComment = async (commentId: number) => {
   if (!accessToken) window.location.href = '/login';
   if (!commentId) throw new Error('placeId is undefined');
 
-  const response = await fetch(
-    `${process.env.SQUAD_MAP_OAUTH_URL}/comments/${commentId}`,
-    {
-      method: 'DELETE',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
-      },
-    }
-  );
+  const response = await fetch(`${API_URL}/comments/${commentId}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+    },
+  });
 
   const comment = await response.json();
 

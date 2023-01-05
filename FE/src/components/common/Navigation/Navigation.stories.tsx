@@ -1,33 +1,34 @@
+import { action } from '@storybook/addon-actions';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-import { userEvent, within } from '@storybook/testing-library';
 
 import Navigation from './index';
+
+import UseSetRecoilUser from '@/hooks/UseSetRecoillUser';
 
 export default {
   title: 'common/Navigation',
   component: Navigation,
-  argTypes: {
-    menu: {
-      defaultValue: true,
-    },
+  args: {
+    handleCloseMenu: action('Navigation Closed.'),
+    menu: true,
   },
 } as ComponentMeta<typeof Navigation>;
 
-const Template: ComponentStory<typeof Navigation> = args => (
-  <Navigation {...args} />
-);
+const LoggedInNavigationTemplate: ComponentStory<typeof Navigation> = args => {
+  UseSetRecoilUser({ member_id: 1, nickname: 'muffin1', profileImageUrl: '' });
 
-export const loggedInNavigation = Template.bind({});
-
-export const loggedOutNavigation = Template.bind({});
-
-loggedInNavigation.play = async ({ canvasElement }) => {
-  const canvas = within(canvasElement);
-  const closeButtonElement = await canvas.getByTestId('closeBtn');
-
-  await userEvent.click(closeButtonElement);
-  await canvas.getByTestId('closeBtn');
+  return <Navigation {...args} />;
 };
+
+const LoggedOutNavigationTemplate: ComponentStory<typeof Navigation> = args => {
+  UseSetRecoilUser(null);
+
+  return <Navigation {...args} />;
+};
+
+export const loggedInNavigation = LoggedInNavigationTemplate.bind({});
+
+export const loggedOutNavigation = LoggedOutNavigationTemplate.bind({});
 
 loggedInNavigation.parameters = {
   docs: {

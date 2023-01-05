@@ -71,6 +71,7 @@
     "postcss-loader": "^7.0.2",
     "prettier": "^2.6.2",
     "react-refresh": "^0.13.0",
+    "storybook-addon-cookie": "^1.0.6",
     "style-loader": "^3.3.1",
     "tailwindcss": "latest",
     "terser-webpack-plugin": "^5.3.3",
@@ -91,7 +92,7 @@
     "test": "react-scripts test"
   },
   "msw": {
-    "workerDirectory": "public"
+    "workerDirectory": ".storybook/public"
   },
   "jest": {
     "moduleNameMapper": {

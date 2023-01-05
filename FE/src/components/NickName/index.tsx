@@ -62,7 +62,7 @@ const NickName = ({ handleCancelClick }: NickNameProps) => {
           <Input
             id="nickname"
             width="20rem"
-            height="2rem"
+            height="2.5rem"
             placeholderText="변경할 닉네임을 입력해주세요."
             background={theme.color.inputBackground}
             type="text"

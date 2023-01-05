@@ -1,3 +1,4 @@
+import { API_URL } from '@/constants/url';
 import { PlacePostParams } from '@/types/place';
 import { getCookie } from '@/utils/cookie';
 
@@ -5,16 +6,13 @@ export const getPlaceDeatil = async (mapId: number, placeId: number) => {
   const accessToken = getCookie('access_token');
   if (!accessToken) window.location.href = '/login';
 
-  const response = await fetch(
-    `${process.env.SQUAD_MAP_OAUTH_URL}/map/${mapId}/places/${placeId}`,
-    {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
-      },
-    }
-  );
+  const response = await fetch(`${API_URL}/map/${mapId}/places/${placeId}`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+    },
+  });
   const placeDetail = await response.json();
 
   try {
@@ -34,17 +32,14 @@ export const postPlace = async ({
   const accessToken = getCookie('access_token');
   if (!accessToken) window.location.href = '/login';
 
-  const response = await fetch(
-    `${process.env.SQUAD_MAP_OAUTH_URL}/map/${mapId}/places`,
-    {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(placePostParams),
-    }
-  );
+  const response = await fetch(`${API_URL}/map/${mapId}/places`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(placePostParams),
+  });
 
   const place = await response.json();
 
@@ -68,17 +63,14 @@ export const patchPlace = async ({
   if (!accessToken) window.location.href = '/login';
   if (!patchId) throw new Error('patchId is undefined');
 
-  const response = await fetch(
-    `${process.env.SQUAD_MAP_OAUTH_URL}/map/${mapId}/places/${patchId}`,
-    {
-      method: 'PATCH',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(placePatchParams),
-    }
-  );
+  const response = await fetch(`${API_URL}/map/${mapId}/places/${patchId}`, {
+    method: 'PATCH',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(placePatchParams),
+  });
 
   const placeData = await response.json();
 
@@ -94,16 +86,13 @@ export const deletePlace = async (mapId: number, placeId: number) => {
   if (!accessToken) window.location.href = '/login';
   if (!placeId) throw new Error('placeId is undefined');
 
-  const response = await fetch(
-    `${process.env.SQUAD_MAP_OAUTH_URL}/map/${mapId}/places/${placeId}`,
-    {
-      method: 'DELETE',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
-      },
-    }
-  );
+  const response = await fetch(`${API_URL}/map/${mapId}/places/${placeId}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+    },
+  });
 
   const place = await response.json();
 

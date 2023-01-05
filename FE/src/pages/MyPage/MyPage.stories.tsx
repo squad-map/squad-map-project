@@ -10,9 +10,8 @@ export default {
   parameters: {
     msw: {
       handlers: [
-        rest.get(
-          `${process.env.SQUAD_MAP_OAUTH_URL}/map/group`,
-          (req, res, ctx) => res(ctx.status(200), ctx.json(myPageMapsData))
+        rest.get(`${API_URL}/map/group`, (req, res, ctx) =>
+          res(ctx.status(200), ctx.json(myPageMapsData))
         ),
       ],
     },

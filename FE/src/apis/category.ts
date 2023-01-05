@@ -1,3 +1,4 @@
+import { API_URL } from '@/constants/url';
 import { CategoryPostParams, CategoryPutParams } from '@/types/category';
 import { getCookie } from '@/utils/cookie';
 
@@ -5,16 +6,13 @@ export const getMapCategories = async (mapId: number) => {
   const accessToken = getCookie('access_token');
   if (!accessToken) window.location.href = '/login';
 
-  const response = await fetch(
-    `${process.env.SQUAD_MAP_OAUTH_URL}/map/${mapId}/categories`,
-    {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
-      },
-    }
-  );
+  const response = await fetch(`${API_URL}/map/${mapId}/categories`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+    },
+  });
 
   const categories = await response.json();
 
@@ -35,17 +33,14 @@ export const postCategory = async ({
   const accessToken = getCookie('access_token');
   if (!accessToken) window.location.href = '/login';
 
-  const response = await fetch(
-    `${process.env.SQUAD_MAP_OAUTH_URL}/map/${map_id}/categories`,
-    {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(categoryPostParams),
-    }
-  );
+  const response = await fetch(`${API_URL}/map/${map_id}/categories`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(categoryPostParams),
+  });
 
   const category = await response.json();
 
@@ -70,7 +65,7 @@ export const putCategory = async ({
   if (!patchId) throw new Error('patchId is undefined');
 
   const response = await fetch(
-    `${process.env.SQUAD_MAP_OAUTH_URL}/map/${mapId}/categories/${patchId}`,
+    `${API_URL}/map/${mapId}/categories/${patchId}`,
     {
       method: 'PUT',
       headers: {
@@ -100,7 +95,7 @@ export const deleteCategory = async ({
   const accessToken = getCookie('access_token');
   if (!accessToken) window.location.href = '/login';
   const response = await fetch(
-    `${process.env.SQUAD_MAP_OAUTH_URL}/map/${mapId}/categories/${deleteId}`,
+    `${API_URL}/map/${mapId}/categories/${deleteId}`,
     {
       method: 'DELETE',
       headers: {
