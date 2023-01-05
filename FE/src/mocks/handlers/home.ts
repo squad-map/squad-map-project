@@ -1,15 +1,16 @@
 import { rest } from 'msw';
 
+import { SUCCESS_MAPS_DATA } from '@/constants/code';
 import { API_URL } from '@/constants/url';
 
 export const GET_HOME_PUBLIC_MAPS = rest.get(
-  `${API_URL}/map/public?lastMapId=1`,
+  `${API_URL}/map/public?lastMapId=:lastMapId`,
   (req, res, ctx) =>
     res(
       ctx.status(200),
       ctx.delay(1000),
       ctx.json({
-        code: 'M-S03',
+        code: SUCCESS_MAPS_DATA,
         message: 'OK',
         data: {
           content: [

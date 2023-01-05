@@ -6,7 +6,7 @@ import Button from '@/components/common/Button';
 import GlobalModal from '@/components/common/GlobalModal';
 import Text from '@/components/common/Text';
 import ModalContent from '@/components/ModalContent';
-import { SUCCESS_PUT_PLACE } from '@/constants/code';
+import { SUCCESS_PATCH_PLACE } from '@/constants/code';
 import { UseGetMapId } from '@/hooks/UseGetMapId';
 import { PlaceDetail } from '@/interfaces/Place';
 import theme from '@/styles/theme';
@@ -47,7 +47,7 @@ const PlaceModalUpdate = ({
 
   const fetchPatchPlace = useMutation(patchPlace, {
     onSuccess: ({ code }: { code: string }) => {
-      if (code === SUCCESS_PUT_PLACE) {
+      if (code === SUCCESS_PATCH_PLACE) {
         setModalText({
           title: '장소가 수정되었습니다.',
           description: '장소 수정 완료',

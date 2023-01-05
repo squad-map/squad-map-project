@@ -1,3 +1,5 @@
+export const SUCCESS_LOGIN = 'A-S01';
+
 export const SUCCESS_MAPS_DATA = 'M-S03';
 export const SUCCESS_MAPS_GROUP_DATA = 'M-S04';
 export const SUCCESS_NICKNAME_UPDATE = 'MM-S01';
@@ -14,7 +16,7 @@ export const SUCCESS_GET_GROUP_MEMBERS = 'G-S03';
 export const SUCCESS_DELETE_GROUP_MEMBER = 'G-S04';
 
 export const SUCCESS_POST_PLACE = 'P-S01';
-export const SUCCESS_PUT_PLACE = 'P-S02';
+export const SUCCESS_PATCH_PLACE = 'P-S02';
 export const SUCCESS_GET_PLACE = 'P-S03';
 export const SUCCESS_DELETE_PLACE = 'P-S04';
 
@@ -26,5 +28,8 @@ export const SUCCESS_DELETE_CATEGORY = 'C-S05';
 export const FAIL_DELETE_CATEGORY = 'C-F03';
 
 export const SUCCESS_POST_COMMENT = 'CM-S01';
+export const SUCCESS_GET_COMMENTS = 'CM-S02';
+export const SUCCESS_PATCH_COMMENT = 'CM-S03';
+export const SUCCESS_DELETE_COMMENT = 'CM-S04';
 
 export const FAIL_AUTHORITY = 'G-F01';
