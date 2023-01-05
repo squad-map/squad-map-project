@@ -36,3 +36,11 @@ spring:
     type: redis
     redis:
       time-to-live: 5000000
+
+logging:
+  level:
+    org:
+      hibernate:
+        sql : debug
+
+
