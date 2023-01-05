@@ -4,6 +4,7 @@ import { getCookie } from '@/utils/cookie';
 
 export const getMapCategories = async (mapId: number) => {
   const accessToken = getCookie('access_token');
+
   if (!accessToken) window.location.href = '/login';
 
   const response = await fetch(`${API_URL}/map/${mapId}/categories`, {
@@ -24,16 +25,16 @@ export const getMapCategories = async (mapId: number) => {
 };
 
 export const postCategory = async ({
-  map_id,
+  mapId,
   categoryPostParams,
 }: {
-  map_id: number;
+  mapId: number;
   categoryPostParams: CategoryPostParams;
 }) => {
   const accessToken = getCookie('access_token');
   if (!accessToken) window.location.href = '/login';
 
-  const response = await fetch(`${API_URL}/map/${map_id}/categories`, {
+  const response = await fetch(`${API_URL}/map/${mapId}/categories`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${accessToken}`,
