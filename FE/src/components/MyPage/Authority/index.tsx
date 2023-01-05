@@ -15,7 +15,7 @@ interface AuthorityProps {
 
 const Authority = ({ mapId }: AuthorityProps) => {
   const { data: groupMembers, refetch: refetchGroupMembers } = useQuery(
-    ['GroupInfo'],
+    ['GroupMembers'],
     () => {
       if (mapId) {
         return getGroupMembers(mapId);

@@ -48,14 +48,16 @@ export const postMypage = async (myPagePostParams: MypagePostParams) => {
   }
 };
 
-export const putMyPage = async (
-  patchId: number,
-  mypagePutParams: MypagePutParams
-) => {
+export const putMyPage = async ({
+  patchId,
+  mypagePutParams,
+}: {
+  patchId: number;
+  mypagePutParams: MypagePutParams;
+}) => {
   const accessToken = getCookie('access_token');
   if (!accessToken) window.location.href = '/login';
   if (!patchId) throw new Error('id is undefined');
-  if (!mypagePutParams) throw new Error('requestbody is undefined');
 
   const response = await fetch(`${API_URL}/map/${patchId}`, {
     method: 'PUT',

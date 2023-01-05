@@ -48,10 +48,13 @@ export const postGroupMember = async (
   }
 };
 
-export const putGroupMember = async (
-  mapId: number,
-  groupPutBody: GroupPutParams
-) => {
+export const putGroupMember = async ({
+  mapId,
+  groupPutBody,
+}: {
+  mapId: number;
+  groupPutBody: GroupPutParams;
+}) => {
   const accessToken = getCookie('access_token');
   if (!accessToken) window.location.href = '/login';
 
@@ -73,7 +76,13 @@ export const putGroupMember = async (
   }
 };
 
-export const deleteGroupMember = async (mapId: number, memberId: number) => {
+export const deleteGroupMember = async ({
+  mapId,
+  memberId,
+}: {
+  mapId: number;
+  memberId: number;
+}) => {
   const accessToken = getCookie('access_token');
   if (!accessToken) window.location.href = '/login';
 

@@ -154,15 +154,10 @@ const SearchForm = ({
         const filteredMembers = response.data.filter(
           (v: AuthorityResponse) => !groupMembers.includes(v.nickname)
         );
-
         setUserNickNames(filteredMembers);
-        if (filteredMembers[0]) {
-          setSearchName(filteredMembers[0].nickname);
-        }
-        setSelectedIndex(0);
       }
     })();
-  }, [debouncedValue, groupMembers, setUserNickNames]);
+  }, [debouncedValue, groupMembers]);
 
   return (
     <>

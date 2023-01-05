@@ -32,6 +32,7 @@ const SearchModalContent = ({ placeInfo }: SearchModalContentprops) => {
   const fetchPostPlace = useMutation(postPlace, {
     onSuccess: ({ code }: { code: string }) => {
       if (code === SUCCESS_POST_PLACE) {
+        // popup 처리하기. 카테고리 색상 선택안했을때 에러처리.
         navigate(`/map/${mapId}`);
       }
     },

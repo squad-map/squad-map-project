@@ -213,51 +213,6 @@ export const myPageMapsData = {
   ],
 };
 
-// myMapsData 필요한 데이터는 ? id, title, emoji, categories, maps(배열안의 객체 형식으로)
-// maps => {id, title, categories, address, description }
-
-export const myMapsData = {
-  id: 1,
-  title: '놀이동산',
-  emoji: '🏞',
-  categories: [
-    { name: '카테고리1', color: '#FF0000' },
-    { name: '카테고리2', color: '#0000FF' },
-  ],
-  maps: [
-    {
-      address_name: '서울 강남구 신사동 668-33',
-      category_color: 'red',
-      category_group_code: 'AT4',
-      category_group_name: '관광명소',
-      category_name: '여행 > 관광,명소 > 테마거리',
-      distance: '',
-      id: '7990409',
-      phone: '02-3445-6402',
-      place_name: '압구정로데오거리',
-      place_url: 'http://place.map.kakao.com/7990409',
-      road_address_name: '',
-      x: '127.039152029523',
-      y: '37.5267558230172',
-    },
-    {
-      address_name: '서울 강남구 역삼동 836-24',
-      category_color: 'blue',
-      category_group_code: '',
-      category_group_name: '',
-      category_name: '서비스,산업 > 인터넷,IT > 소프트웨어',
-      distance: '',
-      id: '1313843682',
-      phone: '070-4117-1005',
-      place_name: '코드스쿼드',
-      place_url: 'http://place.map.kakao.com/1313843682',
-      road_address_name: '',
-      x: '127.03342973835',
-      y: '37.4908543445167',
-    },
-  ],
-};
-
 export const searchPlaceData = [
   {
     address: '서울 강남구 신사동 668-33',
