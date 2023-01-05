@@ -14,7 +14,7 @@ interface LoadingSpinnerProps {
 const LoadingSpinner = ({ size = 'small' }: LoadingSpinnerProps) => (
   <div
     css={selectSize[size]}
-    className="absolute top-2/4 left-2/4 animate-spinner rounded-full border-2 border-solid border-gray border-y-navy"
+    className="absolute top-2/4 left-2/4 translate-x-[-50%] translate-y-[-50%] animate-spinner rounded-full border-2 border-solid border-gray border-y-navy"
   />
 );
 

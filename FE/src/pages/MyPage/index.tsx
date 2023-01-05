@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
 
-import { getMypage } from '@/apis/mypage';
+import { getGroupMaps } from '@/apis/mypage';
 import { Icons } from '@/assets/icons';
 import Button from '@/components/common/Button';
 import Card from '@/components/common/Card';
@@ -15,7 +15,7 @@ import { MyMapType } from '@/interfaces/MyMap';
 import theme from '@/styles/theme';
 
 const MyPage = () => {
-  const { data: myPageData } = useQuery(['myMaps'], () => getMypage());
+  const { data: myPageData } = useQuery(['myMaps'], () => getGroupMaps());
 
   if (myPageData && myPageData.code !== SUCCESS_MAPS_GROUP_DATA)
     return <div>API Error</div>;

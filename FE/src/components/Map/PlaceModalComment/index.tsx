@@ -29,6 +29,7 @@ const PlaceModalComment = ({ mapHostId, placeInfo }: PlaceModalComment) => {
     place_id,
     comments: { content },
   } = placeInfo;
+
   const [comment, setcomment] = useState('');
   const [isModal, setIsModal] = useState(false);
   const [modalText, setModalText] = useState({

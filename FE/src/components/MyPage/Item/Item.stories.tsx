@@ -1,10 +1,10 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
-import { rest } from 'msw';
 
 import Item from './index';
 
 import Card from '@/components/common/Card';
 import { myPageMapsData } from '@/constants/dummyData';
+import UseSetRecoilUser from '@/hooks/UseSetRecoillUser';
 
 export default {
   title: 'components/MyPage/Item',
@@ -18,20 +18,26 @@ export default {
         story: `마이페이지 카드 안에 들어가는 데이터 아이템 형태`,
       },
     },
-    msw: {
-      handlers: [
-        rest.get('/mypage', (req, res, ctx) =>
-          res(ctx.status(200), ctx.json(myPageMapsData.content[0]))
-        ),
-      ],
-    },
   },
 } as ComponentMeta<typeof Item>;
 
-const Template: ComponentStory<typeof Item> = args => (
-  <Card size="large">
-    <Item {...args} />
-  </Card>
-);
+const MapHostItem: ComponentStory<typeof Item> = args => {
+  UseSetRecoilUser({ member_id: 1, nickname: 'muffin1', profileImageUrl: '' });
+  return (
+    <Card size="large">
+      <Item {...args} />
+    </Card>
+  );
+};
 
-export const Default = Template.bind({});
+const MapReadItem: ComponentStory<typeof Item> = args => {
+  UseSetRecoilUser({ member_id: 2, nickname: 'muffin2', profileImageUrl: '' });
+  return (
+    <Card size="large">
+      <Item {...args} />
+    </Card>
+  );
+};
+
+export const mapHostItem = MapHostItem.bind({});
+export const mapReadItem = MapReadItem.bind({});

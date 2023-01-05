@@ -6,6 +6,7 @@ import { RecoilRoot } from 'recoil';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from '../src';
 import { initialize, mswDecorator } from "msw-storybook-addon";
+import { cookieDecorator } from 'storybook-addon-cookie';
 
 // MSW 초기화 함수 실행
 initialize();
@@ -18,10 +19,14 @@ export const parameters = {
       date: /Date$/,
     },
   },
+  cookie: {
+    access_token: 'Bearer access_token',
+  }
 }
 
 export const decorators = [
   mswDecorator,
+  cookieDecorator,
   (Story) => (
     <>
      <BrowserRouter>

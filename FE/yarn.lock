@@ -3332,7 +3332,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@storybook/addons@npm:6.5.15, @storybook/addons@npm:^6.0.0":
+"@storybook/addons@npm:6.5.15, @storybook/addons@npm:^6.0.0, @storybook/addons@npm:^6.5.13":
   version: 6.5.15
   resolution: "@storybook/addons@npm:6.5.15"
   dependencies:
@@ -5832,6 +5832,7 @@ __metadata:
     react-scripts: ^5.0.1
     recoil: ^0.7.4
     recoil-persist: ^4.2.0
+    storybook-addon-cookie: ^1.0.6
     style-loader: ^3.3.1
     tailwindcss: latest
     terser-webpack-plugin: ^5.3.3
@@ -19849,6 +19850,15 @@ __metadata:
   version: 2.14.2
   resolution: "store2@npm:2.14.2"
   checksum: 6f270fc5bab99b63f45fcc7bd8b99c2714b4adf880f557ed7ffb5ed3987131251165bccde425a00928aaf044870aee79ddeef548576d093c68703ed2edec45d7
+  languageName: node
+  linkType: hard
+
+"storybook-addon-cookie@npm:^1.0.6":
+  version: 1.0.6
+  resolution: "storybook-addon-cookie@npm:1.0.6"
+  dependencies:
+    "@storybook/addons": ^6.5.13
+  checksum: 61441b69568b2f75cdd13de1788c533163d5f8126b0b9cd3e73f911b35c157a4a245b323750d2eb4d338ae7a7a6a3275bea0e952328f6fe6afe0d624e6db9cb3
   languageName: node
   linkType: hard
 
