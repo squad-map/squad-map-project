@@ -3,7 +3,7 @@ import { getCookie } from '@/utils/cookie';
 
 export const getPlaceDeatil = async (mapId: number, placeId: number) => {
   const accessToken = getCookie('access_token');
-  if (!accessToken) throw new Error('accessToken is undefined');
+  if (!accessToken) window.location.href = '/login';
 
   const response = await fetch(
     `${process.env.SQUAD_MAP_OAUTH_URL}/map/${mapId}/places/${placeId}`,
@@ -32,7 +32,7 @@ export const postPlace = async ({
   placePostParams: PlacePostParams;
 }) => {
   const accessToken = getCookie('access_token');
-  if (!accessToken) throw new Error('accessToken is undefined');
+  if (!accessToken) window.location.href = '/login';
 
   const response = await fetch(
     `${process.env.SQUAD_MAP_OAUTH_URL}/map/${mapId}/places`,
@@ -65,7 +65,7 @@ export const patchPlace = async ({
   placePatchParams: { category_id: number; story: string };
 }) => {
   const accessToken = getCookie('access_token');
-  if (!accessToken) throw new Error('accessToken is undefined');
+  if (!accessToken) window.location.href = '/login';
   if (!patchId) throw new Error('patchId is undefined');
 
   const response = await fetch(
@@ -91,7 +91,7 @@ export const patchPlace = async ({
 
 export const deletePlace = async (mapId: number, placeId: number) => {
   const accessToken = getCookie('access_token');
-  if (!accessToken) throw new Error('accessToken is undefined');
+  if (!accessToken) window.location.href = '/login';
   if (!placeId) throw new Error('placeId is undefined');
 
   const response = await fetch(
