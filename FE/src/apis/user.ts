@@ -2,7 +2,7 @@ import { getCookie } from '@/utils/cookie';
 
 export const findNickName = async (nickname: string) => {
   const accessToken = getCookie('access_token');
-  if (!accessToken) throw new Error('accessToken is undefined');
+  if (!accessToken) window.location.href = '/login';
 
   const response = await fetch(
     `${process.env.SQUAD_MAP_OAUTH_URL}/members?nickname=${nickname}`,
@@ -26,7 +26,7 @@ export const findNickName = async (nickname: string) => {
 
 export const patchNickName = async (nickname: string) => {
   const accessToken = getCookie('access_token');
-  if (!accessToken) throw new Error('accessToken is undefined');
+  if (!accessToken) window.location.href = '/login';
 
   const response = await fetch(`${process.env.SQUAD_MAP_OAUTH_URL}/members`, {
     method: 'PATCH',

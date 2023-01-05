@@ -10,7 +10,7 @@ export const postComment = async ({
   content: string;
 }) => {
   const accessToken = getCookie('access_token');
-  if (!accessToken) throw new Error('accessToken is undefined');
+  if (!accessToken) window.location.href = '/login';
 
   const response = await fetch(
     `${process.env.SQUAD_MAP_OAUTH_URL}/map/${mapId}/places/${placeId}/comments`,
@@ -35,7 +35,7 @@ export const postComment = async ({
 
 export const deleteComment = async (commentId: number) => {
   const accessToken = getCookie('access_token');
-  if (!accessToken) throw new Error('accessToken is undefined');
+  if (!accessToken) window.location.href = '/login';
   if (!commentId) throw new Error('placeId is undefined');
 
   const response = await fetch(
