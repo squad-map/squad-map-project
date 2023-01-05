@@ -3,7 +3,7 @@ import { getCookie } from '@/utils/cookie';
 
 export const getMapCategories = async (mapId: number) => {
   const accessToken = getCookie('access_token');
-  if (!accessToken) throw new Error('accessToken is undefined');
+  if (!accessToken) window.location.href = '/login';
 
   const response = await fetch(
     `${process.env.SQUAD_MAP_OAUTH_URL}/map/${mapId}/categories`,
@@ -33,7 +33,7 @@ export const postCategory = async ({
   categoryPostParams: CategoryPostParams;
 }) => {
   const accessToken = getCookie('access_token');
-  if (!accessToken) throw new Error('accessToken is undefined');
+  if (!accessToken) window.location.href = '/login';
 
   const response = await fetch(
     `${process.env.SQUAD_MAP_OAUTH_URL}/map/${map_id}/categories`,
@@ -66,7 +66,7 @@ export const putCategory = async ({
   categoryPutParams: CategoryPutParams;
 }) => {
   const accessToken = getCookie('access_token');
-  if (!accessToken) throw new Error('accessToken is undefined');
+  if (!accessToken) window.location.href = '/login';
   if (!patchId) throw new Error('patchId is undefined');
 
   const response = await fetch(
@@ -98,7 +98,7 @@ export const deleteCategory = async ({
   deleteId: number;
 }) => {
   const accessToken = getCookie('access_token');
-  if (!accessToken) throw new Error('accessToken is undefined');
+  if (!accessToken) window.location.href = '/login';
   const response = await fetch(
     `${process.env.SQUAD_MAP_OAUTH_URL}/map/${mapId}/categories/${deleteId}`,
     {

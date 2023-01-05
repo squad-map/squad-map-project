@@ -3,7 +3,7 @@ import { getCookie } from '@/utils/cookie';
 
 export const getGroupMembers = async (mapId: number) => {
   const accessToken = getCookie('access_token');
-  if (!accessToken) throw new Error('accessToken is undefined');
+  if (!accessToken) window.location.href = '/login';
 
   const response = await fetch(
     `${process.env.SQUAD_MAP_OAUTH_URL}/map/${mapId}/groups`,
@@ -30,7 +30,7 @@ export const postGroupMember = async (
   groupPostBody: GroupPostParams
 ) => {
   const accessToken = getCookie('access_token');
-  if (!accessToken) throw new Error('accessToken is undefined');
+  if (!accessToken) window.location.href = '/login';
 
   const response = await fetch(
     `${process.env.SQUAD_MAP_OAUTH_URL}/map/${mapId}/groups`,
@@ -58,7 +58,7 @@ export const putGroupMember = async (
   groupPutBody: GroupPutParams
 ) => {
   const accessToken = getCookie('access_token');
-  if (!accessToken) throw new Error('accessToken is undefined');
+  if (!accessToken) window.location.href = '/login';
 
   const response = await fetch(
     `${process.env.SQUAD_MAP_OAUTH_URL}/map/${mapId}/groups`,
@@ -83,7 +83,7 @@ export const putGroupMember = async (
 
 export const deleteGroupMember = async (mapId: number, memberId: number) => {
   const accessToken = getCookie('access_token');
-  if (!accessToken) throw new Error('accessToken is undefined');
+  if (!accessToken) window.location.href = '/login';
 
   const response = await fetch(
     `${process.env.SQUAD_MAP_OAUTH_URL}/map/${mapId}/groups/${memberId}`,

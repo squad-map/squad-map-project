@@ -7,7 +7,7 @@ export const getMypage = async (name = '') => {
     : `${process.env.SQUAD_MAP_OAUTH_URL}/map/group`;
 
   const accessToken = getCookie('access_token');
-  if (!accessToken) throw new Error('accessToken is undefined');
+  if (!accessToken) window.location.href = '/login';
 
   const response = await fetch(getMapURL, {
     method: 'GET',
@@ -28,7 +28,7 @@ export const getMypage = async (name = '') => {
 export const postMypage = async (myPagePostParams: MypagePostParams) => {
   const accessToken = getCookie('access_token');
 
-  if (!accessToken) throw new Error('accessToken is undefined');
+  if (!accessToken) window.location.href = '/login';
 
   const response = await fetch(`${process.env.SQUAD_MAP_OAUTH_URL}/map`, {
     method: 'POST',
@@ -52,7 +52,7 @@ export const putMyPage = async (
   mypagePutParams: MypagePutParams
 ) => {
   const accessToken = getCookie('access_token');
-  if (!accessToken) throw new Error('accessToken is undefined');
+  if (!accessToken) window.location.href = '/login';
   if (!patchId) throw new Error('id is undefined');
   if (!mypagePutParams) throw new Error('requestbody is undefined');
 
@@ -79,7 +79,7 @@ export const putMyPage = async (
 
 export const deleteMypage = async (deleteId: number) => {
   const accessToken = getCookie('access_token');
-  if (!accessToken) throw new Error('accessToken is undefined');
+  if (!accessToken) window.location.href = '/login';
   const response = await fetch(
     `${process.env.SQUAD_MAP_OAUTH_URL}/map/${deleteId}`,
     {
@@ -101,7 +101,7 @@ export const deleteMypage = async (deleteId: number) => {
 
 export const getMapDetailInfo = async (mapId: number) => {
   const accessToken = getCookie('access_token');
-  if (!accessToken) throw new Error('accessToken is undefined');
+  if (!accessToken) window.location.href = '/login';
 
   const response = await fetch(
     `${process.env.SQUAD_MAP_OAUTH_URL}/map/${mapId}`,
