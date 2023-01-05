@@ -3,8 +3,8 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
-import { getMaps } from '@/apis/home';
-import { getMypage } from '@/apis/mypage';
+import { getPublicMaps } from '@/apis/home';
+import { getGroupMaps } from '@/apis/mypage';
 import { Icons } from '@/assets/icons';
 import Button from '@/components/common/Button';
 import Card from '@/components/common/Card';
@@ -20,12 +20,6 @@ import { MapType } from '@/interfaces/Map';
 import { userState } from '@/recoil/atoms/user';
 import theme from '@/styles/theme';
 
-// const getMapsData = async (searchValue: string, type: string) => {
-//   const response = await fetch(`/maps?type=${type}&searchValue=${searchValue}`);
-//   const maps = await response.json();
-//   return maps;
-// };
-
 export default function HomePage() {
   const [searchValue, setSerachValue] = useState('');
   // const debouncedValue = useDebounce(searchValue, 500);
@@ -34,10 +28,10 @@ export default function HomePage() {
 
   const {
     data: mapsData,
-    isLoading: loading,
+    isLoading: mapsLoading,
     refetch: refetchMaps,
   } = useQuery(['allMaps'], () =>
-    searchType === 'public' ? getMaps(0) : getMypage('')
+    searchType === 'public' ? getPublicMaps(0) : getGroupMaps('')
   );
 
   const handleSearchInput = ({
@@ -58,8 +52,16 @@ export default function HomePage() {
     mapsData &&
     mapsData.code !== SUCCESS_MAPS_DATA &&
     mapsData.code !== SUCCESS_MAPS_GROUP_DATA
-  )
+  ) {
     return <div>API Error</div>;
+  }
+
+  if (!mapsData) {
+    if (mapsLoading) {
+      return <LoadingSpinner size="large" />;
+    }
+    return <div>API Error</div>;
+  }
 
   return (
     <section className="w-full h-full relative">
@@ -108,22 +110,19 @@ export default function HomePage() {
             </Button>
           )}
         </nav>
-        {loading ? (
-          <LoadingSpinner size="xLarge" />
-        ) : (
-          <div className="mb-16">
-            <GridCards>
-              {mapsData.data.content &&
-                mapsData.data.content.map((item: MapType) => (
-                  <Link to={`/map/${item.id}`} key={`map-${item.id}`}>
-                    <Card size="small" key={`HomeCard-${item.id}`}>
-                      <Item item={item} key={`Card-${item.id}`} />
-                    </Card>
-                  </Link>
-                ))}
-            </GridCards>
-          </div>
-        )}
+        <div className="mb-16">
+          <GridCards>
+            {mapsData &&
+              mapsData.data.content &&
+              mapsData.data.content.map((item: MapType) => (
+                <Link to={`/map/${item.id}`} key={`map-${item.id}`}>
+                  <Card size="small" key={`HomeCard-${item.id}`}>
+                    <Item item={item} key={`Card-${item.id}`} />
+                  </Card>
+                </Link>
+              ))}
+          </GridCards>
+        </div>
       </div>
     </section>
   );

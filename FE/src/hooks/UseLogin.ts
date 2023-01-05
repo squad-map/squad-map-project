@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 
+import { API_URL } from '@/constants/url';
 import { userState } from '@/recoil/atoms/user';
 import { getCookie, setCookie, removeCookie } from '@/utils/cookie';
 import { getErrorMessage } from '@/utils/util';
@@ -11,16 +12,13 @@ export const UseLogin = () => {
 
   const SNSLogin = async (code: string, state: string, sns: string) => {
     try {
-      const response = await fetch(
-        `${process.env.SQUAD_MAP_OAUTH_URL}/login/${sns}`,
-        {
-          method: 'POST',
-          headers: {
-            'content-type': 'application/json',
-          },
-          body: JSON.stringify({ code, state }),
-        }
-      );
+      const response = await fetch(`${API_URL}/login/${sns}`, {
+        method: 'POST',
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify({ code, state }),
+      });
       const loginData = await response.json();
 
       if (!Object.hasOwn(loginData.data, 'nickname')) {
@@ -57,7 +55,7 @@ export const UseSilentRefresh = () => {
     try {
       const refreshToken = getCookie('refresh_token');
 
-      const response = await fetch(`${process.env.SQUAD_MAP_OAUTH_URL}/login`, {
+      const response = await fetch(`${API_URL}/login`, {
         headers: {
           Authorization: `Bearer ${refreshToken}`,
         },
