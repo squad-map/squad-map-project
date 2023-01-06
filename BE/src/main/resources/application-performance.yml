@@ -23,7 +23,6 @@ spring:
     properties:
       hibernate:
         default_batch_fetch_size: 1000
-        show_sql: true
         format_sql: true
 
     open-in-view: false
@@ -37,10 +36,5 @@ spring:
     redis:
       time-to-live: 5000000
 
-logging:
-  level:
-    org:
-      hibernate:
-        sql : debug
 
 
