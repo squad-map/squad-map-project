@@ -8,6 +8,11 @@ import { queryClient } from '../src';
 import { initialize, mswDecorator } from "msw-storybook-addon";
 import { cookieDecorator } from 'storybook-addon-cookie';
 
+if (typeof global.process === 'undefined') {
+  const { worker } = require('../src/mocks/browsers')
+  worker.start()
+}
+
 // MSW 초기화 함수 실행
 initialize();
 

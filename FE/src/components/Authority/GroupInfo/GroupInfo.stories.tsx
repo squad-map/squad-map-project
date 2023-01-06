@@ -1,4 +1,5 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
+import { rest } from 'msw';
 
 import GroupInfo from './index';
 
