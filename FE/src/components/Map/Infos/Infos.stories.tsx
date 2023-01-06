@@ -25,7 +25,7 @@ export default {
   parameters: {
     msw: {
       handlers: [
-        rest.get(`${API_URL}/map/1/categories`, (req, res, ctx) =>
+        rest.get(`/map/:mapId/categories`, (req, res, ctx) =>
           res(
             ctx.status(200),
             ctx.delay(1000),

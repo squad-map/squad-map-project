@@ -1,10 +1,32 @@
 import {
   SUCCESS_DELETE_MAP,
   SUCCESS_GET_DETAIL_MAP,
+  SUCCESS_MAPS_DATA,
   SUCCESS_MAPS_GROUP_DATA,
   SUCCESS_PATCH_MAP,
   SUCCESS_POST_MAP,
 } from './code';
+
+export const GET_HOME_PUBLIC_MAPS_DATA = {
+  code: SUCCESS_MAPS_DATA,
+  message: 'OK',
+  data: {
+    content: [
+      {
+        id: 1,
+        map_name: 'first map',
+        map_emoji: 'U+1F600',
+        host_id: 1,
+        host_nickname: 'nickname',
+        host_profile_image: 'image',
+        places_count: 1,
+      },
+    ],
+    size: 10,
+    number_of_elements: 1,
+    has_next: false,
+  },
+};
 
 export const GET_GROUP_MAPS_DATA = {
   code: SUCCESS_MAPS_GROUP_DATA,
