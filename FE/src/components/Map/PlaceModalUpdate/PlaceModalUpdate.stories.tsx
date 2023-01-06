@@ -23,6 +23,7 @@ Default.args = {
     place_name: '양재천',
     place_id: 1,
     story: '양재천',
+    comments: { content: [], size: 0, number_of_elements: 0, has_next: false },
   },
   categoryInfo: [
     { category_color: '#800000', category_id: 4, category_name: '걷기좋음' },

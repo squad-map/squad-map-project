@@ -107,7 +107,6 @@ const GroupInfo = ({
         mapId,
         memberId: selectedMemberId,
       });
-    refetchGroupMembers();
     setIsPopup(false);
   };
 

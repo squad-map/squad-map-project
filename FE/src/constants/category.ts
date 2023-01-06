@@ -12,12 +12,12 @@ export const GET_MAP_CAEGORIES_DATA = {
     {
       category_id: 1,
       category_name: 'first category',
-      category_color: '#584CF4',
+      category_color: '#FF4500',
     },
     {
       category_id: 2,
       category_name: 'second category',
-      category_color: '#FFC02E',
+      category_color: '#BC8F8F',
     },
   ],
 };

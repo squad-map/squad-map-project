@@ -1,17 +1,26 @@
+import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import SearchModalContent from '../SearchModalContent';
 
+import { getMapCategories } from '@/apis/category';
 import Button from '@/components/common/Button';
 import Card from '@/components/common/Card';
 import GlobalModal from '@/components/common/GlobalModal';
 import Text from '@/components/common/Text';
+import { SUCCESS_GET_CATEGORIES } from '@/constants/code';
+import { UseGetMapId } from '@/hooks/UseGetMapId';
 import theme from '@/styles/theme';
 import { PlaceType } from '@/types/map';
 
 const PlaceInfos = ({ placeInfos }: { placeInfos: PlaceType[] }) => {
+  const mapId = UseGetMapId();
   const [isOpenGlobalModal, setIsOpenGlobalModal] = useState(false);
   const [placeInfo, setPlaceInfo] = useState<PlaceType>();
+
+  const { data: mapCategory } = useQuery(['MapCategory', mapId], () =>
+    getMapCategories(mapId)
+  );
 
   const handleClickPlace = (id: number) => {
     const clickedPlace = placeInfos.find(
@@ -21,6 +30,9 @@ const PlaceInfos = ({ placeInfos }: { placeInfos: PlaceType[] }) => {
     setPlaceInfo(clickedPlace);
     setIsOpenGlobalModal(true);
   };
+
+  if (mapCategory && mapCategory.code !== SUCCESS_GET_CATEGORIES)
+    return <div>API Error</div>;
 
   return (
     placeInfos && (
@@ -57,12 +69,15 @@ const PlaceInfos = ({ placeInfos }: { placeInfos: PlaceType[] }) => {
               </div>
             </Card>
           ))}
-        {isOpenGlobalModal && (
+        {mapCategory && isOpenGlobalModal && (
           <GlobalModal
             size="large"
             handleCancelClick={() => setIsOpenGlobalModal(false)}
           >
-            <SearchModalContent placeInfo={placeInfo as PlaceType} />
+            <SearchModalContent
+              placeInfo={placeInfo as PlaceType}
+              mapCategory={mapCategory.data}
+            />
           </GlobalModal>
         )}
       </section>

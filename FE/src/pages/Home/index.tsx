@@ -58,7 +58,7 @@ export default function HomePage() {
 
   if (!mapsData) {
     if (mapsLoading) {
-      return <LoadingSpinner size="large" />;
+      return <LoadingSpinner size="xLarge" />;
     }
     return <div>API Error</div>;
   }

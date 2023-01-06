@@ -1,22 +1,25 @@
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { getMapCategories } from '@/apis/category';
 import { postPlace } from '@/apis/place';
 import Button from '@/components/common/Button';
 import Text from '@/components/common/Text';
 import KakaoStaticMap from '@/components/KaKaoMap/KakaoStaticMap';
-import { SUCCESS_GET_CATEGORIES, SUCCESS_POST_PLACE } from '@/constants/code';
+import { SUCCESS_POST_PLACE } from '@/constants/code';
 import { UseGetMapId } from '@/hooks/UseGetMapId';
 import theme from '@/styles/theme';
 import { CategoryType, PlaceType } from '@/types/map';
 
 interface SearchModalContentprops {
   placeInfo: PlaceType;
+  mapCategory: CategoryType[];
 }
 
-const SearchModalContent = ({ placeInfo }: SearchModalContentprops) => {
+const SearchModalContent = ({
+  placeInfo,
+  mapCategory,
+}: SearchModalContentprops) => {
   const mapId = UseGetMapId();
   const navigate = useNavigate();
   const [placeForm, setPlaceForm] = useState({
@@ -24,10 +27,6 @@ const SearchModalContent = ({ placeInfo }: SearchModalContentprops) => {
     category_id: 0,
     color: '',
   });
-
-  const { data: mapCategory } = useQuery(['MapCategory'], () =>
-    getMapCategories(mapId)
-  );
 
   const fetchPostPlace = useMutation(postPlace, {
     onSuccess: ({ code }: { code: string }) => {
@@ -64,9 +63,6 @@ const SearchModalContent = ({ placeInfo }: SearchModalContentprops) => {
     fetchPostPlace.mutate({ mapId, placePostParams: newPlace });
   };
 
-  if (mapCategory && mapCategory.code !== SUCCESS_GET_CATEGORIES)
-    return <div>API Error</div>;
-
   return (
     <section className="h-full flex flex-col gap-4 items-center p-8">
       <h1 className="text-2xl">{placeInfo.place_name}</h1>
@@ -82,7 +78,7 @@ const SearchModalContent = ({ placeInfo }: SearchModalContentprops) => {
           <span className="text-lightGray">카테고리 색상</span>
           <div className="flex flex-wrap">
             {mapCategory &&
-              mapCategory.data.map((category: CategoryType) => (
+              mapCategory.map((category: CategoryType) => (
                 <button
                   type="button"
                   aria-label="color-button"
@@ -98,7 +94,7 @@ const SearchModalContent = ({ placeInfo }: SearchModalContentprops) => {
                   }
                 />
               ))}
-            {mapCategory && mapCategory.data.length === 0 && (
+            {mapCategory && mapCategory.length === 0 && (
               <p className="text-xs">등록된 카테고리가 없습니다.</p>
             )}
           </div>
