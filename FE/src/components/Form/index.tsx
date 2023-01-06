@@ -152,7 +152,7 @@ const Form = ({ mapId, state, type }: FormProps) => {
       full_disclosure: formData.authority,
     };
 
-    if (checkFormData()) {
+    if (method !== 'delete' && checkFormData()) {
       setModalText({
         title: '지도 이름/이모지를 입력해주세요.',
         description: '지도 이름 또는 이모지 확인',

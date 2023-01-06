@@ -65,7 +65,7 @@ const Infos = ({
 
   const user = useRecoilValue(userState);
 
-  const { data: mapCategory } = useQuery(['MapCategory'], () =>
+  const { data: mapCategory } = useQuery(['MapCategory', mapId], () =>
     getMapCategories(mapId)
   );
 
@@ -100,7 +100,7 @@ const Infos = ({
       setPlaceDetailInfo(response.data);
       if (type === 'GET') {
         setIsOpenGlobalModal(true);
-      } else {
+      } else if (type === 'UPDATE') {
         setIsOpenUpdateModal(true);
       }
     }

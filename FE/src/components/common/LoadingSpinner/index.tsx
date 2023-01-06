@@ -4,7 +4,7 @@ const selectSize = {
   small: tw`w-4 h-4 border-2 m-[-2px]`,
   medium: tw`w-8 h-8 border-[3px] m-[-4px]`,
   large: tw`w-12 h-12 border-4 m-[-8px]`,
-  xLarge: tw`w-20 h-20 border-[6px] m-[12px]`,
+  xLarge: tw`w-20 h-20 border-[6px] m-[-12px]`,
 };
 
 interface LoadingSpinnerProps {

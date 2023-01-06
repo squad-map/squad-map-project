@@ -4,6 +4,7 @@ import GroupInfo from '../../Authority/GroupInfo';
 import SearchForm from '../../Authority/SearchForm';
 
 import { getGroupMembers } from '@/apis/group';
+import LoadingSpinner from '@/components/common/LoadingSpinner';
 import Text from '@/components/common/Text';
 import { SUCCESS_GET_GROUP_MEMBERS } from '@/constants/code';
 import { GroupMemberType } from '@/interfaces/group';
@@ -14,18 +15,26 @@ interface AuthorityProps {
 }
 
 const Authority = ({ mapId }: AuthorityProps) => {
-  const { data: groupMembers, refetch: refetchGroupMembers } = useQuery(
-    ['GroupMembers'],
-    () => {
-      if (mapId) {
-        return getGroupMembers(mapId);
-      }
-      return true;
+  const {
+    data: groupMembers,
+    isLoading: groupMembersLoading,
+    refetch: refetchGroupMembers,
+  } = useQuery(['GroupMembers', mapId], () => {
+    if (mapId) {
+      return getGroupMembers(mapId);
     }
-  );
+    return true;
+  });
 
   if (groupMembers && groupMembers.code !== SUCCESS_GET_GROUP_MEMBERS)
     return <div>API Error</div>;
+
+  if (!groupMembers) {
+    if (groupMembersLoading) {
+      return <LoadingSpinner size="large" />;
+    }
+    return <div>API Error</div>;
+  }
 
   return (
     <section
