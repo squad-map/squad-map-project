@@ -33,7 +33,7 @@ const Header = ({ children }: HeaderProps) => {
           <Image url={Images.Logo} alt="SquadMap Logo" />
         </Link>
         <div className="flex items-center gap-8">
-          {user?.nickname ? (
+          {user && user.nickname ? (
             <Button
               size="regular"
               color={theme.color.white}
@@ -71,7 +71,7 @@ const Header = ({ children }: HeaderProps) => {
           <Login />
         </GlobalModal>
       )}
-      {user?.nickname && nickNameModal && (
+      {user && user.nickname && nickNameModal && (
         <GlobalModal
           size="small"
           handleCancelClick={() => setNickNameModal(false)}
