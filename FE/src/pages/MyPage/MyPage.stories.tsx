@@ -3,6 +3,7 @@ import { rest } from 'msw';
 import MyPage from './index';
 
 import { myPageMapsData } from '@/constants/dummyData';
+import { API_URL } from '@/constants/url';
 
 export default {
   title: 'pages/MyPage',

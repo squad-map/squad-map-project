@@ -87,7 +87,7 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack serve --config config/webpack.dev.js --progress",
     "build": "cross-env NODE_ENV=production webpack --config config/webpack.prod.js --progress",
-    "storybook": "start-storybook -p 6006 -s public",
+    "storybook": "cross-env STORYBOOK_API_URL=http://localhost:6006 start-storybook -p 6006 -s public",
     "test-storybook": "test-storybook",
     "test": "react-scripts test"
   },

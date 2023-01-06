@@ -4,7 +4,7 @@ import { rest } from 'msw';
 import HomePage from './index';
 
 import { homeMapsData } from '@/constants/dummyData';
-import { API_URL } from '@/constants/url';
+import { GET_GROUP_MAPS_DATA } from '@/constants/mypage';
 import UseSetRecoilUser from '@/hooks/UseSetRecoillUser';
 
 export default {
@@ -13,8 +13,11 @@ export default {
   parameters: {
     msw: {
       handlers: [
-        rest.get(`${API_URL}/map/public?lastMapId=1`, (req, res, ctx) =>
+        rest.get(`/map/public?lastMapId=1`, (req, res, ctx) =>
           res(ctx.status(200), ctx.delay(1000), ctx.json(homeMapsData))
+        ),
+        rest.get(`/map/group?name=:name`, (req, res, ctx) =>
+          res(ctx.status(200), ctx.delay(1000), ctx.json(GET_GROUP_MAPS_DATA))
         ),
       ],
     },
