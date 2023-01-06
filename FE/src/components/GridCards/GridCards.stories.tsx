@@ -20,7 +20,7 @@ export default {
       defaultValue: 'small',
     },
     children: {
-      defaultValue: homeMapsData.content.map((item: MapType) => (
+      defaultValue: homeMapsData.data.content.map((item: MapType) => (
         <Card size="small" key={item.id}>
           <Item item={item} />
         </Card>
