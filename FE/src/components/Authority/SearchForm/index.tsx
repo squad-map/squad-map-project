@@ -188,11 +188,11 @@ const SearchForm = ({
                 <li
                   aria-hidden="true"
                   key={user.member_id}
-                  className={`my-3 py-[0.2rem] px-2 ${
+                  className={`my-3 py-[0.5rem] px-2 ${
                     index === selectedIndex
                       ? 'text-white bg-navy'
                       : 'text-black'
-                  } hover:cursor-pointer hover:underline`}
+                  } rounded-xl hover:cursor-pointer hover:underline`}
                   data-id={index}
                   onClick={handleItemClick}
                 >
