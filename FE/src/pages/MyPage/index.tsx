@@ -7,6 +7,7 @@ import Button from '@/components/common/Button';
 import Card from '@/components/common/Card';
 import Header from '@/components/common/Header';
 import Icon from '@/components/common/Icon';
+import LoadingSpinner from '@/components/common/LoadingSpinner';
 import Text from '@/components/common/Text';
 import GridCards from '@/components/GridCards';
 import Item from '@/components/MyPage/Item';
@@ -15,10 +16,20 @@ import { MyMapType } from '@/interfaces/MyMap';
 import theme from '@/styles/theme';
 
 const MyPage = () => {
-  const { data: myPageData } = useQuery(['myMaps'], () => getGroupMaps());
+  const { data: myPageData, isLoading: groupMapsLoading } = useQuery(
+    ['myMaps'],
+    () => getGroupMaps()
+  );
 
   if (myPageData && myPageData.code !== SUCCESS_MAPS_GROUP_DATA)
     return <div>API Error</div>;
+
+  if (!myPageData) {
+    if (groupMapsLoading) {
+      return <LoadingSpinner size="xLarge" />;
+    }
+    return <div>API Error</div>;
+  }
 
   return (
     <>

@@ -18,9 +18,7 @@ const SearchMap = () => {
   const mapId = UseGetMapId();
   const [placeInfos, setPlaceInfos] = useState<PlaceType[]>([]);
 
-  const { data: mapData } = useQuery(['Map'], () => getMapDetailInfo(mapId), {
-    staleTime: 5 * 60 * 1000, // 5분
-  });
+  const { data: mapData } = useQuery(['Map'], () => getMapDetailInfo(mapId));
 
   const placesSearchCallBack = (data: SearchPlaceType[], status: string) => {
     if (status === kakao.maps.services.Status.OK) {

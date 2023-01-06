@@ -75,13 +75,20 @@ export const GET_MAP_DETAIL_DATA = {
         category_info: {
           category_id: 1,
           category_name: 'first category',
-          category_color: '#584CF4',
+          category_color: '#FFA500',
         },
         places: [
           {
             place_id: 1,
             place_name: 'starbucks',
             address: 'my hometown',
+            latitude: 127.0,
+            longitude: 37.0,
+          },
+          {
+            place_id: 2,
+            place_name: 'Hollys',
+            address: 'Hollys Coffee',
             latitude: 127.0,
             longitude: 37.0,
           },

@@ -11,6 +11,7 @@ import GlobalModal from '@/components/common/GlobalModal';
 import Icon from '@/components/common/Icon';
 import Text from '@/components/common/Text';
 import { SUCCESS_GET_CATEGORIES } from '@/constants/code';
+import { UseGetMapId } from '@/hooks/UseGetMapId';
 import theme from '@/styles/theme';
 import { CategoryType, MapHeaderType } from '@/types/map';
 
@@ -20,6 +21,7 @@ interface HeaderProps {
 }
 
 const Header = ({ headerData, refetchMap }: HeaderProps) => {
+  const mapId = UseGetMapId();
   const [isCategoryModal, setIsCategoryModal] = useState(false);
   const [isModifyCategoryModal, setIsModifyCategoryModal] = useState(false);
   const [clickedCategory, setClickedCategory] = useState({
@@ -35,13 +37,8 @@ const Header = ({ headerData, refetchMap }: HeaderProps) => {
   };
 
   const { data: mapCategories, refetch: refetchMapCategories } = useQuery(
-    ['MapCategories'],
-    () => {
-      if (headerData.map_id) {
-        return getMapCategories(headerData.map_id);
-      }
-      return true;
-    }
+    ['MapCategory', mapId],
+    () => getMapCategories(mapId)
   );
 
   if (mapCategories && mapCategories.code !== SUCCESS_GET_CATEGORIES)
@@ -96,7 +93,7 @@ const Header = ({ headerData, refetchMap }: HeaderProps) => {
               </Button>
             ))}
         </header>
-        {isCategoryModal && (
+        {mapCategories && isCategoryModal && (
           <GlobalModal
             size="medium"
             handleCancelClick={() => setIsCategoryModal(false)}
@@ -109,7 +106,7 @@ const Header = ({ headerData, refetchMap }: HeaderProps) => {
             />
           </GlobalModal>
         )}
-        {isModifyCategoryModal && (
+        {mapCategories && isModifyCategoryModal && (
           <GlobalModal
             size="small"
             handleCancelClick={() => setIsModifyCategoryModal(false)}
