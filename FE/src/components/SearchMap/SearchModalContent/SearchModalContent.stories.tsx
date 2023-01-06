@@ -17,4 +17,16 @@ export const Default = Template.bind({});
 
 Default.args = {
   placeInfo: searchPlaceData[0],
+  mapCategory: [
+    {
+      category_id: 1,
+      category_name: 'first category',
+      category_color: '#FF4500',
+    },
+    {
+      category_id: 2,
+      category_name: 'second category',
+      category_color: '#BC8F8F',
+    },
+  ],
 };
