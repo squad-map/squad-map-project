@@ -41,6 +41,7 @@ module.exports = {
       purple: '#3f3cbb',
     },
     animation: {
+      fadeInDown: 'fadeInDown 1s',
       spinner: 'spinner 1s ease infinite',
     },
   },
