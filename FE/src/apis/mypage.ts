@@ -3,14 +3,10 @@ import { MypagePostParams, MypagePutParams } from '@/types/mypage';
 import { getCookie } from '@/utils/cookie';
 
 export const getGroupMaps = async (name = '') => {
-  const getMapURL = name
-    ? `${API_URL}/map/group?name=${name}`
-    : `${API_URL}/map/group`;
-
   const accessToken = getCookie('access_token');
   if (!accessToken) window.location.href = '/login';
 
-  const response = await fetch(getMapURL, {
+  const response = await fetch(`${API_URL}/map/group?name=${name}`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${accessToken}`,
