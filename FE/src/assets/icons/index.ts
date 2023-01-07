@@ -1,6 +1,7 @@
 import ArrowBack from '@/assets/icons/arrowBack.svg';
 import CategoryMap from '@/assets/icons/categoryMap.svg';
 import Close from '@/assets/icons/close.svg';
+import CommentEdit from '@/assets/icons/commentEdit.svg';
 import Edit from '@/assets/icons/edit.svg';
 import Error from '@/assets/icons/error.svg';
 import Exclamation from '@/assets/icons/exclamation.svg';
@@ -38,4 +39,5 @@ export const Icons = {
   Exclamation,
   Refresh,
   Trash,
+  CommentEdit,
 } as const;
