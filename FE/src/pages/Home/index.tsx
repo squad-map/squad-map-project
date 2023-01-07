@@ -1,10 +1,8 @@
-import { useQuery } from '@tanstack/react-query';
 import { useState, useEffect } from 'react';
+import { useInView } from 'react-intersection-observer';
 import { Link } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
-import { getPublicMaps } from '@/apis/home';
-import { getGroupMaps } from '@/apis/mypage';
 import { Icons } from '@/assets/icons';
 import Button from '@/components/common/Button';
 import Card from '@/components/common/Card';
@@ -14,24 +12,28 @@ import LoadingSpinner from '@/components/common/LoadingSpinner';
 import Text from '@/components/common/Text';
 import GridCards from '@/components/GridCards';
 import Item from '@/components/Item';
-// import useDebounce from '@/hooks/UseDebounce';
-import { SUCCESS_MAPS_DATA, SUCCESS_MAPS_GROUP_DATA } from '@/constants/code';
+import useAllMaps from '@/hooks/query/useAllMaps';
+import useDebounce from '@/hooks/UseDebounce';
 import { MapType } from '@/interfaces/Map';
 import { userState } from '@/recoil/atoms/user';
 import theme from '@/styles/theme';
 
 export default function HomePage() {
   const [searchValue, setSerachValue] = useState('');
-  // const debouncedValue = useDebounce(searchValue, 500);
+  const debouncedValue = useDebounce(searchValue, 500);
   const [searchType, setSearchType] = useState('public');
+  const [lastMapId, setLastMapId] = useState(0);
+  const [ref, inView] = useInView();
   const user = useRecoilValue(userState);
+  const [allMapsData, setAllMapsData] = useState<MapType[]>([]);
 
-  const {
-    data: mapsData,
-    isLoading: mapsLoading,
-    refetch: refetchMaps,
-  } = useQuery(['allMaps'], () =>
-    searchType === 'public' ? getPublicMaps(0) : getGroupMaps('')
+  const { mapsData, isLoading, refetch } = useAllMaps(
+    searchType,
+    debouncedValue,
+    allMapsData,
+    setAllMapsData,
+    setLastMapId,
+    lastMapId
   );
 
   const handleSearchInput = ({
@@ -45,19 +47,20 @@ export default function HomePage() {
   };
 
   useEffect(() => {
-    refetchMaps();
-  }, [refetchMaps, searchType]);
+    setLastMapId(0);
+    refetch();
+  }, [refetch, debouncedValue, searchType]);
 
-  if (
-    mapsData &&
-    mapsData.code !== SUCCESS_MAPS_DATA &&
-    mapsData.code !== SUCCESS_MAPS_GROUP_DATA
-  ) {
-    return <div>API Error</div>;
-  }
+  useEffect(() => {
+    if (mapsData && mapsData.data.has_next === false) return;
 
-  if (!mapsData) {
-    if (mapsLoading) {
+    if (inView) {
+      refetch();
+    }
+  }, [inView, mapsData, refetch]);
+
+  if (allMapsData.length === 0) {
+    if (isLoading) {
       return <LoadingSpinner size="xLarge" />;
     }
     return <div>API Error</div>;
@@ -67,15 +70,17 @@ export default function HomePage() {
     <section className="w-full h-full relative">
       <Header />
       <div className="flex flex-col items-center mb-16">
-        <div className="text-center mb-16">
-          <Input
-            type="input"
-            placeholderText="What kind of place are you looking for?"
-            background={`${theme.color.white} url(${Icons.Search}) no-repeat 1rem`}
-            value={searchValue}
-            onChange={handleSearchInput}
-          />
-        </div>
+        {searchType === 'group' && (
+          <div className="text-center mb-16 animate-fadeInDown duration-100">
+            <Input
+              type="input"
+              placeholderText="What kind of place are you looking for?"
+              background={`${theme.color.white} url(${Icons.Search}) no-repeat 1rem`}
+              value={searchValue}
+              onChange={handleSearchInput}
+            />
+          </div>
+        )}
         <nav className="flex gap-4 mb-8">
           <Button
             size="small"
@@ -112,15 +117,30 @@ export default function HomePage() {
         </nav>
         <div className="mb-16">
           <GridCards>
-            {mapsData &&
-              mapsData.data.content &&
-              mapsData.data.content.map((item: MapType) => (
-                <Link to={`/map/${item.id}`} key={`map-${item.id}`}>
-                  <Card size="small" key={`HomeCard-${item.id}`}>
-                    <Item item={item} key={`Card-${item.id}`} />
-                  </Card>
-                </Link>
-              ))}
+            {allMapsData ? (
+              allMapsData.map((item: MapType, idx: number) => (
+                // eslint-disable-next-line react/jsx-no-useless-fragment
+                <>
+                  {idx === allMapsData.length - 1 ? (
+                    <div ref={ref}>
+                      <Link to={`/map/${item.id}`} key={`map-${item.id}`}>
+                        <Card size="small" key={`HomeCard-${item.id}`}>
+                          <Item item={item} key={`Card-${item.id}`} />
+                        </Card>
+                      </Link>
+                    </div>
+                  ) : (
+                    <Link to={`/map/${item.id}`} key={`map-${item.id}`}>
+                      <Card size="small" key={`HomeCard-${item.id}`}>
+                        <Item item={item} key={`Card-${item.id}`} />
+                      </Card>
+                    </Link>
+                  )}
+                </>
+              ))
+            ) : (
+              <div>No Data...</div>
+            )}
           </GridCards>
         </div>
       </div>
