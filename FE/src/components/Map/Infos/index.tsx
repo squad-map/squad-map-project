@@ -1,5 +1,5 @@
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 
 import PlaceModalComment from '../PlaceModalComment';
@@ -21,7 +21,6 @@ import {
   SUCCESS_GET_PLACE,
 } from '@/constants/code';
 import { UseGetMapId } from '@/hooks/UseGetMapId';
-import { PlaceDetail } from '@/interfaces/Place';
 import { userState } from '@/recoil/atoms/user';
 import theme from '@/styles/theme';
 import { CategorizedPlaces, MapUserType, PlaceType } from '@/types/map';
@@ -40,20 +39,9 @@ const Infos = ({
   refetchMap,
 }: InfosProps) => {
   const mapId = UseGetMapId();
-  const [isOpenGlobalModal, setIsOpenGlobalModal] = useState(false);
+  const [modalParams, setModalParams] = useState({ type: 'GET', placeId: 0 });
+  const [isOpenComment, setIsOpenCommentModal] = useState(false);
   const [isOpenUpdateModal, setIsOpenUpdateModal] = useState(false);
-
-  const [placeDetailInfo, setPlaceDetailInfo] = useState<PlaceDetail>({
-    place_id: 0,
-    place_name: '',
-    address: '',
-    latitude: 0,
-    longitude: 0,
-    story: '',
-    detail_link: '',
-    category_id: 0,
-    comments: { content: [], size: 0, number_of_elements: 0, has_next: false },
-  });
 
   const [isModal, setIsModal] = useState(false);
   const [modalText, setModalText] = useState({
@@ -68,6 +56,26 @@ const Infos = ({
   const { data: mapCategory } = useQuery(['MapCategory', mapId], () =>
     getMapCategories(mapId)
   );
+
+  const { data: placeDetail, refetch: placeDetailRefetch } = useQuery(
+    ['PlaceDetail'],
+    () => getPlaceDeatil({ mapId, placeId: modalParams.placeId }),
+    {
+      onSuccess: ({ code }: { code: string }) => {
+        if (code === SUCCESS_GET_PLACE) {
+          if (modalParams.type === 'GET') {
+            setIsOpenCommentModal(true);
+          } else if (modalParams.type === 'UPDATE') {
+            setIsOpenUpdateModal(true);
+          }
+        }
+      },
+    }
+  );
+
+  const handleClickPlace = async (type: 'GET' | 'UPDATE', placeId: number) => {
+    setModalParams({ type, placeId });
+  };
 
   const fetchDeletePlace = useMutation(
     (placeId: number) => deletePlace(mapId, placeId),
@@ -93,19 +101,6 @@ const Infos = ({
     }
   );
 
-  const handleClickPlace = async (type: 'GET' | 'UPDATE', placeId: number) => {
-    const response = await getPlaceDeatil(mapId, placeId);
-
-    if (response.code === SUCCESS_GET_PLACE) {
-      setPlaceDetailInfo(response.data);
-      if (type === 'GET') {
-        setIsOpenGlobalModal(true);
-      } else if (type === 'UPDATE') {
-        setIsOpenUpdateModal(true);
-      }
-    }
-  };
-
   const handleDeletePlace = (placeId: number) => {
     setModalText({
       title: '지도를 삭제하시겠습니까?.',
@@ -122,6 +117,11 @@ const Infos = ({
 
   if (mapCategory && mapCategory.code !== SUCCESS_GET_CATEGORIES)
     return <div>API Error</div>;
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  useEffect(() => {
+    placeDetailRefetch();
+  }, [modalParams, placeDetailRefetch]);
 
   return (
     infoData && (
@@ -202,14 +202,15 @@ const Infos = ({
               </Card>
             ))
           )}
-        {isOpenGlobalModal && (
+        {isOpenComment && (
           <GlobalModal
             size="large"
-            handleCancelClick={() => setIsOpenGlobalModal(false)}
+            handleCancelClick={() => setIsOpenCommentModal(false)}
           >
             <PlaceModalComment
               mapHostId={mapHostId}
-              placeInfo={placeDetailInfo}
+              placeInfo={placeDetail.data}
+              placeDetailRefetch={placeDetailRefetch}
             />
           </GlobalModal>
         )}
@@ -219,7 +220,7 @@ const Infos = ({
             handleCancelClick={() => setIsOpenUpdateModal(false)}
           >
             <PlaceModalUpdate
-              placeInfo={placeDetailInfo}
+              placeInfo={placeDetail.data}
               categoryInfo={mapCategory.data}
               setIsOpenUpdateModal={setIsOpenUpdateModal}
               refetchMap={refetchMap}

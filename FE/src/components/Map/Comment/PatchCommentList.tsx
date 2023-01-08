@@ -2,12 +2,12 @@ import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import { useRecoilValue } from 'recoil';
 
+import PatchCommentModal from './PatchCommentModal';
+
 import { deleteComment } from '@/apis/comment';
 import { Icons } from '@/assets/icons';
-import Button from '@/components/common/Button';
 import GlobalModal from '@/components/common/GlobalModal';
 import Icon from '@/components/common/Icon';
-import Input from '@/components/common/Input';
 import Text from '@/components/common/Text';
 import ModalContent from '@/components/ModalContent';
 import { SUCCESS_DELETE_COMMENT } from '@/constants/code';
@@ -18,11 +18,17 @@ import theme from '@/styles/theme';
 interface PatchCommentListProps {
   mapHostId: number;
   content: CommentType[];
+  placeDetailRefetch: () => void;
 }
 
-const PatchCommentList = ({ mapHostId, content }: PatchCommentListProps) => {
+const PatchCommentList = ({
+  mapHostId,
+  content,
+  placeDetailRefetch,
+}: PatchCommentListProps) => {
   const user = useRecoilValue(userState);
-  const [comment, setComment] = useState('');
+
+  const [comment, setComment] = useState({ commentId: 0, content: '' });
   const [isModal, setIsModal] = useState(false);
   const [isPatchModal, setIsPatchModal] = useState(false);
   const [modalText, setModalText] = useState({
@@ -43,6 +49,7 @@ const PatchCommentList = ({ mapHostId, content }: PatchCommentListProps) => {
             buttonText: '확인',
             handleButtonClick: () => {
               setIsModal(false);
+              placeDetailRefetch();
               return true;
             },
           });
@@ -54,11 +61,6 @@ const PatchCommentList = ({ mapHostId, content }: PatchCommentListProps) => {
       },
     }
   );
-
-  const handlePatchComment = (currentContent: string) => {
-    setComment(currentContent);
-    setIsPatchModal(true);
-  };
 
   const handleDeleteComment = (commentId: number) => {
     setModalText({
@@ -72,10 +74,6 @@ const PatchCommentList = ({ mapHostId, content }: PatchCommentListProps) => {
       },
     });
     setIsModal(true);
-  };
-
-  const handleCommentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setComment(e.target.value);
   };
 
   return (
@@ -93,7 +91,13 @@ const PatchCommentList = ({ mapHostId, content }: PatchCommentListProps) => {
                   <div className="flex gap-2">
                     <button
                       type="button"
-                      onClick={() => handlePatchComment(c.content)}
+                      onClick={() => {
+                        setComment({
+                          commentId: c.comment_id,
+                          content: c.content,
+                        });
+                        setIsPatchModal(true);
+                      }}
                     >
                       <Icon
                         size="small"
@@ -129,22 +133,12 @@ const PatchCommentList = ({ mapHostId, content }: PatchCommentListProps) => {
           size="xSmall"
           handleCancelClick={() => setIsPatchModal(false)}
         >
-          <div>
-            <h1>댓글 수정하기</h1>
-            <Input
-              id="map_emoji"
-              width="10rem"
-              height="2rem"
-              placeholderText="댓글 입력"
-              background={theme.color.inputBackground}
-              type="text"
-              value={comment}
-              onChange={handleCommentChange}
-            />
-            <Button type="button" size="small" color={theme.color.navy}>
-              <Text text="댓글 수정" size="small" color={theme.color.white} />
-            </Button>
-          </div>
+          <PatchCommentModal
+            comment={comment}
+            setComment={setComment}
+            setIsPatchModal={setIsPatchModal}
+            placeDetailRefetch={placeDetailRefetch}
+          />
         </GlobalModal>
       )}
     </>

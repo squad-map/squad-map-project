@@ -10,9 +10,14 @@ import theme from '@/styles/theme';
 interface PlaceModalComment {
   mapHostId: number;
   placeInfo: PlaceDetail;
+  placeDetailRefetch: () => void;
 }
 
-const PlaceModalComment = ({ mapHostId, placeInfo }: PlaceModalComment) => {
+const PlaceModalComment = ({
+  mapHostId,
+  placeInfo,
+  placeDetailRefetch,
+}: PlaceModalComment) => {
   // 기존 placeInfo 데이터에 이미 해당 장소에 대한 댓글들이 존재한다.
   // 댓글을 작성하면 placeInfo 데이터도 업데이트 해야한다. -> 상위 컴포넌트 getPlaceDeatil 함수 부분을 useMutation으로 수정후 refetch 함수를 전달받도록 수정하자.
   const {
@@ -29,9 +34,18 @@ const PlaceModalComment = ({ mapHostId, placeInfo }: PlaceModalComment) => {
       <KakaoStaticMap placeInfo={placeInfo} />
       {/*  댓글 작성 Form */}
       <article className="w-full flex gap-4">
-        {place_id && <CreateComment placeId={place_id} />}
+        {place_id && (
+          <CreateComment
+            placeId={place_id}
+            placeDetailRefetch={placeDetailRefetch}
+          />
+        )}
         {content && (
-          <PatchCommentList mapHostId={mapHostId} content={content} />
+          <PatchCommentList
+            mapHostId={mapHostId}
+            content={content}
+            placeDetailRefetch={placeDetailRefetch}
+          />
         )}
       </article>
       <Button size="xLarge" color={theme.color.yellow}>

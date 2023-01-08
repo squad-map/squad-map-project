@@ -12,9 +12,10 @@ import theme from '@/styles/theme';
 
 interface CreateCommentProps {
   placeId: number;
+  placeDetailRefetch: () => void;
 }
 
-const CreateComment = ({ placeId }: CreateCommentProps) => {
+const CreateComment = ({ placeId, placeDetailRefetch }: CreateCommentProps) => {
   const mapId = UseGetMapId();
   const [comment, setComment] = useState('');
   const [isModal, setIsModal] = useState(false);
@@ -34,6 +35,8 @@ const CreateComment = ({ placeId }: CreateCommentProps) => {
           buttonText: '확인',
           handleButtonClick: () => {
             setIsModal(false);
+            placeDetailRefetch();
+            setComment('');
             return true;
           },
         });
