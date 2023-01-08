@@ -2,9 +2,16 @@ import { API_URL } from '@/constants/url';
 import { PlacePostParams } from '@/types/place';
 import { getCookie } from '@/utils/cookie';
 
-export const getPlaceDeatil = async (mapId: number, placeId: number) => {
+export const getPlaceDeatil = async ({
+  mapId,
+  placeId,
+}: {
+  mapId: number;
+  placeId: number;
+}) => {
   const accessToken = getCookie('access_token');
   if (!accessToken) window.location.href = '/login';
+  if (!placeId) return false;
 
   const response = await fetch(`${API_URL}/map/${mapId}/places/${placeId}`, {
     method: 'GET',
@@ -13,6 +20,7 @@ export const getPlaceDeatil = async (mapId: number, placeId: number) => {
       'Content-Type': 'application/json',
     },
   });
+
   const placeDetail = await response.json();
 
   try {

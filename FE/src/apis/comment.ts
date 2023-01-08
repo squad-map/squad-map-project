@@ -34,10 +34,39 @@ export const postComment = async ({
   }
 };
 
+export const patchComment = async ({
+  commentId,
+  content,
+}: {
+  commentId: number;
+  content: string;
+}) => {
+  const accessToken = getCookie('access_token');
+  if (!accessToken) window.location.href = '/login';
+  if (!commentId) throw new Error('commentId is undefined');
+
+  const response = await fetch(`${API_URL}/comments/${commentId}`, {
+    method: 'PATCH',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ content }),
+  });
+
+  const comment = await response.json();
+
+  try {
+    return comment;
+  } catch (err) {
+    throw new Error(`patchComment api fail err: ${err}`);
+  }
+};
+
 export const deleteComment = async (commentId: number) => {
   const accessToken = getCookie('access_token');
   if (!accessToken) window.location.href = '/login';
-  if (!commentId) throw new Error('placeId is undefined');
+  if (!commentId) throw new Error('commentId is undefined');
 
   const response = await fetch(`${API_URL}/comments/${commentId}`, {
     method: 'DELETE',
