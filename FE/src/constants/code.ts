@@ -33,3 +33,4 @@ export const SUCCESS_PATCH_COMMENT = 'CM-S03';
 export const SUCCESS_DELETE_COMMENT = 'CM-S04';
 
 export const FAIL_AUTHORITY = 'G-F01';
+export const FAIL_DUPLICATE = 'P-F02';
