@@ -168,7 +168,7 @@ const Form = ({ mapId, state, type }: FormProps) => {
 
     if (paramId) {
       if (method === 'patch') {
-        fetchPutMypage.mutate({ paramId, mypagePutParams: newMypage });
+        fetchPutMypage.mutate({ patchId: paramId, mypagePutParams: newMypage });
       } else if (method === 'delete') {
         fetchDeleteMypage.mutate(paramId);
       }
