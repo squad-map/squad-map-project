@@ -3,13 +3,11 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
-import * as S from './Header.style';
-import Navigation from './Navigation';
-
 import { Images } from '@/assets/images';
 import Button from '@/components/common/Button';
 import GlobalModal from '@/components/common/GlobalModal';
 import Image from '@/components/common/Image';
+import Navigation from '@/components/common/Navigation';
 import Text from '@/components/common/Text';
 import Login from '@/components/Login';
 import NickName from '@/components/NickName';
@@ -29,13 +27,13 @@ const Header = ({ children }: HeaderProps) => {
   const user = useRecoilValue(userState);
 
   return (
-    <S.Container>
-      <S.Wrapper>
+    <section className="w-full h-[7.5rem] mb-16 bg-navy">
+      <div className="flex justify-between items-center p-8">
         <Link to="/">
           <Image url={Images.Logo} alt="SquadMap Logo" />
         </Link>
-        <S.RightArea>
-          {user?.nickname ? (
+        <div className="flex items-center gap-8">
+          {user && user.nickname ? (
             <Button
               size="regular"
               color={theme.color.white}
@@ -62,8 +60,8 @@ const Header = ({ children }: HeaderProps) => {
             data-testid="menuBtn"
             onClick={handleOpenMenu}
           />
-        </S.RightArea>
-      </S.Wrapper>
+        </div>
+      </div>
       <Navigation menu={menu} handleCloseMenu={handleCloseMenu} />
       {openLoginModal && (
         <GlobalModal
@@ -73,7 +71,7 @@ const Header = ({ children }: HeaderProps) => {
           <Login />
         </GlobalModal>
       )}
-      {user?.nickname && nickNameModal && (
+      {user && user.nickname && nickNameModal && (
         <GlobalModal
           size="small"
           handleCancelClick={() => setNickNameModal(false)}
@@ -82,7 +80,7 @@ const Header = ({ children }: HeaderProps) => {
         </GlobalModal>
       )}
       {children}
-    </S.Container>
+    </section>
   );
 };
 

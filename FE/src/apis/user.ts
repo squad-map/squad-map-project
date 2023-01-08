@@ -1,40 +1,38 @@
+import { API_URL } from '@/constants/url';
 import { getCookie } from '@/utils/cookie';
 
 export const findNickName = async (nickname: string) => {
   const accessToken = getCookie('access_token');
-  if (!accessToken) throw new Error('accessToken is undefined');
+  if (!accessToken) window.location.href = '/login';
 
-  const response = await fetch(
-    `${process.env.SQUAD_MAP_OAUTH_URL}/members?nickname=${nickname}`,
-    {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
-      },
-    }
-  );
+  const response = await fetch(`${API_URL}/members?nickname=${nickname}`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+    },
+  });
 
-  const nickNameData = await response.json();
+  const nickName = await response.json();
 
   try {
-    return nickNameData;
+    return nickName;
   } catch (err) {
-    throw new Error(`postNickName api fail err: ${err}`);
+    throw new Error(`findNickName api fail err: ${err}`);
   }
 };
 
-export const patchNickName = async (nickName: string) => {
+export const patchNickName = async (nickname: string) => {
   const accessToken = getCookie('access_token');
-  if (!accessToken) throw new Error('accessToken is undefined');
+  if (!accessToken) window.location.href = '/login';
 
-  const response = await fetch(`${process.env.SQUAD_MAP_OAUTH_URL}/members`, {
+  const response = await fetch(`${API_URL}/members`, {
     method: 'PATCH',
     headers: {
-      Authorization: `bearer ${accessToken}`,
+      Authorization: `Bearer ${accessToken}`,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ nickname: nickName }),
+    body: JSON.stringify({ nickname }),
   });
 
   const updatedData = await response.json();
@@ -42,6 +40,6 @@ export const patchNickName = async (nickName: string) => {
   try {
     return updatedData;
   } catch (err) {
-    throw new Error(`postNickName api fail err: ${err}`);
+    throw new Error(`patchNickName api fail err: ${err}`);
   }
 };
