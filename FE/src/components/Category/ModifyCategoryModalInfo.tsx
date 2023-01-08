@@ -114,7 +114,7 @@ const ModifyCategoryModalInfo = ({
 
     fetchPutCategory.mutate({
       mapId,
-      paramId: categoryForm.category_id,
+      patchId: categoryForm.category_id,
       categoryPutParams: newCategory,
     });
   };
