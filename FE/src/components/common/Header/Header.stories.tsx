@@ -2,28 +2,18 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 
 import Header from './index';
 
-import useSetRecoilUser from '@/hooks/useSetRecoillUser';
-
 export default {
-  title: 'common/Header',
+  title: 'Header',
   component: Header,
 } as ComponentMeta<typeof Header>;
 
-const LoggedInHeaderTemplate: ComponentStory<typeof Header> = () => {
-  useSetRecoilUser({ member_id: 1, nickname: 'muffin1', profileImageUrl: '' });
+const Template: ComponentStory<typeof Header> = () => <Header />;
 
-  return <Header />;
-};
+export const Default = Template.bind({});
 
-const LoggedOutHeaderTemplate: ComponentStory<typeof Header> = () => {
-  useSetRecoilUser(null);
+export const loggedInHeader = Template.bind({});
 
-  return <Header />;
-};
-
-export const loggedInHeader = LoggedInHeaderTemplate.bind({});
-
-export const loggedOutHeader = LoggedOutHeaderTemplate.bind({});
+export const loggedOutHeader = Template.bind({});
 
 loggedInHeader.parameters = {
   docs: {

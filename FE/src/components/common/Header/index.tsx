@@ -3,11 +3,13 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 
+import * as S from './Header.style';
+import Navigation from './Navigation';
+
 import { Images } from '@/assets/images';
 import Button from '@/components/common/Button';
 import GlobalModal from '@/components/common/GlobalModal';
 import Image from '@/components/common/Image';
-import Navigation from '@/components/common/Navigation';
 import Text from '@/components/common/Text';
 import Login from '@/components/Login';
 import NickName from '@/components/NickName';
@@ -27,13 +29,13 @@ const Header = ({ children }: HeaderProps) => {
   const user = useRecoilValue(userState);
 
   return (
-    <section className="w-full h-[7.5rem] mb-16 bg-navy">
-      <div className="flex justify-between items-center p-8">
+    <S.Container>
+      <S.Wrapper>
         <Link to="/">
           <Image url={Images.Logo} alt="SquadMap Logo" />
         </Link>
-        <div className="flex items-center gap-8">
-          {user && user.nickname ? (
+        <S.RightArea>
+          {user?.nickname ? (
             <Button
               size="regular"
               color={theme.color.white}
@@ -60,8 +62,8 @@ const Header = ({ children }: HeaderProps) => {
             data-testid="menuBtn"
             onClick={handleOpenMenu}
           />
-        </div>
-      </div>
+        </S.RightArea>
+      </S.Wrapper>
       <Navigation menu={menu} handleCloseMenu={handleCloseMenu} />
       {openLoginModal && (
         <GlobalModal
@@ -71,7 +73,7 @@ const Header = ({ children }: HeaderProps) => {
           <Login />
         </GlobalModal>
       )}
-      {user && user.nickname && nickNameModal && (
+      {user?.nickname && nickNameModal && (
         <GlobalModal
           size="small"
           handleCancelClick={() => setNickNameModal(false)}
@@ -80,7 +82,7 @@ const Header = ({ children }: HeaderProps) => {
         </GlobalModal>
       )}
       {children}
-    </section>
+    </S.Container>
   );
 };
 

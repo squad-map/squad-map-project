@@ -1,26 +1,14 @@
-import tw from 'twin.macro';
+import * as S from './Icon.style';
 
-const selectSize = {
-  small: tw`w-[1rem] h-[1rem]`,
-  medium: tw`w-[2rem] h-[2rem]`,
-  large: tw`w-[4rem] h-[4rem]`,
-};
-
-interface IconProps {
+interface IIcon {
   size: 'small' | 'medium' | 'large';
   url: string;
   alt: string;
   onClick?: (e: React.MouseEvent<HTMLImageElement>) => void;
 }
 
-const Icon = ({ size, url, alt, ...props }: IconProps) => (
-  <img
-    className="block cursor-pointer"
-    css={selectSize[size]}
-    src={url}
-    alt={alt}
-    {...props}
-  />
+const Icon = ({ size, url, alt, ...props }: IIcon) => (
+  <S.Icon size={size} src={url} alt={alt} {...props} />
 );
 
 export default Icon;

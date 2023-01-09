@@ -1,8 +1,10 @@
+import * as S from './ReportErrror.style';
+
 const ReportError = () => (
-  <div className="flex flex-col items-center">
-    <div className="mt-4 text-2xl">오류 사항 제보</div>
-    <div>서비스 준비중입니다👀...</div>
-  </div>
+  <S.ReportError>
+    <S.Title>오류 사항 제보</S.Title>
+    <S.Content>서비스 준비중입니다👀...</S.Content>
+  </S.ReportError>
 );
 
 export default ReportError;

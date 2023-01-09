@@ -1,9 +1,12 @@
+import * as S from './GridCards.style';
+
 interface GridCardsProps {
+  size: string;
   children: React.ReactNode;
 }
 
-const GridCards = ({ children }: GridCardsProps) => (
-  <section className="relative grid grid-cols-3 gap-4">{children}</section>
+const GridCards = ({ size, children }: GridCardsProps) => (
+  <S.GridCards size={size}>{children}</S.GridCards>
 );
 
 export default GridCards;

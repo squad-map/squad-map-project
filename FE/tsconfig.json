@@ -7,17 +7,15 @@
     "allowJs": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"] // baseUrl를 기준으로하여 src폴더 아래의 파일들만 체킹하기 위해 경로 지정
-      // import { $ } from '@/utils/dom'; 요런식으로 사용가능
+    "@/*": ["src/*"] // baseUrl를 기준으로하여 src폴더 아래의 파일들만 체킹하기 위해 경로 지정
+    // import { $ } from '@/utils/dom'; 요런식으로 사용가능
     },
     "outDir": "./dist", // 타입스크립트가 컴파일한 파일들 출력 경로
     "sourceMap": true,
     "esModuleInterop": true, // ES6 모듈 사양을 준수하여 CommonJS 모듈을 가져올수 있다.
     "strict": true,
-    "skipLibCheck": true,
-    "jsxImportSource": "@emotion/react"
+    "skipLibCheck": true
   },
-  "files": ["src/types/twin.d.ts"],
   "include": ["src"],
   "exclude": ["node_modules", "dist"]
 }

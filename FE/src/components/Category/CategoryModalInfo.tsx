@@ -1,68 +1,50 @@
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 
+import * as S from './CategoryModalInfo.style';
+
 import { postCategory } from '@/apis/category';
+import { postPlace } from '@/apis/place';
 import { Icons } from '@/assets/icons';
 import Button from '@/components/common/Button';
-import GlobalModal from '@/components/common/GlobalModal';
 import Icon from '@/components/common/Icon';
-import Input from '@/components/common/Input';
 import Text from '@/components/common/Text';
-import ModalContent from '@/components/ModalContent';
-import { SUCCESS_POST_CATEGORY } from '@/constants/code';
+import Input from '@/components/Input';
 import { CategoryColors } from '@/constants/colors';
 import theme from '@/styles/theme';
-import { CategoryType, MapHeaderType } from '@/types/map';
-import {
-  unicodeToEmoji,
-  isExistBgColor,
-  checkDuplicateColor,
-} from '@/utils/util';
+import { unicodeToEmoji } from '@/utils/util';
 
-interface CategoryModalInfoProps {
-  headerData: MapHeaderType;
-  mapCategories: CategoryType[];
-  setIsCategoryModal: React.Dispatch<React.SetStateAction<boolean>>;
-  refetchMapCategories: () => void;
-}
-
-const CategoryModalInfo = ({
-  headerData,
-  mapCategories,
-  setIsCategoryModal,
-  refetchMapCategories,
-}: CategoryModalInfoProps) => {
-  // category_info가 아닌 getMapCategories API 호출을 통해 받아온 카테고리는 disabeld 처리
-  const { map_id, emoji, title } = headerData;
-
+const CategoryModalInfo = ({ story, mapData, placeInfo }: any) => {
   const [categoryFormData, setCategoryFormData] = useState({
-    category_name: '',
-    category_color: '',
+    name: '',
+    color: '',
   });
 
-  const [isModal, setIsModal] = useState(false);
-  const [modalText, setModalText] = useState({
-    title: '',
-    description: '',
-    buttonText: '',
-    handleButtonClick: () => true,
+  const fetchPostPlace = useMutation(postPlace, {
+    onSuccess: (data: { place_id: number }) => {
+      if (data.place_id) {
+        // 팝업닫기.
+      }
+    },
+    onError: (error: unknown) => {
+      throw new Error(`error is ${error}`);
+    },
   });
 
   const fetchPostCategory = useMutation(postCategory, {
-    onSuccess: ({ code }: { code: string }) => {
-      if (code === SUCCESS_POST_CATEGORY) {
-        setModalText({
-          title: '카테고리가 등록되었습니다.',
-          description: '카테고리 등록 완료',
-          buttonText: '확인',
-          handleButtonClick: () => {
-            setIsModal(false);
-            setIsCategoryModal(false);
-            refetchMapCategories();
-            return true;
-          },
-        });
-        setIsModal(true);
+    onSuccess: (data: { category_id: number }) => {
+      if (data.category_id) {
+        const newPlace = {
+          name: placeInfo.name,
+          address: placeInfo.address,
+          latitude: placeInfo.latitude,
+          longitude: placeInfo.longitude,
+          story,
+          detail_link: placeInfo.detail_link,
+          map_id: mapData.map_id,
+          category_id: data.category_id,
+        };
+        fetchPostPlace.mutate(newPlace);
       }
     },
     onError: (error: unknown) => {
@@ -71,163 +53,122 @@ const CategoryModalInfo = ({
   });
 
   const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCategoryFormData({ ...categoryFormData, category_name: e.target.value });
+    setCategoryFormData({ ...categoryFormData, name: e.target.value });
   };
 
-  const handleColorClick = (category_color: string) => {
-    setCategoryFormData({ ...categoryFormData, category_color });
+  const handleColorClick = (color: string) => {
+    setCategoryFormData({ ...categoryFormData, color });
   };
 
-  const isExistName = () => {
-    const existName = mapCategories.map(
-      (category: CategoryType) => category.category_name
+  const checkDupliCateColor = (color: string) => {
+    const existColors = mapData.categorized_places.map(
+      (category: any) => category.color
     );
-    if (existName.includes(categoryFormData.category_name)) return true;
+    if (existColors.includes(color)) return true;
     return false;
   };
 
-  const handleCreateCategory = (e: React.SyntheticEvent<HTMLFormElement>) => {
+  const isExistName = () => {
+    const existName = mapData.categorized_places.map(
+      (category: any) => category.name
+    );
+    if (existName.includes(categoryFormData.name)) return true;
+    return false;
+  };
+
+  const isExistBgColor = () => {
+    const existColors = mapData.categorized_places.map(
+      (category: any) => category.color
+    );
+    if (existColors.includes(categoryFormData.color)) return true;
+    return false;
+  };
+
+  const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!categoryFormData.category_name || isExistName()) {
-      setModalText({
-        title: '이름을 확인해주세요.',
-        description: '카테고리 등록 실패',
-        buttonText: '다시시도',
-        handleButtonClick: () => {
-          setIsModal(false);
-          return true;
-        },
-      });
-      setIsModal(true);
-      return;
-    }
-    if (
-      !categoryFormData.category_color ||
-      isExistBgColor(mapCategories, categoryFormData.category_color)
-    ) {
-      setModalText({
-        title: '색상을 확인해주세요.',
-        description: '카테고리 등록 실패',
-        buttonText: '다시시도',
-        handleButtonClick: () => {
-          setIsModal(false);
-          return true;
-        },
-      });
-      setIsModal(true);
-      return;
+    if (isExistName() || isExistBgColor()) {
+      // 간단한 popup창 띄우기.
     }
 
+    // category create api 호출.
     const newCategory = {
-      category_name: categoryFormData.category_name,
-      category_color: categoryFormData.category_color,
+      category_name: categoryFormData.name,
+      color: categoryFormData.color,
+      map_id: mapData.map_id,
+      // category_description: categoryFormData.description,
     };
 
-    fetchPostCategory.mutate({
-      mapId: map_id,
-      categoryPostParams: newCategory,
-    });
+    fetchPostCategory.mutate(newCategory);
   };
 
   return (
-    <>
-      {mapCategories && (
-        <section className="h-full flex flex-col items-center justify-center">
-          <header className="flex flex-col items-center gap-4 mb-4">
-            <h1 className="text-2xl text-navy">
-              {`${unicodeToEmoji(emoji)} ${title}`}
-            </h1>
-          </header>
-          <div className="flex items-center gap-1 mb-8">
-            <Icon
-              size="small"
-              url={Icons.Exclamation}
-              alt="카테고리 추가 문구"
-            />
-            <Text
-              text="카테고리를 추가 할 수 있습니다. (장소당 1개)"
-              size="xSmall"
-              color={theme.color.gray}
-            />
-          </div>
-          <form className="flex flex-col items-center">
-            <div className="w-60 flex flex-col gap-4 mb-8">
-              <span className="text-lightGray">카테고리명</span>
-              <Input
-                id="name"
-                width="15rem"
-                height="2.5rem"
-                placeholderText="카테고리 이름"
-                background={theme.color.inputBackground}
-                type="text"
-                value={categoryFormData.category_name}
-                onChange={handleNameChange}
-              />
-              {isExistName() && (
-                <Text
-                  text="중복되는 카테고리 이름입니다."
-                  size="xSmall"
-                  color={theme.color.red}
-                />
-              )}
-            </div>
-            <div className="w-60 flex flex-col gap-4 mb-8">
-              <span className="text-lightGray">카테고리 색상</span>
-              <div className="flex flex-wrap gap-2">
-                {CategoryColors.map((color: string) => (
-                  <button
-                    key={`category-${color}`}
-                    type="button"
-                    aria-label="color-button"
-                    style={{
-                      backgroundColor: color,
-                    }}
-                    className={`w-8 h-8 rounded-full hover:opactiy-80 ${
-                      isExistBgColor(mapCategories, color)
-                        ? 'opacity-10'
-                        : 'opacity-100'
-                    }`}
-                    onClick={() => handleColorClick(color)}
-                    disabled={checkDuplicateColor(mapCategories, color)}
-                  />
-                ))}
-              </div>
-              <span className="text-lightGray">
-                현재 선택된 카테고리 :{' '}
-                {categoryFormData.category_color || '미선택'}
-              </span>
-            </div>
-
-            <div className="mt-4">
-              <Button
-                type="submit"
-                size="xRegular"
-                color={theme.color.black}
-                onClick={(e: React.SyntheticEvent<HTMLFormElement>) =>
-                  handleCreateCategory(e)
-                }
-              >
-                <Text
-                  text="카테고리 생성"
-                  size="regular"
-                  color={theme.color.white}
-                />
-              </Button>
-            </div>
-          </form>
-        </section>
-      )}
-      {isModal && (
-        <GlobalModal size="xSmall" handleCancelClick={() => setIsModal(false)}>
-          <ModalContent
-            title={modalText.title}
-            description={modalText.description}
-            buttonText={modalText.buttonText}
-            handleButtonClick={modalText.handleButtonClick}
+    <S.ModalInfoWrapper>
+      <S.Header>
+        <S.Title>
+          {`${unicodeToEmoji(mapData.map_emoji)} ${mapData.map_name}`}
+          <br />
+        </S.Title>
+      </S.Header>
+      <S.Suffix>
+        <Icon size="small" url={Icons.Exclamation} alt="카테고리 추가 문구" />
+        <Text
+          text="카테고리를 추가 할 수 있습니다. (장소당 1개)"
+          size="xSmall"
+          color={theme.color.gray}
+        />
+      </S.Suffix>
+      <S.Form>
+        <S.ColumnBox>
+          <S.Label htmlFor="name">카테고리명</S.Label>
+          <Input
+            id="name"
+            width="15rem"
+            height="2.5rem"
+            placeholderText="카테고리 이름"
+            color={theme.color.placeholder}
+            background={theme.color.inputBackground}
+            type="text"
+            value={categoryFormData.name}
+            onChange={handleNameChange}
           />
-        </GlobalModal>
-      )}
-    </>
+          {isExistName() && (
+            <Text
+              text="중복되는 카테고리 이름입니다."
+              size="xSmall"
+              color={theme.color.red}
+            />
+          )}
+        </S.ColumnBox>
+        <S.ColumnBox>
+          <S.Label htmlFor="color">카테고리 색상</S.Label>
+          <S.ColorBox>
+            {CategoryColors.map(
+              color =>
+                !checkDupliCateColor(color) && (
+                  <S.ColorCircle
+                    type="button"
+                    color={color}
+                    onClick={() => handleColorClick(color)}
+                  />
+                )
+            )}
+          </S.ColorBox>
+        </S.ColumnBox>
+
+        <S.ButtonBox>
+          <Button
+            type="submit"
+            size="xRegular"
+            color={theme.color.black}
+            onClick={(e: React.SyntheticEvent<HTMLFormElement>) =>
+              handleSubmit(e)
+            }
+          >
+            <Text text="장소 생성" size="regular" color={theme.color.white} />
+          </Button>
+        </S.ButtonBox>
+      </S.Form>
+    </S.ModalInfoWrapper>
   );
 };
 

@@ -2,7 +2,7 @@ import * as S from './Card.style';
 
 import theme from '@/styles/theme';
 
-interface CardProps {
+interface ICard {
   size: 'small' | 'medium' | 'large';
   color?: string;
   children: React.ReactNode;
@@ -11,7 +11,7 @@ const Card = ({
   size = 'small',
   color = theme.color.silver,
   children,
-}: CardProps) => (
+}: ICard) => (
   <S.Card size={size} color={color}>
     {children}
   </S.Card>

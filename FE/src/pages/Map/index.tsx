@@ -1,50 +1,33 @@
 import { useQuery } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
+
+import Header from './Header';
+import Infos from './Infos';
+import * as S from './Map.style';
 
 import { getMapDetailInfo } from '@/apis/mypage';
 import { Icons } from '@/assets/icons';
 import Button from '@/components/common/Button';
 import Text from '@/components/common/Text';
-import KakaoMap from '@/components/KaKaoMap';
-import Header from '@/components/Map/Header';
-import Infos from '@/components/Map/Infos';
-import { SUCCESS_GET_DETAIL_MAP } from '@/constants/code';
-import { useGetMapId } from '@/hooks/useGetMapId';
+import { KakaoMap } from '@/components/KaKaoMap';
 import theme from '@/styles/theme';
-import { CategorizedPlaces, MapUserType, PlaceType } from '@/types/map';
+import { CategorizedPlaces } from '@/types/map';
 import { unicodeToEmoji } from '@/utils/util';
 
 const Map = () => {
-  const mapId = useGetMapId();
-  const [userProfile, setUserProfile] = useState<MapUserType>({
-    host_id: 0,
-    host_nickname: '',
-    host_profile_image: '',
-  });
-
-  const { data: mapData, refetch: refetchMap } = useQuery(['Map'], () =>
-    getMapDetailInfo(mapId)
-  );
-
-  useEffect(() => {
-    if (mapData && !userProfile.host_id) {
-      setUserProfile({
-        host_id: mapData.data.host_id,
-        host_nickname: mapData.data.host_nickname,
-        host_profile_image: mapData.data.host_profile_image,
-      });
+  const { id } = useParams();
+  const { data: mapData } = useQuery(['Map'], () => {
+    if (id) {
+      return getMapDetailInfo(id);
     }
-  }, [mapData, userProfile]);
-
-  if (mapData && mapData.code !== SUCCESS_GET_DETAIL_MAP)
-    return <div>API Error</div>;
+    return true;
+  });
 
   return (
     mapData && (
       <KakaoMap
-        placeInfos={mapData.data.categorized_places.reduce(
-          (acc: PlaceType[], placeInfo: CategorizedPlaces) => {
+        placeInfos={mapData.categorized_places.reduce(
+          (acc: any, placeInfo: CategorizedPlaces) => {
             acc.push(...placeInfo.places);
             return acc;
           },
@@ -53,23 +36,16 @@ const Map = () => {
       >
         <Header
           headerData={{
-            map_id: mapData.data.map_id,
-            emoji: `${unicodeToEmoji(mapData.data.map_emoji)}`,
-            title: mapData.data.map_name,
-            category_info: mapData.data.categorized_places.map(
+            emoji: `${unicodeToEmoji(mapData.map_emoji)}`,
+            title: mapData.map_name,
+            category_info: mapData.categorized_places.map(
               (placeInfo: CategorizedPlaces) => placeInfo.category_info
             ),
           }}
-          refetchMap={refetchMap}
         />
-        <Infos
-          mapHostId={mapData.data.host_id}
-          infoData={mapData.data.categorized_places}
-          userProfile={userProfile}
-          refetchMap={refetchMap}
-        />
-        <div className="absolute bottom-8 right-8 z-[999]">
-          <Link to={`/map/search/${mapData.data.map_id}`}>
+        <Infos infoData={mapData.categorized_places} />
+        <S.RecommendationButtonWrapper>
+          <Link to={`/map/search/${mapData.map_id}`}>
             <Button
               size="large"
               color={theme.color.navy}
@@ -82,7 +58,7 @@ const Map = () => {
               />
             </Button>
           </Link>
-        </div>
+        </S.RecommendationButtonWrapper>
       </KakaoMap>
     )
   );

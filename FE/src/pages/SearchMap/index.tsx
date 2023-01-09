@@ -1,30 +1,48 @@
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
+
+import * as S from './SearchMap.style';
+import SearchPlace from './SearchPlace';
 
 import { getMapDetailInfo } from '@/apis/mypage';
-import KakaoMap from '@/components/KaKaoMap';
-import Header from '@/components/Map/Header';
-import SearchPlace from '@/components/SearchMap/SearchPlace';
-import { SUCCESS_GET_DETAIL_MAP } from '@/constants/code';
+import { KakaoMap } from '@/components/KaKaoMap';
 import { defaultCoords } from '@/constants/map';
-import { useGetMapId } from '@/hooks/useGetMapId';
-import { SearchPlaceType } from '@/interfaces/SearchPlace';
+import { ISearchPlace } from '@/interfaces/ISearchPlace';
+import Header from '@/pages/Map/Header';
 import { CategorizedPlaces, PlaceType } from '@/types/map';
 import { unicodeToEmoji } from '@/utils/util';
+
+declare global {
+  interface Window {
+    kakao: any;
+  }
+}
 
 const { kakao } = window;
 
 const SearchMap = () => {
-  const mapId = useGetMapId();
+  const { id } = useParams();
   const [placeInfos, setPlaceInfos] = useState<PlaceType[]>([]);
 
-  const { data: mapData } = useQuery(['Map'], () => getMapDetailInfo(mapId));
+  const { data: mapData } = useQuery(
+    ['Map'],
+    () => {
+      if (id) {
+        return getMapDetailInfo(id);
+      }
+      return true;
+    },
+    {
+      staleTime: 5 * 60 * 1000, // 5분
+    }
+  );
 
-  const placesSearchCallBack = (data: SearchPlaceType[], status: string) => {
+  const placesSearchCallBack = (data: ISearchPlace[], status: string) => {
     if (status === kakao.maps.services.Status.OK) {
-      const searchPlaceInfos = data.map((place: SearchPlaceType) => ({
+      const searchPlaceInfos = data.map((place: ISearchPlace) => ({
         place_id: +place.id,
-        place_name: place.place_name,
+        name: place.place_name,
         address: place.address_name,
         latitude: +place.x,
         longitude: +place.y,
@@ -47,19 +65,15 @@ const SearchMap = () => {
     });
   };
 
-  if (mapData && mapData.code !== SUCCESS_GET_DETAIL_MAP)
-    return <div>API Error</div>;
-
   return (
-    <section>
+    <S.SearchMap>
       {mapData && (
         <KakaoMap placeInfos={placeInfos}>
           <Header
             headerData={{
-              map_id: mapId,
-              emoji: `${unicodeToEmoji(mapData.data.map_emoji)}`,
-              title: mapData.data.map_name,
-              category_info: mapData.data.categorized_places.map(
+              emoji: `${unicodeToEmoji(mapData.map_emoji)}`,
+              title: mapData.map_name,
+              category_info: mapData.categorized_places.map(
                 (placeInfo: CategorizedPlaces) => placeInfo.category_info
               ),
             }}
@@ -70,7 +84,7 @@ const SearchMap = () => {
           />
         </KakaoMap>
       )}
-    </section>
+    </S.SearchMap>
   );
 };
 

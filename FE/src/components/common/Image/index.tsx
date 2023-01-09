@@ -1,3 +1,5 @@
+import * as S from './Image.style';
+
 interface IImage {
   url: string;
   alt: string;
@@ -5,7 +7,7 @@ interface IImage {
 }
 
 const Image = ({ url, alt, ...props }: IImage) => (
-  <img className="block cursor-pointer" src={url} alt={alt} {...props} />
+  <S.Image src={url} alt={alt} {...props} />
 );
 
 export default Image;

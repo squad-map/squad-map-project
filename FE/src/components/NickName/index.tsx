@@ -4,13 +4,14 @@ import { useRecoilState } from 'recoil';
 
 import LoadingSpinner from '../common/LoadingSpinner';
 
+import * as S from './NickName.style';
+
 import { patchNickName } from '@/apis/user';
 import { Images } from '@/assets/images';
 import Button from '@/components/common/Button';
 import Image from '@/components/common/Image';
-import Input from '@/components/common/Input';
 import Text from '@/components/common/Text';
-import { SUCCESS_NICKNAME_UPDATE } from '@/constants/code';
+import Input from '@/components/Input';
 import { userState } from '@/recoil/atoms/user';
 import theme from '@/styles/theme';
 
@@ -29,15 +30,9 @@ const NickName = ({ handleCancelClick }: NickNameProps) => {
   const fetchPatchNickName = useMutation(
     (updatedNickName: string) => patchNickName(updatedNickName),
     {
-      onSuccess: ({
-        code,
-        data,
-      }: {
-        code: string;
-        data: { member_id: number; nickname: string };
-      }) => {
-        if (code === SUCCESS_NICKNAME_UPDATE) {
-          setUser({ member_id: data.member_id, nickname: data.nickname });
+      onSuccess: (data: { nickname: string }) => {
+        if (data) {
+          setUser({ nickname: data.nickname });
         }
       },
       onError: (error: unknown) => {
@@ -52,8 +47,8 @@ const NickName = ({ handleCancelClick }: NickNameProps) => {
   };
 
   return (
-    <section className="flex flex-col items-center gap-6 mt-12">
-      <h2 className="text-2xl">닉네임 변경</h2>
+    <S.NickNameWrapper>
+      <S.Title>닉네임 변경</S.Title>
       {fetchPatchNickName.isLoading ? (
         <LoadingSpinner size="large" />
       ) : (
@@ -61,9 +56,10 @@ const NickName = ({ handleCancelClick }: NickNameProps) => {
           <Image url={Images.LoginBackground} alt="Login Background" />
           <Input
             id="nickname"
-            width="20rem"
+            width="19rem"
             height="2.5rem"
             placeholderText="변경할 닉네임을 입력해주세요."
+            color={theme.color.placeholder}
             background={theme.color.inputBackground}
             type="text"
             value={nickName}
@@ -78,7 +74,7 @@ const NickName = ({ handleCancelClick }: NickNameProps) => {
           </Button>
         </>
       )}
-    </section>
+    </S.NickNameWrapper>
   );
 };
 

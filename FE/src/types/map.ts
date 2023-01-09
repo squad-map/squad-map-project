@@ -6,11 +6,10 @@ export type CategoryType = {
 
 export type PlaceType = {
   place_id: number;
-  place_name: string;
+  name: string;
   address: string;
   latitude: number;
   longitude: number;
-  detail_link?: string;
 };
 
 export type CategorizedPlaces = {
@@ -18,15 +17,13 @@ export type CategorizedPlaces = {
   places: PlaceType[];
 };
 
-export type MapUserType = {
+export type MapType = {
+  map_id: number;
+  map_name: string;
+  map_emoji: string;
   host_id: number;
   host_nickname: string;
   host_profile_image: string;
-};
-
-export type MapHeaderType = {
-  map_id: number;
-  emoji: string;
-  title: string;
-  category_info: CategoryType[];
+  places_count: number;
+  categorized_places: CategorizedPlaces;
 };

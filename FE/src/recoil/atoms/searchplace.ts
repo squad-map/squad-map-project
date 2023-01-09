@@ -2,5 +2,5 @@ import { atom } from 'recoil';
 
 export const searchplaceState = atom({
   key: 'searchplaceState',
-  default: [] as string[],
+  default: ['맛집', '카페', '빵집'] as string[],
 });

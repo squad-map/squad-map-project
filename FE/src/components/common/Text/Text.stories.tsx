@@ -5,11 +5,11 @@ import Text from './index';
 import theme from '@/styles/theme';
 
 export default {
-  title: 'common/Text',
+  title: 'Text',
   component: Text,
   hover: false,
   argTypes: {
-    text: { defaultValue: 'TEXT' },
+    text: { defaultValue: 'REGULAR TEXT' },
     size: {
       control: {
         type: 'select',
@@ -30,23 +30,24 @@ export default {
       control: {
         type: 'select',
         options: [
-          `lightBlack`,
-          'darkGray',
-          `navy`,
-          `darkNavy`,
-          `clearOrange`,
-          `green`,
-          `silver`,
-          `brown`,
-          `lightBrown`,
-          `yellow`,
-          `titleActive`,
-          `label`,
-          `placeholder`,
-          `inputBackground`,
+          `${theme.color.darkRed}`,
+          `${theme.color.lightBlack}`,
+          `${theme.color.darkGray}`,
+          `${theme.color.black}`,
+          `${theme.color.blue}`,
+          `${theme.color.brown}`,
+          `${theme.color.green}`,
+          `${theme.color.inputBackground}`,
+          `${theme.color.silver}`,
+          `${theme.color.lightBlack}`,
+          `${theme.color.lightBlue}`,
+          `${theme.color.lightBrown}`,
+          `${theme.color.lightGray}`,
+          `${theme.color.lightGreen}`,
+          `${theme.color.lightRed}`,
         ],
       },
-      defaultValue: 'lightBlack',
+      defaultValue: '#191A1C',
     },
   },
 } as ComponentMeta<typeof Text>;

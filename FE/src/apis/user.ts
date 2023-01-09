@@ -1,38 +1,40 @@
-import { API_URL } from '@/constants/url';
 import { getCookie } from '@/utils/cookie';
 
 export const findNickName = async (nickname: string) => {
   const accessToken = getCookie('access_token');
-  if (!accessToken) window.location.href = '/login';
+  if (!accessToken) throw new Error('accessToken is undefined');
 
-  const response = await fetch(`${API_URL}/members?nickname=${nickname}`, {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-      'Content-Type': 'application/json',
-    },
-  });
+  const response = await fetch(
+    `${process.env.SQUAD_MAP_OAUTH_URL}/members?nickname=${nickname}`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+    }
+  );
 
-  const nickName = await response.json();
+  const nickNameData = await response.json();
 
   try {
-    return nickName;
+    return nickNameData;
   } catch (err) {
-    throw new Error(`findNickName api fail err: ${err}`);
+    throw new Error(`postNickName api fail err: ${err}`);
   }
 };
 
-export const patchNickName = async (nickname: string) => {
+export const patchNickName = async (nickName: string) => {
   const accessToken = getCookie('access_token');
-  if (!accessToken) window.location.href = '/login';
+  if (!accessToken) throw new Error('accessToken is undefined');
 
-  const response = await fetch(`${API_URL}/members`, {
+  const response = await fetch(`${process.env.SQUAD_MAP_OAUTH_URL}/members`, {
     method: 'PATCH',
     headers: {
-      Authorization: `Bearer ${accessToken}`,
+      Authorization: `bearer ${accessToken}`,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ nickname }),
+    body: JSON.stringify({ nickname: nickName }),
   });
 
   const updatedData = await response.json();
@@ -40,6 +42,6 @@ export const patchNickName = async (nickname: string) => {
   try {
     return updatedData;
   } catch (err) {
-    throw new Error(`patchNickName api fail err: ${err}`);
+    throw new Error(`postNickName api fail err: ${err}`);
   }
 };

@@ -3,17 +3,13 @@ import { ComponentStory, ComponentMeta } from '@storybook/react';
 import RecentSearch from './index';
 
 export default {
-  title: 'components/RecentSearch',
+  title: 'RecentSearch',
   component: RecentSearch,
 } as ComponentMeta<typeof RecentSearch>;
 
-const Template: ComponentStory<typeof RecentSearch> = args => (
-  <RecentSearch {...args} />
-);
+const Template: ComponentStory<typeof RecentSearch> = () => <RecentSearch />;
 
 export const Default = Template.bind({});
-
-Default.args = {};
 
 Default.parameters = {
   docs: {
