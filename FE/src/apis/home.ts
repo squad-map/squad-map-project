@@ -1,13 +1,15 @@
-export const getMaps = async (page: number, size: number) => {
+import { API_URL } from '@/constants/url';
+
+export const getPublicMaps = async (name: string, lastMapId: number) => {
   const response = await fetch(
-    `${process.env.SQUAD_MAP_OAUTH_URL}/map/public?page=${page}&size=${size}`
+    `${API_URL}/map/public?name=${name}&lastMapId=${lastMapId}`
   );
 
-  const mapsData = await response.json();
+  const maps = await response.json();
 
   try {
-    return mapsData;
+    return maps;
   } catch (err) {
-    throw new Error(`getMypage get api fail err: ${err}`);
+    throw new Error(`getPublicMaps api fail err: ${err}`);
   }
 };

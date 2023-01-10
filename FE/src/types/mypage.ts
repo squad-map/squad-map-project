@@ -1,7 +1,7 @@
-import { IMyMap } from '@/interfaces/IMyMap';
+import { MyMapType } from '@/interfaces/MyMap';
 
 export type MypagePostParams =
-  | Pick<IMyMap, 'id' | 'map_name' | 'map_emoji'>
+  | Pick<MyMapType, 'id' | 'map_name' | 'map_emoji'>
   | 'full_disclosure';
 
-export type MypagePatchParams = Pick<IMyMap, 'map_name' | 'map_emoji'>;
+export type MypagePutParams = Pick<MyMapType, 'map_name' | 'map_emoji'>;

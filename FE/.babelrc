@@ -1,13 +1,17 @@
 {
-    "presets": [[
-        "@babel/preset-env",
-        {
-          "targets": "> 1%, not dead", // 타깃 브라우저에 필요한 플러그인만 삽입하도록 설정하는 옵션
-          "useBuiltIns": "usage",  // usage 설정은 실제 사용한 폴리필만 삽입
-          "corejs": { "version": "3" }
-        }
-      ],
-      ["@babel/preset-react", {"runtime": "automatic"}],
-      "@babel/preset-typescript"
-    ]
-  }
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "targets": "> 1%, not dead", // 타깃 브라우저에 필요한 플러그인만 삽입하도록 설정하는 옵션
+        "useBuiltIns": "usage", // usage 설정은 실제 사용한 폴리필만 삽입
+        "corejs": { "version": "3" }
+      }
+    ],
+    [
+      "@babel/preset-react",
+      { "runtime": "automatic", "importSource": "@emotion/react" }
+    ],
+    "@babel/preset-typescript"
+  ]
+}

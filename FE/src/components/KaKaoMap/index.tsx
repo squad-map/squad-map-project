@@ -8,17 +8,11 @@ interface KakaoMapProps {
   placeInfos: PlaceType[];
 }
 
-declare global {
-  interface Window {
-    kakao: any;
-  }
-}
+const { kakao } = window as any;
 
-const { kakao } = window;
-
-export const KakaoMap = ({ children, placeInfos }: KakaoMapProps) => {
-  const mapRef = useRef<HTMLElement | null | any>(null);
-  const [markers, setMarkers] = useState([]) as any;
+const KakaoMap = ({ children, placeInfos }: KakaoMapProps) => {
+  const mapRef = useRef<HTMLElement | null>(null);
+  const [markers, setMarkers] = useState([]);
 
   const displayPlaces = (places: PlaceType[]) => {
     const sampleImageSrc =
@@ -41,7 +35,7 @@ export const KakaoMap = ({ children, placeInfos }: KakaoMapProps) => {
         map: mapRef.current,
         position: marker.getPosition(),
         content: `<button class="info-button">
-            <span>${place.name}</span>
+            <span>${place.place_name}</span>
           </button>`,
         yAnchor: 1,
       });
@@ -87,3 +81,5 @@ export const KakaoMap = ({ children, placeInfos }: KakaoMapProps) => {
     </div>
   );
 };
+
+export default KakaoMap;

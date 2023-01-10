@@ -2,16 +2,17 @@ import { rest } from 'msw';
 
 import MyPage from './index';
 
-import { myPageMapsData } from '@/constants/dummyData';
+import { GET_GROUP_MAPS_DATA } from '@/constants/mypage';
+import { API_URL } from '@/constants/url';
 
 export default {
-  title: 'MyPage',
+  title: 'pages/MyPage',
   component: MyPage,
   parameters: {
     msw: {
       handlers: [
-        rest.get('/mypage', (req, res, ctx) =>
-          res(ctx.status(200), ctx.json(myPageMapsData))
+        rest.get(`${API_URL}/map/group`, (req, res, ctx) =>
+          res(ctx.status(200), ctx.json(GET_GROUP_MAPS_DATA))
         ),
       ],
     },
