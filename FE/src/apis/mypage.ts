@@ -1,114 +1,116 @@
-import { API_URL } from '@/constants/url';
-import { MypagePostParams, MypagePutParams } from '@/types/mypage';
+import { MypagePostParams } from '@/types/mypage';
 import { getCookie } from '@/utils/cookie';
 
-export const getGroupMaps = async (name = '') => {
+export const getMypage = async () => {
   const accessToken = getCookie('access_token');
-  if (!accessToken) window.location.href = '/login';
+  if (!accessToken) throw new Error('accesToken is undefined');
 
-  const response = await fetch(`${API_URL}/map/group?name=${name}`, {
+  const response = await fetch(`${process.env.SQUAD_MAP_OAUTH_URL}/map/group`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${accessToken}`,
       'Content-Type': 'application/json',
     },
   });
-  const mypage = await response.json();
+  const mypageData = await response.json();
 
   try {
-    return mypage;
+    return mypageData;
   } catch (err) {
-    throw new Error(`getGroupMaps api fail err: ${err}`);
+    throw new Error(`getMypage get api fail err: ${err}`);
   }
 };
 
-export const postMypage = async (myPagePostParams: MypagePostParams) => {
+export const postMypage = async (mypageRequestBody: MypagePostParams) => {
   const accessToken = getCookie('access_token');
 
-  if (!accessToken) window.location.href = '/login';
+  if (!accessToken) throw new Error('accesToken is undefined');
 
-  const response = await fetch(`${API_URL}/map`, {
+  const response = await fetch(`${process.env.SQUAD_MAP_OAUTH_URL}/map`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${accessToken}`,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(myPagePostParams),
+    body: JSON.stringify(mypageRequestBody),
   });
-  const mypage = await response.json();
+  const mypageData = await response.json();
 
   try {
-    return mypage;
+    return mypageData;
   } catch (err) {
-    throw new Error(`postMypage api fail err: ${err}`);
+    throw new Error(`postMypage get api fail err: ${err}`);
   }
 };
 
-export const putMyPage = async ({
-  patchId,
-  mypagePutParams,
-}: {
-  patchId: number;
-  mypagePutParams: MypagePutParams;
-}) => {
+export const patchMypage = async (
+  patchId: number,
+  mypageRequestBody: MypagePostParams
+) => {
   const accessToken = getCookie('access_token');
-  if (!accessToken) window.location.href = '/login';
+  if (!accessToken) throw new Error('accesToken is undefined');
   if (!patchId) throw new Error('id is undefined');
+  if (!mypageRequestBody) throw new Error('requestbody is undefined');
 
-  const response = await fetch(`${API_URL}/map/${patchId}`, {
-    method: 'PUT',
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(mypagePutParams),
-  });
+  const response = await fetch(
+    `${process.env.SQUAD_MAP_OAUTH_URL}/map/${patchId}`,
+    {
+      method: 'PATCH',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(mypageRequestBody),
+    }
+  );
 
-  const mypage = await response.json();
+  const mypageData = await response.json();
 
   try {
-    return mypage;
+    return mypageData;
   } catch (err) {
-    throw new Error(`putMyPage api fail err: ${err}`);
+    throw new Error(`patchMypage get api fail err: ${err}`);
   }
 };
 
 export const deleteMypage = async (deleteId: number) => {
   const accessToken = getCookie('access_token');
-  if (!accessToken) window.location.href = '/login';
-  const response = await fetch(`${API_URL}/map/${deleteId}`, {
-    method: 'DELETE',
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-      'Content-Type': 'application/json',
-    },
-  });
-  const mypage = await response.json();
+  if (!accessToken) throw new Error('accesToken is undefined');
+  const response = await fetch(
+    `${process.env.SQUAD_MAP_OAUTH_URL}/map/${deleteId}`,
+    {
+      method: 'DELETE',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+    }
+  );
+  const mypageData = await response.json();
 
   try {
-    return mypage;
+    return mypageData;
   } catch (err) {
-    throw new Error(`deleteMypage api fail err: ${err}`);
+    throw new Error(`deleteMypage get api fail err: ${err}`);
   }
 };
 
-export const getMapDetailInfo = async (mapId: number) => {
+export const getMapDetailInfo = async (id: string) => {
   const accessToken = getCookie('access_token');
-  if (!accessToken) window.location.href = '/login';
+  if (!accessToken) throw new Error('accesToken is undefined');
 
-  const response = await fetch(`${API_URL}/map/${mapId}`, {
+  const response = await fetch(`${process.env.SQUAD_MAP_OAUTH_URL}/map/${id}`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${accessToken}`,
       'Content-Type': 'application/json',
     },
   });
-
   const mapData = await response.json();
 
   try {
     return mapData;
   } catch (err) {
-    throw new Error(`getMapDetailInfo api fail err: ${err}`);
+    throw new Error(`getMypage get api fail err: ${err}`);
   }
 };

@@ -1,8 +1,10 @@
+import * as S from './Manual.style';
+
 const Manual = () => (
-  <div className="flex flex-col items-center gap-4 p-8">
-    <h2 className="mt-4 text-2xl">사용메뉴얼</h2>
-    <div>서비스 준비중입니다👀...</div>
-  </div>
+  <S.Manual>
+    <S.Title>사용메뉴얼</S.Title>
+    <S.Content>서비스 준비중입니다👀...</S.Content>
+  </S.Manual>
 );
 
 export default Manual;

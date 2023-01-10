@@ -10,20 +10,21 @@ API 문서 : [http://13.124.249.154/docs/index.html](http://13.124.249.154/docs/
 
 </br>
 
----
+------
 
 </br>
 
 ## 2. 팀원
 
-|                                            BE                                            |                                            FE                                            |                                         ANDROID                                          |
-| :--------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------: | :--------------------------------------------------------------------------------------: |
-| <img src="https://avatars.githubusercontent.com/u/81129309?v=4" width=400px alt="로니"/> | <img src="https://avatars.githubusercontent.com/u/45479309?v=4" width=400px alt="머핀"/> | <img src="https://avatars.githubusercontent.com/u/79190824?v=4" width=400px alt="퍼니"/> |
-|                            [로니](https://github.com/cmsskkk)                            |                            [머핀](https://github.com/muffin9)                            |                            [퍼니](https://github.com/ese111)                             |
+| BE | FE | ANDROID |
+| :-----: | :-----: | :-----:  | 
+| <img src="https://avatars.githubusercontent.com/u/81129309?v=4" width=400px alt="로니"/>  | <img src="https://avatars.githubusercontent.com/u/45479309?v=4" width=400px alt="머핀"/>  | <img src="https://avatars.githubusercontent.com/u/79190824?v=4" width=400px alt="퍼니"/>   |
+| [로니](https://github.com/cmsskkk) | [머핀](https://github.com/muffin9)  | [퍼니](https://github.com/ese111)   |
 
----
+------
 
-## 3. 파트별 구현 소개
+## 3. 파트별 구현 소개 
+
 
 <details>
 <summary>
@@ -35,10 +36,14 @@ FE 기획 - https://www.figma.com/file/UNRj84Tux9X7nhqBIAXtjf/Squad-Map?node-id=
 
 </details>
 
+
+
+
 <details>
 <summary> 
 <h3>BE</h3>
 </summary>
+
 
 ## Backend 기술 스택
 
@@ -59,19 +64,17 @@ FE 기획 - https://www.figma.com/file/UNRj84Tux9X7nhqBIAXtjf/Squad-Map?node-id=
 - OAuth 로그인(Naver, Github)
 - 지도(PRIVATE, PUBLIC) CRUD
 - 지도 그룹멤버 CRUD
-  - `READ`, `MAINTAIN`, `HOST` 권한으로 나눠서 적용
+    - `READ`, `MAINTAIN`, `HOST` 권한으로 나눠서 적용
 - 카테고리 CRUD
 - 장소 CRUD
 - 댓글 CRUD
 
 ---
-
 ## DB ERD
 
 ![ERD](https://user-images.githubusercontent.com/81129309/209779184-1776694c-da53-4ddc-82af-2c8af9e331d0.png)
 
 ---
-
 ## 구현 상세
 
 ### **1. 로그인 로직 구현** [(관련PR)](https://github.com/squad-map/squad-map-project/pull/66)
@@ -100,13 +103,11 @@ FE 기획 - https://www.figma.com/file/UNRj84Tux9X7nhqBIAXtjf/Squad-Map?node-id=
 
 ---
 
-### 4. 권한 검증 로직에 대한 고민과 리팩토링
+### 4. 권한 검증 로직에 대한 고민과 리팩토링 
 
-- [1차 리팩토링 PR](https://github.com/squad-map/squad-map-project/pull/155)
-- [2차 리팩토링 PR](https://github.com/squad-map/squad-map-project/pull/164)
-
+ - [1차 리팩토링 PR](https://github.com/squad-map/squad-map-project/pull/155)
+ - [2차 리팩토링 PR](https://github.com/squad-map/squad-map-project/pull/164)
 #### [Spring AOP에서 메서드 파라미터 활용하기](https://velog.io/@cmsskkk/aop-reflection-access-controll)
-
 #### [회원 접근 권한 로직 분리를 위한 설계 고민과 AOP 적용기](https://velog.io/@cmsskkk/refactoring-access-controll2)
 
 - 지도에 대한 접근 권한을 확인하는 과정이 핵심 비즈니스 로직 대부분에 포함되어 있어서 해당 로직을 분리하고자 했습니다.
@@ -120,20 +121,17 @@ FE 기획 - https://www.figma.com/file/UNRj84Tux9X7nhqBIAXtjf/Squad-Map?node-id=
 - 불필요한 연관관계 lazy loading으로 인한 성능 문제를 파악하고, 쿼리를 수정하였습니다.
 - 이 후, Redis를 통한 캐싱을 진행해보고, [Redis에 대해서 학습](https://velog.io/@cmsskkk/redis-transaction-spring-and-lua-pipeline)했습니다.
 
-### 6. Paging 성능 개선을 위한 no offset query 리팩토링 & 이름 검색 성능을 위한 index 적용
 
+### 6. Paging 성능 개선을 위한 no offset query 리팩토링 & 이름 검색 성능을 위한 index 적용
 - member 5,000,000건, map 10,000,000 건의 더미 데이터를 넣고 ngrinder로 성능을 테스트했습니다.
 
 #### [페이징 no offset 쿼리로 리팩토링하기](https://velog.io/@cmsskkk/No-Offset-Paging-ngrinder2)
-
 - 기존 paging 로직에서 offset 쿼리 사용의 성능 문제를 파악하고 no offset query로 리팩토링 하였습니다.
-- Vuser 30 상태에서 DB Connection timeout으로 인한 exception 발생이 지속적으로 발생했던 것과 달리, Vuser 102 환경에서 **MTT 1.6초 / TPS 63**으로의 성능 개선을 경험했습니다.
+- Vuser 30 상태에서 DB Connection timeout으로 인한 exception 발생이 지속적으로 발생했던 것과 달리, Vuser 102 환경에서 **MTT 1.6초 / TPS 63**으로의 성능 개선을 경험했습니다.     
 
 #### [이름 검색 DB INDEX 적용기](https://velog.io/@cmsskkk/like-DB-Index-NGrinder3)
-
-- 기존 '%{검색단어}%'로 이름을 검색하는 like 쿼리에서, `name` 컬럼에 DB INDEX를 적용하고, '{검색단어}%' like 쿼리를 수정했습니다.
-- NGrinder를 통한 부하테스트에서 기존 **TPS 8 / MTT 12초** 의 성능에서 **TPS 99 / MTT 1초**로 10배 이상의 성능 개선을 경험했습니다.
-
+- 기존 '%{검색단어}%'로 이름을 검색하는 like 쿼리에서, `name` 컬럼에 DB INDEX를 적용하고, '{검색단어}%' like 쿼리를 수정했습니다. 
+- NGrinder를 통한 부하테스트에서 기존 **TPS 8 / MTT 12초** 의 성능에서 **TPS 99 / MTT 1초**로 10배 이상의 성능 개선을 경험했습니다.  
 ---
 
 </details>

@@ -18,7 +18,6 @@ interface IButton {
   loading?: boolean;
   children: React.ReactNode;
   onClick?: (e?: React.SyntheticEvent | any) => void;
-  className?: string;
 }
 
 const Button = ({
@@ -26,16 +25,9 @@ const Button = ({
   size = 'regular',
   color,
   children,
-  className,
   ...props
 }: IButton) => (
-  <S.Button
-    type={type}
-    size={size}
-    color={color}
-    className={className}
-    {...props}
-  >
+  <S.Button type={type} size={size} color={color} {...props}>
     {children}
   </S.Button>
 );

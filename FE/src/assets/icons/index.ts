@@ -1,7 +1,6 @@
 import ArrowBack from '@/assets/icons/arrowBack.svg';
 import CategoryMap from '@/assets/icons/categoryMap.svg';
 import Close from '@/assets/icons/close.svg';
-import CommentEdit from '@/assets/icons/commentEdit.svg';
 import Edit from '@/assets/icons/edit.svg';
 import Error from '@/assets/icons/error.svg';
 import Exclamation from '@/assets/icons/exclamation.svg';
@@ -17,7 +16,6 @@ import Plus from '@/assets/icons/plus.svg';
 import Refresh from '@/assets/icons/refresh.svg';
 import Sample from '@/assets/icons/sample.svg';
 import Search from '@/assets/icons/search.svg';
-import Trash from '@/assets/icons/trash.svg';
 
 export const Icons = {
   ArrowBack,
@@ -38,6 +36,4 @@ export const Icons = {
   MyProfile,
   Exclamation,
   Refresh,
-  Trash,
-  CommentEdit,
 } as const;

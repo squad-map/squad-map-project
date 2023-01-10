@@ -3,6 +3,8 @@ import { v4 } from 'uuid';
 
 import Button from '../common/Button';
 
+import * as S from './Login.style';
+
 import { Images } from '@/assets/images';
 import Image from '@/components/common/Image';
 import Text from '@/components/common/Text';
@@ -26,8 +28,8 @@ const Login = () => {
   }, [isLoggedIn, state]);
 
   return (
-    <div className="h-full flex flex-col justify-center items-center gap-4 p-8">
-      <h2 className="mt-4 italic text-2xl">Login</h2>
+    <S.Login>
+      <S.Title>Login</S.Title>
       <Image url={Images.LoginBackground} alt="Login Background" />
       <a href={githubUrl}>
         <Button size="large" color="#191A1C">
@@ -49,7 +51,7 @@ const Login = () => {
           />
         </Button>
       </a>
-    </div>
+    </S.Login>
   );
 };
 

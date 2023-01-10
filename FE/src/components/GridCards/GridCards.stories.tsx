@@ -4,12 +4,11 @@ import { rest } from 'msw';
 import GridCards from './index';
 
 import Card from '@/components/common/Card';
-import Item from '@/components/Item';
 import { homeMapsData } from '@/constants/dummyData';
-import { MapType } from '@/interfaces/Map';
+import Item from '@/pages/Home/Item';
 
 export default {
-  title: 'components/GridCards',
+  title: 'GridCards',
   component: GridCards,
   argTypes: {
     size: {
@@ -20,7 +19,7 @@ export default {
       defaultValue: 'small',
     },
     children: {
-      defaultValue: homeMapsData.data.content.map((item: MapType) => (
+      defaultValue: homeMapsData.map(item => (
         <Card size="small" key={item.id}>
           <Item item={item} />
         </Card>

@@ -1,6 +1,6 @@
 import * as S from './Text.style';
 
-interface TextProps {
+interface IText {
   text: string;
   size:
     | 'xLargeFill'
@@ -13,17 +13,10 @@ interface TextProps {
     | 'xSmall';
   color: string;
   hover?: boolean;
-  className?: string;
 }
 
-const Text = ({
-  text,
-  size = 'regular',
-  color,
-  className,
-  ...props
-}: TextProps) => (
-  <S.Text size={size} color={color} className={className} {...props}>
+const Text = ({ text, size = 'regular', color, ...props }: IText) => (
+  <S.Text size={size} color={color} {...props}>
     {text}
   </S.Text>
 );

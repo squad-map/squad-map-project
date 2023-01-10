@@ -1,12 +1,9 @@
-const path = require('path');
-
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
-const dotenv = require('dotenv');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const { merge } = require('webpack-merge');
 
-dotenv.config({ path: path.join(__dirname, '../env', '.env.production') });
 const common = require('./webpack.common');
 
 module.exports = merge(common, {
@@ -29,6 +26,7 @@ module.exports = merge(common, {
       new TerserPlugin({
         extractComments: false,
       }),
+      new BundleAnalyzerPlugin(),
     ],
   },
 });

@@ -1,112 +1,47 @@
-import { API_URL } from '@/constants/url';
 import { PlacePostParams } from '@/types/place';
 import { getCookie } from '@/utils/cookie';
 
-export const getPlaceDeatil = async ({
-  mapId,
-  placeId,
-}: {
-  mapId: number;
-  placeId: number;
-}) => {
+export const getPlaceDeatilInfo = async (id: number) => {
   const accessToken = getCookie('access_token');
-  if (!accessToken) window.location.href = '/login';
-  if (!placeId) return false;
+  if (!accessToken) throw new Error('accesToken is undefined');
 
-  const response = await fetch(`${API_URL}/map/${mapId}/places/${placeId}`, {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-      'Content-Type': 'application/json',
-    },
-  });
-
-  const placeDetail = await response.json();
+  const response = await fetch(
+    `${process.env.SQUAD_MAP_OAUTH_URL}/places/${id}`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+    }
+  );
+  const mapData = await response.json();
 
   try {
-    return placeDetail;
+    return mapData;
   } catch (err) {
-    throw new Error(`getPlaceDetail api fail err: ${err}`);
+    throw new Error(`getMypage get api fail err: ${err}`);
   }
 };
 
-export const postPlace = async ({
-  mapId,
-  placePostParams,
-}: {
-  mapId: number;
-  placePostParams: PlacePostParams;
-}) => {
+export const postPlace = async (placeRequestBody: PlacePostParams) => {
   const accessToken = getCookie('access_token');
-  if (!accessToken) window.location.href = '/login';
+  if (!accessToken) throw new Error('accesToken is undefined');
 
-  const response = await fetch(`${API_URL}/map/${mapId}/places`, {
+  const response = await fetch(`${process.env.SQUAD_MAP_OAUTH_URL}/places`, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${accessToken}`,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(placePostParams),
+    body: JSON.stringify(placeRequestBody),
   });
 
-  const place = await response.json();
+  const data = await response.json();
 
   try {
-    return place;
+    return data;
   } catch (err) {
-    throw new Error(`postPlace api fail err: ${err}`);
-  }
-};
-
-export const patchPlace = async ({
-  mapId,
-  patchId,
-  placePatchParams,
-}: {
-  mapId: number;
-  patchId: number;
-  placePatchParams: { category_id: number; story: string };
-}) => {
-  const accessToken = getCookie('access_token');
-  if (!accessToken) window.location.href = '/login';
-  if (!patchId) throw new Error('patchId is undefined');
-
-  const response = await fetch(`${API_URL}/map/${mapId}/places/${patchId}`, {
-    method: 'PATCH',
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(placePatchParams),
-  });
-
-  const placeData = await response.json();
-
-  try {
-    return placeData;
-  } catch (err) {
-    throw new Error(`patchPlace api fail err: ${err}`);
-  }
-};
-
-export const deletePlace = async (mapId: number, placeId: number) => {
-  const accessToken = getCookie('access_token');
-  if (!accessToken) window.location.href = '/login';
-  if (!placeId) throw new Error('placeId is undefined');
-
-  const response = await fetch(`${API_URL}/map/${mapId}/places/${placeId}`, {
-    method: 'DELETE',
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-      'Content-Type': 'application/json',
-    },
-  });
-
-  const place = await response.json();
-
-  try {
-    return place;
-  } catch (err) {
-    throw new Error(`deletePlace api fail err: ${err}`);
+    throw new Error(`장소생성 api fail err: ${err}`);
   }
 };

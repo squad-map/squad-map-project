@@ -6,9 +6,10 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const webpack = require('webpack');
 
-dotenv.config({ path: path.join(__dirname, '../env', '.env.common') });
-const { SQUAD_KAKAO_MAP_KEY } = process.env;
 const isDevelopment = process.env.NODE_ENV === 'development';
+dotenv.config({ path: path.join(__dirname, '../env', '.env') });
+
+const { SQUAD_KAKAO_MAP_KEY } = process.env;
 
 module.exports = {
   context: __dirname,
@@ -33,7 +34,6 @@ module.exports = {
           loader: 'babel-loader',
           options: {
             plugins: [
-              'babel-plugin-macros',
               isDevelopment && require.resolve('react-refresh/babel'),
             ].filter(Boolean),
           },
