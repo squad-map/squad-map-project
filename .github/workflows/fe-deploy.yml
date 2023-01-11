@@ -24,6 +24,7 @@ jobs: # job 설정
       - name : Create env file 
         run: |
           sudo mkdir env
+          sudo chmod -R 777 ./env
           cd env
           touch .env.production
           touch .env.common
