@@ -29,11 +29,8 @@ const Authority = ({ mapId }: AuthorityProps) => {
   if (groupMembers && groupMembers.code !== SUCCESS_GET_GROUP_MEMBERS)
     return <div>API Error</div>;
 
-  if (!groupMembers) {
-    if (groupMembersLoading) {
-      return <LoadingSpinner size="large" />;
-    }
-    return <div>API Error</div>;
+  if (groupMembersLoading && groupMembers.length === 0) {
+    return <LoadingSpinner size="large" />;
   }
 
   return (
