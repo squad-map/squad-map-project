@@ -6,7 +6,7 @@ import { RecoilRoot } from 'recoil';
 import App from '@/App';
 import GlobalStyle from '@/styles/GlobalStyle';
 
-if (process.env.NODE_ENV !== 'development') {
+if (process.env.NODE_ENV === 'development') {
   // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require
   const { worker } = require('./mocks/browsers');
   worker.start();
