@@ -6,8 +6,8 @@
 - 같이 코딩하는 사람들과 모각코, 모임을 가질 때 좋은 장소를 공유하고자 해당 서비스를 기획하게 되었습니다.
 - BE, FE, Android 각 파트마다 1명으로 팀을 구성해, 공통의 서비스를 자신의 분야에서 온전히 스스로 고민하고, 도전해보자는 목표로 진행중인 스터디형 프로젝트입니다.
 
-### 서비스 : [https://squadmap.site](squadmap.site)
-### API 문서 : [https://api.squadmap.site/docs/index.html](http://13.124.249.154/docs/index.html)
+### 서비스 : [https://squadmap.site](https://squadmap.site)
+### API 문서 : [https://api.squadmap.site/docs/index.html](https://api.squadmap.site/docs/index.html)
 
 </br>
 
