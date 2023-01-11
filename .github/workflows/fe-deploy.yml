@@ -24,7 +24,7 @@ jobs: # job 설정
       - name : Create env file 
         run: |
           sudo mkdir env
-          cd /env
+          cd env
           touch .env.production
           touch .env.common
           echo "${{ secrets.FE_ENV_PROD }}" >> .env.production
