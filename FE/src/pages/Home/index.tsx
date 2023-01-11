@@ -59,11 +59,8 @@ export default function HomePage() {
     }
   }, [inView, mapsData, refetch]);
 
-  if (allMapsData.length === 0) {
-    if (isLoading) {
-      return <LoadingSpinner size="xLarge" />;
-    }
-    return <div>API Error</div>;
+  if (isLoading && allMapsData.length === 0) {
+    return <LoadingSpinner size="xLarge" />;
   }
 
   return (

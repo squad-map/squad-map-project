@@ -24,11 +24,8 @@ const MyPage = () => {
   if (myPageData && myPageData.code !== SUCCESS_MAPS_GROUP_DATA)
     return <div>API Error</div>;
 
-  if (!myPageData) {
-    if (groupMapsLoading) {
-      return <LoadingSpinner size="xLarge" />;
-    }
-    return <div>API Error</div>;
+  if (groupMapsLoading && myPageData.length === 0) {
+    return <LoadingSpinner size="xLarge" />;
   }
 
   return (
