@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { getMapDetailInfo } from '@/apis/mypage';
 import { Icons } from '@/assets/icons';
 import Button from '@/components/common/Button';
+import LoadingSpinner from '@/components/common/LoadingSpinner';
 import Text from '@/components/common/Text';
 import KakaoMap from '@/components/KaKaoMap';
 import Header from '@/components/Map/Header';
@@ -23,9 +24,11 @@ const Map = () => {
     host_profile_image: '',
   });
 
-  const { data: mapData, refetch: refetchMap } = useQuery(['Map'], () =>
-    getMapDetailInfo(mapId)
-  );
+  const {
+    data: mapData,
+    isLoading: mapDetailLoading,
+    refetch: refetchMap,
+  } = useQuery(['Map'], () => getMapDetailInfo(mapId));
 
   useEffect(() => {
     if (mapData && !userProfile.host_id) {
@@ -37,8 +40,10 @@ const Map = () => {
     }
   }, [mapData, userProfile]);
 
-  if (mapData && mapData.code !== SUCCESS_GET_DETAIL_MAP)
+  if (!mapDetailLoading && mapData.code !== SUCCESS_GET_DETAIL_MAP)
     return <div>API Error</div>;
+
+  if (mapDetailLoading) return <LoadingSpinner size="xLarge" />;
 
   return (
     mapData && (

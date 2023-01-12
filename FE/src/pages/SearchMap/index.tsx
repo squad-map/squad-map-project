@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import { getMapDetailInfo } from '@/apis/mypage';
+import LoadingSpinner from '@/components/common/LoadingSpinner';
 import KakaoMap from '@/components/KaKaoMap';
 import Header from '@/components/Map/Header';
 import SearchPlace from '@/components/SearchMap/SearchPlace';
@@ -18,7 +19,9 @@ const SearchMap = () => {
   const mapId = useGetMapId();
   const [placeInfos, setPlaceInfos] = useState<PlaceType[]>([]);
 
-  const { data: mapData } = useQuery(['Map'], () => getMapDetailInfo(mapId));
+  const { data: mapData, isLoading: mapLoading } = useQuery(['Map'], () =>
+    getMapDetailInfo(mapId)
+  );
 
   const placesSearchCallBack = (data: SearchPlaceType[], status: string) => {
     if (status === kakao.maps.services.Status.OK) {
@@ -47,8 +50,10 @@ const SearchMap = () => {
     });
   };
 
-  if (mapData && mapData.code !== SUCCESS_GET_DETAIL_MAP)
+  if (!mapLoading && mapData.code !== SUCCESS_GET_DETAIL_MAP)
     return <div>API Error</div>;
+
+  if (mapLoading) return <LoadingSpinner size="xLarge" />;
 
   return (
     <section>

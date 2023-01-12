@@ -26,10 +26,10 @@ const Authority = ({ mapId }: AuthorityProps) => {
     return true;
   });
 
-  if (groupMembers && groupMembers.code !== SUCCESS_GET_GROUP_MEMBERS)
+  if (!groupMembersLoading && groupMembers.code !== SUCCESS_GET_GROUP_MEMBERS)
     return <div>API Error</div>;
 
-  if (groupMembersLoading && groupMembers.length === 0) {
+  if (groupMembersLoading) {
     return <LoadingSpinner size="large" />;
   }
 

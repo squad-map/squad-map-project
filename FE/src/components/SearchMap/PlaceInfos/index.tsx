@@ -7,6 +7,7 @@ import { getMapCategories } from '@/apis/category';
 import Button from '@/components/common/Button';
 import Card from '@/components/common/Card';
 import GlobalModal from '@/components/common/GlobalModal';
+import LoadingSpinner from '@/components/common/LoadingSpinner';
 import Text from '@/components/common/Text';
 import { SUCCESS_GET_CATEGORIES } from '@/constants/code';
 import { useGetMapId } from '@/hooks/useGetMapId';
@@ -18,8 +19,9 @@ const PlaceInfos = ({ placeInfos }: { placeInfos: PlaceType[] }) => {
   const [isOpenGlobalModal, setIsOpenGlobalModal] = useState(false);
   const [placeInfo, setPlaceInfo] = useState<PlaceType>();
 
-  const { data: mapCategory } = useQuery(['MapCategory', mapId], () =>
-    getMapCategories(mapId)
+  const { data: mapCategory, isLoading: categoryLoading } = useQuery(
+    ['MapCategory', mapId],
+    () => getMapCategories(mapId)
   );
 
   const handleClickPlace = (id: number) => {
@@ -31,8 +33,10 @@ const PlaceInfos = ({ placeInfos }: { placeInfos: PlaceType[] }) => {
     setIsOpenGlobalModal(true);
   };
 
-  if (mapCategory && mapCategory.code !== SUCCESS_GET_CATEGORIES)
+  if (!categoryLoading && mapCategory.code !== SUCCESS_GET_CATEGORIES)
     return <div>API Error</div>;
+
+  if (categoryLoading) return <LoadingSpinner size="medium" />;
 
   return (
     placeInfos && (

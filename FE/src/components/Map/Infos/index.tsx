@@ -12,6 +12,7 @@ import Button from '@/components/common/Button';
 import Card from '@/components/common/Card';
 import GlobalModal from '@/components/common/GlobalModal';
 import Icon from '@/components/common/Icon';
+import LoadingSpinner from '@/components/common/LoadingSpinner';
 import Text from '@/components/common/Text';
 import ModalContent from '@/components/ModalContent';
 import UserProfile from '@/components/UserProfile';
@@ -53,8 +54,9 @@ const Infos = ({
 
   const user = useRecoilValue(userState);
 
-  const { data: mapCategory } = useQuery(['MapCategory', mapId], () =>
-    getMapCategories(mapId)
+  const { data: mapCategory, isLoading: categoryLoading } = useQuery(
+    ['MapCategory', mapId],
+    () => getMapCategories(mapId)
   );
 
   const { data: placeDetail, refetch: placeDetailRefetch } = useQuery(
@@ -115,8 +117,12 @@ const Infos = ({
     setIsModal(true);
   };
 
-  if (mapCategory && mapCategory.code !== SUCCESS_GET_CATEGORIES)
+  if (!categoryLoading && mapCategory.code !== SUCCESS_GET_CATEGORIES)
     return <div>API Error</div>;
+
+  if (categoryLoading) {
+    return <LoadingSpinner size="medium" />;
+  }
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
