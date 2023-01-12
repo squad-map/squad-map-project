@@ -12,6 +12,7 @@ import LoadingSpinner from '@/components/common/LoadingSpinner';
 import Text from '@/components/common/Text';
 import GridCards from '@/components/GridCards';
 import Item from '@/components/Item';
+import { SUCCESS_MAPS_DATA } from '@/constants/code';
 import useAllMaps from '@/hooks/query/useAllMaps';
 import useDebounce from '@/hooks/useDebounce';
 import { MapType } from '@/interfaces/Map';
@@ -59,7 +60,10 @@ export default function HomePage() {
     }
   }, [inView, mapsData, refetch]);
 
-  if (isLoading && allMapsData.length === 0) {
+  if (!isLoading && mapsData.code !== SUCCESS_MAPS_DATA)
+    return <div>API Error</div>;
+
+  if (isLoading) {
     return <LoadingSpinner size="xLarge" />;
   }
 

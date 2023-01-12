@@ -9,6 +9,7 @@ import ModifyCategoryModalInfo from '@/components/Category/ModifyCategoryModalIn
 import Button from '@/components/common/Button';
 import GlobalModal from '@/components/common/GlobalModal';
 import Icon from '@/components/common/Icon';
+import LoadingSpinner from '@/components/common/LoadingSpinner';
 import Text from '@/components/common/Text';
 import { SUCCESS_GET_CATEGORIES } from '@/constants/code';
 import { useGetMapId } from '@/hooks/useGetMapId';
@@ -36,13 +37,18 @@ const Header = ({ headerData, refetchMap }: HeaderProps) => {
     setIsModifyCategoryModal(true);
   };
 
-  const { data: mapCategories, refetch: refetchMapCategories } = useQuery(
-    ['MapCategory', mapId],
-    () => getMapCategories(mapId)
-  );
+  const {
+    data: mapCategories,
+    isLoading: headerLoading,
+    refetch: refetchMapCategories,
+  } = useQuery(['MapCategory', mapId], () => getMapCategories(mapId));
 
-  if (mapCategories && mapCategories.code !== SUCCESS_GET_CATEGORIES)
+  if (!headerLoading && mapCategories.code !== SUCCESS_GET_CATEGORIES)
     return <div>API Error</div>;
+
+  if (headerLoading) {
+    return <LoadingSpinner size="medium" />;
+  }
 
   return (
     headerData && (

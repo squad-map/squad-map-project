@@ -21,10 +21,10 @@ const MyPage = () => {
     () => getGroupMaps()
   );
 
-  if (myPageData && myPageData.code !== SUCCESS_MAPS_GROUP_DATA)
+  if (!groupMapsLoading && myPageData.code !== SUCCESS_MAPS_GROUP_DATA)
     return <div>API Error</div>;
 
-  if (groupMapsLoading && myPageData.length === 0) {
+  if (groupMapsLoading) {
     return <LoadingSpinner size="xLarge" />;
   }
 
