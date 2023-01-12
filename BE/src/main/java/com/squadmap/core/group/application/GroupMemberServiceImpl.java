@@ -31,8 +31,8 @@ public class GroupMemberServiceImpl implements GroupMemberService {
 
     @Override
     public List<GroupMemberInfo> searchMembersInGroup(Long loginMemberId, Long mapId) {
+        checkHasAuthority(mapId, loginMemberId, PermissionLevel.READ);
         List<GroupMember> groups = groupMemberRepository.findByMapId(mapId);
-        checkHasAuthority(loginMemberId, mapId, PermissionLevel.READ);
 
         List<Long> memberIds = groups.stream()
                 .map(GroupMember::getMemberId)

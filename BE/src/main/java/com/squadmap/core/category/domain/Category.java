@@ -34,6 +34,10 @@ public class Category {
         return this.id.equals(categoryId);
     }
 
+    public boolean hasSameName(String categoryName) {
+        return this.name.equals(categoryName);
+    }
+
     public void update(String name, String color) {
         this.name = name;
         this.color = color;
@@ -55,4 +59,6 @@ public class Category {
     public int hashCode() {
         return Objects.hash(id);
     }
+
+
 }

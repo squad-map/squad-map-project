@@ -10,7 +10,7 @@ spring:
 
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3307/testdb?allowLoadLocalInfile=true
+    url: jdbc:mysql://host.docker.internal:3307/testdb?allowLoadLocalInfile=true
     username: root
     password: test
 
@@ -23,7 +23,6 @@ spring:
     properties:
       hibernate:
         default_batch_fetch_size: 1000
-        show_sql: true
         format_sql: true
 
     open-in-view: false
@@ -36,3 +35,6 @@ spring:
     type: redis
     redis:
       time-to-live: 5000000
+
+
+
