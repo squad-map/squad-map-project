@@ -10,7 +10,7 @@ spring:
 
   datasource:
     driverClassName: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3307/testdb?allowLoadLocalInfile=true
+    url: jdbc:mysql://host.docker.internal:3307/testdb?allowLoadLocalInfile=true
     username: root
     password: test
 
