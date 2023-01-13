@@ -18,7 +18,14 @@ const Item = ({ item }: ItemProps) => (
     <span className="text-sm text-gray">
       등록된 장소 : {item.places_count}개
     </span>
-    <span className="text-xs text-gray">작성자: {item.host_nickname}</span>
+    <div className="flex items-center gap-2">
+      <img
+        className="w-8 h-8 rounded-full"
+        src={item.host_profile_image}
+        alt="프로필이미지"
+      />
+      <span className="text-xs text-gray">작성자: {item.host_nickname}</span>
+    </div>
   </div>
 );
 

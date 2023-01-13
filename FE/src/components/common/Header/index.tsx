@@ -34,17 +34,24 @@ const Header = ({ children }: HeaderProps) => {
         </Link>
         <div className="flex items-center gap-8">
           {user && user.nickname ? (
-            <Button
-              size="regular"
-              color={theme.color.white}
-              onClick={() => setNickNameModal(true)}
-            >
-              <Text
-                size="regular"
-                text={user.nickname}
-                color={theme.color.blue}
+            <div className="flex items-center gap-4">
+              <img
+                className="w-12 h-12 rounded-full"
+                src={user.profileImageUrl}
+                alt="프로필이미지"
               />
-            </Button>
+              <Button
+                size="regular"
+                color={theme.color.white}
+                onClick={() => setNickNameModal(true)}
+              >
+                <Text
+                  size="regular"
+                  text={user.nickname}
+                  color={theme.color.blue}
+                />
+              </Button>
+            </div>
           ) : (
             <Button
               size="small"

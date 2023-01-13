@@ -52,11 +52,13 @@ const KakaoMap = ({ children, placeInfos }: KakaoMapProps) => {
 
   useEffect(() => {
     const container = document.getElementById('myMap');
-    const options = {
-      center: new kakao.maps.LatLng(defaultCoords.lat, defaultCoords.lng),
-      level: 5,
-    };
-    mapRef.current = new kakao.maps.Map(container, options);
+    if (kakao) {
+      const options = {
+        center: new kakao.maps.LatLng(defaultCoords.lat, defaultCoords.lng),
+        level: 5,
+      };
+      mapRef.current = new kakao.maps.Map(container, options);
+    }
   }, []);
 
   useEffect(() => {
