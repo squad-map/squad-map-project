@@ -1,5 +1,5 @@
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRecoilValue } from 'recoil';
 
 import PlaceModalComment from '../PlaceModalComment';
@@ -22,6 +22,8 @@ import {
   SUCCESS_GET_PLACE,
 } from '@/constants/code';
 import { useGetMapId } from '@/hooks/useGetMapId';
+import { CommentsType } from '@/interfaces/Comments';
+import { PlaceDetail } from '@/interfaces/Place';
 import { userState } from '@/recoil/atoms/user';
 import theme from '@/styles/theme';
 import { CategorizedPlaces, MapUserType, PlaceType } from '@/types/map';
@@ -40,16 +42,28 @@ const Infos = ({
   refetchMap,
 }: InfosProps) => {
   const mapId = useGetMapId();
-  const [modalParams, setModalParams] = useState({ type: 'GET', placeId: 0 });
-  const [isOpenComment, setIsOpenCommentModal] = useState(false);
-  const [isOpenUpdateModal, setIsOpenUpdateModal] = useState(false);
-
+  const [modalParams, setModalParams] = useState({
+    type: 'GET',
+    placeId: 0,
+    modal: false,
+  });
   const [isModal, setIsModal] = useState(false);
   const [modalText, setModalText] = useState({
     title: '',
     description: '',
     buttonText: '',
     handleButtonClick: () => true,
+  });
+  const [placeDetail, setPlaceDetail] = useState({
+    place_id: 0,
+    place_name: '',
+    address: '',
+    latitude: 0,
+    longitude: 0,
+    story: '',
+    detail_link: '',
+    category_id: 0,
+    comments: [] as unknown as CommentsType,
   });
 
   const user = useRecoilValue(userState);
@@ -59,24 +73,27 @@ const Infos = ({
     () => getMapCategories(mapId)
   );
 
-  const { data: placeDetail, refetch: placeDetailRefetch } = useQuery(
-    ['PlaceDetail'],
-    () => getPlaceDeatil({ mapId, placeId: modalParams.placeId }),
+  const { refetch: placeDetailRefetch } = useQuery(
+    ['PlaceDetail', modalParams.placeId],
+    () => {
+      if (!modalParams.placeId) return;
+      // eslint-disable-next-line consistent-return
+      return getPlaceDeatil({ mapId, placeId: modalParams.placeId });
+    },
     {
-      onSuccess: ({ code }: { code: string }) => {
+      onSuccess: ({ code, data }: { code: string; data: PlaceDetail }) => {
         if (code === SUCCESS_GET_PLACE) {
-          if (modalParams.type === 'GET') {
-            setIsOpenCommentModal(true);
-          } else if (modalParams.type === 'UPDATE') {
-            setIsOpenUpdateModal(true);
-          }
+          setPlaceDetail(data);
         }
       },
     }
   );
 
-  const handleClickPlace = async (type: 'GET' | 'UPDATE', placeId: number) => {
-    setModalParams({ type, placeId });
+  const handleClickPlace = async (
+    type: 'COMMENT' | 'UPDATE',
+    placeId: number
+  ) => {
+    setModalParams({ type, placeId, modal: true });
   };
 
   const fetchDeletePlace = useMutation(
@@ -124,11 +141,6 @@ const Infos = ({
     return <LoadingSpinner size="medium" />;
   }
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  useEffect(() => {
-    placeDetailRefetch();
-  }, [modalParams, placeDetailRefetch]);
-
   return (
     infoData && (
       <section className="flex flex-col gap-4 max-h-[38rem] mt-8 p-1 absolute right-4 z-[999]">
@@ -161,7 +173,9 @@ const Infos = ({
                         size="small"
                         url={Icons.More}
                         alt="정보 더보기"
-                        onClick={() => handleClickPlace('GET', place.place_id)}
+                        onClick={() =>
+                          handleClickPlace('COMMENT', place.place_id)
+                        }
                       />
                     </div>
                     {mapHostId === user?.member_id && (
@@ -169,8 +183,7 @@ const Infos = ({
                         <Button
                           size="xSmall"
                           color={theme.color.navy}
-                          onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
-                            e.preventDefault();
+                          onClick={() => {
                             handleClickPlace('UPDATE', place.place_id);
                           }}
                         >
@@ -208,27 +221,33 @@ const Infos = ({
               </Card>
             ))
           )}
-        {isOpenComment && (
+        {placeDetail && modalParams.modal && modalParams.type === 'COMMENT' && (
           <GlobalModal
             size="large"
-            handleCancelClick={() => setIsOpenCommentModal(false)}
+            handleCancelClick={() =>
+              setModalParams({ ...modalParams, modal: false })
+            }
           >
             <PlaceModalComment
               mapHostId={mapHostId}
-              placeInfo={placeDetail.data}
+              placeInfo={placeDetail}
               placeDetailRefetch={placeDetailRefetch}
             />
           </GlobalModal>
         )}
-        {isOpenUpdateModal && (
+        {placeDetail && modalParams.modal && modalParams.type === 'UPDATE' && (
           <GlobalModal
             size="medium"
-            handleCancelClick={() => setIsOpenUpdateModal(false)}
+            handleCancelClick={() =>
+              setModalParams({ ...modalParams, modal: false })
+            }
           >
             <PlaceModalUpdate
-              placeInfo={placeDetail.data}
+              placeInfo={placeDetail}
               categoryInfo={mapCategory.data}
-              setIsOpenUpdateModal={setIsOpenUpdateModal}
+              setIsOpenUpdateModal={() =>
+                setModalParams({ ...modalParams, modal: false })
+              }
               refetchMap={refetchMap}
             />
           </GlobalModal>
