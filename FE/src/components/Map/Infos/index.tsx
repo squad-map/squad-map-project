@@ -143,84 +143,97 @@ const Infos = ({
 
   return (
     infoData && (
-      <section className="flex flex-col gap-4 max-h-[38rem] mt-8 p-1 absolute right-4 z-[999]">
+      <section className="flex flex-col gap-4 mt-8 p-1 absolute right-4 z-[999]">
         <Button size="large" color={theme.color.navy}>
-          <Text size="large" text="🍞 Muffin" color={theme.color.white} />
+          <div className="flex gap-4 items-center">
+            <img
+              className="w-8 h-8 rounded-full"
+              src={userProfile.host_profile_image}
+              alt="프로필이미지"
+            />
+            <Text
+              size="large"
+              text={userProfile.host_nickname}
+              color={theme.color.white}
+            />
+          </div>
         </Button>
-        {infoData &&
-          infoData.map((info: CategorizedPlaces) =>
-            info.places.map((place: PlaceType) => (
-              <Card
-                size="large"
-                key={`InfoCard-${place.place_id}`}
-                color={theme.color.white}
-              >
-                <div className="h-full flex flex-col gap-8">
-                  <div className="flex justify-between">
-                    <div className="flex items-center gap-4">
-                      <Button
-                        size="xSmall"
-                        color={info.category_info.category_color}
-                        key={`categoryButton-${info.category_info.category_name}`}
-                      >
-                        <Text
-                          size="xSmall"
-                          text={info.category_info.category_name}
-                          color={theme.color.white}
-                        />
-                      </Button>
-                      <Icon
-                        size="small"
-                        url={Icons.More}
-                        alt="정보 더보기"
-                        onClick={() =>
-                          handleClickPlace('COMMENT', place.place_id)
-                        }
-                      />
-                    </div>
-                    {mapHostId === user?.member_id && (
-                      <div className="flex gap-4">
+        <div className="h-[38rem] flex flex-col gap-4 overflow-y-auto">
+          {infoData &&
+            infoData.map((info: CategorizedPlaces) =>
+              info.places.map((place: PlaceType) => (
+                <Card
+                  size="large"
+                  key={`InfoCard-${place.place_id}`}
+                  color={theme.color.white}
+                >
+                  <div className="h-full flex flex-col gap-8">
+                    <div className="flex justify-between">
+                      <div className="flex items-center gap-4">
                         <Button
                           size="xSmall"
-                          color={theme.color.navy}
-                          onClick={() => {
-                            handleClickPlace('UPDATE', place.place_id);
-                          }}
+                          color={info.category_info.category_color}
+                          key={`categoryButton-${info.category_info.category_name}`}
                         >
                           <Text
-                            text="장소수정"
                             size="xSmall"
+                            text={info.category_info.category_name}
                             color={theme.color.white}
                           />
                         </Button>
-                        <button
-                          type="button"
-                          onClick={() => handleDeletePlace(place.place_id)}
-                        >
-                          <Icon
-                            size="small"
-                            url={Icons.Trash}
-                            alt="삭제아이콘"
-                          />
-                        </button>
+                        <Icon
+                          size="small"
+                          url={Icons.More}
+                          alt="정보 더보기"
+                          onClick={() =>
+                            handleClickPlace('COMMENT', place.place_id)
+                          }
+                        />
                       </div>
-                    )}
+                      {mapHostId === user?.member_id && (
+                        <div className="flex gap-4">
+                          <Button
+                            size="xSmall"
+                            color={theme.color.navy}
+                            onClick={() => {
+                              handleClickPlace('UPDATE', place.place_id);
+                            }}
+                          >
+                            <Text
+                              text="장소수정"
+                              size="xSmall"
+                              color={theme.color.white}
+                            />
+                          </Button>
+                          <button
+                            type="button"
+                            onClick={() => handleDeletePlace(place.place_id)}
+                          >
+                            <Icon
+                              size="small"
+                              url={Icons.Trash}
+                              alt="삭제아이콘"
+                            />
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                    <Text
+                      size="xRegular"
+                      text={place.place_name}
+                      color={theme.color.lightGreen}
+                    />
+                    <Text
+                      size="small"
+                      text={place.address}
+                      color={theme.color.gray}
+                    />
+                    <UserProfile userProfile={userProfile} />
                   </div>
-                  <Text
-                    size="xRegular"
-                    text={place.place_name}
-                    color={theme.color.lightGreen}
-                  />
-                  <Text
-                    size="small"
-                    text={place.address}
-                    color={theme.color.gray}
-                  />
-                  <UserProfile userProfile={userProfile} />
-                </div>
-              </Card>
-            ))
-          )}
+                </Card>
+              ))
+            )}
+        </div>
         {placeDetail && modalParams.modal && modalParams.type === 'COMMENT' && (
           <GlobalModal
             size="large"
