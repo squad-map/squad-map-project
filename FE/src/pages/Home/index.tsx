@@ -30,6 +30,7 @@ export default function HomePage() {
 
   const { mapsData, isLoading, refetch } = useAllMaps(
     searchType,
+    setSerachValue,
     debouncedValue,
     allMapsData,
     setAllMapsData,
@@ -102,7 +103,7 @@ export default function HomePage() {
               }
             />
           </Button>
-          {user?.nickname && (
+          {!user?.nickname && (
             <Button
               size="small"
               color={
