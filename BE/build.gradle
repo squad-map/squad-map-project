@@ -66,7 +66,9 @@ dependencies {
     testImplementation 'org.testcontainers:mysql:1.17.4'
 }
 
-// RestDocs 설정 시작
+jar {
+    enabled = false
+}
 
 ext {
     snippetsDir = file("${project.buildDir}/generated-snippets")
@@ -102,7 +104,17 @@ tasks.register('copyDocument', Copy) {
 bootJar {
     dependsOn copyDocument
 }
-// RestDocs 설정 끝
+
+
+gitProperties {
+    extProperty = "git"
+    dateFormat = "yyyy-MM-dd'T'HH:mmZ"
+    dateFormatTimeZone = "ASIA/SEOUL"
+}
+
+tasks.named('jib') {
+    dependsOn bootJar
+}
 
 jib {
     from {
