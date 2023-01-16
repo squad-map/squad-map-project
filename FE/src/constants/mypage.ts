@@ -157,26 +157,26 @@ export const GET_GROUP_MAPS_DATA = {
   data: {
     map_count: 2,
     content: [
-      // {
-      //   id: 1,
-      //   map_name: 'first map',
-      //   map_emoji: 'U+1F600',
-      //   host_id: 1,
-      //   host_nickname: 'nickname',
-      //   host_profile_image:
-      'https://avatars.githubusercontent.com/u/45479309?v=4',
-      //   places_count: 1,
-      // },
-      // {
-      //   id: 2,
-      //   map_name: 'second map',
-      //   map_emoji: 'U+1F600',
-      //   host_id: 1,
-      //   host_nickname: 'nickname',
-      //   host_profile_image:
-      'https://avatars.githubusercontent.com/u/45479309?v=4',
-      //   places_count: 1,
-      // },
+      {
+        id: 1,
+        map_name: 'first map',
+        map_emoji: 'U+1F600',
+        host_id: 1,
+        host_nickname: 'nickname',
+        host_profile_image:
+          'https://avatars.githubusercontent.com/u/45479309?v=4',
+        places_count: 1,
+      },
+      {
+        id: 2,
+        map_name: 'second map',
+        map_emoji: 'U+1F600',
+        host_id: 1,
+        host_nickname: 'nickname',
+        host_profile_image:
+          'https://avatars.githubusercontent.com/u/45479309?v=4',
+        places_count: 1,
+      },
     ],
   },
 };

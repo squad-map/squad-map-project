@@ -137,7 +137,7 @@ const Navigation = ({ menu, handleCloseMenu }: INavigationProps) => {
       </div>
       {openModal.isOpen && (
         <GlobalModal
-          size="medium"
+          size="small"
           handleCancelClick={() => setOpenModal({ isOpen: false, type: '' })}
         >
           {openModal.type === 'login' && <Login />}

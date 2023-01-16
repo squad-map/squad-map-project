@@ -15,7 +15,7 @@ export const GET_PLACE_DETAIL_DATA = {
     latitude: 127.0,
     longitude: 37.0,
     story: 'first place',
-    detail_link: 'https://kakaomap',
+    detail_link: 'http://place.map.kakao.com/7990409',
     category_id: 1,
     comments: {
       content: [

@@ -50,7 +50,7 @@ const PlaceModalComment = ({
           />
         )}
       </article>
-      <Link to={placeInfo.detail_link}>
+      <a href={placeInfo.detail_link} target="_blank" rel="noreferrer">
         <Button size="xLarge" color={theme.color.yellow}>
           <Text
             text="카카오맵으로 자세히 보기"
@@ -58,7 +58,7 @@ const PlaceModalComment = ({
             color={theme.color.lightBlack}
           />
         </Button>
-      </Link>
+      </a>
     </div>
   );
 };
