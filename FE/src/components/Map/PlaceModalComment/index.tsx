@@ -1,5 +1,3 @@
-import { Link } from 'react-router-dom';
-
 import CreateComment from '../Comment/CreateComment';
 import PatchCommentList from '../Comment/PatchCommentList';
 
@@ -36,7 +34,7 @@ const PlaceModalComment = ({
       <KakaoStaticMap placeInfo={placeInfo} />
       {/*  댓글 작성 Form */}
       <article className="w-full flex gap-4">
-        {place_id && (
+        {place_id !== 0 && (
           <CreateComment
             placeId={place_id}
             placeDetailRefetch={placeDetailRefetch}

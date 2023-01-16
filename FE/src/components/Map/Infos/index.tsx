@@ -9,7 +9,6 @@ import { getMapCategories } from '@/apis/category';
 import { deletePlace, getPlaceDeatil } from '@/apis/place';
 import { Icons } from '@/assets/icons';
 import Button from '@/components/common/Button';
-import Card from '@/components/common/Card';
 import GlobalModal from '@/components/common/GlobalModal';
 import Icon from '@/components/common/Icon';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
@@ -162,10 +161,9 @@ const Infos = ({
           {infoData &&
             infoData.map((info: CategorizedPlaces) =>
               info.places.map((place: PlaceType) => (
-                <Card
-                  size="large"
+                <div
+                  className="w-[21rem] h-[15rem] p-4 bg-white rounded-2xl cursor-pointer shadow-xl hover:bg-silver transition-all duration-200"
                   key={`InfoCard-${place.place_id}`}
-                  color={theme.color.white}
                 >
                   <div className="h-full flex flex-col gap-8">
                     <div className="flex justify-between">
@@ -230,22 +228,26 @@ const Infos = ({
                     />
                     <UserProfile userProfile={userProfile} />
                   </div>
-                </Card>
+                </div>
               ))
             )}
         </div>
-        {placeDetail && modalParams.modal && modalParams.type === 'COMMENT' && (
+        {modalParams.modal && modalParams.type === 'COMMENT' && (
           <GlobalModal
             size="large"
             handleCancelClick={() =>
               setModalParams({ ...modalParams, modal: false })
             }
           >
-            <PlaceModalComment
-              mapHostId={mapHostId}
-              placeInfo={placeDetail}
-              placeDetailRefetch={placeDetailRefetch}
-            />
+            {placeDetail.place_id ? (
+              <PlaceModalComment
+                mapHostId={mapHostId}
+                placeInfo={placeDetail}
+                placeDetailRefetch={placeDetailRefetch}
+              />
+            ) : (
+              <LoadingSpinner size="medium" />
+            )}
           </GlobalModal>
         )}
         {placeDetail && modalParams.modal && modalParams.type === 'UPDATE' && (
