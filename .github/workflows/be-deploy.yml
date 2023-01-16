@@ -25,7 +25,7 @@ jobs:
           echo "${{ secrets.BE_LOG_APPENDER }}" >> file-appenders.xml
           sudo mkdir propertis
           sudo chmod -R 777 ./properties
-          cd properies
+          cd properties
           echo "${{ secrets.BE_ENV_AUTH }}" >> auth.yml
           echo "${{ secrets.BE_ENV_DATASOURCE }}" >> datasource.yml
         working-directory: ./BE/src/main/resources
