@@ -80,6 +80,7 @@ const SearchModalContent = ({
 
   const handleCreatePlace = (e: React.SyntheticEvent<HTMLButtonElement>) => {
     e.preventDefault();
+
     const newPlace = {
       name: placeInfo.place_name,
       address: placeInfo.address,
@@ -89,6 +90,19 @@ const SearchModalContent = ({
       detail_link: placeInfo.detail_link,
       category_id: placeForm.category_id,
     };
+
+    if (!newPlace.category_id) {
+      setModalText({
+        title: '카테고리를 먼저 생성해주세요.',
+        description: '장소 생성 실패',
+        buttonText: '닫기',
+        handleButtonClick: () => {
+          setIsModal(false);
+          return true;
+        },
+      });
+      return setIsModal(true);
+    }
 
     fetchPostPlace.mutate({ mapId, placePostParams: newPlace });
   };
