@@ -23,7 +23,7 @@ jobs:
         run: |
           echo "${{ secrets.BE_APPLICATION_PROD }}" >> application-prod.yml
           echo "${{ secrets.BE_LOG_APPENDER }}" >> file-appenders.xml
-          sudo mkdir propertis
+          sudo mkdir properties
           sudo chmod -R 777 ./properties
           cd properties
           echo "${{ secrets.BE_ENV_AUTH }}" >> auth.yml
