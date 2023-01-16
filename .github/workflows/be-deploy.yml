@@ -70,10 +70,11 @@ jobs:
         with:
           host: ${{ secrets.BE_SERVER_IP }}
           username: ubuntu
-          key: ${{ secrets.BE_SERVER_TOKEN }}            
+          key: ${{ secrets.BE_SERVER_TOKEN }}
+          envs: DOCKER_REGISTRY,DOCKER_REPOSITORY,IMAGE_TAG
           script: |
-            docker pull ${DOCKER_REGISTRY}/${DOCKER_REPOSITORY}:${IMAGE_TAG}
+            docker pull $DOCKER_REGISTRY/$DOCKER_REPOSITORY:$IMAGE_TAG
             docker stop sq-server
-            docker run -d --rm --name sq-server -p 443:8080 -v server-log:/log ${DOCKER_REGISTRY}/${DOCKER_REPOSITORY}:${IMAGE_TAG} .
+            docker run -d --rm --name sq-server -p 443:8080 -v server-log:/log $DOCKER_REGISTRY/$DOCKER_REPOSITORY:$IMAGE_TAG .
 
 
