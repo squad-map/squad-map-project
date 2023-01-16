@@ -86,7 +86,7 @@ public class CategoryServiceImpl implements CategoryService {
             throw new ClientException(ErrorStatusCodeAndMessage.FORBIDDEN);
         }
 
-        if (isDuplicateName(categoryName, category.getMap())) {
+        if (!category.hasSameName(categoryName) && isDuplicateName(categoryName, category.getMap())) {
             throw new ClientException(ErrorStatusCodeAndMessage.DUPLICATE_CATEGORY);
         }
 

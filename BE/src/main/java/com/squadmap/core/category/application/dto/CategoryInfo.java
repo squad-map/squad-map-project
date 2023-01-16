@@ -4,10 +4,12 @@ import com.squadmap.core.category.domain.Category;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 
 @Getter
 @RequiredArgsConstructor
 @EqualsAndHashCode
+@ToString
 public class CategoryInfo {
 
     private final Long categoryId;

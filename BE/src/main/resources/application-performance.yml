@@ -23,7 +23,6 @@ spring:
     properties:
       hibernate:
         default_batch_fetch_size: 1000
-        show_sql: true
         format_sql: true
 
     open-in-view: false
@@ -36,3 +35,6 @@ spring:
     type: redis
     redis:
       time-to-live: 5000000
+
+
+

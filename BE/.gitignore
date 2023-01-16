@@ -40,3 +40,6 @@ src/main/resources/properties/auth.yml
 src/main/resources/properties/datasource.yml
 
 *.csv
+
+src/main/resources/log/**
+src/main/resources/application-prod.yml

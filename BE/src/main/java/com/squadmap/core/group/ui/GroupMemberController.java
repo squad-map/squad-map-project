@@ -22,7 +22,7 @@ public class GroupMemberController {
 
     @GetMapping
     public CommonResponse<List<GroupMemberInfo>> searchMembersInMap(@Login Long memberId, @PathVariable Long mapId) {
-        return CommonResponse.success(SuccessCode.GROUP_READ, groupMemberService.searchMembersInGroup(mapId, memberId));
+        return CommonResponse.success(SuccessCode.GROUP_READ, groupMemberService.searchMembersInGroup(memberId, mapId));
     }
 
     @PostMapping
