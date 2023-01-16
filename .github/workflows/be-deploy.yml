@@ -58,19 +58,19 @@ jobs:
         env:
           DOCKER_REGISTRY: ${{ secrets.DOCKERHUB_USERNAME }}
           DOCKER_REPOSITORY: ${{ secrets.DOCKER_REPOSITORY }}
-          IMAGE_TAG: ${{ secrets.DOCKER_IMAGE_NAME }}
+          IMAGE_TAG: ${{ secrets.DOCKER_IMAGE_TAG }}
       
 
       - name: Deploy
         uses: appleboy/ssh-action@master
+        env:
+          DOCKER_REGISTRY: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKER_REPOSITORY: ${{ secrets.DOCKER_REPOSITORY }}
+          IMAGE_TAG: ${{ secrets.DOCKER_IMAGE_TAG }}
         with:
           host: ${{ secrets.BE_SERVER_IP }}
           username: ubuntu
-          key: ${{ secrets.BE_SERVER_TOKEN }}
-          env:
-            DOCKER_REGISTRY: ${{ secrets.DOCKERHUB_USERNAME }}
-            DOCKER_REPOSITORY: ${{ secrets.DOCKER_IMAGE_NAME }}
-            IMAGE_TAG: ${{ secrets.DOCKER_IMAGE_NAME }}
+          key: ${{ secrets.BE_SERVER_TOKEN }}            
           script: |
             docker pull ${DOCKER_REGISTRY}/${DOCKER_REPOSITORY}:${IMAGE_TAG}
             docker stop sq-server
