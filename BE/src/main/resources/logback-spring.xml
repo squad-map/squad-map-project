@@ -6,9 +6,14 @@
     <property name="LOG_PATTERN"
               value="[%d{yyyy-MM-dd HH:mm:ss}:%-4relative] %green([%thread]) %highlight(%-5level) %boldWhite([%C.%M:%yellow(%L)]) - %msg%n"/>
 
-    <springProfile name="performance|test">
-        <include resource="./log/console-appender.xml"/>
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <charset>UTF-8</charset>
+            <pattern>${LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
 
+    <springProfile name="performance">
         <logger name = "org.springframework" level="INFO" additivity="false">
             <appender-ref ref="CONSOLE"/>
         </logger>
@@ -32,6 +37,14 @@
         <logger name="com.zaxxer.hikari.HikariConfig" level="DEBUG" additivity="false">
             <appender-ref ref="CONSOLE"/>
         </logger>
+
+    </springProfile>
+
+    <springProfile name="test">
+
+        <root level="INFO">
+                <appender-ref ref="CONSOLE"/>
+        </root>
 
     </springProfile>
 
