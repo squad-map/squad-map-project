@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 import CreateComment from '../Comment/CreateComment';
 import PatchCommentList from '../Comment/PatchCommentList';
 
@@ -48,13 +50,15 @@ const PlaceModalComment = ({
           />
         )}
       </article>
-      <Button size="xLarge" color={theme.color.yellow}>
-        <Text
-          text="카카오맵으로 자세히 보기"
-          size="regular"
-          color={theme.color.lightBlack}
-        />
-      </Button>
+      <Link to={placeInfo.detail_link}>
+        <Button size="xLarge" color={theme.color.yellow}>
+          <Text
+            text="카카오맵으로 자세히 보기"
+            size="regular"
+            color={theme.color.lightBlack}
+          />
+        </Button>
+      </Link>
     </div>
   );
 };
