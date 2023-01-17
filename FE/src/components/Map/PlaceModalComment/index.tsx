@@ -1,5 +1,3 @@
-import { Link } from 'react-router-dom';
-
 import CreateComment from '../Comment/CreateComment';
 import PatchCommentList from '../Comment/PatchCommentList';
 
@@ -36,7 +34,7 @@ const PlaceModalComment = ({
       <KakaoStaticMap placeInfo={placeInfo} />
       {/*  댓글 작성 Form */}
       <article className="w-full flex gap-4">
-        {place_id && (
+        {place_id !== 0 && (
           <CreateComment
             placeId={place_id}
             placeDetailRefetch={placeDetailRefetch}
@@ -50,7 +48,7 @@ const PlaceModalComment = ({
           />
         )}
       </article>
-      <Link to={placeInfo.detail_link}>
+      <a href={placeInfo.detail_link} target="_blank" rel="noreferrer">
         <Button size="xLarge" color={theme.color.yellow}>
           <Text
             text="카카오맵으로 자세히 보기"
@@ -58,7 +56,7 @@ const PlaceModalComment = ({
             color={theme.color.lightBlack}
           />
         </Button>
-      </Link>
+      </a>
     </div>
   );
 };

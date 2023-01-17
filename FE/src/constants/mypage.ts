@@ -157,26 +157,26 @@ export const GET_GROUP_MAPS_DATA = {
   data: {
     map_count: 2,
     content: [
-      // {
-      //   id: 1,
-      //   map_name: 'first map',
-      //   map_emoji: 'U+1F600',
-      //   host_id: 1,
-      //   host_nickname: 'nickname',
-      //   host_profile_image:
-      'https://avatars.githubusercontent.com/u/45479309?v=4',
-      //   places_count: 1,
-      // },
-      // {
-      //   id: 2,
-      //   map_name: 'second map',
-      //   map_emoji: 'U+1F600',
-      //   host_id: 1,
-      //   host_nickname: 'nickname',
-      //   host_profile_image:
-      'https://avatars.githubusercontent.com/u/45479309?v=4',
-      //   places_count: 1,
-      // },
+      {
+        id: 1,
+        map_name: 'first map',
+        map_emoji: 'U+1F600',
+        host_id: 1,
+        host_nickname: 'nickname',
+        host_profile_image:
+          'https://avatars.githubusercontent.com/u/45479309?v=4',
+        places_count: 1,
+      },
+      {
+        id: 2,
+        map_name: 'second map',
+        map_emoji: 'U+1F600',
+        host_id: 1,
+        host_nickname: 'nickname',
+        host_profile_image:
+          'https://avatars.githubusercontent.com/u/45479309?v=4',
+        places_count: 1,
+      },
     ],
   },
 };
@@ -229,15 +229,22 @@ export const GET_MAP_DETAIL_DATA = {
             place_id: 1,
             place_name: 'starbucks',
             address: 'my hometown',
-            latitude: 127.0,
-            longitude: 37.0,
+            latitude: 37.49085074176696,
+            longitude: 127.03342521371196,
           },
           {
             place_id: 2,
             place_name: 'Hollys',
             address: 'Hollys Coffee',
-            latitude: 127.0,
-            longitude: 37.0,
+            latitude: 37.497436357008766,
+            longitude: 127.02945657720217,
+          },
+          {
+            place_id: 3,
+            place_name: '구로역',
+            address: '서울 구로구 구로동 603-13',
+            latitude: 37.502918871343354,
+            longitude: 126.88040083066709,
           },
         ],
       },

@@ -7,6 +7,7 @@ import { MapType } from '@/interfaces/Map';
 
 const useAllMaps = (
   searchType: string,
+  setSerachValue: React.Dispatch<React.SetStateAction<string>>,
   name: string,
   allMapsData: MapType[],
   setAllMapsData: React.Dispatch<React.SetStateAction<MapType[]>>,
@@ -27,13 +28,16 @@ const useAllMaps = (
       onSuccess: ({ code, data: successData }: { data: any; code: string }) => {
         if (code === SUCCESS_MAPS_DATA) {
           if (successData && successData.content) {
-            const newData = allMapsData.concat(successData.content);
-            setAllMapsData(newData);
-            const lastData =
-              successData.content[successData.content.length - 1];
-            if (lastData) {
-              setLastMapId(lastData.id);
-            }
+            // 내가 포함된지도도 lastMapId로 스크롤 기능이 가능할때 다시 수정.
+            // const newData = allMapsData.concat(successData.content);
+            // setAllMapsData(newData);
+            // const lastData =
+            //   successData.content[successData.content.length - 1];
+            // if (lastData) {
+            //   setLastMapId(lastData.id);
+            // }
+            setSerachValue('');
+            setAllMapsData(successData.content);
           }
         } else if (code === SUCCESS_MAPS_GROUP_DATA) {
           setAllMapsData(successData.content);

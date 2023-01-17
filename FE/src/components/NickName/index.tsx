@@ -37,7 +37,11 @@ const NickName = ({ handleCancelClick }: NickNameProps) => {
         data: { member_id: number; nickname: string };
       }) => {
         if (code === SUCCESS_NICKNAME_UPDATE) {
-          setUser({ member_id: data.member_id, nickname: data.nickname });
+          setUser({
+            ...user,
+            member_id: data.member_id,
+            nickname: data.nickname,
+          });
         }
       },
       onError: (error: unknown) => {

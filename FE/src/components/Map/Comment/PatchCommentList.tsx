@@ -85,7 +85,10 @@ const PatchCommentList = ({
             <div>등록된 댓글이 없습니다.</div>
           ) : (
             content.map(c => (
-              <div className="flex justify-between">
+              <div
+                className="flex justify-between"
+                key={`comment-${c.comment_id}`}
+              >
                 <p>{c.content}</p>
                 {mapHostId === user?.member_id && (
                   <div className="flex gap-2">

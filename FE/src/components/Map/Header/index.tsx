@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { getMapCategories } from '@/apis/category';
 import { Icons } from '@/assets/icons';
-import CategoryModalInfo from '@/components/Category/CategoryModalInfo';
+import CreateCategoryModalInfo from '@/components/Category/CreateCategoryModalInfo';
 import ModifyCategoryModalInfo from '@/components/Category/ModifyCategoryModalInfo';
 import Button from '@/components/common/Button';
 import GlobalModal from '@/components/common/GlobalModal';
@@ -104,12 +104,7 @@ const Header = ({ headerData, refetchMap }: HeaderProps) => {
             size="medium"
             handleCancelClick={() => setIsCategoryModal(false)}
           >
-            <CategoryModalInfo
-              headerData={headerData}
-              mapCategories={mapCategories.data}
-              setIsCategoryModal={setIsCategoryModal}
-              refetchMapCategories={refetchMapCategories}
-            />
+            <CreateCategoryModalInfo setIsCategoryModal={setIsCategoryModal} />
           </GlobalModal>
         )}
         {mapCategories && isModifyCategoryModal && (
