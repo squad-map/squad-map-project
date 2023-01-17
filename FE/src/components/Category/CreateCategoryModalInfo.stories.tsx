@@ -1,15 +1,15 @@
 import { action } from '@storybook/addon-actions';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-import CategoryModalInfo from './CategoryModalInfo';
+import CreateCategoryModalInfo from './CreateCategoryModalInfo';
 
 export default {
-  title: 'components/Category/CategoryModalInfo',
-  component: CategoryModalInfo,
-} as ComponentMeta<typeof CategoryModalInfo>;
+  title: 'components/Category/CreateCategoryModalInfo',
+  component: CreateCategoryModalInfo,
+} as ComponentMeta<typeof CreateCategoryModalInfo>;
 
-const Template: ComponentStory<typeof CategoryModalInfo> = args => (
-  <CategoryModalInfo {...args} />
+const Template: ComponentStory<typeof CreateCategoryModalInfo> = args => (
+  <CreateCategoryModalInfo {...args} />
 );
 
 export const Default = Template.bind({});

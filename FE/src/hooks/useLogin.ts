@@ -35,7 +35,7 @@ export const useLogin = () => {
       setUser({
         member_id: loginData.data.member_id,
         nickname: loginData.data.nickname,
-        profileImageUrl: loginData.data.profileImageUrl,
+        profileImageUrl: loginData.data.profile_image,
       });
     } catch (err) {
       reportError({ message: getErrorMessage(err) });

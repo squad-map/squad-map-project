@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 
-import { defaultCoords } from '@/constants/map';
+import { defaultCoords, pinImage } from '@/constants/map';
 import { PlaceType } from '@/types/map';
 
 interface KakaoMapProps {
@@ -15,16 +15,14 @@ const KakaoMap = ({ children, placeInfos }: KakaoMapProps) => {
   const [markers, setMarkers] = useState([]);
 
   const displayPlaces = (places: PlaceType[]) => {
-    const sampleImageSrc =
-      'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
     const imageSize = new kakao.maps.Size(24, 35);
-    const markerImage = new kakao.maps.MarkerImage(sampleImageSrc, imageSize);
+    const markerImage = new kakao.maps.MarkerImage(pinImage, imageSize);
     const newMarkers = [] as any;
 
     places.forEach((place: PlaceType) => {
       const marker = new kakao.maps.Marker({
         map: mapRef.current,
-        position: new kakao.maps.LatLng(place.longitude, place.latitude),
+        position: new kakao.maps.LatLng(place.latitude, place.longitude),
         image: markerImage,
         zIndex: 10,
       });

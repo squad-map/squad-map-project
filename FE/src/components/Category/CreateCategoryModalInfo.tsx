@@ -1,7 +1,9 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
-import { postCategory } from '@/apis/category';
+import LoadingSpinner from '../common/LoadingSpinner';
+
+import { getMapCategories, postCategory } from '@/apis/category';
 import { Icons } from '@/assets/icons';
 import Button from '@/components/common/Button';
 import GlobalModal from '@/components/common/GlobalModal';
@@ -9,31 +11,30 @@ import Icon from '@/components/common/Icon';
 import Input from '@/components/common/Input';
 import Text from '@/components/common/Text';
 import ModalContent from '@/components/ModalContent';
-import { SUCCESS_POST_CATEGORY } from '@/constants/code';
-import { CategoryColors } from '@/constants/colors';
-import theme from '@/styles/theme';
-import { CategoryType, MapHeaderType } from '@/types/map';
 import {
-  unicodeToEmoji,
-  isExistBgColor,
-  checkDuplicateColor,
-} from '@/utils/util';
+  SUCCESS_GET_CATEGORIES,
+  SUCCESS_POST_CATEGORY,
+} from '@/constants/code';
+import { CategoryColors } from '@/constants/colors';
+import { useGetMapId } from '@/hooks/useGetMapId';
+import theme from '@/styles/theme';
+import { CategoryType } from '@/types/map';
+import { isExistBgColor, checkDuplicateColor } from '@/utils/util';
 
-interface CategoryModalInfoProps {
-  headerData: MapHeaderType;
-  mapCategories: CategoryType[];
+interface CreateCategoryModalInfoProps {
   setIsCategoryModal: React.Dispatch<React.SetStateAction<boolean>>;
-  refetchMapCategories: () => void;
 }
 
-const CategoryModalInfo = ({
-  headerData,
-  mapCategories,
+const CreateCategoryModalInfo = ({
   setIsCategoryModal,
-  refetchMapCategories,
-}: CategoryModalInfoProps) => {
-  // category_info가 아닌 getMapCategories API 호출을 통해 받아온 카테고리는 disabeld 처리
-  const { map_id, emoji, title } = headerData;
+}: CreateCategoryModalInfoProps) => {
+  const mapId = useGetMapId();
+
+  const {
+    data: mapCategories,
+    isLoading: headerLoading,
+    refetch: refetchMapCategories,
+  } = useQuery(['MapCategory', mapId], () => getMapCategories(mapId));
 
   const [categoryFormData, setCategoryFormData] = useState({
     category_name: '',
@@ -79,7 +80,7 @@ const CategoryModalInfo = ({
   };
 
   const isExistName = () => {
-    const existName = mapCategories.map(
+    const existName = mapCategories.data.map(
       (category: CategoryType) => category.category_name
     );
     if (existName.includes(categoryFormData.category_name)) return true;
@@ -103,7 +104,7 @@ const CategoryModalInfo = ({
     }
     if (
       !categoryFormData.category_color ||
-      isExistBgColor(mapCategories, categoryFormData.category_color)
+      isExistBgColor(mapCategories.data, categoryFormData.category_color)
     ) {
       setModalText({
         title: '색상을 확인해주세요.',
@@ -124,19 +125,24 @@ const CategoryModalInfo = ({
     };
 
     fetchPostCategory.mutate({
-      mapId: map_id,
+      mapId,
       categoryPostParams: newCategory,
     });
   };
+
+  if (!headerLoading && mapCategories.code !== SUCCESS_GET_CATEGORIES)
+    return <div>API Error</div>;
+
+  if (headerLoading) {
+    return <LoadingSpinner size="medium" />;
+  }
 
   return (
     <>
       {mapCategories && (
         <section className="h-full flex flex-col items-center justify-center">
           <header className="flex flex-col items-center gap-4 mb-4">
-            <h1 className="text-2xl text-navy">
-              {`${unicodeToEmoji(emoji)} ${title}`}
-            </h1>
+            <h1 className="text-2xl text-navy">카테고리 추가하기</h1>
           </header>
           <div className="flex items-center gap-1 mb-8">
             <Icon
@@ -183,12 +189,12 @@ const CategoryModalInfo = ({
                       backgroundColor: color,
                     }}
                     className={`w-8 h-8 rounded-full hover:opactiy-80 ${
-                      isExistBgColor(mapCategories, color)
+                      isExistBgColor(mapCategories.data, color)
                         ? 'opacity-10'
                         : 'opacity-100'
                     }`}
                     onClick={() => handleColorClick(color)}
-                    disabled={checkDuplicateColor(mapCategories, color)}
+                    disabled={checkDuplicateColor(mapCategories.data, color)}
                   />
                 ))}
               </div>
@@ -231,4 +237,4 @@ const CategoryModalInfo = ({
   );
 };
 
-export default CategoryModalInfo;
+export default CreateCategoryModalInfo;

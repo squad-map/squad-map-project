@@ -4,8 +4,11 @@ import { Link } from 'react-router-dom';
 
 import { getMapDetailInfo } from '@/apis/mypage';
 import { Icons } from '@/assets/icons';
+import { Images } from '@/assets/images';
 import Button from '@/components/common/Button';
+import Image from '@/components/common/Image';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
+import Navigation from '@/components/common/Navigation';
 import Text from '@/components/common/Text';
 import KakaoMap from '@/components/KaKaoMap';
 import Header from '@/components/Map/Header';
@@ -18,6 +21,9 @@ import { unicodeToEmoji } from '@/utils/util';
 
 const Map = () => {
   const mapId = useGetMapId();
+  const [menu, setMenu] = useState(false);
+  const handleOpenMenu = () => setMenu(true);
+  const handleCloseMenu = () => setMenu(false);
   const [userProfile, setUserProfile] = useState<MapUserType>({
     host_id: 0,
     host_nickname: '',
@@ -67,26 +73,43 @@ const Map = () => {
           }}
           refetchMap={refetchMap}
         />
-        <Infos
-          mapHostId={mapData.data.host_id}
-          infoData={mapData.data.categorized_places}
-          userProfile={userProfile}
-          refetchMap={refetchMap}
-        />
-        <div className="absolute bottom-8 right-8 z-[999]">
-          <Link to={`/map/search/${mapData.data.map_id}`}>
-            <Button
-              size="large"
-              color={theme.color.navy}
-              background={`url(${Icons.Plus}) no-repeat right 1rem`}
-            >
-              <Text
-                text="장소 추가하기"
+        <div className="fixed top-2 right-8 z-[1000]">
+          <Image
+            url={Images.Menu}
+            alt="Navigation Menu"
+            data-testid="menuBtn"
+            onClick={handleOpenMenu}
+          />
+          <Navigation
+            menu={menu}
+            handleCloseMenu={handleCloseMenu}
+            type="map"
+          />
+        </div>
+
+        <div className="flex flex-col mt-12 gap-4">
+          <Infos
+            mapHostId={mapData.data.host_id}
+            infoData={mapData.data.categorized_places}
+            userProfile={userProfile}
+            refetchMap={refetchMap}
+          />
+
+          <div className="absolute bottom-4 right-8 z-[999]">
+            <Link to={`/map/search/${mapData.data.map_id}`}>
+              <Button
                 size="large"
-                color={theme.color.white}
-              />
-            </Button>
-          </Link>
+                color={theme.color.navy}
+                background={`url(${Icons.Plus}) no-repeat right 1rem`}
+              >
+                <Text
+                  text="장소 추가하기"
+                  size="large"
+                  color={theme.color.white}
+                />
+              </Button>
+            </Link>
+          </div>
         </div>
       </KakaoMap>
     )
