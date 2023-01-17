@@ -10,6 +10,10 @@ API 문서 : [http://13.124.249.154/docs/index.html](http://13.124.249.154/docs/
 
 ---
 
+## Infrastructure
+
+![infra](https://user-images.githubusercontent.com/81129309/212843467-9e6c9580-c102-425d-b2ba-fb9f4391b70a.png)
+
 ## Backend 기술 스택
 
 - Java 11
@@ -86,6 +90,8 @@ API 문서 : [http://13.124.249.154/docs/index.html](http://13.124.249.154/docs/
 - 불필요한 연관관계 lazy loading으로 인한 성능 문제를 파악하고, 쿼리를 수정하였습니다.
 - 이 후, Redis를 통한 캐싱을 진행해보고, [Redis에 대해서 학습](https://velog.io/@cmsskkk/redis-transaction-spring-and-lua-pipeline)했습니다.
 
+
+----
 
 ### 6. Paging 성능 개선을 위한 no offset query 리팩토링 & 이름 검색 성능을 위한 index 적용
 - member 5,000,000건, map 10,000,000 건의 더미 데이터를 넣고 ngrinder로 성능을 테스트했습니다.
