@@ -142,7 +142,7 @@ const Infos = ({
 
   return (
     infoData && (
-      <section className="flex flex-col gap-4 mt-8 p-1 absolute right-4 z-[999]">
+      <section className="flex flex-col gap-4 mt-8 absolute right-8 z-[999]">
         <Button size="large" color={theme.color.navy}>
           <div className="flex gap-4 items-center">
             <img
@@ -157,12 +157,13 @@ const Infos = ({
             />
           </div>
         </Button>
+
         <div className="h-[38rem] flex flex-col gap-4 overflow-y-auto">
           {infoData &&
             infoData.map((info: CategorizedPlaces) =>
               info.places.map((place: PlaceType) => (
                 <div
-                  className="w-[21rem] h-[15rem] p-4 bg-white rounded-2xl cursor-pointer shadow-xl hover:bg-silver transition-all duration-200"
+                  className="h-[15rem] p-4 bg-white rounded-2xl cursor-pointer shadow-xl hover:bg-silver transition-all duration-200"
                   key={`InfoCard-${place.place_id}`}
                 >
                   <div className="h-full flex flex-col gap-8">
