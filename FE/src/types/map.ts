@@ -26,7 +26,5 @@ export type MapUserType = {
 
 export type MapHeaderType = {
   map_id: number;
-  emoji: string;
-  title: string;
   category_info: CategoryType[];
 };

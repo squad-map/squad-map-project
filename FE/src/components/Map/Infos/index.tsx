@@ -25,11 +25,11 @@ import { CommentsType } from '@/interfaces/Comments';
 import { PlaceDetail } from '@/interfaces/Place';
 import { userState } from '@/recoil/atoms/user';
 import theme from '@/styles/theme';
-import { CategorizedPlaces, MapUserType, PlaceType } from '@/types/map';
+import { MapUserType, PlaceType } from '@/types/map';
 
 interface InfosProps {
   mapHostId: number;
-  infoData: CategorizedPlaces[];
+  infoData: PlaceType[];
   userProfile: MapUserType;
   refetchMap: () => void;
   setCurrentCoords: React.Dispatch<
@@ -171,82 +171,78 @@ const Infos = ({
 
         <div className="h-[38rem] flex flex-col gap-4 overflow-y-auto">
           {infoData &&
-            infoData.map((info: CategorizedPlaces) =>
-              info.places.map((place: PlaceType) => (
-                <div
-                  role="presentation"
-                  className="h-[15rem] p-4 bg-white rounded-2xl cursor-pointer shadow-xl hover:bg-silver transition-all duration-200"
-                  key={`InfoCard-${place.place_id}`}
-                  onClick={() =>
-                    handleCardClick(place.latitude, place.longitude)
-                  }
-                >
-                  <div className="h-full flex flex-col gap-8">
-                    <div className="flex justify-between">
-                      <div className="flex items-center gap-4">
+            infoData.map((place: PlaceType) => (
+              <div
+                role="presentation"
+                className="h-[15rem] p-4 bg-white rounded-2xl cursor-pointer shadow-xl hover:bg-silver transition-all duration-200"
+                key={`InfoCard-${place.place_id}`}
+                onClick={() => handleCardClick(place.latitude, place.longitude)}
+              >
+                <div className="h-full flex flex-col gap-8">
+                  <div className="flex justify-between">
+                    <div className="flex items-center gap-4">
+                      {/* <Button
+                        size="xSmall"
+                        color={info.category_info.category_color}
+                        key={`categoryButton-${info.category_info.category_name}`}
+                      >
+                        <Text
+                          size="xSmall"
+                          text={info.category_info.category_name}
+                          color={theme.color.white}
+                        />
+                      </Button> */}
+                      <Icon
+                        size="small"
+                        url={Icons.More}
+                        alt="정보 더보기"
+                        onClick={() =>
+                          handleClickPlace('COMMENT', place.place_id)
+                        }
+                      />
+                    </div>
+                    {mapHostId === user?.member_id && (
+                      <div className="flex gap-4">
                         <Button
                           size="xSmall"
-                          color={info.category_info.category_color}
-                          key={`categoryButton-${info.category_info.category_name}`}
+                          color={theme.color.navy}
+                          onClick={() => {
+                            handleClickPlace('UPDATE', place.place_id);
+                          }}
                         >
                           <Text
+                            text="장소수정"
                             size="xSmall"
-                            text={info.category_info.category_name}
                             color={theme.color.white}
                           />
                         </Button>
-                        <Icon
-                          size="small"
-                          url={Icons.More}
-                          alt="정보 더보기"
-                          onClick={() =>
-                            handleClickPlace('COMMENT', place.place_id)
-                          }
-                        />
+                        <button
+                          type="button"
+                          onClick={() => handleDeletePlace(place.place_id)}
+                        >
+                          <Icon
+                            size="small"
+                            url={Icons.Trash}
+                            alt="삭제아이콘"
+                          />
+                        </button>
                       </div>
-                      {mapHostId === user?.member_id && (
-                        <div className="flex gap-4">
-                          <Button
-                            size="xSmall"
-                            color={theme.color.navy}
-                            onClick={() => {
-                              handleClickPlace('UPDATE', place.place_id);
-                            }}
-                          >
-                            <Text
-                              text="장소수정"
-                              size="xSmall"
-                              color={theme.color.white}
-                            />
-                          </Button>
-                          <button
-                            type="button"
-                            onClick={() => handleDeletePlace(place.place_id)}
-                          >
-                            <Icon
-                              size="small"
-                              url={Icons.Trash}
-                              alt="삭제아이콘"
-                            />
-                          </button>
-                        </div>
-                      )}
-                    </div>
-                    <Text
-                      size="xRegular"
-                      text={place.place_name}
-                      color={theme.color.lightGreen}
-                    />
-                    <Text
-                      size="small"
-                      text={place.address}
-                      color={theme.color.gray}
-                    />
-                    <UserProfile userProfile={userProfile} />
+                    )}
                   </div>
+                  <Text
+                    size="xRegular"
+                    text={place.place_name}
+                    color={theme.color.lightGreen}
+                  />
+                  <Text
+                    size="small"
+                    text={place.address}
+                    color={theme.color.gray}
+                  />
+                  <UserProfile userProfile={userProfile} />
                 </div>
-              ))
-            )}
+              </div>
+            ))}
         </div>
         {modalParams.modal && modalParams.type === 'COMMENT' && (
           <GlobalModal
