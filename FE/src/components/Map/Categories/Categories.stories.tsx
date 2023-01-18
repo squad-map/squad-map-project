@@ -1,13 +1,13 @@
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 import { rest } from 'msw';
 
-import Header from './index';
+import Categories from './Categories';
 
 import { GET_MAP_CAEGORIES_DATA } from '@/constants/category';
 
 export default {
-  title: 'components/Map/Header',
-  component: Header,
+  title: 'components/Map/Categories',
+  component: Categories,
   parameters: {
     msw: {
       handlers: [
@@ -21,17 +21,17 @@ export default {
       ],
     },
   },
-} as ComponentMeta<typeof Header>;
+} as ComponentMeta<typeof Categories>;
 
-const Template: ComponentStory<typeof Header> = args => <Header {...args} />;
+const Template: ComponentStory<typeof Categories> = args => (
+  <Categories {...args} />
+);
 
 export const Default = Template.bind({});
 
 Default.args = {
   headerData: {
     map_id: 1,
-    emoji: '📜',
-    title: '테스트 지도',
     category_info: [],
   },
 };

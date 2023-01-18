@@ -4,13 +4,13 @@ import { useState } from 'react';
 import { getMapDetailInfo } from '@/apis/mypage';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import KakaoMap from '@/components/KaKaoMap';
-import Header from '@/components/Map/Header';
+import BackButton from '@/components/Map/BackButton/BackButton';
 import SearchPlace from '@/components/SearchMap/SearchPlace';
 import { SUCCESS_GET_DETAIL_MAP } from '@/constants/code';
 import { defaultCoords } from '@/constants/map';
 import { useGetMapId } from '@/hooks/useGetMapId';
 import { SearchPlaceType } from '@/interfaces/SearchPlace';
-import { CategorizedPlaces, PlaceType } from '@/types/map';
+import { PlaceType } from '@/types/map';
 import { unicodeToEmoji } from '@/utils/util';
 
 const { kakao } = window;
@@ -63,16 +63,12 @@ const SearchMap = () => {
     <section>
       {mapData && (
         <KakaoMap placeInfos={placeInfos} currentCoords={currentCoords}>
-          <Header
-            headerData={{
-              map_id: mapId,
-              emoji: `${unicodeToEmoji(mapData.data.map_emoji)}`,
-              title: mapData.data.map_name,
-              category_info: mapData.data.categorized_places.map(
-                (placeInfo: CategorizedPlaces) => placeInfo.category_info
-              ),
-            }}
-          />
+          <header className="h-16 flex items-center gap-4 absolute top-8 z-[999]">
+            <BackButton
+              emoji={`${unicodeToEmoji(mapData.data.map_emoji)}`}
+              title={mapData.data.map_name}
+            />
+          </header>
           <SearchPlace
             searchAddressToCoordinate={searchAddressToCoordinate}
             placeInfos={placeInfos}
