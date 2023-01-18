@@ -4,6 +4,7 @@ import { rest } from 'msw';
 import SearchMap from './index';
 
 import { searchMapsData } from '@/constants/dummyData';
+import { API_URL } from '@/constants/url';
 
 export default {
   title: 'pages/SearchMap',

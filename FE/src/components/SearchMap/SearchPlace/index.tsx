@@ -13,11 +13,18 @@ import { PlaceType } from '@/types/map';
 interface SearchPlaceProps {
   searchAddressToCoordinate: (address: string) => void;
   placeInfos: PlaceType[];
+  setCurrentCoords: React.Dispatch<
+    React.SetStateAction<{
+      lat: number;
+      lng: number;
+    }>
+  >;
 }
 
 const SearchPlace = ({
   searchAddressToCoordinate,
   placeInfos,
+  setCurrentCoords,
 }: SearchPlaceProps) => {
   const [searchValue, setSerachValue] = useState('');
   const [onPlaceInfos, setOnPlaceInfos] = useState(false);
@@ -65,7 +72,12 @@ const SearchPlace = ({
       <Button size="xSmall" color={theme.color.navy} onClick={handleSubmit}>
         <Text text="검색" size="small" color={theme.color.white} />
       </Button>
-      {onPlaceInfos && <PlaceInfos placeInfos={placeInfos} />}
+      {onPlaceInfos && (
+        <PlaceInfos
+          placeInfos={placeInfos}
+          setCurrentCoords={setCurrentCoords}
+        />
+      )}
       {onRecentSearch && (
         <RecentSearch
           setOnRecentSearch={setOnRecentSearch}

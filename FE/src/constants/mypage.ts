@@ -248,6 +248,29 @@ export const GET_MAP_DETAIL_DATA = {
           },
         ],
       },
+      {
+        category_info: {
+          category_id: 2,
+          category_name: 'second category',
+          category_color: '#0000FF',
+        },
+        places: [
+          {
+            place_id: 4,
+            place_name: '더미데이터4',
+            address: '더미데이터4',
+            latitude: 37.49085074176661,
+            longitude: 127.03342521371191,
+          },
+          {
+            place_id: 5,
+            place_name: '더미데이터5',
+            address: '더미데이터6',
+            latitude: 37.49743635700876,
+            longitude: 127.02945657720211,
+          },
+        ],
+      },
     ],
   },
 };

@@ -12,16 +12,20 @@ interface CardProps {
   size: 'small' | 'medium' | 'large';
   color?: string;
   children: React.ReactNode;
+  onClick?: () => void;
 }
 const Card = ({
   size = 'small',
   color = theme.color.silver,
   children,
+  onClick,
 }: CardProps) => (
   <div
+    role="presentation"
     className="p-4 bg-white rounded-2xl cursor-pointer hover:bg-silver"
     css={selectSize[size]}
     color={color}
+    onClick={onClick}
   >
     {children}
   </div>
