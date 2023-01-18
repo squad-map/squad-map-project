@@ -14,7 +14,17 @@ import { useGetMapId } from '@/hooks/useGetMapId';
 import theme from '@/styles/theme';
 import { PlaceType } from '@/types/map';
 
-const PlaceInfos = ({ placeInfos }: { placeInfos: PlaceType[] }) => {
+interface PlaceInfosProps {
+  placeInfos: PlaceType[];
+  setCurrentCoords: React.Dispatch<
+    React.SetStateAction<{
+      lat: number;
+      lng: number;
+    }>
+  >;
+}
+
+const PlaceInfos = ({ placeInfos, setCurrentCoords }: PlaceInfosProps) => {
   const mapId = useGetMapId();
   const [isOpenGlobalModal, setIsOpenGlobalModal] = useState(false);
   const [placeInfo, setPlaceInfo] = useState<PlaceType>();
@@ -33,6 +43,10 @@ const PlaceInfos = ({ placeInfos }: { placeInfos: PlaceType[] }) => {
     setIsOpenGlobalModal(true);
   };
 
+  const handleCardClick = (lat: number, lng: number) => {
+    setCurrentCoords({ lat, lng });
+  };
+
   if (!categoryLoading && mapCategory.code !== SUCCESS_GET_CATEGORIES)
     return <div>API Error</div>;
 
@@ -47,6 +61,7 @@ const PlaceInfos = ({ placeInfos }: { placeInfos: PlaceType[] }) => {
               size="large"
               key={`InfoCard-${place.place_id}`}
               color={theme.color.white}
+              onClick={() => handleCardClick(place.latitude, place.longitude)}
             >
               <div className="flex flex-col gap-8">
                 <Text

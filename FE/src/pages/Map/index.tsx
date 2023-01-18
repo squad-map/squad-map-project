@@ -14,6 +14,7 @@ import KakaoMap from '@/components/KaKaoMap';
 import Header from '@/components/Map/Header';
 import Infos from '@/components/Map/Infos';
 import { SUCCESS_GET_DETAIL_MAP } from '@/constants/code';
+import { defaultCoords } from '@/constants/map';
 import { useGetMapId } from '@/hooks/useGetMapId';
 import theme from '@/styles/theme';
 import { CategorizedPlaces, MapUserType, PlaceType } from '@/types/map';
@@ -22,6 +23,10 @@ import { unicodeToEmoji } from '@/utils/util';
 const Map = () => {
   const mapId = useGetMapId();
   const [menu, setMenu] = useState(false);
+  const [currentCoords, setCurrentCoords] = useState({
+    lat: defaultCoords.lat,
+    lng: defaultCoords.lng,
+  });
   const handleOpenMenu = () => setMenu(true);
   const handleCloseMenu = () => setMenu(false);
   const [userProfile, setUserProfile] = useState<MapUserType>({
@@ -61,6 +66,7 @@ const Map = () => {
           },
           []
         )}
+        currentCoords={currentCoords}
       >
         <Header
           headerData={{
@@ -93,6 +99,7 @@ const Map = () => {
             infoData={mapData.data.categorized_places}
             userProfile={userProfile}
             refetchMap={refetchMap}
+            setCurrentCoords={setCurrentCoords}
           />
 
           <div className="absolute bottom-4 right-8 z-[999]">

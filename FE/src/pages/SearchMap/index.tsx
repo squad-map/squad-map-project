@@ -18,6 +18,10 @@ const { kakao } = window;
 const SearchMap = () => {
   const mapId = useGetMapId();
   const [placeInfos, setPlaceInfos] = useState<PlaceType[]>([]);
+  const [currentCoords, setCurrentCoords] = useState({
+    lat: defaultCoords.lat,
+    lng: defaultCoords.lng,
+  });
 
   const { data: mapData, isLoading: mapLoading } = useQuery(['Map'], () =>
     getMapDetailInfo(mapId)
@@ -58,7 +62,7 @@ const SearchMap = () => {
   return (
     <section>
       {mapData && (
-        <KakaoMap placeInfos={placeInfos}>
+        <KakaoMap placeInfos={placeInfos} currentCoords={currentCoords}>
           <Header
             headerData={{
               map_id: mapId,
@@ -72,6 +76,7 @@ const SearchMap = () => {
           <SearchPlace
             searchAddressToCoordinate={searchAddressToCoordinate}
             placeInfos={placeInfos}
+            setCurrentCoords={setCurrentCoords}
           />
         </KakaoMap>
       )}

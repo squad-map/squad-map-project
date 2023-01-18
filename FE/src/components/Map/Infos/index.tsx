@@ -32,6 +32,12 @@ interface InfosProps {
   infoData: CategorizedPlaces[];
   userProfile: MapUserType;
   refetchMap: () => void;
+  setCurrentCoords: React.Dispatch<
+    React.SetStateAction<{
+      lat: number;
+      lng: number;
+    }>
+  >;
 }
 
 const Infos = ({
@@ -39,6 +45,7 @@ const Infos = ({
   infoData,
   userProfile,
   refetchMap,
+  setCurrentCoords,
 }: InfosProps) => {
   const mapId = useGetMapId();
   const [modalParams, setModalParams] = useState({
@@ -133,6 +140,10 @@ const Infos = ({
     setIsModal(true);
   };
 
+  const handleCardClick = (lat: number, lng: number) => {
+    setCurrentCoords({ lat, lng });
+  };
+
   if (!categoryLoading && mapCategory.code !== SUCCESS_GET_CATEGORIES)
     return <div>API Error</div>;
 
@@ -163,8 +174,12 @@ const Infos = ({
             infoData.map((info: CategorizedPlaces) =>
               info.places.map((place: PlaceType) => (
                 <div
+                  role="presentation"
                   className="h-[15rem] p-4 bg-white rounded-2xl cursor-pointer shadow-xl hover:bg-silver transition-all duration-200"
                   key={`InfoCard-${place.place_id}`}
+                  onClick={() =>
+                    handleCardClick(place.latitude, place.longitude)
+                  }
                 >
                   <div className="h-full flex flex-col gap-8">
                     <div className="flex justify-between">

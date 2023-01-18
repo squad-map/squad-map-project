@@ -1,16 +1,20 @@
 import { useState, useEffect, useRef } from 'react';
 
-import { defaultCoords, pinImage } from '@/constants/map';
+import { pinImage } from '@/constants/map';
 import { PlaceType } from '@/types/map';
 
 interface KakaoMapProps {
   children: React.ReactNode;
   placeInfos: PlaceType[];
+  currentCoords: {
+    lat: number;
+    lng: number;
+  };
 }
 
 const { kakao } = window as any;
 
-const KakaoMap = ({ children, placeInfos }: KakaoMapProps) => {
+const KakaoMap = ({ children, placeInfos, currentCoords }: KakaoMapProps) => {
   const mapRef = useRef<HTMLElement | null>(null);
   const [markers, setMarkers] = useState([]);
 
@@ -52,12 +56,12 @@ const KakaoMap = ({ children, placeInfos }: KakaoMapProps) => {
     const container = document.getElementById('myMap');
     if (kakao) {
       const options = {
-        center: new kakao.maps.LatLng(defaultCoords.lat, defaultCoords.lng),
+        center: new kakao.maps.LatLng(currentCoords.lat, currentCoords.lng),
         level: 5,
       };
       mapRef.current = new kakao.maps.Map(container, options);
     }
-  }, []);
+  }, [currentCoords.lat, currentCoords.lng]);
 
   useEffect(() => {
     if (placeInfos.length > 0) {
@@ -67,7 +71,7 @@ const KakaoMap = ({ children, placeInfos }: KakaoMapProps) => {
       displayPlaces(placeInfos);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [placeInfos]);
+  }, [placeInfos, currentCoords]);
 
   return (
     <div
