@@ -103,7 +103,7 @@ export default function HomePage() {
               }
             />
           </Button>
-          {!user?.nickname && (
+          {user?.nickname && (
             <Button
               size="small"
               color={
