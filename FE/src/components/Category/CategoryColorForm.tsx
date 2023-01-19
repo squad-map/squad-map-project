@@ -24,6 +24,7 @@ interface CategoryColorFormProps {
       category_color: string;
     }>
   >;
+  refetchCategories: () => void;
   handleCancelClick: () => void;
 }
 
@@ -31,6 +32,7 @@ const CategoryColorForm = ({
   categories,
   categoryForm,
   setCategoryForm,
+  refetchCategories,
   handleCancelClick,
 }: CategoryColorFormProps) => {
   const queryClient = new QueryClient();
@@ -53,6 +55,7 @@ const CategoryColorForm = ({
           handleButtonClick: () => {
             queryClient.invalidateQueries(['MapCategory', mapId]);
             setIsModal(false);
+            refetchCategories();
             handleCancelClick();
             return true;
           },
@@ -109,7 +112,7 @@ const CategoryColorForm = ({
               style={{
                 backgroundColor: color,
               }}
-              className={`w-6 h-6 rounded-full hover:opactiy-80 ${
+              className={`w-6 h-6 rounded-full hover:opactiy-80 cursor-pointer ${
                 isExistBgColor(categories, color) ? 'opacity-10' : 'opacity-100'
               }`}
               onClick={() =>
