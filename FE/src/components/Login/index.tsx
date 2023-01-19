@@ -26,7 +26,7 @@ const Login = () => {
   }, [isLoggedIn, state]);
 
   return (
-    <div className="h-full flex flex-col justify-center items-center gap-4 p-8">
+    <div className="h-screen flex flex-col justify-center items-center gap-4 p-8 bg-white">
       <h2 className="mt-4 italic text-2xl">Login</h2>
       <Image url={Images.LoginBackground} alt="Login Background" />
       <a href={githubUrl}>
