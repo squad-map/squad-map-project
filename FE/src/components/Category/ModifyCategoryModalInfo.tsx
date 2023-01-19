@@ -13,8 +13,8 @@ import {
   SUCCESS_DELETE_CATEGORY,
 } from '@/constants/code';
 import { useGetMapId } from '@/hooks/useGetMapId';
+import { CategoryType } from '@/interfaces/Category';
 import theme from '@/styles/theme';
-import { CategoryType } from '@/types/map';
 
 interface ModifyCategoryModalInfoProps {
   handleCancelClick: React.Dispatch<React.SetStateAction<boolean>>;

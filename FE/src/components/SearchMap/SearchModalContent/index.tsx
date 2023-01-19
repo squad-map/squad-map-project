@@ -10,8 +10,9 @@ import KakaoStaticMap from '@/components/KaKaoMap/KakaoStaticMap';
 import ModalContent from '@/components/ModalContent';
 import { FAIL_DUPLICATE, SUCCESS_POST_PLACE } from '@/constants/code';
 import { useGetMapId } from '@/hooks/useGetMapId';
+import { CategoryType } from '@/interfaces/Category';
 import theme from '@/styles/theme';
-import { CategoryType, PlaceType } from '@/types/map';
+import { PlaceType } from '@/types/map';
 
 interface SearchModalContentprops {
   placeInfo: PlaceType;
@@ -104,7 +105,7 @@ const SearchModalContent = ({
       return setIsModal(true);
     }
 
-    fetchPostPlace.mutate({ mapId, placePostParams: newPlace });
+    return fetchPostPlace.mutate({ mapId, placePostParams: newPlace });
   };
 
   return (

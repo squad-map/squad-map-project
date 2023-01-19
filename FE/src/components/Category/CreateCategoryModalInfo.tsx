@@ -17,8 +17,8 @@ import {
 } from '@/constants/code';
 import { CategoryColors } from '@/constants/colors';
 import { useGetMapId } from '@/hooks/useGetMapId';
+import { CategoryType } from '@/interfaces/Category';
 import theme from '@/styles/theme';
-import { CategoryType } from '@/types/map';
 import { isExistBgColor, checkDuplicateColor } from '@/utils/util';
 
 interface CreateCategoryModalInfoProps {

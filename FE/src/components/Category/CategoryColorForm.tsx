@@ -10,8 +10,8 @@ import ModalContent from '@/components/ModalContent';
 import { SUCCESS_PUT_CATEGORY } from '@/constants/code';
 import { CategoryColors } from '@/constants/colors';
 import { useGetMapId } from '@/hooks/useGetMapId';
+import { CategoryType } from '@/interfaces/Category';
 import theme from '@/styles/theme';
-import { CategoryType } from '@/types/map';
 import { checkDuplicateColor, isExistBgColor } from '@/utils/util';
 
 interface CategoryColorFormProps {

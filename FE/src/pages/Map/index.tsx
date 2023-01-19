@@ -40,15 +40,17 @@ const Map = () => {
   } = useQuery(['Map'], () => getMapDetailInfo(mapId));
 
   const handleCategoryClick = (color: string) => {
-    const filteredMapData = mapData.data.categorized_places.filter(
-      (category: CategorizedPlaces) => {
-        if (category.category_info.category_color === color) {
-          return category.places;
-        }
-      }
-    )[0];
+    const filteredMapData = mapData.data.categorized_places.reduce(
+      (acc: PlaceType[], placeInfo: CategorizedPlaces) => {
+        // eslint-disable-next-line no-unused-expressions
+        placeInfo.category_info.category_color === color &&
+          acc.push(...placeInfo.places);
+        return acc;
+      },
+      []
+    );
 
-    setPlaceInfos(filteredMapData.places);
+    setPlaceInfos(filteredMapData);
   };
 
   useEffect(() => {
