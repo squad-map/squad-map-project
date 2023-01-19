@@ -9,8 +9,9 @@ import LoadingSpinner from '@/components/common/LoadingSpinner';
 import Text from '@/components/common/Text';
 import { SUCCESS_GET_CATEGORIES } from '@/constants/code';
 import { useGetMapId } from '@/hooks/useGetMapId';
+import { CategoryType } from '@/interfaces/Category';
 import theme from '@/styles/theme';
-import { CategoryType, MapHeaderType } from '@/types/map';
+import { MapHeaderType } from '@/types/map';
 
 interface CategoriesProps {
   headerData: MapHeaderType;

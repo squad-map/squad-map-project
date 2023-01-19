@@ -1,5 +1,5 @@
 import { API_URL } from '@/constants/url';
-import { PlacePostParams } from '@/types/place';
+import { PlacePostParams, PlacePatchParams } from '@/types/place';
 import { getCookie } from '@/utils/cookie';
 
 export const getPlaceDeatil = async ({
@@ -65,7 +65,7 @@ export const patchPlace = async ({
 }: {
   mapId: number;
   patchId: number;
-  placePatchParams: { category_id: number; story: string };
+  placePatchParams: PlacePatchParams;
 }) => {
   const accessToken = getCookie('access_token');
   if (!accessToken) window.location.href = '/login';

@@ -1,4 +1,4 @@
-import { CategoryType } from '@/types/map';
+import { CategoryType } from '@/interfaces/Category';
 
 export const getErrorMessage = (err: unknown) => {
   if (err instanceof Error) return err.message;

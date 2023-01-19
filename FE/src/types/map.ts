@@ -1,8 +1,4 @@
-export type CategoryType = {
-  category_id: number;
-  category_name: string;
-  category_color: string;
-};
+import { CategoryType } from '@/interfaces/Category';
 
 export type PlaceType = {
   place_id: number;
