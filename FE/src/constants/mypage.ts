@@ -39,7 +39,7 @@ export const GET_HOME_PUBLIC_MAPS_DATA = {
         host_id: 1,
         host_nickname: 'nickname',
         host_profile_image:
-          'https://avatars.githubusercontent.com/u/45479309?v=4',
+          'https://avatars.githubusercontent.com/u/81129309?v=4',
         places_count: 1,
       },
       {

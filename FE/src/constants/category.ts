@@ -19,6 +19,31 @@ export const GET_MAP_CAEGORIES_DATA = {
       category_name: 'second category',
       category_color: '#BC8F8F',
     },
+    {
+      category_id: 3,
+      category_name: 'three category',
+      category_color: '#FF0000',
+    },
+    {
+      category_id: 4,
+      category_name: 'four category',
+      category_color: '#AAAAAA',
+    },
+    {
+      category_id: 5,
+      category_name: 'five category',
+      category_color: '#DAA520',
+    },
+    {
+      category_id: 6,
+      category_name: 'six category',
+      category_color: '#8A2BE2',
+    },
+    {
+      category_id: 7,
+      category_name: 'seven category',
+      category_color: '#FF1493',
+    },
   ],
 };
 
