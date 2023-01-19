@@ -98,6 +98,7 @@ const Infos = ({
     type: 'COMMENT' | 'UPDATE',
     placeId: number
   ) => {
+    // COMMENTT or UPDATE 관련 폼 클릭시 -> modalParams가 바꾸면서 useQuery 발동.
     setModalParams({ type, placeId, modal: true });
   };
 
@@ -268,14 +269,18 @@ const Infos = ({
               setModalParams({ ...modalParams, modal: false })
             }
           >
-            <PlaceModalUpdate
-              placeInfo={placeDetail}
-              categoryInfo={mapCategory.data}
-              setIsOpenUpdateModal={() =>
-                setModalParams({ ...modalParams, modal: false })
-              }
-              refetchMap={refetchMap}
-            />
+            {placeDetail.place_id ? (
+              <PlaceModalUpdate
+                placeInfo={placeDetail}
+                categoryInfo={mapCategory.data}
+                setIsOpenUpdateModal={() =>
+                  setModalParams({ ...modalParams, modal: false })
+                }
+                refetchMap={refetchMap}
+              />
+            ) : (
+              <LoadingSpinner size="medium" />
+            )}
           </GlobalModal>
         )}
         {isModal && (

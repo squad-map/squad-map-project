@@ -33,7 +33,7 @@ const SearchPlace = ({
   const searchData = useRecoilValue(searchplaceState);
   const setSearchPlace = useSetRecoilState(searchplaceState);
 
-  const handleSearchInput = ({
+  const handleChangeSearchInput = ({
     target,
   }: React.ChangeEvent<HTMLInputElement>) => {
     setSerachValue(target.value);
@@ -58,6 +58,16 @@ const SearchPlace = ({
     }
   };
 
+  const handleKeyUpSearchInput = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const { key, target } = e;
+
+    if (key === 'Enter' && target instanceof HTMLInputElement) {
+      setSerachValue(target.value);
+      (document.activeElement as HTMLElement).blur();
+      handleSubmit();
+    }
+  };
+
   return (
     <div className="absolute top-8 right-20 z-[999]">
       <input
@@ -66,8 +76,11 @@ const SearchPlace = ({
         placeholder="What kind of place are you looking for?"
         color={theme.color.white}
         value={searchValue}
-        onChange={handleSearchInput}
+        onChange={handleChangeSearchInput}
         onFocus={handleFocus}
+        onKeyUp={(e: React.KeyboardEvent<HTMLInputElement>) =>
+          handleKeyUpSearchInput(e)
+        }
       />
       <Button size="xSmall" color={theme.color.navy} onClick={handleSubmit}>
         <Text text="검색" size="small" color={theme.color.white} />

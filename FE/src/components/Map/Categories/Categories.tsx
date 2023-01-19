@@ -37,15 +37,6 @@ const Categories = ({ headerData, handleCategoryClick }: CategoriesProps) => {
   return (
     headerData && (
       <>
-        <Button
-          size="regular"
-          color={theme.color.black}
-          key="category-create-button"
-          onClick={() => setIsCategoryModal(true)}
-          className="cursor-pointer"
-        >
-          <Text size="regular" text="카테고리 추가" color={theme.color.white} />
-        </Button>
         {headerData.category_info &&
           headerData.category_info.map((category: CategoryType) => (
             <Button
