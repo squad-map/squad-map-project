@@ -8,9 +8,9 @@ import Text from '@/components/common/Text';
 import ModalContent from '@/components/ModalContent';
 import { SUCCESS_PATCH_PLACE } from '@/constants/code';
 import { useGetMapId } from '@/hooks/useGetMapId';
+import { CategoryType } from '@/interfaces/Category';
 import { PlaceDetail } from '@/interfaces/Place';
 import theme from '@/styles/theme';
-import { CategoryType } from '@/types/map';
 
 interface PlaceModalUpdateProps {
   placeInfo: PlaceDetail;
