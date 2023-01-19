@@ -75,15 +75,14 @@ const Infos = ({
   const user = useRecoilValue(userState);
 
   const { data: mapCategory, isLoading: categoryLoading } = useQuery(
-    ['MapCategory', mapId],
+    ['MapCategories', mapId],
     () => getMapCategories(mapId)
   );
 
   const { refetch: placeDetailRefetch } = useQuery(
     ['PlaceDetail', modalParams.placeId],
     () => {
-      if (!modalParams.placeId) return;
-      // eslint-disable-next-line consistent-return
+      if (!modalParams.placeId) return true;
       return getPlaceDeatil({ mapId, placeId: modalParams.placeId });
     },
     {
@@ -158,12 +157,12 @@ const Infos = ({
           <div className="flex gap-4 items-center">
             <img
               className="w-8 h-8 rounded-full"
-              src={userProfile.host_profile_image}
+              src={user?.profileImageUrl}
               alt="프로필이미지"
             />
             <Text
               size="large"
-              text={userProfile.host_nickname}
+              text={user?.nickname || ''}
               color={theme.color.white}
             />
           </div>

@@ -1,46 +1,38 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery, QueryClient } from '@tanstack/react-query';
 import { useState } from 'react';
 
-import { deleteCategory, putCategory } from '@/apis/category';
+import CategoryColorForm from './CategoryColorForm';
+
+import { deleteCategory, getMapCategories } from '@/apis/category';
 import Button from '@/components/common/Button';
 import GlobalModal from '@/components/common/GlobalModal';
-import Input from '@/components/common/Input';
 import Text from '@/components/common/Text';
 import ModalContent from '@/components/ModalContent';
 import {
   FAIL_DELETE_CATEGORY,
   SUCCESS_DELETE_CATEGORY,
-  SUCCESS_PUT_CATEGORY,
 } from '@/constants/code';
-import { CategoryColors } from '@/constants/colors';
 import { useGetMapId } from '@/hooks/useGetMapId';
 import theme from '@/styles/theme';
 import { CategoryType } from '@/types/map';
-import { checkDuplicateColor, isExistBgColor } from '@/utils/util';
 
 interface ModifyCategoryModalInfoProps {
-  mapCategories: CategoryType[];
-  clickedCategory: CategoryType;
-  setIsCategoryModal: React.Dispatch<React.SetStateAction<boolean>>;
-  refetchMap?: () => void;
-  refetchMapCategories: () => void;
+  handleCancelClick: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ModifyCategoryModalInfo = ({
-  mapCategories,
-  clickedCategory,
-  setIsCategoryModal,
-  refetchMap,
-  refetchMapCategories,
+  handleCancelClick,
 }: ModifyCategoryModalInfoProps) => {
+  const queryClient = new QueryClient();
   const mapId = useGetMapId();
   const [categoryForm, setCategoryForm] = useState({
-    category_id: clickedCategory.category_id,
-    category_name: clickedCategory.category_name,
-    category_color: clickedCategory.category_color,
+    category_id: 0,
+    category_name: '',
+    category_color: '',
   });
 
   const [isModal, setIsModal] = useState(false);
+  const [isColorModal, setIsColorModal] = useState(false);
   const [modalText, setModalText] = useState({
     title: '',
     description: '',
@@ -48,28 +40,9 @@ const ModifyCategoryModalInfo = ({
     handleButtonClick: () => true,
   });
 
-  const fetchPutCategory = useMutation(putCategory, {
-    onSuccess: ({ code }: { code: string }) => {
-      if (code === SUCCESS_PUT_CATEGORY) {
-        setModalText({
-          title: '카테고리가 수정되었습니다.',
-          description: '카테고리 수정 완료',
-          buttonText: '확인',
-          handleButtonClick: () => {
-            setIsModal(false);
-            setIsCategoryModal(false);
-            refetchMapCategories();
-            if (refetchMap) refetchMap();
-            return true;
-          },
-        });
-        setIsModal(true);
-      }
-    },
-    onError: (error: unknown) => {
-      throw new Error(`error is ${error}`);
-    },
-  });
+  const { data: mapCategories } = useQuery(['MapCategories', mapId], () =>
+    getMapCategories(mapId)
+  );
 
   const fetchDeleteCategory = useMutation(deleteCategory, {
     onSuccess: ({ code }: { code: string }) => {
@@ -80,8 +53,7 @@ const ModifyCategoryModalInfo = ({
           buttonText: '확인',
           handleButtonClick: () => {
             setIsModal(false);
-            setIsCategoryModal(false);
-            refetchMapCategories();
+            queryClient.invalidateQueries(['MapCategory', mapId]);
             return true;
           },
         });
@@ -93,7 +65,7 @@ const ModifyCategoryModalInfo = ({
           buttonText: '확인',
           handleButtonClick: () => {
             setIsModal(false);
-            setIsCategoryModal(false);
+            handleCancelClick(false);
             return true;
           },
         });
@@ -105,113 +77,93 @@ const ModifyCategoryModalInfo = ({
     },
   });
 
-  const handleUpdateCategory = (e: React.SyntheticEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    const newCategory = {
-      category_name: categoryForm.category_name,
-      category_color: categoryForm.category_color,
-    };
-
-    fetchPutCategory.mutate({
-      mapId,
-      patchId: categoryForm.category_id,
-      categoryPutParams: newCategory,
-    });
-  };
-
-  const handleDeleteCategory = (e: React.SyntheticEvent<HTMLButtonElement>) => {
+  const handleDeleteCategory = (
+    e: React.SyntheticEvent<HTMLButtonElement>,
+    categoryId: number
+  ) => {
     e.preventDefault();
 
     fetchDeleteCategory.mutate({
       mapId,
-      deleteId: categoryForm.category_id,
+      deleteId: categoryId,
     });
   };
 
-  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCategoryForm({ ...categoryForm, category_name: e.target.value });
+  const handleModifyClick = (category: CategoryType) => {
+    setCategoryForm(category);
+    setIsColorModal(true);
   };
 
   return (
     <>
-      <section className="h-full flex flex-col items-center p-16">
-        <h1 className="text-2xl text-navy mb-8">카테고리 수정</h1>
-        <form className="flex flex-col items-center">
-          <div className="w-60 flex flex-col gap-4 mb-4">
-            <span className="text-lightGray">카테고리명</span>
-            <Input
-              id="name"
-              width="15rem"
-              height="2.5rem"
-              placeholderText="카테고리 이름"
-              background={theme.color.inputBackground}
-              type="text"
-              value={categoryForm.category_name}
-              onChange={handleNameChange}
-            />
-          </div>
-          <div className="w-60 flex flex-col gap-4 mb-4">
-            <span className="text-lightGray">카테고리 색상</span>
-            <div className="flex flex-wrap gap-2">
-              {CategoryColors.map((color: string) => (
-                <button
-                  key={`category-${color}`}
-                  type="button"
-                  aria-label="color-button"
-                  style={{
-                    backgroundColor: color,
-                  }}
-                  className={`w-8 h-8 rounded-full hover:opactiy-80 ${
-                    isExistBgColor(mapCategories, color)
-                      ? 'opacity-10'
-                      : 'opacity-100'
-                  }`}
-                  onClick={() =>
-                    setCategoryForm({ ...categoryForm, category_color: color })
-                  }
-                  disabled={checkDuplicateColor(mapCategories, color)}
-                />
-              ))}
-            </div>
-          </div>
-          <span className="text-lightGray mb-2">
-            현재 선택된 카테고리 : {categoryForm.category_color || '미선택'}
-          </span>
-          <p className="flex items-center text-xs text-gray mb-4">
+      <section className="h-full flex flex-col justify-between items-center gap-4 p-8">
+        <div className="flex flex-col items-center">
+          <h1 className="text-2xl text-navy mb-2">카테고리 관리</h1>
+          <p className="text-gray mb-2">색상을 클릭해서 변경할 수 있습니다.</p>
+          <p className="flex items-center text-xs text-gray">
             장소에서 사용되어 지는 카테고리는 삭제할 수 없습니다.
           </p>
-          <div className="flex gap-4">
+        </div>
+        {mapCategories.data.map((category: CategoryType) => (
+          <div className="flex items-center gap-4">
+            <div className="flex">
+              <span className="text-gray w-28">{category.category_name}</span>
+            </div>
+            <div className="flex items-center gap-4">
+              <button
+                key={`category-${category.category_id}`}
+                type="button"
+                aria-label="color-button"
+                style={{
+                  backgroundColor: category.category_color,
+                }}
+                className="w-8 h-8 rounded-full cursor-pointer hover:opacity-80"
+              />
+            </div>
             <Button
               type="button"
-              size="small"
+              size="xSmall"
               color={theme.color.darkNavy}
-              onClick={(e: React.SyntheticEvent<HTMLButtonElement>) =>
-                handleUpdateCategory(e)
-              }
+              onClick={() => handleModifyClick(category)}
             >
-              <Text
-                text="카테고리 수정"
-                size="xSmall"
-                color={theme.color.white}
-              />
+              <Text text="색상변경" size="xSmall" color={theme.color.white} />
             </Button>
             <Button
               type="button"
-              size="small"
+              size="xSmall"
               color={theme.color.red}
               onClick={(e: React.SyntheticEvent<HTMLButtonElement>) =>
-                handleDeleteCategory(e)
+                handleDeleteCategory(e, category.category_id)
               }
             >
-              <Text
-                text="카테고리 삭제"
-                size="xSmall"
-                color={theme.color.white}
-              />
+              <Text text="삭제" size="xSmall" color={theme.color.white} />
             </Button>
           </div>
-        </form>
+        ))}
+        <div>
+          <Button
+            type="button"
+            size="xSmall"
+            color={theme.color.navy}
+            onClick={handleCancelClick}
+          >
+            <Text text="닫기" size="small" color={theme.color.white} />
+          </Button>
+        </div>
       </section>
+      {isColorModal && mapCategories && (
+        <GlobalModal
+          size="xSmall"
+          handleCancelClick={() => setIsColorModal(false)}
+        >
+          <CategoryColorForm
+            categories={mapCategories.data}
+            categoryForm={categoryForm}
+            setCategoryForm={setCategoryForm}
+            handleCancelClick={() => setIsColorModal(false)}
+          />
+        </GlobalModal>
+      )}
       {isModal && (
         <GlobalModal size="xSmall" handleCancelClick={() => setIsModal(false)}>
           <ModalContent

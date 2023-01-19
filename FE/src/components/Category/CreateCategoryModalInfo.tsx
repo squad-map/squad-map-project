@@ -34,7 +34,7 @@ const CreateCategoryModalInfo = ({
     data: mapCategories,
     isLoading: headerLoading,
     refetch: refetchMapCategories,
-  } = useQuery(['MapCategory', mapId], () => getMapCategories(mapId));
+  } = useQuery(['MapCategories', mapId], () => getMapCategories(mapId));
 
   const [categoryFormData, setCategoryFormData] = useState({
     category_name: '',

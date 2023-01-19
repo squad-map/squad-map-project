@@ -4,6 +4,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 import { Icons } from '@/assets/icons';
 import CreateCategoryModalInfo from '@/components/Category/CreateCategoryModalInfo';
+import ModifyCategoryModalInfo from '@/components/Category/ModifyCategoryModalInfo';
 import GlobalModal from '@/components/common/GlobalModal';
 import Icon from '@/components/common/Icon';
 import Overlay from '@/components/common/Overlay';
@@ -112,13 +113,10 @@ const Navigation = ({ menu, handleCloseMenu, type }: INavigationProps) => {
                       setOpenModal({ isOpen: true, type: 'getCategory' })
                     }
                   >
-                    <Icon
-                      size="medium"
-                      url={Icons.CategoryMap}
-                      alt="Manual Icon"
-                    />
+                    <Icon size="medium" url={Icons.Edit} alt="Manual Icon" />
                     <Text>카테고리 수정</Text>
                   </Box>
+
                   <Box
                     onClick={() =>
                       setOpenModal({ isOpen: true, type: 'createCategory' })
@@ -180,11 +178,7 @@ const Navigation = ({ menu, handleCloseMenu, type }: INavigationProps) => {
             <CreateCategoryModalInfo setIsCategoryModal={handleCancelClick} />
           )}
           {openModal.type === 'getCategory' && (
-            <div className="flex flex-col items-center gap-4 p-8">
-              <p>서비스 준비중입니다👀...</p>
-              해당 기능은 현재 보이는 지도에서 왼쪽 상단 카테고리를 클릭하면
-              수정이 가능합니다.
-            </div>
+            <ModifyCategoryModalInfo handleCancelClick={handleCancelClick} />
           )}
         </GlobalModal>
       )}

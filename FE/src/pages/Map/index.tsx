@@ -18,7 +18,7 @@ import { SUCCESS_GET_DETAIL_MAP } from '@/constants/code';
 import { defaultCoords } from '@/constants/map';
 import { useGetMapId } from '@/hooks/useGetMapId';
 import theme from '@/styles/theme';
-import { CategorizedPlaces, MapUserType, PlaceType } from '@/types/map';
+import { CategorizedPlaces, PlaceType } from '@/types/map';
 import { unicodeToEmoji } from '@/utils/util';
 
 const Map = () => {
@@ -30,11 +30,7 @@ const Map = () => {
   });
   const handleOpenMenu = () => setMenu(true);
   const handleCloseMenu = () => setMenu(false);
-  const [userProfile, setUserProfile] = useState<MapUserType>({
-    host_id: 0,
-    host_nickname: '',
-    host_profile_image: '',
-  });
+
   const [placeInfos, setPlaceInfos] = useState([]);
 
   const {
@@ -45,7 +41,7 @@ const Map = () => {
 
   const handleCategoryClick = (color: string) => {
     const filteredMapData = mapData.data.categorized_places.filter(
-      (category: any) => {
+      (category: CategorizedPlaces) => {
         if (category.category_info.category_color === color) {
           return category.places;
         }
@@ -65,16 +61,8 @@ const Map = () => {
         []
       );
       setPlaceInfos(filteredMapData);
-
-      if (!userProfile.host_id) {
-        setUserProfile({
-          host_id: mapData.data.host_id,
-          host_nickname: mapData.data.host_nickname,
-          host_profile_image: mapData.data.host_profile_image,
-        });
-      }
     }
-  }, [mapData, userProfile]);
+  }, [mapData]);
 
   if (!mapDetailLoading && mapData.code !== SUCCESS_GET_DETAIL_MAP)
     return <div>API Error</div>;
@@ -117,7 +105,11 @@ const Map = () => {
           <Infos
             mapHostId={mapData.data.host_id}
             infoData={placeInfos}
-            userProfile={userProfile}
+            userProfile={{
+              host_id: mapData.data.host_id,
+              host_nickname: mapData.data.host_nickname,
+              host_profile_image: mapData.data.host_profile_image,
+            }}
             refetchMap={refetchMap}
             setCurrentCoords={setCurrentCoords}
           />
