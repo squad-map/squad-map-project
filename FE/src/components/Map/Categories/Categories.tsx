@@ -22,7 +22,7 @@ const Categories = ({ headerData, handleCategoryClick }: CategoriesProps) => {
   const [isCategoryModal, setIsCategoryModal] = useState(false);
 
   const { data: mapCategories, isLoading: headerLoading } = useQuery(
-    ['MapCategory', mapId],
+    ['MapCategories', mapId],
     () => getMapCategories(mapId)
   );
 

@@ -30,7 +30,7 @@ const PlaceInfos = ({ placeInfos, setCurrentCoords }: PlaceInfosProps) => {
   const [placeInfo, setPlaceInfo] = useState<PlaceType>();
 
   const { data: mapCategory, isLoading: categoryLoading } = useQuery(
-    ['MapCategory', mapId],
+    ['MapCategories', mapId],
     () => getMapCategories(mapId)
   );
 
