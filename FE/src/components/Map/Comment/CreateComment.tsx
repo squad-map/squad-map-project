@@ -8,14 +8,14 @@ import Text from '@/components/common/Text';
 import ModalContent from '@/components/ModalContent';
 import { SUCCESS_POST_COMMENT } from '@/constants/code';
 import { useGetMapId } from '@/hooks/useGetMapId';
+import { queryClient } from '@/index';
 import theme from '@/styles/theme';
 
 interface CreateCommentProps {
   placeId: number;
-  placeDetailRefetch: () => void;
 }
 
-const CreateComment = ({ placeId, placeDetailRefetch }: CreateCommentProps) => {
+const CreateComment = ({ placeId }: CreateCommentProps) => {
   const mapId = useGetMapId();
   const [comment, setComment] = useState('');
   const [isModal, setIsModal] = useState(false);
@@ -35,7 +35,7 @@ const CreateComment = ({ placeId, placeDetailRefetch }: CreateCommentProps) => {
           buttonText: '확인',
           handleButtonClick: () => {
             setIsModal(false);
-            placeDetailRefetch();
+            queryClient.invalidateQueries(['PlaceDetail', placeId]);
             setComment('');
             return true;
           },

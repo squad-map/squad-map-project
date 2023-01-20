@@ -13,12 +13,12 @@ import {
 } from '@/constants/code';
 import { permitKey } from '@/constants/key';
 import useDebounce from '@/hooks/useDebounce';
+import { queryClient } from '@/index';
 import theme from '@/styles/theme';
 import { GroupPostParams } from '@/types/group';
 
 interface SearchFormProps {
   mapId: number;
-  refetchGroupMembers: () => boolean;
   groupMembers: string[];
 }
 
@@ -28,11 +28,7 @@ interface AuthorityResponse {
   profile_image: string;
 }
 
-const SearchForm = ({
-  mapId,
-  refetchGroupMembers,
-  groupMembers,
-}: SearchFormProps) => {
+const SearchForm = ({ mapId, groupMembers }: SearchFormProps) => {
   const [userNickNames, setUserNickNames] = useState<AuthorityResponse[]>([]);
   const [permission, setPermission] = useState('READ');
   const [searchName, setSearchName] = useState('');
@@ -68,7 +64,7 @@ const SearchForm = ({
               setIsModal(false);
               setSearchName('');
               setSelectedIndex(0);
-              refetchGroupMembers();
+              queryClient.invalidateQueries(['GroupMembers', mapId]);
               return true;
             },
           });

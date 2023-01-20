@@ -11,20 +11,21 @@ import Icon from '@/components/common/Icon';
 import Text from '@/components/common/Text';
 import ModalContent from '@/components/ModalContent';
 import { SUCCESS_DELETE_COMMENT } from '@/constants/code';
+import { queryClient } from '@/index';
 import { CommentType } from '@/interfaces/Comments';
 import { userState } from '@/recoil/atoms/user';
 import theme from '@/styles/theme';
 
 interface PatchCommentListProps {
   mapHostId: number;
+  placeId: number;
   content: CommentType[];
-  placeDetailRefetch: () => void;
 }
 
 const PatchCommentList = ({
   mapHostId,
+  placeId,
   content,
-  placeDetailRefetch,
 }: PatchCommentListProps) => {
   const user = useRecoilValue(userState);
 
@@ -49,7 +50,7 @@ const PatchCommentList = ({
             buttonText: '확인',
             handleButtonClick: () => {
               setIsModal(false);
-              placeDetailRefetch();
+              queryClient.invalidateQueries(['PlaceDetail', placeId]);
               return true;
             },
           });
@@ -138,9 +139,9 @@ const PatchCommentList = ({
         >
           <PatchCommentModal
             comment={comment}
+            placeId={placeId}
             setComment={setComment}
             setIsPatchModal={setIsPatchModal}
-            placeDetailRefetch={placeDetailRefetch}
           />
         </GlobalModal>
       )}

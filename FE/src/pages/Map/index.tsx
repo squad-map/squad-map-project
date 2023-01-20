@@ -33,11 +33,10 @@ const Map = () => {
 
   const [placeInfos, setPlaceInfos] = useState([]);
 
-  const {
-    data: mapData,
-    isLoading: mapDetailLoading,
-    refetch: refetchMap,
-  } = useQuery(['Map'], () => getMapDetailInfo(mapId));
+  const { data: mapData, isLoading: mapDetailLoading } = useQuery(
+    ['Map', mapId],
+    () => getMapDetailInfo(mapId)
+  );
 
   const handleCategoryClick = (color: string) => {
     const filteredMapData = mapData.data.categorized_places.reduce(
@@ -112,7 +111,6 @@ const Map = () => {
               host_nickname: mapData.data.host_nickname,
               host_profile_image: mapData.data.host_profile_image,
             }}
-            refetchMap={refetchMap}
             setCurrentCoords={setCurrentCoords}
           />
 

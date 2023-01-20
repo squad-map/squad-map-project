@@ -15,16 +15,15 @@ interface AuthorityProps {
 }
 
 const Authority = ({ mapId }: AuthorityProps) => {
-  const {
-    data: groupMembers,
-    isLoading: groupMembersLoading,
-    refetch: refetchGroupMembers,
-  } = useQuery(['GroupMembers', mapId], () => {
-    if (mapId) {
-      return getGroupMembers(mapId);
+  const { data: groupMembers, isLoading: groupMembersLoading } = useQuery(
+    ['GroupMembers', mapId],
+    () => {
+      if (mapId) {
+        return getGroupMembers(mapId);
+      }
+      return true;
     }
-    return true;
-  });
+  );
 
   if (!groupMembersLoading && groupMembers.code !== SUCCESS_GET_GROUP_MEMBERS)
     return <div>API Error</div>;
@@ -46,16 +45,11 @@ const Authority = ({ mapId }: AuthorityProps) => {
         color={theme.color.black}
       />
       {groupMembers && (
-        <GroupInfo
-          mapId={mapId}
-          groupMembers={groupMembers.data}
-          refetchGroupMembers={refetchGroupMembers}
-        />
+        <GroupInfo mapId={mapId} groupMembers={groupMembers.data} />
       )}
       {groupMembers && (
         <SearchForm
           mapId={mapId}
-          refetchGroupMembers={refetchGroupMembers}
           groupMembers={groupMembers.data.map(
             (member: GroupMemberType) => member.member_nickname
           )}

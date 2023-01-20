@@ -20,7 +20,7 @@ export const POST_MAP_COMMENT = rest.post(
     res(ctx.status(200), ctx.delay(1000), ctx.json(POST_MAP_COMMENT_DATA))
 );
 
-export const PATCH_MAP_COMMENT = rest.put(
+export const PATCH_MAP_COMMENT = rest.patch(
   `${API_URL}/comments/:commentId`,
   (req, res, ctx) =>
     res(ctx.status(200), ctx.delay(1000), ctx.json(PATCH_MAP_COMMENT_DATA))
