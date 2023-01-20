@@ -13,6 +13,7 @@ import {
 } from '@/constants/code';
 import { permitKey } from '@/constants/key';
 import useDebounce from '@/hooks/useDebounce';
+import useModal from '@/hooks/useModal';
 import { queryClient } from '@/index';
 import theme from '@/styles/theme';
 import { GroupPostParams } from '@/types/group';
@@ -36,8 +37,7 @@ const SearchForm = ({ mapId, groupMembers }: SearchFormProps) => {
 
   const [selectedIndex, setSelectedIndex] = useState(0);
 
-  const [isModal, setIsModal] = useState(false);
-  const [modalText, setModalText] = useState({
+  const { isModal, setIsModal, modalText, setModalText } = useModal({
     title: '',
     description: '',
     buttonText: '',
@@ -55,7 +55,6 @@ const SearchForm = ({ mapId, groupMembers }: SearchFormProps) => {
     {
       onSuccess: ({ code }: { code: string }) => {
         if (code === SUCCESS_POST_GROUP_MEMBER) {
-          // 팝업닫기.
           setModalText({
             title: '그룹이 등록 되었습니다.',
             description: '그룹 등록 완료',

@@ -11,6 +11,7 @@ import {
   SUCCESS_DELETE_GROUP_MEMBER,
   SUCCESS_PUT_GROUP_MEMBER,
 } from '@/constants/code';
+import useModal from '@/hooks/useModal';
 import { queryClient } from '@/index';
 import { GroupMemberType } from '@/interfaces/group';
 import { userState } from '@/recoil/atoms/user';
@@ -30,8 +31,7 @@ const GroupInfo = ({
   const [isPopup, setIsPopup] = useState(false);
   const user = useRecoilValue(userState);
 
-  const [isModal, setIsModal] = useState(false);
-  const [modalText, setModalText] = useState({
+  const { isModal, setIsModal, modalText, setModalText } = useModal({
     title: '',
     description: '',
     buttonText: '',

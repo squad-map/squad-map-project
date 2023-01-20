@@ -8,49 +8,34 @@ import Input from '@/components/common/Input';
 import Text from '@/components/common/Text';
 import ModalContent from '@/components/ModalContent';
 import { SUCCESS_PATCH_COMMENT } from '@/constants/code';
-import { queryClient } from '@/index';
 import theme from '@/styles/theme';
 
 interface PatchCommentModalProps {
   comment: { commentId: number; content: string };
-  placeId: number;
   setComment: React.Dispatch<
     React.SetStateAction<{
       commentId: number;
       content: string;
     }>
   >;
-  setIsPatchModal: React.Dispatch<React.SetStateAction<boolean>>;
+  patchModalText: {
+    title: string;
+    description: string;
+    buttonText: string;
+    handleButtonClick: () => void;
+  };
 }
 
 const PatchCommentModal = ({
   comment,
-  placeId,
   setComment,
-  setIsPatchModal,
+  patchModalText,
 }: PatchCommentModalProps) => {
   const [isModal, setIsModal] = useState(false);
-  const [modalText, setModalText] = useState({
-    title: '',
-    description: '',
-    buttonText: '',
-    handleButtonClick: () => true,
-  });
 
   const fetchPatchComment = useMutation(patchComment, {
     onSuccess: ({ code }: { code: string }) => {
       if (code === SUCCESS_PATCH_COMMENT) {
-        setModalText({
-          title: '댓글이 성공적으로 수정되었습니다.',
-          description: '댓글 수정',
-          buttonText: '확인',
-          handleButtonClick: () => {
-            setIsModal(false);
-            setIsPatchModal(false);
-            queryClient.invalidateQueries(['PlaceDetail', placeId]);
-            return true;
-          },
-        });
         setIsModal(true);
       }
     },
@@ -96,10 +81,10 @@ const PatchCommentModal = ({
       {isModal && (
         <GlobalModal size="xSmall" handleCancelClick={() => setIsModal(false)}>
           <ModalContent
-            title={modalText.title}
-            description={modalText.description}
-            buttonText={modalText.buttonText}
-            handleButtonClick={modalText.handleButtonClick}
+            title={patchModalText.title}
+            description={patchModalText.description}
+            buttonText={patchModalText.buttonText}
+            handleButtonClick={patchModalText.handleButtonClick}
           />
         </GlobalModal>
       )}

@@ -8,6 +8,7 @@ import Text from '@/components/common/Text';
 import ModalContent from '@/components/ModalContent';
 import { SUCCESS_POST_COMMENT } from '@/constants/code';
 import { useGetMapId } from '@/hooks/useGetMapId';
+import useModal from '@/hooks/useModal';
 import { queryClient } from '@/index';
 import theme from '@/styles/theme';
 
@@ -18,8 +19,7 @@ interface CreateCommentProps {
 const CreateComment = ({ placeId }: CreateCommentProps) => {
   const mapId = useGetMapId();
   const [comment, setComment] = useState('');
-  const [isModal, setIsModal] = useState(false);
-  const [modalText, setModalText] = useState({
+  const { isModal, setIsModal, modalText, setModalText } = useModal({
     title: '',
     description: '',
     buttonText: '',

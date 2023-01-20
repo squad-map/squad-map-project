@@ -11,6 +11,7 @@ import Icon from '@/components/common/Icon';
 import Text from '@/components/common/Text';
 import ModalContent from '@/components/ModalContent';
 import { SUCCESS_DELETE_COMMENT } from '@/constants/code';
+import useModal from '@/hooks/useModal';
 import { queryClient } from '@/index';
 import { CommentType } from '@/interfaces/Comments';
 import { userState } from '@/recoil/atoms/user';
@@ -30,13 +31,32 @@ const PatchCommentList = ({
   const user = useRecoilValue(userState);
 
   const [comment, setComment] = useState({ commentId: 0, content: '' });
-  const [isModal, setIsModal] = useState(false);
-  const [isPatchModal, setIsPatchModal] = useState(false);
-  const [modalText, setModalText] = useState({
+
+  const {
+    isModal: isDeleteOkModal,
+    setIsModal: setIsDeleteOkModal,
+    modalText: deleteOkModalText,
+    setModalText: setDeleteOkModalText,
+  } = useModal({
     title: '',
     description: '',
     buttonText: '',
     handleButtonClick: () => true,
+  });
+
+  const {
+    isModal: isPatchModal,
+    setIsModal: setIsPatchModal,
+    modalText: patchModalText,
+  } = useModal({
+    title: '댓글이 성공적으로 수정되었습니다.',
+    description: '댓글 수정',
+    buttonText: '확인',
+    handleButtonClick: () => {
+      setIsPatchModal(false);
+      queryClient.invalidateQueries(['PlaceDetail', placeId]);
+      return true;
+    },
   });
 
   const fetchDeleteComment = useMutation(
@@ -44,17 +64,17 @@ const PatchCommentList = ({
     {
       onSuccess: ({ code }: { code: string }) => {
         if (code === SUCCESS_DELETE_COMMENT) {
-          setModalText({
+          setDeleteOkModalText({
             title: '댓글이 성공적으로 삭제되었습니다.',
             description: '댓글 삭제',
             buttonText: '확인',
             handleButtonClick: () => {
-              setIsModal(false);
+              setIsDeleteOkModal(false);
               queryClient.invalidateQueries(['PlaceDetail', placeId]);
               return true;
             },
           });
-          setIsModal(true);
+          setIsDeleteOkModal(true);
         }
       },
       onError: (error: unknown) => {
@@ -62,20 +82,6 @@ const PatchCommentList = ({
       },
     }
   );
-
-  const handleDeleteComment = (commentId: number) => {
-    setModalText({
-      title: '댓글을 삭제하시겠습니까?.',
-      description: '삭제한 댓글은 복구가 불가능합니다.',
-      buttonText: '확인',
-      handleButtonClick: () => {
-        setIsModal(false);
-        fetchDeleteComment.mutate(commentId);
-        return true;
-      },
-    });
-    setIsModal(true);
-  };
 
   return (
     <>
@@ -111,7 +117,19 @@ const PatchCommentList = ({
                     </button>
                     <button
                       type="button"
-                      onClick={() => handleDeleteComment(c.comment_id)}
+                      onClick={() => {
+                        setDeleteOkModalText({
+                          title: '댓글을 삭제하시겠습니까?.',
+                          description: '삭제한 댓글은 복구가 불가능합니다.',
+                          buttonText: '확인',
+                          handleButtonClick: () => {
+                            setIsDeleteOkModal(false);
+                            fetchDeleteComment.mutate(c.comment_id);
+                            return true;
+                          },
+                        });
+                        setIsDeleteOkModal(true);
+                      }}
                     >
                       <Icon size="small" url={Icons.Trash} alt="삭제아이콘" />
                     </button>
@@ -122,13 +140,16 @@ const PatchCommentList = ({
           )}
         </div>
       </div>
-      {isModal && (
-        <GlobalModal size="xSmall" handleCancelClick={() => setIsModal(false)}>
+      {isDeleteOkModal && (
+        <GlobalModal
+          size="xSmall"
+          handleCancelClick={() => setIsDeleteOkModal(false)}
+        >
           <ModalContent
-            title={modalText.title}
-            description={modalText.description}
-            buttonText={modalText.buttonText}
-            handleButtonClick={modalText.handleButtonClick}
+            title={deleteOkModalText.title}
+            description={deleteOkModalText.description}
+            buttonText={deleteOkModalText.buttonText}
+            handleButtonClick={deleteOkModalText.handleButtonClick}
           />
         </GlobalModal>
       )}
@@ -139,9 +160,8 @@ const PatchCommentList = ({
         >
           <PatchCommentModal
             comment={comment}
-            placeId={placeId}
             setComment={setComment}
-            setIsPatchModal={setIsPatchModal}
+            patchModalText={patchModalText}
           />
         </GlobalModal>
       )}
