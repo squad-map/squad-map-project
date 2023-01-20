@@ -14,6 +14,7 @@ import {
   SUCCESS_PATCH_MAP,
   SUCCESS_DELETE_MAP,
 } from '@/constants/code';
+import useModal from '@/hooks/useModal';
 import { flexbox } from '@/styles/mixin';
 import theme from '@/styles/theme';
 import { MypagePutParams } from '@/types/mypage';
@@ -47,9 +48,8 @@ const Form = ({ mapId, state, type }: FormProps) => {
     authority: true,
   });
 
-  const [isModal, setIsModal] = useState(false);
-  const [modalText, setModalText] = useState({
-    title: '',
+  const { isModal, setIsModal, modalText, setModalText } = useModal({
+    title: '.',
     description: '',
     buttonText: '',
     handleButtonClick: () => true,

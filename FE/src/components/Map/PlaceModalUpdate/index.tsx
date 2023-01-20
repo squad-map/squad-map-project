@@ -8,6 +8,7 @@ import Text from '@/components/common/Text';
 import ModalContent from '@/components/ModalContent';
 import { SUCCESS_PATCH_PLACE } from '@/constants/code';
 import { useGetMapId } from '@/hooks/useGetMapId';
+import useModal from '@/hooks/useModal';
 import { queryClient } from '@/index';
 import { CategoryType } from '@/interfaces/Category';
 import { PlaceDetail } from '@/interfaces/Place';
@@ -36,8 +37,7 @@ const PlaceModalUpdate = ({
     category_color: selectedCategory.category_color,
   });
 
-  const [isModal, setIsModal] = useState(false);
-  const [modalText, setModalText] = useState({
+  const { isModal, setIsModal, modalText, setModalText } = useModal({
     title: '',
     description: '',
     buttonText: '',
@@ -84,7 +84,6 @@ const PlaceModalUpdate = ({
           return true;
         },
       });
-      setIsModal(true);
     }
     const newPlace = {
       category_id: updateForm.category_id,

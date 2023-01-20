@@ -27,49 +27,52 @@ const Header = ({ children }: HeaderProps) => {
   const user = useRecoilValue(userState);
 
   return (
-    <section className="w-full h-[7.5rem] mb-16 bg-navy">
-      <div className="flex justify-between items-center p-8">
-        <Link to="/">
-          <Image url={Images.Logo} alt="SquadMap Logo" />
-        </Link>
-        <div className="flex items-center gap-8">
-          {user && user.nickname ? (
-            <div className="flex items-center gap-4">
-              <img
-                className="w-12 h-12 rounded-full"
-                src={user.profileImageUrl}
-                alt="프로필이미지"
-              />
-              <Button
-                size="regular"
-                color={theme.color.white}
-                onClick={() => setNickNameModal(true)}
-              >
-                <Text
-                  size="regular"
-                  text={user.nickname}
-                  color={theme.color.blue}
+    <>
+      <section className="w-full h-[7.5rem] mb-16 bg-navy">
+        <div className="flex justify-between items-center p-8">
+          <Link to="/">
+            <Image url={Images.Logo} alt="SquadMap Logo" />
+          </Link>
+          <div className="flex items-center gap-8">
+            {user && user.nickname ? (
+              <div className="flex items-center gap-4">
+                <img
+                  className="w-12 h-12 rounded-full"
+                  src={user.profileImageUrl}
+                  alt="프로필이미지"
                 />
+                <Button
+                  size="regular"
+                  color={theme.color.white}
+                  onClick={() => setNickNameModal(true)}
+                >
+                  <Text
+                    size="regular"
+                    text={user.nickname}
+                    color={theme.color.blue}
+                  />
+                </Button>
+              </div>
+            ) : (
+              <Button
+                size="small"
+                color={theme.color.transparent}
+                onClick={() => setOpenLoginModal(true)}
+              >
+                <Text size="regular" text="로그인" color={theme.color.white} />
               </Button>
-            </div>
-          ) : (
-            <Button
-              size="small"
-              color={theme.color.transparent}
-              onClick={() => setOpenLoginModal(true)}
-            >
-              <Text size="regular" text="로그인" color={theme.color.white} />
-            </Button>
-          )}
-          <Image
-            url={Images.Menu}
-            alt="Header Menu"
-            data-testid="menuBtn"
-            onClick={handleOpenMenu}
-          />
+            )}
+            <Image
+              url={Images.Menu}
+              alt="Header Menu"
+              data-testid="menuBtn"
+              onClick={handleOpenMenu}
+            />
+          </div>
         </div>
-      </div>
-      <Navigation menu={menu} handleCloseMenu={handleCloseMenu} />
+        <Navigation menu={menu} handleCloseMenu={handleCloseMenu} />
+        {children}
+      </section>
       {openLoginModal && (
         <GlobalModal
           size="small"
@@ -86,8 +89,7 @@ const Header = ({ children }: HeaderProps) => {
           <NickName handleCancelClick={() => setNickNameModal(false)} />
         </GlobalModal>
       )}
-      {children}
-    </section>
+    </>
   );
 };
 

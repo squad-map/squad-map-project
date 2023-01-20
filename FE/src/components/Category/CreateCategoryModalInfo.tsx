@@ -17,6 +17,7 @@ import {
 } from '@/constants/code';
 import { CategoryColors } from '@/constants/colors';
 import { useGetMapId } from '@/hooks/useGetMapId';
+import useModal from '@/hooks/useModal';
 import { CategoryType } from '@/interfaces/Category';
 import theme from '@/styles/theme';
 import { isExistBgColor, checkDuplicateColor } from '@/utils/util';
@@ -41,8 +42,7 @@ const CreateCategoryModalInfo = ({
     category_color: '',
   });
 
-  const [isModal, setIsModal] = useState(false);
-  const [modalText, setModalText] = useState({
+  const { isModal, setIsModal, modalText, setModalText } = useModal({
     title: '',
     description: '',
     buttonText: '',
