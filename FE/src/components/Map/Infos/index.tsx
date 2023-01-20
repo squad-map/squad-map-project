@@ -17,6 +17,7 @@ import ModalContent from '@/components/ModalContent';
 import UserProfile from '@/components/UserProfile';
 import { SUCCESS_DELETE_PLACE, SUCCESS_GET_CATEGORIES } from '@/constants/code';
 import { useGetMapId } from '@/hooks/useGetMapId';
+import useModal from '@/hooks/useModal';
 import { queryClient } from '@/index';
 import { userState } from '@/recoil/atoms/user';
 import theme from '@/styles/theme';
@@ -46,8 +47,8 @@ const Infos = ({
     placeId: 0,
     modal: false,
   });
-  const [isModal, setIsModal] = useState(false);
-  const [modalText, setModalText] = useState({
+
+  const { isModal, setIsModal, modalText, setModalText } = useModal({
     title: '',
     description: '',
     buttonText: '',

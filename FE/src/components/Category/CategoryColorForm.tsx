@@ -1,5 +1,4 @@
 import { useMutation } from '@tanstack/react-query';
-import { useState } from 'react';
 
 import { putCategory } from '@/apis/category';
 import Button from '@/components/common/Button';
@@ -10,6 +9,7 @@ import ModalContent from '@/components/ModalContent';
 import { SUCCESS_PUT_CATEGORY } from '@/constants/code';
 import { CategoryColors } from '@/constants/colors';
 import { useGetMapId } from '@/hooks/useGetMapId';
+import useModal from '@/hooks/useModal';
 import { queryClient } from '@/index';
 import { CategoryType } from '@/interfaces/Category';
 import theme from '@/styles/theme';
@@ -35,8 +35,8 @@ const CategoryColorForm = ({
   handleCancelClick,
 }: CategoryColorFormProps) => {
   const mapId = useGetMapId();
-  const [isModal, setIsModal] = useState(false);
-  const [modalText, setModalText] = useState({
+
+  const { isModal, setIsModal, modalText, setModalText } = useModal({
     title: '',
     description: '',
     buttonText: '',

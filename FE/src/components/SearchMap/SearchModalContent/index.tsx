@@ -10,6 +10,7 @@ import KakaoStaticMap from '@/components/KaKaoMap/KakaoStaticMap';
 import ModalContent from '@/components/ModalContent';
 import { FAIL_DUPLICATE, SUCCESS_POST_PLACE } from '@/constants/code';
 import { useGetMapId } from '@/hooks/useGetMapId';
+import useModal from '@/hooks/useModal';
 import { CategoryType } from '@/interfaces/Category';
 import theme from '@/styles/theme';
 import { PlaceType } from '@/types/map';
@@ -31,8 +32,7 @@ const SearchModalContent = ({
     color: '',
   });
 
-  const [isModal, setIsModal] = useState(false);
-  const [modalText, setModalText] = useState({
+  const { isModal, setIsModal, modalText, setModalText } = useModal({
     title: '',
     description: '',
     buttonText: '',

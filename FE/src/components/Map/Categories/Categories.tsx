@@ -5,7 +5,6 @@ import { getMapCategories } from '@/apis/category';
 import CreateCategoryModalInfo from '@/components/Category/CreateCategoryModalInfo';
 import Button from '@/components/common/Button';
 import GlobalModal from '@/components/common/GlobalModal';
-import LoadingSpinner from '@/components/common/LoadingSpinner';
 import Text from '@/components/common/Text';
 import { SUCCESS_GET_CATEGORIES } from '@/constants/code';
 import { useGetMapId } from '@/hooks/useGetMapId';
@@ -29,10 +28,6 @@ const Categories = ({ headerData, handleCategoryClick }: CategoriesProps) => {
 
   if (!headerLoading && mapCategories.code !== SUCCESS_GET_CATEGORIES)
     return <div>API Error</div>;
-
-  if (headerLoading) {
-    return <LoadingSpinner size="medium" />;
-  }
 
   return (
     headerData && (
