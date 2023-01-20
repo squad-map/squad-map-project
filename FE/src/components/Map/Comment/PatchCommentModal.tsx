@@ -8,10 +8,12 @@ import Input from '@/components/common/Input';
 import Text from '@/components/common/Text';
 import ModalContent from '@/components/ModalContent';
 import { SUCCESS_PATCH_COMMENT } from '@/constants/code';
+import { queryClient } from '@/index';
 import theme from '@/styles/theme';
 
 interface PatchCommentModalProps {
   comment: { commentId: number; content: string };
+  placeId: number;
   setComment: React.Dispatch<
     React.SetStateAction<{
       commentId: number;
@@ -19,14 +21,13 @@ interface PatchCommentModalProps {
     }>
   >;
   setIsPatchModal: React.Dispatch<React.SetStateAction<boolean>>;
-  placeDetailRefetch: () => void;
 }
 
 const PatchCommentModal = ({
   comment,
+  placeId,
   setComment,
   setIsPatchModal,
-  placeDetailRefetch,
 }: PatchCommentModalProps) => {
   const [isModal, setIsModal] = useState(false);
   const [modalText, setModalText] = useState({
@@ -44,9 +45,9 @@ const PatchCommentModal = ({
           description: '댓글 수정',
           buttonText: '확인',
           handleButtonClick: () => {
-            placeDetailRefetch();
             setIsModal(false);
             setIsPatchModal(false);
+            queryClient.invalidateQueries(['PlaceDetail', placeId]);
             return true;
           },
         });

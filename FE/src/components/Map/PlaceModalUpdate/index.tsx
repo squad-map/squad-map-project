@@ -8,6 +8,7 @@ import Text from '@/components/common/Text';
 import ModalContent from '@/components/ModalContent';
 import { SUCCESS_PATCH_PLACE } from '@/constants/code';
 import { useGetMapId } from '@/hooks/useGetMapId';
+import { queryClient } from '@/index';
 import { CategoryType } from '@/interfaces/Category';
 import { PlaceDetail } from '@/interfaces/Place';
 import theme from '@/styles/theme';
@@ -16,14 +17,12 @@ interface PlaceModalUpdateProps {
   placeInfo: PlaceDetail;
   categoryInfo: CategoryType[];
   setIsOpenUpdateModal: React.Dispatch<React.SetStateAction<boolean>>;
-  refetchMap: () => void;
 }
 
 const PlaceModalUpdate = ({
   placeInfo,
   categoryInfo,
   setIsOpenUpdateModal,
-  refetchMap,
 }: PlaceModalUpdateProps) => {
   const selectedCategory = categoryInfo.find(
     (category: CategoryType) => category.category_id === placeInfo.category_id
@@ -55,7 +54,7 @@ const PlaceModalUpdate = ({
           handleButtonClick: () => {
             setIsModal(false);
             setIsOpenUpdateModal(false);
-            refetchMap();
+            queryClient.invalidateQueries(['Map', mapId]);
             return true;
           },
         });

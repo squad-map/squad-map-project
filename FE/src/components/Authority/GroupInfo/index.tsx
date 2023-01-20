@@ -11,6 +11,7 @@ import {
   SUCCESS_DELETE_GROUP_MEMBER,
   SUCCESS_PUT_GROUP_MEMBER,
 } from '@/constants/code';
+import { queryClient } from '@/index';
 import { GroupMemberType } from '@/interfaces/group';
 import { userState } from '@/recoil/atoms/user';
 import theme from '@/styles/theme';
@@ -18,11 +19,9 @@ import theme from '@/styles/theme';
 const GroupInfo = ({
   mapId,
   groupMembers,
-  refetchGroupMembers,
 }: {
   mapId: number;
   groupMembers: GroupMemberType[];
-  refetchGroupMembers: () => void;
 }) => {
   const [permission, setPermission] = useState('READ');
   const [selectedMemberId, setSelectedMemberId] = useState(0);
@@ -48,7 +47,7 @@ const GroupInfo = ({
           buttonText: '확인',
           handleButtonClick: () => {
             setIsModal(false);
-            refetchGroupMembers();
+            queryClient.invalidateQueries(['GroupMembers', mapId]);
             return true;
           },
         });
@@ -69,7 +68,7 @@ const GroupInfo = ({
           buttonText: '확인',
           handleButtonClick: () => {
             setIsModal(false);
-            refetchGroupMembers();
+            queryClient.invalidateQueries(['GroupMembers', mapId]);
             return true;
           },
         });
