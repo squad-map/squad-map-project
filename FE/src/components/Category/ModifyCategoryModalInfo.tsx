@@ -27,9 +27,8 @@ const ModifyCategoryModalInfo = ({
 
   const [isColorModal, setIsColorModal] = useState(false);
 
-  const { data: mapCategories, refetch: refetchCategories } = useQuery(
-    ['MapCategories', mapId],
-    () => getMapCategories(mapId)
+  const { data: mapCategories } = useQuery(['MapCategories', mapId], () =>
+    getMapCategories(mapId)
   );
 
   const handleModifyClick = (category: CategoryType) => {
@@ -93,7 +92,6 @@ const ModifyCategoryModalInfo = ({
             categories={mapCategories.data}
             categoryForm={categoryForm}
             setCategoryForm={setCategoryForm}
-            refetchCategories={refetchCategories}
             handleCancelClick={() => setIsColorModal(false)}
           />
         </GlobalModal>

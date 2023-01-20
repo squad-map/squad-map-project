@@ -1,4 +1,4 @@
-import { useMutation, QueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import { putCategory } from '@/apis/category';
@@ -10,6 +10,7 @@ import ModalContent from '@/components/ModalContent';
 import { SUCCESS_PUT_CATEGORY } from '@/constants/code';
 import { CategoryColors } from '@/constants/colors';
 import { useGetMapId } from '@/hooks/useGetMapId';
+import { queryClient } from '@/index';
 import { CategoryType } from '@/interfaces/Category';
 import theme from '@/styles/theme';
 import { checkDuplicateColor, isExistBgColor } from '@/utils/util';
@@ -24,7 +25,6 @@ interface CategoryColorFormProps {
       category_color: string;
     }>
   >;
-  refetchCategories: () => void;
   handleCancelClick: () => void;
 }
 
@@ -32,10 +32,8 @@ const CategoryColorForm = ({
   categories,
   categoryForm,
   setCategoryForm,
-  refetchCategories,
   handleCancelClick,
 }: CategoryColorFormProps) => {
-  const queryClient = new QueryClient();
   const mapId = useGetMapId();
   const [isModal, setIsModal] = useState(false);
   const [modalText, setModalText] = useState({
@@ -53,9 +51,8 @@ const CategoryColorForm = ({
           description: '카테고리 수정 완료',
           buttonText: '확인',
           handleButtonClick: () => {
-            queryClient.invalidateQueries(['MapCategory', mapId]);
+            queryClient.invalidateQueries(['MapCategories', mapId]);
             setIsModal(false);
-            refetchCategories();
             handleCancelClick();
             return true;
           },

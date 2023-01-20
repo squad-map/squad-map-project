@@ -15,14 +15,9 @@ import LoadingSpinner from '@/components/common/LoadingSpinner';
 import Text from '@/components/common/Text';
 import ModalContent from '@/components/ModalContent';
 import UserProfile from '@/components/UserProfile';
-import {
-  SUCCESS_DELETE_PLACE,
-  SUCCESS_GET_CATEGORIES,
-  SUCCESS_GET_PLACE,
-} from '@/constants/code';
+import { SUCCESS_DELETE_PLACE, SUCCESS_GET_CATEGORIES } from '@/constants/code';
 import { useGetMapId } from '@/hooks/useGetMapId';
-import { CommentsType } from '@/interfaces/Comments';
-import { PlaceDetail } from '@/interfaces/Place';
+import { queryClient } from '@/index';
 import { userState } from '@/recoil/atoms/user';
 import theme from '@/styles/theme';
 import { MapUserType, PlaceType } from '@/types/map';
@@ -31,7 +26,6 @@ interface InfosProps {
   mapHostId: number;
   infoData: PlaceType[];
   userProfile: MapUserType;
-  refetchMap: () => void;
   setCurrentCoords: React.Dispatch<
     React.SetStateAction<{
       lat: number;
@@ -44,7 +38,6 @@ const Infos = ({
   mapHostId,
   infoData,
   userProfile,
-  refetchMap,
   setCurrentCoords,
 }: InfosProps) => {
   const mapId = useGetMapId();
@@ -60,17 +53,6 @@ const Infos = ({
     buttonText: '',
     handleButtonClick: () => true,
   });
-  const [placeDetail, setPlaceDetail] = useState({
-    place_id: 0,
-    place_name: '',
-    address: '',
-    latitude: 0,
-    longitude: 0,
-    story: '',
-    detail_link: '',
-    category_id: 0,
-    comments: [] as unknown as CommentsType,
-  });
 
   const user = useRecoilValue(userState);
 
@@ -79,18 +61,11 @@ const Infos = ({
     () => getMapCategories(mapId)
   );
 
-  const { refetch: placeDetailRefetch } = useQuery(
+  const { data: placeDetail } = useQuery(
     ['PlaceDetail', modalParams.placeId],
     () => {
       if (!modalParams.placeId) return true;
       return getPlaceDeatil({ mapId, placeId: modalParams.placeId });
-    },
-    {
-      onSuccess: ({ code, data }: { code: string; data: PlaceDetail }) => {
-        if (code === SUCCESS_GET_PLACE) {
-          setPlaceDetail(data);
-        }
-      },
     }
   );
 
@@ -108,12 +83,12 @@ const Infos = ({
       onSuccess: ({ code }: { code: string }) => {
         if (code === SUCCESS_DELETE_PLACE) {
           setModalText({
-            title: '지도가 성공적으로 삭제되었습니다.',
-            description: '지도 삭제',
+            title: '장소가 성공적으로 삭제되었습니다.',
+            description: '장소 삭제',
             buttonText: '확인',
             handleButtonClick: () => {
+              queryClient.invalidateQueries(['Map', mapId]);
               setIsModal(false);
-              refetchMap();
               return true;
             },
           });
@@ -128,8 +103,8 @@ const Infos = ({
 
   const handleDeletePlace = (placeId: number) => {
     setModalText({
-      title: '지도를 삭제하시겠습니까?.',
-      description: '삭제한 지도는 복구가 불가능합니다.',
+      title: '장소를 삭제하시겠습니까?.',
+      description: '삭제한 장소는 복구가 불가능합니다.',
       buttonText: '확인',
       handleButtonClick: () => {
         setIsModal(false);
@@ -244,18 +219,17 @@ const Infos = ({
               </div>
             ))}
         </div>
-        {modalParams.modal && modalParams.type === 'COMMENT' && (
+        {placeDetail && modalParams.modal && modalParams.type === 'COMMENT' && (
           <GlobalModal
             size="large"
             handleCancelClick={() =>
               setModalParams({ ...modalParams, modal: false })
             }
           >
-            {placeDetail.place_id ? (
+            {placeDetail.data.place_id ? (
               <PlaceModalComment
                 mapHostId={mapHostId}
-                placeInfo={placeDetail}
-                placeDetailRefetch={placeDetailRefetch}
+                placeInfo={placeDetail.data}
               />
             ) : (
               <LoadingSpinner size="medium" />
@@ -269,14 +243,13 @@ const Infos = ({
               setModalParams({ ...modalParams, modal: false })
             }
           >
-            {placeDetail.place_id ? (
+            {placeDetail.data.place_id ? (
               <PlaceModalUpdate
-                placeInfo={placeDetail}
+                placeInfo={placeDetail.data}
                 categoryInfo={mapCategory.data}
                 setIsOpenUpdateModal={() =>
                   setModalParams({ ...modalParams, modal: false })
                 }
-                refetchMap={refetchMap}
               />
             ) : (
               <LoadingSpinner size="medium" />
