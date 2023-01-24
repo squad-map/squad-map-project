@@ -1,4 +1,4 @@
-import styled from '@emotion/styled/macro';
+import styled from '@emotion/styled';
 import { useMutation } from '@tanstack/react-query';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -23,7 +23,6 @@ import { emojiToUnicode } from '@/utils/util';
 interface FormProps {
   mapId?: string;
   state?: MypagePutParams;
-  type: boolean;
 }
 
 const Label = styled.label`
@@ -39,7 +38,7 @@ const ColumnBox = styled.div`
   margin: 1rem 0;
 `;
 
-const Form = ({ mapId, state, type }: FormProps) => {
+const Form = ({ mapId, state }: FormProps) => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -240,7 +239,7 @@ const Form = ({ mapId, state, type }: FormProps) => {
           </div>
         </ColumnBox>
 
-        {type ? (
+        {mapId ? (
           <div className="flex gap-4 mt-8">
             <Button
               type="submit"
