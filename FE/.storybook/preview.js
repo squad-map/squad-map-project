@@ -5,19 +5,19 @@ import theme from '@/styles/theme';
 import { RecoilRoot } from 'recoil';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { queryClient } from '../src';
-import { initialize, mswDecorator } from "msw-storybook-addon";
+import { initialize, mswDecorator } from 'msw-storybook-addon';
 import { cookieDecorator } from 'storybook-addon-cookie';
 
 if (typeof global.process === 'undefined') {
-  const { worker } = require('../src/mocks/browsers')
-  worker.start()
+  const { worker } = require('../src/mocks/browsers/server');
+  worker.start();
 }
 
 // MSW 초기화 함수 실행
 initialize();
 
 export const parameters = {
-  actions: { argTypesRegex: "^on[A-Z].*" },
+  actions: { argTypesRegex: '^on[A-Z].*' },
   controls: {
     matchers: {
       color: /(background|color)$/i,
@@ -26,24 +26,24 @@ export const parameters = {
   },
   cookie: {
     access_token: 'Bearer access_token',
-  }
-}
+  },
+};
 
 export const decorators = [
   mswDecorator,
   cookieDecorator,
-  (Story) => (
+  Story => (
     <>
-     <BrowserRouter>
+      <BrowserRouter>
         <QueryClientProvider client={queryClient}>
-        <RecoilRoot>
+          <RecoilRoot>
             <ThemeProvider theme={theme}>
               <GlobalStyle />
-                <Story />
+              <Story />
             </ThemeProvider>
-        </RecoilRoot>
+          </RecoilRoot>
         </QueryClientProvider>
       </BrowserRouter>
     </>
-  )
+  ),
 ];

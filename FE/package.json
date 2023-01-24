@@ -98,8 +98,5 @@
     "storybook": "cross-env STORYBOOK_API_URL=http://localhost:6006 start-storybook -p 6006 -s public",
     "test-storybook": "test-storybook",
     "test": "cross-env NODE_ENV=development STORYBOOK_API_URL=http://localhost:3000 jest"
-  },
-  "msw": {
-    "workerDirectory": ".storybook/public"
   }
 }
