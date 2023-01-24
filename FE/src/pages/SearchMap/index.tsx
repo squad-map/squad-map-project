@@ -13,7 +13,7 @@ import { SearchPlaceType } from '@/interfaces/SearchPlace';
 import { PlaceType } from '@/types/map';
 import { unicodeToEmoji } from '@/utils/util';
 
-const { kakao } = window;
+const { kakao } = window as any;
 
 const SearchMap = () => {
   const mapId = useGetMapId();
@@ -48,10 +48,12 @@ const SearchMap = () => {
   };
 
   const searchAddressToCoordinate = (address: string) => {
-    const kakaoSearchService = new kakao.maps.services.Places();
-    kakaoSearchService.keywordSearch(address, placesSearchCallBack, {
-      location: new kakao.maps.LatLng(defaultCoords.lng, defaultCoords.lat),
-    });
+    if (kakao) {
+      const kakaoSearchService = new kakao.maps.services.Places();
+      kakaoSearchService.keywordSearch(address, placesSearchCallBack, {
+        location: new kakao.maps.LatLng(defaultCoords.lng, defaultCoords.lat),
+      });
+    }
   };
 
   if (!mapLoading && mapData.code !== SUCCESS_GET_DETAIL_MAP)

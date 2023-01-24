@@ -1,6 +1,8 @@
 import userEvent from '@testing-library/user-event';
 
+import CategoryColorForm from '@/components/Category/CategoryColorForm';
 import CreateCategoryModalInfo from '@/components/Category/CreateCategoryModalInfo';
+import { GET_MAP_CAEGORIES_DATA } from '@/constants/category';
 import { screen, render, within, waitFor } from '@/tests/testing-libaray-utils';
 
 test('create category', async () => {
@@ -44,4 +46,23 @@ test('create category', async () => {
       getByText(/카테고리가 등록되었습니다/i)
     );
   });
+});
+
+test('put category', async () => {
+  const user = userEvent.setup();
+  const categories = GET_MAP_CAEGORIES_DATA.data;
+  const categoryForm = {
+    category_color: '#FF4500',
+    category_id: 1,
+    category_name: 'first category',
+  };
+
+  // render(
+  //   <CategoryColorForm
+  //     categories={categories}
+  //     categoryForm={categoryForm}
+  //     setCategoryForm={jest.fn()}
+  //     handleCancelClick={jest.fn()}
+  //   />
+  // );
 });

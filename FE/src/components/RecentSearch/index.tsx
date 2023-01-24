@@ -1,4 +1,4 @@
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useResetRecoilState } from 'recoil';
 
 import Button from '@/components/common/Button';
 import Text from '@/components/common/Text';
@@ -16,6 +16,8 @@ const RecentSearch = ({
 }: RecentSearchProps) => {
   const searchData = useRecoilValue(searchplaceState);
 
+  const resetSearchPlace = useResetRecoilState(searchplaceState);
+
   const handeItemClick = (value: string) => {
     setSerachValue(value);
     setOnRecentSearch(false);
@@ -29,7 +31,7 @@ const RecentSearch = ({
         <ul className="flex flex-col gap-4">
           {searchData &&
             searchData.map((value: string) => (
-              <li className="flex">
+              <li className="flex" key={value}>
                 <button type="button" onClick={() => handeItemClick(value)}>
                   <Text
                     key={value}
@@ -48,6 +50,7 @@ const RecentSearch = ({
           className="cursor-pointer"
           size="xSmall"
           color={theme.color.transparent}
+          onClick={() => resetSearchPlace()}
         >
           <Text
             text="전체삭제"

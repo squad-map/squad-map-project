@@ -1,6 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router-dom';
+import { RecoilRoot } from 'recoil';
 
 import { setCookie } from '@/utils/cookie';
 
@@ -14,7 +15,9 @@ const queryClient = new QueryClient({
 
 const wrapper = ({ children }: { children: React.ReactNode }) => (
   <Router>
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+    <QueryClientProvider client={queryClient}>
+      <RecoilRoot>{children}</RecoilRoot>
+    </QueryClientProvider>
     <div id="globalModal-root" />
   </Router>
 );
