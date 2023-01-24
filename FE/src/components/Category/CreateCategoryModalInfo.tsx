@@ -158,7 +158,9 @@ const CreateCategoryModalInfo = ({
           </div>
           <form className="flex flex-col items-center">
             <div className="w-60 flex flex-col gap-4 mb-8">
-              <span className="text-lightGray">카테고리명</span>
+              <label htmlFor="name" className="text-lightGray">
+                카테고리명
+              </label>
               <Input
                 id="name"
                 width="15rem"
@@ -182,6 +184,7 @@ const CreateCategoryModalInfo = ({
               <div className="flex flex-wrap gap-2">
                 {CategoryColors.map((color: string) => (
                   <button
+                    data-testid={`test-id-${color}`}
                     key={`category-${color}`}
                     type="button"
                     aria-label="color-button"
