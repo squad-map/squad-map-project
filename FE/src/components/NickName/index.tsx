@@ -23,7 +23,7 @@ interface NickNameProps {
 
 const NickName = ({ handleCancelClick }: NickNameProps) => {
   const [user, setUser] = useRecoilState(userState);
-  const [nickName, setNickName] = useState(user?.nickname);
+  const [nickName, setNickName] = useState(user?.nickname || '');
 
   const { isModal, setIsModal, modalText, setModalText } = useModal({
     title: '',

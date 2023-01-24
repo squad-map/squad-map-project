@@ -64,7 +64,7 @@ const KakaoMap = ({ children, placeInfos, currentCoords }: KakaoMapProps) => {
   }, [currentCoords.lat, currentCoords.lng]);
 
   useEffect(() => {
-    if (placeInfos.length > 0) {
+    if (kakao && placeInfos.length > 0) {
       if (markers) {
         markers.forEach((marker: any) => marker.setMap(null));
       }

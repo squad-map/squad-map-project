@@ -71,7 +71,7 @@ const SearchPlace = ({
   return (
     <div className="absolute top-8 right-20 z-[999]">
       <input
-        type="input"
+        type="text"
         className="w-[30rem] h-[3.4375rem] rounded-2xl px-10 mr-4 text-gray"
         placeholder="What kind of place are you looking for?"
         color={theme.color.white}
