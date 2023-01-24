@@ -13,5 +13,6 @@
       { "runtime": "automatic", "importSource": "@emotion/react" }
     ],
     "@babel/preset-typescript"
-  ]
+  ],
+  "plugins": ["babel-plugin-macros"]
 }

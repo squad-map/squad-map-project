@@ -15,9 +15,10 @@
     "esModuleInterop": true, // ES6 모듈 사양을 준수하여 CommonJS 모듈을 가져올수 있다.
     "strict": true,
     "skipLibCheck": true,
-    "jsxImportSource": "@emotion/react"
+    "jsxImportSource": "@emotion/react",
+    "moduleResolution": "node"
   },
   "files": ["src/types/twin.d.ts"],
-  "include": ["src"],
+  "include": ["src", "setupTests.js"],
   "exclude": ["node_modules", "dist"]
 }

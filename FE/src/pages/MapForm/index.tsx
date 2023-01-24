@@ -11,7 +11,7 @@ const MapForm = () => {
   return (
     <>
       <Header />
-      <Form mapId={params.id} type={!!params.id} state={location.state} />
+      <Form mapId={params.id} state={location.state} />
     </>
   );
 };

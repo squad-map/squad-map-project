@@ -52,9 +52,8 @@ const PlaceModalUpdate = ({
           description: '장소 수정 완료',
           buttonText: '확인',
           handleButtonClick: () => {
-            setIsModal(false);
-            setIsOpenUpdateModal(false);
             queryClient.invalidateQueries(['Map', mapId]);
+            setIsOpenUpdateModal(false);
             return true;
           },
         });
