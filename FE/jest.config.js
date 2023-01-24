@@ -7,7 +7,7 @@ module.exports = {
   },
   transformIgnorePatterns: ['<rootDir>/node_modules/'],
   transform: {
-    '^.+\\.svg$': 'jest-transform-stub',
+    '^.+\\.png|svg$': 'jest-transform-stub',
     '^.+\\.ts?$': 'ts-jest',
     '^.+\\.jsx?$': 'babel-jest',
   },
