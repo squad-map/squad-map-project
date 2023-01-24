@@ -33,6 +33,12 @@ module.exports = {
     'react/no-unknown-property': ['error', { ignore: ['css', 'tw'] }], // emotion css 속성 사용 허용
     'global-require': 0,
     camelcase: 'off',
+    'jsx-a11y/label-has-associated-control': [
+      2,
+      {
+        labelAttributes: ['htmlFor'],
+      },
+    ],
     'react/function-component-definition': [
       // 함수형 컴포넌트 선언방식
       2,

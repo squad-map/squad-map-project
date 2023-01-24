@@ -5,7 +5,7 @@ import 'whatwg-fetch';
 import '@testing-library/jest-dom';
 
 // src/setupTests.js
-import { worker } from './src/mocks/browsers';
+import { worker } from './src/mocks/browsers/testServer';
 
 // Establish API mocking before all tests.
 beforeAll(() => worker.listen());

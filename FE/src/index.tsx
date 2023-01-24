@@ -10,8 +10,7 @@ import GlobalStyle from '@/styles/GlobalStyle';
 
 if (process.env.NODE_ENV === 'development') {
   setCookie('access_token', 'local_access_token');
-  // eslint-disable-next-line @typescript-eslint/no-var-requires, global-require
-  const { worker } = require('./mocks/browsers');
+  const { worker } = require('./mocks/browsers/server');
   worker.start();
 }
 
