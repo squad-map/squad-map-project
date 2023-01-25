@@ -14,12 +14,14 @@ const queryClient = new QueryClient({
 });
 
 const wrapper = ({ children }: { children: React.ReactNode }) => (
-  <Router>
+  <>
     <QueryClientProvider client={queryClient}>
-      <RecoilRoot>{children}</RecoilRoot>
+      <RecoilRoot>
+        <Router>{children}</Router>
+      </RecoilRoot>
     </QueryClientProvider>
     <div id="globalModal-root" />
-  </Router>
+  </>
 );
 
 export const renderWithProvider = (ui: any, options?: any) => {

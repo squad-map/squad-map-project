@@ -4,7 +4,7 @@ import SearchMap from '.';
 
 import { screen, render } from '@/tests/testing-libaray-utils';
 
-test.only('get location information when entering recent search terms', async () => {
+test('get location information when entering recent search terms', async () => {
   const user = userEvent.setup();
   render(<SearchMap />);
 
