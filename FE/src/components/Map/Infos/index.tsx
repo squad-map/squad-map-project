@@ -129,22 +129,7 @@ const Infos = ({
 
   return (
     infoData && (
-      <section className="flex flex-col gap-4 mt-8 absolute right-8 z-[999]">
-        <Button size="large" color={theme.color.navy}>
-          <div className="flex gap-4 items-center">
-            <img
-              className="w-8 h-8 rounded-full"
-              src={user?.profileImageUrl}
-              alt="프로필이미지"
-            />
-            <Text
-              size="large"
-              text={user?.nickname || ''}
-              color={theme.color.white}
-            />
-          </div>
-        </Button>
-
+      <section className="w-[21.25rem] flex flex-col gap-4 absolute top-36 right-8 z-[999]">
         <div className="h-[38rem] flex flex-col gap-4 overflow-y-auto">
           {infoData &&
             infoData.map((place: PlaceType) => (
