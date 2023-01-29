@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useRecoilValue } from 'recoil';
 
 import { getMapDetailInfo } from '@/apis/mypage';
 import { Icons } from '@/assets/icons';
@@ -17,6 +18,7 @@ import Infos from '@/components/Map/Infos';
 import { SUCCESS_GET_DETAIL_MAP } from '@/constants/code';
 import { defaultCoords } from '@/constants/map';
 import { useGetMapId } from '@/hooks/useGetMapId';
+import { userState } from '@/recoil/atoms/user';
 import theme from '@/styles/theme';
 import { CategorizedPlaces, PlaceType } from '@/types/map';
 import { unicodeToEmoji } from '@/utils/util';
@@ -31,24 +33,39 @@ const Map = () => {
   const handleOpenMenu = () => setMenu(true);
   const handleCloseMenu = () => setMenu(false);
 
+  const [filterText, setFilterText] = useState('모든 지도 리스트');
   const [placeInfos, setPlaceInfos] = useState([]);
+  const user = useRecoilValue(userState);
 
   const { data: mapData, isLoading: mapDetailLoading } = useQuery(
     ['Map', mapId],
     () => getMapDetailInfo(mapId)
   );
 
+  const handleAllClick = () => {
+    const filteredMapData = mapData.data.categorized_places.reduce(
+      (acc: PlaceType[], placeInfo: CategorizedPlaces) => {
+        acc.push(...placeInfo.places);
+        return acc;
+      },
+      []
+    );
+
+    setFilterText('모든 지도 리스트');
+    setPlaceInfos(filteredMapData);
+  };
+
   const handleCategoryClick = (color: string) => {
     const filteredMapData = mapData.data.categorized_places.reduce(
       (acc: PlaceType[], placeInfo: CategorizedPlaces) => {
-        // eslint-disable-next-line no-unused-expressions
-        placeInfo.category_info.category_color === color &&
+        if (placeInfo.category_info.category_color === color)
           acc.push(...placeInfo.places);
         return acc;
       },
       []
     );
 
+    setFilterText('카테고리 리스트');
     setPlaceInfos(filteredMapData);
   };
 
@@ -78,6 +95,13 @@ const Map = () => {
             emoji={`${unicodeToEmoji(mapData.data.map_emoji)}`}
             title={mapData.data.map_name}
           />
+          <Button
+            size="regular"
+            color={theme.color.black}
+            onClick={handleAllClick}
+          >
+            모두보기
+          </Button>
           <Categories
             headerData={{
               map_id: mapData.data.map_id,
@@ -88,18 +112,37 @@ const Map = () => {
             handleCategoryClick={handleCategoryClick}
           />
         </header>
-        <div className="fixed top-2 right-8 z-[1000]">
-          <Image
-            url={Images.Menu}
-            alt="Navigation Menu"
-            data-testid="menuBtn"
-            onClick={handleOpenMenu}
-          />
-          <Navigation
-            menu={menu}
-            handleCloseMenu={handleCloseMenu}
-            type="map"
-          />
+        <div className="w-[21.25rem] flex flex-col gap-4 fixed top-2 right-8 z-[1000]">
+          <div className="w-[21.25rem] flex justify-between items-center gap-4">
+            <div className="flex w-[15rem] h-16 px-4 rounded-2xl bg-navy">
+              <div className="flex gap-4 items-center">
+                <img
+                  className="w-8 h-8 rounded-full"
+                  src={user?.profileImageUrl}
+                  alt="프로필이미지"
+                />
+                <Text
+                  size="large"
+                  text={user?.nickname || ''}
+                  color={theme.color.white}
+                />
+              </div>
+            </div>
+            <Image
+              url={Images.Menu}
+              alt="Navigation Menu"
+              data-testid="menuBtn"
+              onClick={handleOpenMenu}
+            />
+            <Navigation
+              menu={menu}
+              handleCloseMenu={handleCloseMenu}
+              type="map"
+            />
+          </div>
+          <div className="h-12 flex justify-center items-center px-4 rounded-2xl bg-clearOrange">
+            <span className="text-2xl text-white">{filterText}</span>
+          </div>
         </div>
 
         <div className="flex flex-col mt-12 gap-4">
