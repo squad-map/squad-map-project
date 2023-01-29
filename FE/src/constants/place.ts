@@ -14,7 +14,7 @@ export const GET_PLACE_DETAIL_DATA = {
     address: 'my hometown',
     latitude: 37.491583,
     longitude: 127.031352,
-    story: 'first place',
+    story: 'first placefirst',
     detail_link: 'http://place.map.kakao.com/7990409',
     category_id: 1,
     comments: {
@@ -22,7 +22,8 @@ export const GET_PLACE_DETAIL_DATA = {
         {
           member_id: 1,
           member_nickname: 'nickname',
-          member_profile_image: 'image',
+          member_profile_image:
+            'https://avatars.githubusercontent.com/u/45479309?v=4',
           comment_id: 1,
           content: "It's Good",
           written_at: '2023-01-02T13:04:09',
@@ -30,7 +31,8 @@ export const GET_PLACE_DETAIL_DATA = {
         {
           member_id: 2,
           member_nickname: 'nickname2',
-          member_profile_image: 'image2',
+          member_profile_image:
+            'https://avatars.githubusercontent.com/u/45479309?v=4',
           comment_id: 2,
           content: "It's my favorite place",
           written_at: '2023-01-02T13:04:09',
@@ -38,7 +40,8 @@ export const GET_PLACE_DETAIL_DATA = {
         {
           member_id: 3,
           member_nickname: 'nickname3',
-          member_profile_image: 'image3',
+          member_profile_image:
+            'https://avatars.githubusercontent.com/u/45479309?v=4',
           comment_id: 3,
           content: 'umm... so so',
           written_at: '2023-01-02T13:04:09',

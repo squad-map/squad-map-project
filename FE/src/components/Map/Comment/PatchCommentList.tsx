@@ -87,15 +87,25 @@ const PatchCommentList = ({
     <>
       <div className="flex flex-col gap-4">
         <Text text="한 줄 댓글들" size="small" color={theme.color.gray} />
-        <div className="w-[13.125rem] h-[7.5rem] flex flex-col gap-4 overflow-y-auto">
+        <div className="w-[16.125rem] h-[7.5rem] flex flex-col gap-4 overflow-y-auto">
           {content.length === 0 ? (
             <div>등록된 댓글이 없습니다.</div>
           ) : (
             content.map(c => (
               <div
-                className="flex justify-between"
+                className="flex justify-between items-center"
                 key={`comment-${c.comment_id}`}
               >
+                <div className="flex flex-col gap-1">
+                  <img
+                    className="w-4 h-4 rounded-full"
+                    src={c.member_profile_image}
+                    alt="comment profile"
+                  />
+                  <span className="w-12 text-xs text-gray truncate">
+                    {c.member_nickname}
+                  </span>
+                </div>
                 <p>{c.content}</p>
                 {mapHostId === user?.member_id && (
                   <div className="flex gap-2">
