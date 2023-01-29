@@ -11,10 +11,11 @@ const selectSize = {
   small: tw`w-[25.25rem] h-[28.125rem]`,
   medium: tw`w-[28.75rem] h-[36.25rem]`,
   large: tw`w-[31.625rem] h-[42.25rem]`,
+  xLarge: tw`w-[36.25rem] h-[47.25rem]`,
 };
 
 interface GlobalModalProps {
-  size: 'xSmall' | 'small' | 'medium' | 'large';
+  size: 'xSmall' | 'small' | 'medium' | 'large' | 'xLarge';
   handleCancelClick: (e?: React.MouseEvent<HTMLElement>) => void;
   children: React.ReactNode;
 }

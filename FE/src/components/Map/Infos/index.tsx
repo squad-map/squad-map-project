@@ -222,7 +222,7 @@ const Infos = ({
         </div>
         {placeDetail && modalParams.modal && modalParams.type === 'COMMENT' && (
           <GlobalModal
-            size="large"
+            size="xLarge"
             handleCancelClick={() =>
               setModalParams({ ...modalParams, modal: false })
             }
