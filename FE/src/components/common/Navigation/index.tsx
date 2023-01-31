@@ -3,8 +3,6 @@ import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 import { Icons } from '@/assets/icons';
-import CreateCategoryModalInfo from '@/components/Category/CreateCategoryModalInfo';
-import ModifyCategoryModalInfo from '@/components/Category/ModifyCategoryModalInfo';
 import GlobalModal from '@/components/common/GlobalModal';
 import Icon from '@/components/common/Icon';
 import Overlay from '@/components/common/Overlay';
@@ -19,7 +17,6 @@ import theme from '@/styles/theme';
 interface INavigationProps {
   menu: boolean;
   handleCloseMenu: () => void;
-  type?: string;
 }
 
 let currentPath = '';
@@ -43,7 +40,7 @@ export const Text = styled.span`
   font-weight: bold;
 `;
 
-const Navigation = ({ menu, handleCloseMenu, type }: INavigationProps) => {
+const Navigation = ({ menu, handleCloseMenu }: INavigationProps) => {
   const location = useLocation();
   const isLoggedIn = useIsLoggedIn();
 
@@ -106,31 +103,6 @@ const Navigation = ({ menu, handleCloseMenu, type }: INavigationProps) => {
                   <Text>나의지도</Text>
                 </Box>
               </Link>
-              {type === 'map' && (
-                <div>
-                  <Box
-                    onClick={() =>
-                      setOpenModal({ isOpen: true, type: 'getCategory' })
-                    }
-                  >
-                    <Icon size="medium" url={Icons.Edit} alt="Manual Icon" />
-                    <Text>카테고리 수정</Text>
-                  </Box>
-
-                  <Box
-                    onClick={() =>
-                      setOpenModal({ isOpen: true, type: 'createCategory' })
-                    }
-                  >
-                    <Icon
-                      size="medium"
-                      url={Icons.CategoryMap}
-                      alt="Manual Icon"
-                    />
-                    <Text>카테고리 추가</Text>
-                  </Box>
-                </div>
-              )}
               <Divider />
               <Box
                 onClick={() => setOpenModal({ isOpen: true, type: 'nickname' })}
@@ -173,12 +145,6 @@ const Navigation = ({ menu, handleCloseMenu, type }: INavigationProps) => {
           {openModal.type === 'reporting' && <ReportError />}
           {openModal.type === 'nickname' && (
             <NickName handleCancelClick={handleCancelClick} />
-          )}
-          {openModal.type === 'createCategory' && (
-            <CreateCategoryModalInfo setIsCategoryModal={handleCancelClick} />
-          )}
-          {openModal.type === 'getCategory' && (
-            <ModifyCategoryModalInfo handleCancelClick={handleCancelClick} />
           )}
         </GlobalModal>
       )}
