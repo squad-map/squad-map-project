@@ -23,6 +23,9 @@ jobs: # job 설정
         
       - name : Create env file 
         run: |
+          sudo mkdir env
+          sudo chmod -R 777 ./env
+          cd env
           touch .env.production
           touch .env.common
           echo "${{ secrets.FE_ENV_PROD }}" >> .env.production
@@ -65,4 +68,4 @@ jobs: # job 설정
           CLOUD_FRONT_ID: ${{ secrets.AWS_CLOUDFRONT_ID}}
         run: |
           aws cloudfront create-invalidation \
-            --distribution-id $CLOUD_FRONT_ID --paths /*
+            --distribution-id $CLOUD_FRONT_ID --paths "/*"

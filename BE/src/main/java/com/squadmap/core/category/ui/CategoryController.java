@@ -27,7 +27,7 @@ public class CategoryController {
     public CommonResponse<CategoryResponse> create(@Login Long loginId, @PathVariable Long mapId, @RequestBody @Valid CategoryRequest categoryRequest) {
         Long categoryId = categoryService.create(AccessInfo.of(loginId, mapId),
                 categoryRequest.getCategoryName(),
-                categoryRequest.getColor());
+                categoryRequest.getCategoryColor());
         return CommonResponse.success(SuccessCode.CATEGORY_CREATE,
                 new CategoryResponse(categoryId));
     }
@@ -52,7 +52,7 @@ public class CategoryController {
                 categoryService.update(AccessInfo.of(loginId, mapId),
                 categoryId,
                 categoryUpdateRequest.getCategoryName(),
-                categoryUpdateRequest.getColor()));
+                categoryUpdateRequest.getCategoryColor()));
     }
 
     @DeleteMapping("/{categoryId}")

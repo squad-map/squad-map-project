@@ -3,6 +3,8 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.12.RELEASE'
     id 'org.asciidoctor.jvm.convert' version '3.3.2'
     id 'java'
+    id "com.google.cloud.tools.jib" version "3.3.1"
+    id "com.gorylenko.gradle-git-properties" version "2.4.1"
 }
 
 group = 'com.squadmap'
@@ -64,7 +66,9 @@ dependencies {
     testImplementation 'org.testcontainers:mysql:1.17.4'
 }
 
-// RestDocs 설정 시작
+jar {
+    enabled = false
+}
 
 ext {
     snippetsDir = file("${project.buildDir}/generated-snippets")
@@ -80,7 +84,7 @@ asciidoctor {
     inputs.dir snippetsDir
 
     sources {
-        include '**/index.adoc'
+        '**/index.adoc'
     }
 
     baseDirFollowsSourceFile()
@@ -90,22 +94,46 @@ asciidoctor.doFirst {
     delete file("${project.rootDir}/src/main/resources/static/docs")
 }
 
-task copyDocument(type: Copy) {
+tasks.register('copyDocument', Copy) {
     dependsOn asciidoctor
 
-    from "${project.buildDir}/docs/asciidoc"
-    into "${project.rootDir}/src/main/resources/static/docs"
+    from("${project.buildDir}/docs/asciidoc")
+    into("${project.rootDir}/src/main/resources/static/docs")
 }
 
 bootJar {
     dependsOn copyDocument
-    copy {
-        from "${project.buildDir}/docs/asciidoc"
-        into "${project.buildDir}/resources/main/static/docs"
+}
+
+
+gitProperties {
+    extProperty = "git"
+    dateFormat = "yyyy-MM-dd'T'HH:mmZ"
+    dateFormatTimeZone = "ASIA/SEOUL"
+}
+
+tasks.named('jib') {
+    dependsOn bootJar
+}
+
+jib {
+    from {
+        image = "adoptopenjdk/openjdk11:alpine-jre"
+    }
+    to {
+        image = System.getProperty("image", "")
+        tags = [System.getProperty("tag", "latest")]
+    }
+    container {
+        creationTime = project.provider { project.ext.git['git.commit.time']}
+        jvmFlags = [
+                "-XX:+UseG1GC",
+                "-Dspring.profiles.active="+System.getProperty("spring-profile-active", "prod")
+        ]
     }
 }
 
-// RestDocs 설정 끝
+
 
 
 
