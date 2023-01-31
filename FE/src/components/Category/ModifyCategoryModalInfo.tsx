@@ -41,7 +41,9 @@ const ModifyCategoryModalInfo = ({
       <section className="h-full flex flex-col justify-between items-center gap-4 p-8">
         <div className="flex flex-col items-center">
           <h1 className="text-2xl text-navy mb-2">카테고리 관리</h1>
-          <p className="text-gray mb-2">색상을 클릭해서 변경할 수 있습니다.</p>
+          <p className="text-gray mb-2">
+            해당 지도에 등록된 카테고리만 수정가능합니다.
+          </p>
           <p className="flex items-center text-xs text-gray">
             장소에서 사용되어 지는 카테고리는 삭제할 수 없습니다.
           </p>

@@ -129,7 +129,7 @@ const Infos = ({
 
   return (
     infoData && (
-      <section className="w-[21.25rem] flex flex-col gap-4 absolute top-36 right-8 z-[999]">
+      <section className="w-[21.25rem] flex flex-col gap-4 absolute top-36 right-8 z-[998]">
         <div className="h-[38rem] flex flex-col gap-4 overflow-y-auto">
           {infoData &&
             infoData.map((place: PlaceType) => (
