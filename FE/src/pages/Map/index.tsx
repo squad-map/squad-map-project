@@ -14,6 +14,7 @@ import Text from '@/components/common/Text';
 import KakaoMap from '@/components/KaKaoMap';
 import BackButton from '@/components/Map/BackButton/BackButton';
 import Categories from '@/components/Map/Categories/Categories';
+import CategoryManagement from '@/components/Map/CategoryManagement';
 import Infos from '@/components/Map/Infos';
 import { SUCCESS_GET_DETAIL_MAP } from '@/constants/code';
 import { defaultCoords } from '@/constants/map';
@@ -65,7 +66,7 @@ const Map = () => {
       []
     );
 
-    setFilterText('카테고리 리스트');
+    setFilterText('카테고리별 장소 리스트');
     setPlaceInfos(filteredMapData);
   };
 
@@ -112,8 +113,9 @@ const Map = () => {
             handleCategoryClick={handleCategoryClick}
           />
         </header>
-        <div className="w-[21.25rem] flex flex-col gap-4 fixed top-2 right-8 z-[1000]">
-          <div className="w-[21.25rem] flex justify-between items-center gap-4">
+        <CategoryManagement />
+        <div className="w-[21.25rem] flex flex-col gap-4 fixed top-2 right-8 z-[999]">
+          <div className="w-[21.25rem] flex justify-between items-center">
             <div className="flex w-[15rem] h-16 px-4 rounded-2xl bg-navy">
               <div className="flex gap-4 items-center">
                 <img
@@ -134,13 +136,9 @@ const Map = () => {
               data-testid="menuBtn"
               onClick={handleOpenMenu}
             />
-            <Navigation
-              menu={menu}
-              handleCloseMenu={handleCloseMenu}
-              type="map"
-            />
+            <Navigation menu={menu} handleCloseMenu={handleCloseMenu} />
           </div>
-          <div className="h-12 flex justify-center items-center px-4 rounded-2xl bg-clearOrange">
+          <div className="w-[21.25rem] ml-auto h-12 flex justify-center items-center px-4 rounded-2xl bg-clearOrange">
             <span className="text-2xl text-white">{filterText}</span>
           </div>
         </div>
