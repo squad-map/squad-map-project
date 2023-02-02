@@ -31,7 +31,12 @@ const Header = ({ children }: HeaderProps) => {
       <section className="w-full h-[7.5rem] mb-16 bg-navy">
         <div className="flex justify-between items-center p-8">
           <Link to="/">
-            <Image url={Images.Logo} alt="SquadMap Logo" />
+            <Image
+              url={Images.Logo}
+              width={200}
+              height={40}
+              alt="SquadMap Logo"
+            />
           </Link>
           <div className="flex items-center gap-8">
             {user && user.nickname ? (
@@ -65,6 +70,8 @@ const Header = ({ children }: HeaderProps) => {
             <Image
               url={Images.Menu}
               alt="Header Menu"
+              width={64}
+              height={64}
               data-testid="menuBtn"
               onClick={handleOpenMenu}
             />

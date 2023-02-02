@@ -9,6 +9,8 @@ export default {
   component: Image,
   args: {
     url: Images.Menu,
+    width: 64,
+    height: 64,
     alt: 'SquadMap Navigation Menu',
   },
 } as ComponentMeta<typeof Image>;

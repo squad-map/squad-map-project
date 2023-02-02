@@ -1,5 +1,7 @@
 interface IImage {
   url: string;
+  width: number;
+  height: number;
   alt: string;
   onClick?: () => void;
 }

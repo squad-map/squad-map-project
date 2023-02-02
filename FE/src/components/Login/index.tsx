@@ -28,7 +28,12 @@ const Login = () => {
   return (
     <div className="h-screen flex flex-col justify-center items-center gap-4 p-8 bg-white">
       <h2 className="mt-4 italic text-2xl">Login</h2>
-      <Image url={Images.LoginBackground} alt="Login Background" />
+      <Image
+        url={Images.LoginBackground}
+        width={294}
+        height={174}
+        alt="Login Background"
+      />
       <a href={githubUrl}>
         <Button size="large" color="#191A1C">
           <Text
