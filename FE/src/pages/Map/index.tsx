@@ -133,6 +133,8 @@ const Map = () => {
             <Image
               url={Images.Menu}
               alt="Navigation Menu"
+              width={64}
+              height={64}
               data-testid="menuBtn"
               onClick={handleOpenMenu}
             />
