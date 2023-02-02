@@ -52,6 +52,7 @@
     "babel-jest": "^29.3.1",
     "babel-loader": "^8.2.5",
     "babel-plugin-macros": "^3.1.0",
+    "chromatic": "^6.15.0",
     "cross-env": "^7.0.3",
     "css-loader": "^6.7.1",
     "css-minimizer-webpack-plugin": "^4.0.0",
@@ -97,7 +98,7 @@
     "dev": "cross-env NODE_ENV=development webpack serve --config config/webpack.dev.js --progress",
     "build": "cross-env NODE_ENV=production webpack --config config/webpack.prod.js --progress",
     "storybook": "cross-env STORYBOOK_API_URL=http://localhost:6006 start-storybook -p 6006 -s public",
-    "test-storybook": "test-storybook",
+    "build-storybook": "build-storybook -s public",
     "test": "cross-env NODE_ENV=test STORYBOOK_API_URL=http://localhost:3000 jest"
   }
 }

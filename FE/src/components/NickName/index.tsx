@@ -81,7 +81,12 @@ const NickName = ({ handleCancelClick }: NickNameProps) => {
           <LoadingSpinner size="large" />
         ) : (
           <>
-            <Image url={Images.LoginBackground} alt="Login Background" />
+            <Image
+              url={Images.LoginBackground}
+              width={294}
+              height={174}
+              alt="Login Background"
+            />
             <Input
               id="nickname"
               width="20rem"
