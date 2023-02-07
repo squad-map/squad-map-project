@@ -3,19 +3,14 @@ import { useState } from 'react';
 import { useRecoilState } from 'recoil';
 
 import GlobalModal from '../common/GlobalModal';
-import LoadingSpinner from '../common/LoadingSpinner';
 import ModalContent from '../ModalContent';
 
+import NickNameView from './NickNameView';
+
 import { patchNickName } from '@/apis/user';
-import { Images } from '@/assets/images';
-import Button from '@/components/common/Button';
-import Image from '@/components/common/Image';
-import Input from '@/components/common/Input';
-import Text from '@/components/common/Text';
 import { SUCCESS_NICKNAME_UPDATE } from '@/constants/code';
 import useModal from '@/hooks/useModal';
 import { userState } from '@/recoil/atoms/user';
-import theme from '@/styles/theme';
 
 interface NickNameProps {
   handleCancelClick: () => void;
@@ -75,6 +70,7 @@ const NickName = ({ handleCancelClick }: NickNameProps) => {
 
   return (
     <>
+<<<<<<< HEAD
       <section className="h-full flex flex-col items-center gap-6 py-12">
         <h2 className="text-2xl">닉네임 변경</h2>
         {fetchPatchNickName.isLoading ? (
@@ -108,6 +104,13 @@ const NickName = ({ handleCancelClick }: NickNameProps) => {
           </>
         )}
       </section>
+=======
+      <NickNameView
+        nickName={nickName}
+        handleNickNameChange={handleNickNameChange}
+        handleUpdatedNickName={handleUpdatedNickName}
+      />
+>>>>>>> c26ecdc (🚧 로직과 뷰 분리 - VAC Pattern 적용중)
       {isModal && (
         <GlobalModal size="small" handleCancelClick={() => setIsModal(false)}>
           <ModalContent
