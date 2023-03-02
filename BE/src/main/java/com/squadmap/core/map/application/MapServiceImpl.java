@@ -3,6 +3,7 @@ package com.squadmap.core.map.application;
 import com.squadmap.common.dto.SimpleSlice;
 import com.squadmap.common.excetpion.ClientException;
 import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
+import com.squadmap.core.access.MemberContext;
 import com.squadmap.core.access.RequiredPermission;
 import com.squadmap.core.category.application.dto.CategoryInfo;
 import com.squadmap.core.category.domain.Category;
@@ -97,7 +98,7 @@ public class MapServiceImpl implements MapService {
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_MEMBER));
         List<Place> places = placeRepository.findAllByMapId(map.getId());
 
-        return MapDetail.of(map, member, places.size(), categorize(places));
+        return MapDetail.of(map, member, places.size(), categorize(places), MemberContext.getAuthorityLevel());
     }
 
     @Override

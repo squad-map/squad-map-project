@@ -2,6 +2,7 @@ package com.squadmap.core.group.application;
 
 import com.squadmap.common.excetpion.ClientException;
 import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
+import com.squadmap.core.access.AuthorityLevel;
 import com.squadmap.core.access.CurrentAuthority;
 import com.squadmap.core.access.MemberContext;
 import com.squadmap.core.group.application.dto.AccessInfo;
@@ -105,11 +106,15 @@ public class GroupMemberServiceImpl implements GroupMemberService {
         if(requiredLevel.equals(PermissionLevel.READ)) {
             com.squadmap.core.map.domain.Map map = mapRepository.findById(accessInfo.getMapId())
                     .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_MAP));
+
             Optional<GroupMember> groupMemberOptional = groupMemberRepository.findByMapIdAndMemberId(accessInfo.getMapId(), accessInfo.getLoginId());
             if(groupMemberOptional.isPresent()) {
                 GroupMember groupMember = groupMemberOptional.get();
-                MemberContext.setContext(new CurrentAuthority(groupMember.getMemberId(), groupMember.getPermissionLevel()));
+                MemberContext.setContext(new CurrentAuthority(groupMember.getMemberId(), AuthorityLevel.from(groupMember.getPermissionLevel().name())));
+            } else {
+                MemberContext.setContext(CurrentAuthority.externalUser());
             }
+
             if (map.isFullDisclosure()) {
                return true;
             }
@@ -122,7 +127,7 @@ public class GroupMemberServiceImpl implements GroupMemberService {
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.FORBIDDEN));
 
         if (groupMember.hasRequiredPermission(permissionLevel)) {
-            MemberContext.setContext(new CurrentAuthority(groupMember.getMemberId(), groupMember.getPermissionLevel()));
+            MemberContext.setContext(new CurrentAuthority(groupMember.getMemberId(), AuthorityLevel.from(groupMember.getPermissionLevel().name())));
             return true;
         }
         return false;

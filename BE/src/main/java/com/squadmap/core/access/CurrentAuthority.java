@@ -9,7 +9,11 @@ import lombok.RequiredArgsConstructor;
 public class CurrentAuthority {
 
     private final Long memberId;
-    private final PermissionLevel permissionLevel;
+    private final AuthorityLevel authorityLevel;
+
+    public static CurrentAuthority externalUser() {
+        return new CurrentAuthority(null, AuthorityLevel.NONE);
+    }
 
 }
 

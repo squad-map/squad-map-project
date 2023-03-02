@@ -8,6 +8,10 @@ public class MemberContext {
         return MemberContext.CONTEXT.get();
     }
 
+    public static AuthorityLevel getAuthorityLevel() {
+        return MemberContext.getCurrentAuthority().getAuthorityLevel();
+    }
+
     public static void setContext(CurrentAuthority currentAuthority) {
         CONTEXT.set(currentAuthority);
     }
