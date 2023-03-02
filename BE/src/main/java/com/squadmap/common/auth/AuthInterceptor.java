@@ -2,6 +2,8 @@ package com.squadmap.common.auth;
 
 
 import com.squadmap.common.auth.application.LoginService;
+import com.squadmap.core.access.CurrentAuthority;
+import com.squadmap.core.access.MemberContext;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
@@ -30,6 +32,11 @@ public class AuthInterceptor implements HandlerInterceptor {
         request.setAttribute(AUTH_TOKEN, token);
         log.debug("token validation is {}", isValidate);
         return isValidate;
+    }
+
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        MemberContext.removeContext();
     }
 
     private boolean isPreflightRequest(HttpServletRequest request) {
