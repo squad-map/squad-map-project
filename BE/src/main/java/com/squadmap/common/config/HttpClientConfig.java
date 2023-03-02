@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import java.net.http.HttpClient;
 
 @Configuration
-public class httpClientConfig {
+public class HttpClientConfig {
 
     @Bean
     public HttpClient httpClient() {
