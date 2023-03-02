@@ -148,6 +148,7 @@ class MapAcceptanceTest extends RestAssuredTest {
             fieldWithPath(makeFieldName("categorized_places[].category_info.category_color")).type(JsonFieldType.STRING).description("카테고리 색상"),
             fieldWithPath(makeFieldName("categorized_places[].places[].place_id")).type(JsonFieldType.NUMBER).description("장소 아이디"),
             fieldWithPath(makeFieldName("categorized_places[].places[].place_name")).type(JsonFieldType.STRING).description("장소 이름"),
+            fieldWithPath(makeFieldName("categorized_places[].places[].place_story")).type(JsonFieldType.STRING).description("장소 이름"),
             fieldWithPath(makeFieldName("categorized_places[].places[].address")).type(JsonFieldType.STRING).description("장소 주소"),
             fieldWithPath(makeFieldName("categorized_places[].places[].latitude")).type(JsonFieldType.NUMBER).description("장소 위도"),
             fieldWithPath(makeFieldName("categorized_places[].places[].longitude")).type(JsonFieldType.NUMBER).description("장소 경도"),

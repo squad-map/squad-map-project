@@ -97,8 +97,8 @@ public class MapServiceImpl implements MapService {
         Member member = memberRepository.findById(map.getMemberId())
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_MEMBER));
         List<Place> places = placeRepository.findAllByMapId(map.getId());
-
-        return MapDetail.of(map, member, places.size(), categorize(places), MemberContext.getAuthorityLevel());
+        List<Category> categories = categoryRepository.findAllByMap(map.getId());
+        return MapDetail.of(map, member, places.size(), categorize(categories, places), MemberContext.getAuthorityLevel());
     }
 
     @Override
@@ -149,17 +149,21 @@ public class MapServiceImpl implements MapService {
                 .collect(Collectors.toMap(Member::getId, Function.identity()));
     }
 
-    private List<CategorizedPlaces> categorize(List<Place> places) {
-        java.util.Map<Category, List<Place>> categorizedPlaces = places.stream()
-                .collect(Collectors.groupingBy(Place::getCategory));
+    private List<CategorizedPlaces> categorize(List<Category> categories, List<Place> places) {
+        java.util.Map<Long, List<Place>> categorizedPlaces = places.stream()
+                .collect(Collectors.groupingBy(p -> p.getCategory().getId()));
 
-        return categorizedPlaces.entrySet()
-                .stream()
-                .map(e -> new CategorizedPlaces(CategoryInfo.from(e.getKey()),
-                        e.getValue().stream()
-                                .map(PlaceSimpleInfo::from)
-                                .collect(Collectors.toList())))
-                .collect(Collectors.toList());
+        return categories.stream().map(category ->  {
+            List<PlaceSimpleInfo> placeSimpleInfos = new ArrayList<>();
+            if(categorizedPlaces.containsKey(category.getId())) {
+                placeSimpleInfos = categorizedPlaces.get(category.getId())
+                        .stream()
+                        .map(PlaceSimpleInfo::from)
+                        .collect(Collectors.toList());
+            }
+            return new CategorizedPlaces(CategoryInfo.from(category), placeSimpleInfos);
+        }
+        ).collect(Collectors.toList());
     }
 
     private MapsResponse mapsToMapResponse(List<Map> maps) {
@@ -185,5 +189,6 @@ public class MapServiceImpl implements MapService {
 
         return new MapsResponse(mapSimpleInfos.size(), mapSimpleInfos);
     }
+
 
 }
