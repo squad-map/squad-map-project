@@ -58,9 +58,9 @@ public class MapController {
     }
 
     @GetMapping("/group")
-    public CommonResponse<MapsResponse> findGroupMapList(@Login Long memberId, Optional<String> name) {
+    public CommonResponse<SimpleSlice<MapSimpleInfo>> findGroupMapList(@Login Long memberId, @RequestParam(defaultValue = "0") Long lastMapId, Optional<String> name) {
         return CommonResponse.success(SuccessCode.MAP_READ_PRI,
-                mapService.searchGroup(memberId, name));
+                mapService.searchGroup(memberId, lastMapId, name));
     }
 
     @DeleteMapping("/{mapId}")

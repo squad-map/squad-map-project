@@ -22,9 +22,12 @@ public interface MapRepository extends JpaRepository<Map, Long> {
 
     Slice<Map> findMapsByFullDisclosureAndIdGreaterThanAndNameStartingWith(Pageable pageable, Boolean fullDisclosure, Long id, String name);
 
-    @Query("select m from Map m where m.id in :ids and m.name like :name%")
-    List<Map> findAllByIdsAndNameContaining(@Param("ids") List<Long> ids, @Param("name") String name);
+//    @Query("select m from Map m where m.id in :ids and m.name like :name%")
+//    List<Map> findAllByIdsAndNameContaining(@Param("ids") List<Long> ids, @Param("name") String name);
 
+    Slice<Map> findMapsByIdIsInAndIdGreaterThanAndNameStartingWith(Pageable pageable, List<Long> ids, Long id, String name);
+
+    Slice<Map> findMapsByIdIsInAndIdGreaterThan(Pageable pageable, List<Long> ids, Long id);
 
     @Modifying
     @Query("delete from Map m where m.id = :id")

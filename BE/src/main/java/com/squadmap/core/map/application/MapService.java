@@ -20,7 +20,7 @@ public interface MapService {
 
     MapDetail findOne(AccessInfo accessInfo);
 
-    MapsResponse searchGroup(Long memberId, Optional<String> name);
+    SimpleSlice<MapSimpleInfo> searchGroup(Long memberId, Long lastMapId, Optional<String> name);
 
     void delete(AccessInfo accessInfo);
 
