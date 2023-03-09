@@ -175,18 +175,21 @@ class MapAcceptanceTest extends RestAssuredTest {
     }
 
     private static final Snippet SEARCH_GROUP_MAP_LIST_REQUEST_PARAMS = requestParameters(
+            parameterWithName("lastMapId").optional().description("페이징을 위한 마지막 지도의 아이디(해당 지도 이후의 값만을 표시함)"),
             parameterWithName("name").optional().description("검색하고자하는 그룹 지도 이름 (값을 넣어주지 않으면 속한 그룹지도 전체검색) ")
     );
 
     private static final Snippet READ_GROUP_MAP_LIST_RESPONSE = generateCommonResponse(
-            fieldWithPath(makeFieldName("map_count")).type(JsonFieldType.NUMBER).description("속한 그룹 지도의 갯수"),
             fieldWithPath(makeFieldName("content[].id")).type(JsonFieldType.NUMBER).description("지도의 아이디"),
             fieldWithPath(makeFieldName("content[].map_name")).type(JsonFieldType.STRING).description("지도의 이름"),
             fieldWithPath(makeFieldName("content[].map_emoji")).type(JsonFieldType.STRING).description("지도의 이모지"),
-            fieldWithPath(makeFieldName("content[].host_id")).type(JsonFieldType.NUMBER).description("지도의 작성자의 닉네임"),
-            fieldWithPath(makeFieldName("content[].host_nickname")).type(JsonFieldType.STRING).description("지도의 작성자의 닉네임"),
-            fieldWithPath(makeFieldName("content[].host_profile_image")).type(JsonFieldType.STRING).description("지도의 작성자의 프로필 이미지"),
-            fieldWithPath(makeFieldName("content[].places_count")).type(JsonFieldType.NUMBER).description("지도내에 등록된 장소의 갯수")
+            fieldWithPath(makeFieldName("content[].host_id")).type(JsonFieldType.NUMBER).description("지도 작성자의 아이디"),
+            fieldWithPath(makeFieldName("content[].host_nickname")).type(JsonFieldType.STRING).description("지도 작성자의 닉네임"),
+            fieldWithPath(makeFieldName("content[].host_profile_image")).type(JsonFieldType.STRING).description("지도 작성자의 프로필 이미지"),
+            fieldWithPath(makeFieldName("content[].places_count")).type(JsonFieldType.NUMBER).description("지도내에 등록된 장소의 갯수"),
+            fieldWithPath(makeFieldName("size")).type(JsonFieldType.NUMBER).description("요청 데이터 갯수"),
+            fieldWithPath(makeFieldName("number_of_elements")).type(JsonFieldType.NUMBER).description("데이터 갯수"),
+            fieldWithPath(makeFieldName("has_next")).type(JsonFieldType.BOOLEAN).description("추가로 요청 가능한 데이터 존재 여부")
     );
 
     @Test
@@ -204,7 +207,7 @@ class MapAcceptanceTest extends RestAssuredTest {
 
         .then().statusCode(HttpStatus.OK.value())
                 .body("code", equalTo(SuccessCode.MAP_READ_PRI.getCode()))
-                .body("data.map_count", notNullValue())
+                .body("data.size", notNullValue())
                 .log().all();
     }
 

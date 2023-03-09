@@ -9,7 +9,6 @@ import com.squadmap.core.map.application.MapService;
 import com.squadmap.core.map.application.dto.MapDetail;
 import com.squadmap.core.map.application.dto.MapSimpleInfo;
 import com.squadmap.core.map.application.dto.MapUpdateInfo;
-import com.squadmap.core.map.application.dto.MapsResponse;
 import com.squadmap.core.map.ui.dto.MapCreateResponse;
 import com.squadmap.core.map.ui.dto.MapRequest;
 import lombok.RequiredArgsConstructor;
