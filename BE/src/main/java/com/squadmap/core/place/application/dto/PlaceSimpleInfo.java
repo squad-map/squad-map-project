@@ -10,6 +10,7 @@ public class PlaceSimpleInfo {
 
     private final Long placeId;
     private final String placeName;
+    private final String placeStory;
     private final String address;
     private final Double latitude;
     private final Double longitude;
@@ -17,6 +18,7 @@ public class PlaceSimpleInfo {
     public static PlaceSimpleInfo from(final Place place) {
         return new PlaceSimpleInfo(place.getId(),
                 place.getName(),
+                place.getDescription(),
                 place.getAddress(),
                 place.getPosition().getLatitude(),
                 place.getPosition().getLongitude()

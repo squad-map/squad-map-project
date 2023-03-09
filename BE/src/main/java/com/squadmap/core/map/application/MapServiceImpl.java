@@ -3,6 +3,7 @@ package com.squadmap.core.map.application;
 import com.squadmap.common.dto.SimpleSlice;
 import com.squadmap.common.excetpion.ClientException;
 import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
+import com.squadmap.core.access.MemberContext;
 import com.squadmap.core.access.RequiredPermission;
 import com.squadmap.core.category.application.dto.CategoryInfo;
 import com.squadmap.core.category.domain.Category;
@@ -23,6 +24,7 @@ import com.squadmap.member.infrastructure.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.SliceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,7 +38,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class MapServiceImpl implements MapService {
-
+    
+    private static final int DEFAULT_PAGE_SIZE = 10;
+    
     private final MapRepository mapRepository;
     private final MemberRepository memberRepository;
     private final PlaceRepository placeRepository;
@@ -68,7 +72,6 @@ public class MapServiceImpl implements MapService {
         return new MapUpdateInfo(mapId, mapName, emoji, fullDisclosure);
     }
 
-    //@Cacheable(value = "pagingPublicMaps", key = "{#lastMapId, #name}")
     @Override
     public SimpleSlice<MapSimpleInfo> searchPublic(Long lastMapId, Optional<String> name) {
         Slice<Map> maps = searchPublicWithName(lastMapId, name);
@@ -96,15 +99,15 @@ public class MapServiceImpl implements MapService {
         Member member = memberRepository.findById(map.getMemberId())
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_MEMBER));
         List<Place> places = placeRepository.findAllByMapId(map.getId());
-
-        return MapDetail.of(map, member, places.size(), categorize(places));
+        List<Category> categories = categoryRepository.findAllByMap(map.getId());
+        return MapDetail.of(map, member, places.size(), categorize(categories, places), MemberContext.getAuthorityLevel());
     }
 
     @Override
-    public MapsResponse searchGroup(Long memberId, Optional<String> name) {
+    public SimpleSlice<MapSimpleInfo> searchGroup(Long memberId, Long lastMapId, Optional<String> name) {
         List<Long> mapIds = groupMemberRepository.findMapIdByMemberId(memberId);
-        List<Map> maps = searchGroupMap(name, mapIds);
-        return mapsToMapResponse(maps);
+        Slice<Map> maps = searchGroupMap(name, lastMapId, mapIds);
+        return new SimpleSlice<>(convertMapSimpleInfo(maps));
     }
 
     @Override
@@ -131,11 +134,12 @@ public class MapServiceImpl implements MapService {
         return mapRepository.findMapsByFullDisclosureAndIdGreaterThan(pageRequest, true, lastMapId);
     }
 
-    private List<Map> searchGroupMap(Optional<String> name, List<Long> mapIds) {
+    private Slice<Map> searchGroupMap(Optional<String> name, Long lastMapId, List<Long> mapIds) {
+        PageRequest pageRequest = PageRequest.ofSize(DEFAULT_PAGE_SIZE);
         if (name.isPresent()) {
-            return mapRepository.findAllByIdsAndNameContaining(mapIds, name.get());
+            return mapRepository.findMapsByIdIsInAndIdGreaterThanAndNameStartingWith(pageRequest, mapIds, lastMapId, name.get());
         }
-        return mapRepository.findAllById(mapIds);
+        return mapRepository.findMapsByIdIsInAndIdGreaterThan(pageRequest, mapIds, lastMapId);
     }
 
     private java.util.Map<Long, Member> getMembers(List<Map> maps) {
@@ -148,27 +152,30 @@ public class MapServiceImpl implements MapService {
                 .collect(Collectors.toMap(Member::getId, Function.identity()));
     }
 
-    private List<CategorizedPlaces> categorize(List<Place> places) {
-        java.util.Map<Category, List<Place>> categorizedPlaces = places.stream()
-                .collect(Collectors.groupingBy(Place::getCategory));
+    private List<CategorizedPlaces> categorize(List<Category> categories, List<Place> places) {
+        java.util.Map<Long, List<Place>> categorizedPlaces = places.stream()
+                .collect(Collectors.groupingBy(p -> p.getCategory().getId()));
 
-        return categorizedPlaces.entrySet()
-                .stream()
-                .map(e -> new CategorizedPlaces(CategoryInfo.from(e.getKey()),
-                        e.getValue().stream()
-                                .map(PlaceSimpleInfo::from)
-                                .collect(Collectors.toList())))
-                .collect(Collectors.toList());
+        return categories.stream().map(category ->  {
+            List<PlaceSimpleInfo> placeSimpleInfos = new ArrayList<>();
+            if(categorizedPlaces.containsKey(category.getId())) {
+                placeSimpleInfos = categorizedPlaces.get(category.getId())
+                        .stream()
+                        .map(PlaceSimpleInfo::from)
+                        .collect(Collectors.toList());
+            }
+            return new CategorizedPlaces(CategoryInfo.from(category), placeSimpleInfos);
+        }
+        ).collect(Collectors.toList());
     }
 
-    private MapsResponse mapsToMapResponse(List<Map> maps) {
+    private Slice<MapSimpleInfo> convertMapSimpleInfo(Slice<Map> maps) {
         if (maps.isEmpty()) {
-            return new MapsResponse(0, new ArrayList<>());
+            return new SliceImpl<>(new ArrayList<>());
         }
 
-        java.util.Map<Long, Member> members = getMembers(maps);
-        List<MapSimpleInfo> mapSimpleInfos = maps.stream().map(
-                        map -> {
+        java.util.Map<Long, Member> members = getMembers(maps.getContent());
+        return maps.map(map -> {
                             Member member = members.get(map.getMemberId());
                             return new MapSimpleInfo(
                                     map.getId(),
@@ -179,10 +186,8 @@ public class MapServiceImpl implements MapService {
                                     member.getProfileImage(),
                                     placeRepository.countPlacesByMap(map));
                         }
-                )
-                .collect(Collectors.toUnmodifiableList());
-
-        return new MapsResponse(mapSimpleInfos.size(), mapSimpleInfos);
+                );
     }
+
 
 }

@@ -14,7 +14,6 @@ import java.util.Optional;
 
 public interface PlaceRepository extends JpaRepository<Place, Long> {
 
-    @Query("select p from Place p join fetch p.category where p.map.id = :mapId")
     List<Place> findAllByMapId(@Param("mapId") Long mapId);
 
     boolean existsPlaceByPositionAndMap(Position position, Map map);

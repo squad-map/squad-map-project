@@ -9,7 +9,6 @@ import com.squadmap.core.map.application.MapService;
 import com.squadmap.core.map.application.dto.MapDetail;
 import com.squadmap.core.map.application.dto.MapSimpleInfo;
 import com.squadmap.core.map.application.dto.MapUpdateInfo;
-import com.squadmap.core.map.application.dto.MapsResponse;
 import com.squadmap.core.map.ui.dto.MapCreateResponse;
 import com.squadmap.core.map.ui.dto.MapRequest;
 import lombok.RequiredArgsConstructor;
@@ -58,9 +57,9 @@ public class MapController {
     }
 
     @GetMapping("/group")
-    public CommonResponse<MapsResponse> findGroupMapList(@Login Long memberId, Optional<String> name) {
+    public CommonResponse<SimpleSlice<MapSimpleInfo>> findGroupMapList(@Login Long memberId, @RequestParam(defaultValue = "0") Long lastMapId, Optional<String> name) {
         return CommonResponse.success(SuccessCode.MAP_READ_PRI,
-                mapService.searchGroup(memberId, name));
+                mapService.searchGroup(memberId, lastMapId, name));
     }
 
     @DeleteMapping("/{mapId}")

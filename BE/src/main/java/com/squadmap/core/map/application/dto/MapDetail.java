@@ -1,5 +1,6 @@
 package com.squadmap.core.map.application.dto;
 
+import com.squadmap.core.access.AuthorityLevel;
 import com.squadmap.core.map.domain.Map;
 import com.squadmap.member.domain.Member;
 import lombok.Getter;
@@ -20,7 +21,9 @@ public class MapDetail {
     private final int placesCount;
     private final List<CategorizedPlaces> categorizedPlaces;
 
-    public static MapDetail of(Map map, Member member, int placesCount, List<CategorizedPlaces> categorizedPlaces) {
+    private final String memberPermissionLevel;
+
+    public static MapDetail of(Map map, Member member, int placesCount, List<CategorizedPlaces> categorizedPlaces, AuthorityLevel authorityLevel) {
 
         return new MapDetail(map.getId(),
                 map.getName(),
@@ -29,7 +32,8 @@ public class MapDetail {
                 member.getNickname(),
                 member.getProfileImage(),
                 placesCount,
-                categorizedPlaces);
+                categorizedPlaces,
+                authorityLevel.name());
     }
 
 }

@@ -3,6 +3,7 @@ package com.squadmap.core.place.application;
 import com.squadmap.common.dto.SimpleSlice;
 import com.squadmap.common.excetpion.ClientException;
 import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
+import com.squadmap.core.access.MemberContext;
 import com.squadmap.core.access.RequiredPermission;
 import com.squadmap.core.category.domain.Category;
 import com.squadmap.core.category.infrastructure.CategoryRepository;
@@ -79,7 +80,7 @@ public class PlaceServiceImpl implements PlaceService {
             place.changeCategory(category);
         }
 
-        return PlaceDetailInfo.from(place);
+        return PlaceDetailInfo.ofExcludeComments(place, MemberContext.getAuthorityLevel());
     }
 
     @Override
@@ -88,7 +89,7 @@ public class PlaceServiceImpl implements PlaceService {
             Place place = placeRepository.findPlaceFetchAllById(placeId)
                     .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_PLACE));
 
-        checkPlaceInMap(place, accessInfo.getMapId());
+            checkPlaceInMap(place, accessInfo.getMapId());
 
             Slice<Comment> comments = commentRepository.findCommentsByPlaceId(placeId, Pageable.ofSize(5));
             List<Long> writerIds = comments.getContent()
@@ -106,7 +107,7 @@ public class PlaceServiceImpl implements PlaceService {
                         comment.getId(), comment.getContent(), comment.getWrittenAt());
             });
 
-            return PlaceDetailInfo.of(place, new SimpleSlice<>(commentInfos));
+            return PlaceDetailInfo.of(place, new SimpleSlice<>(commentInfos), MemberContext.getAuthorityLevel());
     }
 
     @Override

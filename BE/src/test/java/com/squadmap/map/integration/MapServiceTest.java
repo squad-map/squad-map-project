@@ -33,6 +33,7 @@ class MapServiceTest  {
 
     @Autowired
     private MapRepository mapRepository;
+
     @Autowired
     private PlaceRepository placeRepository;
 
@@ -175,13 +176,14 @@ class MapServiceTest  {
     void searchGroupMapListWithMapNameTest() {
         //given
         Long memberId = 1L;
+        Long lastMapId = 0L;
         Optional<String> searchName = Optional.of("fi");
 
         //when
-        MapsResponse mapsResponse = mapService.searchGroup(memberId, searchName);
+        SimpleSlice<MapSimpleInfo> mapSimpleInfos = mapService.searchGroup(memberId, lastMapId, searchName);
 
         //then
-        assertThat(mapsResponse.getMapCount()).isEqualTo(1);
+        assertThat(mapSimpleInfos.getNumberOfElements()).isEqualTo(1);
     }
 
     @Test
@@ -189,13 +191,15 @@ class MapServiceTest  {
     void searchGroupMapListTest() {
         //given
         Long memberId = 4L;
+        Long lastMapId = 1L;
 
         //when
-        MapsResponse mapsResponse = mapService.searchGroup(memberId, Optional.empty());
+        SimpleSlice<MapSimpleInfo> mapSimpleInfos = mapService.searchGroup(memberId, lastMapId, Optional.empty());
 
-        assertThat(mapsResponse.getContent().get(0).getId()).isEqualTo(2);
         //then
-        assertThat(mapsResponse.getMapCount()).isEqualTo(1);
+        mapSimpleInfos.getContent().stream().forEach(s -> System.out.println(s.getId()));
+        assertThat(mapSimpleInfos.getContent().get(0).getId()).isEqualTo(2);
+        assertThat(mapSimpleInfos.getNumberOfElements()).isEqualTo(1);
     }
 
 

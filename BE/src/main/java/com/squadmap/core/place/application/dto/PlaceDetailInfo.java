@@ -1,6 +1,7 @@
 package com.squadmap.core.place.application.dto;
 
 import com.squadmap.common.dto.SimpleSlice;
+import com.squadmap.core.access.AuthorityLevel;
 import com.squadmap.core.comment.application.dto.CommentInfo;
 import com.squadmap.core.place.domain.Place;
 import lombok.Getter;
@@ -20,7 +21,9 @@ public class PlaceDetailInfo {
     private final Long categoryId;
     private final SimpleSlice<CommentInfo> comments;
 
-    public static PlaceDetailInfo of(final Place place, final SimpleSlice<CommentInfo> comments) {
+    private final String memberPermissionLevel;
+
+    public static PlaceDetailInfo of(final Place place, final SimpleSlice<CommentInfo> comments, AuthorityLevel authorityLevel) {
         return new PlaceDetailInfo(
                 place.getId(),
                 place.getName(),
@@ -30,11 +33,12 @@ public class PlaceDetailInfo {
                 place.getDescription(),
                 place.getDetailLink(),
                 place.getCategory().getId(),
-                comments
+                comments,
+                authorityLevel.name()
         );
     }
 
-    public static PlaceDetailInfo from(final Place place) {
+    public static PlaceDetailInfo ofExcludeComments(final Place place, final AuthorityLevel authorityLevel) {
         return new PlaceDetailInfo(
                 place.getId(),
                 place.getName(),
@@ -44,7 +48,8 @@ public class PlaceDetailInfo {
                 place.getDescription(),
                 place.getDetailLink(),
                 place.getCategory().getId(),
-                null
+                null,
+                authorityLevel.name()
         );
     }
 

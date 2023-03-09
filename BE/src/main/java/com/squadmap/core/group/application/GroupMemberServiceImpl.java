@@ -2,6 +2,9 @@ package com.squadmap.core.group.application;
 
 import com.squadmap.common.excetpion.ClientException;
 import com.squadmap.common.excetpion.ErrorStatusCodeAndMessage;
+import com.squadmap.core.access.AuthorityLevel;
+import com.squadmap.core.access.CurrentAuthority;
+import com.squadmap.core.access.MemberContext;
 import com.squadmap.core.group.application.dto.AccessInfo;
 import com.squadmap.core.group.application.dto.GroupMemberInfo;
 import com.squadmap.core.group.application.dto.GroupMemberSimpleInfo;
@@ -17,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -103,6 +107,14 @@ public class GroupMemberServiceImpl implements GroupMemberService {
             com.squadmap.core.map.domain.Map map = mapRepository.findById(accessInfo.getMapId())
                     .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.NO_SUCH_MAP));
 
+            Optional<GroupMember> groupMemberOptional = groupMemberRepository.findByMapIdAndMemberId(accessInfo.getMapId(), accessInfo.getLoginId());
+            if(groupMemberOptional.isPresent()) {
+                GroupMember groupMember = groupMemberOptional.get();
+                MemberContext.setContext(new CurrentAuthority(groupMember.getMemberId(), AuthorityLevel.from(groupMember.getPermissionLevel().name())));
+            } else {
+                MemberContext.setContext(CurrentAuthority.externalUser());
+            }
+
             if (map.isFullDisclosure()) {
                return true;
             }
@@ -115,6 +127,7 @@ public class GroupMemberServiceImpl implements GroupMemberService {
                 .orElseThrow(() -> new ClientException(ErrorStatusCodeAndMessage.FORBIDDEN));
 
         if (groupMember.hasRequiredPermission(permissionLevel)) {
+            MemberContext.setContext(new CurrentAuthority(groupMember.getMemberId(), AuthorityLevel.from(groupMember.getPermissionLevel().name())));
             return true;
         }
         return false;
