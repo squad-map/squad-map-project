@@ -36,7 +36,7 @@
     </springProfile>
 
     <springProfile name="prod">
-        <include resource="./file-appenders.xml"/>
+        <include resource="./log/file-appenders.xml"/>
 
         <root level="INFO">
             <appender-ref ref="FILE-INFO"/>
