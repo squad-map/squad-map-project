@@ -124,19 +124,13 @@ jib {
         image = System.getProperty("image", "")
         tags = [System.getProperty("tag", "latest")]
     }
+    containerizingMode = 'packaged'
     container {
         creationTime = project.provider { project.ext.git['git.commit.time']}
         jvmFlags = [
                 "-XX:+UseG1GC",
                 "-Dspring.profiles.active="+System.getProperty("spring-profile-active", "prod")
         ]
-        extraDirectories {
-            paths {
-                path {
-                    from = file('build/libs')
-                }
-            }
-        }
     }
 }
 
