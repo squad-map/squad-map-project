@@ -50,6 +50,12 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+          
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Spring Boot Build with Gradle
+        run: ./gradlew bootJar
       
       - name: Release API Image
         run: |
