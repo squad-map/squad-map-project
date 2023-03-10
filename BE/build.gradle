@@ -130,6 +130,13 @@ jib {
                 "-XX:+UseG1GC",
                 "-Dspring.profiles.active="+System.getProperty("spring-profile-active", "prod")
         ]
+        extraDirectories {
+            paths {
+                path {
+                    from = file('build/libs')
+                }
+            }
+        }
     }
 }
 
