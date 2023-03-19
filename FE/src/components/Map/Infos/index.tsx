@@ -5,7 +5,6 @@ import { useRecoilValue } from 'recoil';
 import PlaceModalComment from '../PlaceModalComment';
 import PlaceModalUpdate from '../PlaceModalUpdate';
 
-import { getMapCategories } from '@/apis/category';
 import { deletePlace, getPlaceDeatil } from '@/apis/place';
 import { Icons } from '@/assets/icons';
 import Button from '@/components/common/Button';
@@ -16,6 +15,7 @@ import Text from '@/components/common/Text';
 import ModalContent from '@/components/ModalContent';
 import UserProfile from '@/components/UserProfile';
 import { SUCCESS_DELETE_PLACE, SUCCESS_GET_CATEGORIES } from '@/constants/code';
+import useGetMapCategories from '@/hooks/query/useGetMapCategories';
 import { useGetMapId } from '@/hooks/useGetMapId';
 import useModal from '@/hooks/useModal';
 import { queryClient } from '@/index';
@@ -57,10 +57,7 @@ const Infos = ({
 
   const user = useRecoilValue(userState);
 
-  const { data: mapCategory, isLoading: categoryLoading } = useQuery(
-    ['MapCategories', mapId],
-    () => getMapCategories(mapId)
-  );
+  const { mapCategories, mapCategoriesLoading } = useGetMapCategories();
 
   const { data: placeDetail } = useQuery(
     ['PlaceDetail', modalParams.placeId],
@@ -120,10 +117,10 @@ const Infos = ({
     setCurrentCoords({ lat, lng });
   };
 
-  if (!categoryLoading && mapCategory.code !== SUCCESS_GET_CATEGORIES)
+  if (!mapCategoriesLoading && mapCategories.code !== SUCCESS_GET_CATEGORIES)
     return <div>API Error</div>;
 
-  if (categoryLoading) {
+  if (mapCategoriesLoading) {
     return <LoadingSpinner size="medium" />;
   }
 
@@ -232,7 +229,7 @@ const Infos = ({
             {placeDetail.data.place_id ? (
               <PlaceModalUpdate
                 placeInfo={placeDetail.data}
-                categoryInfo={mapCategory.data}
+                categoryInfo={mapCategories.data}
                 setIsOpenUpdateModal={() =>
                   setModalParams({ ...modalParams, modal: false })
                 }

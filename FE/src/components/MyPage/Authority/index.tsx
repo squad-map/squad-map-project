@@ -1,25 +1,15 @@
-import { useQuery } from '@tanstack/react-query';
-
 import AuthorityView from './AuthorityView';
 
-import { getGroupMembers } from '@/apis/group';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import { SUCCESS_GET_GROUP_MEMBERS } from '@/constants/code';
+import useGetGroupMembers from '@/hooks/query/useGetGroupMembers';
 
 interface AuthorityProps {
   mapId: number;
 }
 
 const Authority = ({ mapId }: AuthorityProps) => {
-  const { data: groupMembers, isLoading: groupMembersLoading } = useQuery(
-    ['GroupMembers', mapId],
-    () => {
-      if (mapId) {
-        return getGroupMembers(mapId);
-      }
-      return true;
-    }
-  );
+  const { groupMembers, groupMembersLoading } = useGetGroupMembers({ mapId });
 
   if (!groupMembersLoading && groupMembers.code !== SUCCESS_GET_GROUP_MEMBERS)
     return <div>API Error</div>;

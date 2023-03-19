@@ -1,13 +1,11 @@
-import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import CategoryColorForm from './CategoryColorForm';
 
-import { getMapCategories } from '@/apis/category';
 import Button from '@/components/common/Button';
 import GlobalModal from '@/components/common/GlobalModal';
 import Text from '@/components/common/Text';
-import { useGetMapId } from '@/hooks/useGetMapId';
+import useGetMapCategories from '@/hooks/query/useGetMapCategories';
 import { CategoryType } from '@/interfaces/Category';
 import theme from '@/styles/theme';
 
@@ -18,7 +16,6 @@ interface ModifyCategoryModalInfoProps {
 const ModifyCategoryModalInfo = ({
   handleCancelClick,
 }: ModifyCategoryModalInfoProps) => {
-  const mapId = useGetMapId();
   const [categoryForm, setCategoryForm] = useState({
     category_id: 0,
     category_name: '',
@@ -27,9 +24,7 @@ const ModifyCategoryModalInfo = ({
 
   const [isColorModal, setIsColorModal] = useState(false);
 
-  const { data: mapCategories } = useQuery(['MapCategories', mapId], () =>
-    getMapCategories(mapId)
-  );
+  const { mapCategories } = useGetMapCategories();
 
   const handleModifyClick = (category: CategoryType) => {
     setCategoryForm(category);

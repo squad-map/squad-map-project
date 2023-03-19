@@ -1,9 +1,9 @@
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import LoadingSpinner from '../common/LoadingSpinner';
 
-import { getMapCategories, postCategory } from '@/apis/category';
+import { postCategory } from '@/apis/category';
 import { Icons } from '@/assets/icons';
 import Button from '@/components/common/Button';
 import GlobalModal from '@/components/common/GlobalModal';
@@ -16,6 +16,7 @@ import {
   SUCCESS_POST_CATEGORY,
 } from '@/constants/code';
 import { CategoryColors } from '@/constants/colors';
+import useGetMapCategories from '@/hooks/query/useGetMapCategories';
 import { useGetMapId } from '@/hooks/useGetMapId';
 import useModal from '@/hooks/useModal';
 import { CategoryType } from '@/interfaces/Category';
@@ -30,12 +31,8 @@ const CreateCategoryModalInfo = ({
   setIsCategoryModal,
 }: CreateCategoryModalInfoProps) => {
   const mapId = useGetMapId();
-
-  const {
-    data: mapCategories,
-    isLoading: headerLoading,
-    refetch: refetchMapCategories,
-  } = useQuery(['MapCategories', mapId], () => getMapCategories(mapId));
+  const { mapCategories, mapCategoriesLoading, refetchMapCategories } =
+    useGetMapCategories();
 
   const [categoryFormData, setCategoryFormData] = useState({
     category_name: '',
@@ -130,10 +127,10 @@ const CreateCategoryModalInfo = ({
     });
   };
 
-  if (!headerLoading && mapCategories.code !== SUCCESS_GET_CATEGORIES)
+  if (!mapCategoriesLoading && mapCategories.code !== SUCCESS_GET_CATEGORIES)
     return <div>API Error</div>;
 
-  if (headerLoading) {
+  if (mapCategoriesLoading) {
     return <LoadingSpinner size="medium" />;
   }
 

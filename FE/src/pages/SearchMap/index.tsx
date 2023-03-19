@@ -1,14 +1,12 @@
-import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
-import { getMapDetailInfo } from '@/apis/mypage';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import KakaoMap from '@/components/KaKaoMap';
 import BackButton from '@/components/Map/BackButton/BackButton';
 import SearchPlace from '@/components/SearchMap/SearchPlace';
 import { SUCCESS_GET_DETAIL_MAP } from '@/constants/code';
 import { defaultCoords } from '@/constants/map';
-import { useGetMapId } from '@/hooks/useGetMapId';
+import useGetMapDetailInfo from '@/hooks/query/useGetMapDetailInfo';
 import { SearchPlaceType } from '@/interfaces/SearchPlace';
 import { PlaceType } from '@/types/map';
 import { unicodeToEmoji } from '@/utils/util';
@@ -16,16 +14,13 @@ import { unicodeToEmoji } from '@/utils/util';
 const { kakao } = window as any;
 
 const SearchMap = () => {
-  const mapId = useGetMapId();
   const [placeInfos, setPlaceInfos] = useState<PlaceType[]>([]);
   const [currentCoords, setCurrentCoords] = useState({
     lat: defaultCoords.lat,
     lng: defaultCoords.lng,
   });
 
-  const { data: mapData, isLoading: mapLoading } = useQuery(['Map'], () =>
-    getMapDetailInfo(mapId)
-  );
+  const { mapData, mapLoading } = useGetMapDetailInfo();
 
   const placesSearchCallBack = (data: SearchPlaceType[], status: string) => {
     if (status === kakao.maps.services.Status.OK) {

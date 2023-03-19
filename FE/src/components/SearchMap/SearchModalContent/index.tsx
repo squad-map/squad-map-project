@@ -17,12 +17,12 @@ import { PlaceType } from '@/types/map';
 
 interface SearchModalContentprops {
   placeInfo: PlaceType;
-  mapCategory: CategoryType[];
+  mapCategories: CategoryType[];
 }
 
 const SearchModalContent = ({
   placeInfo,
-  mapCategory,
+  mapCategories,
 }: SearchModalContentprops) => {
   const mapId = useGetMapId();
   const navigate = useNavigate();
@@ -123,8 +123,8 @@ const SearchModalContent = ({
           <div className="flex flex-col gap-4 mb-2">
             <span className="text-lightGray">카테고리 색상</span>
             <div className="flex flex-wrap gap-2">
-              {mapCategory &&
-                mapCategory.map((category: CategoryType) => (
+              {mapCategories &&
+                mapCategories.map((category: CategoryType) => (
                   <button
                     type="button"
                     aria-label="color-button"
@@ -140,7 +140,7 @@ const SearchModalContent = ({
                     }
                   />
                 ))}
-              {mapCategory && mapCategory.length === 0 && (
+              {mapCategories && mapCategories.length === 0 && (
                 <p className="text-xs">등록된 카테고리가 없습니다.</p>
               )}
             </div>

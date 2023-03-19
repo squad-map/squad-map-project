@@ -1,16 +1,14 @@
-import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
 import SearchModalContent from '../SearchModalContent';
 
-import { getMapCategories } from '@/apis/category';
 import Button from '@/components/common/Button';
 import Card from '@/components/common/Card';
 import GlobalModal from '@/components/common/GlobalModal';
 import LoadingSpinner from '@/components/common/LoadingSpinner';
 import Text from '@/components/common/Text';
 import { SUCCESS_GET_CATEGORIES } from '@/constants/code';
-import { useGetMapId } from '@/hooks/useGetMapId';
+import useGetMapCategories from '@/hooks/query/useGetMapCategories';
 import theme from '@/styles/theme';
 import { PlaceType } from '@/types/map';
 
@@ -25,14 +23,10 @@ interface PlaceInfosProps {
 }
 
 const PlaceInfos = ({ placeInfos, setCurrentCoords }: PlaceInfosProps) => {
-  const mapId = useGetMapId();
   const [isOpenGlobalModal, setIsOpenGlobalModal] = useState(false);
   const [placeInfo, setPlaceInfo] = useState<PlaceType>();
 
-  const { data: mapCategory, isLoading: categoryLoading } = useQuery(
-    ['MapCategories', mapId],
-    () => getMapCategories(mapId)
-  );
+  const { mapCategories, mapCategoriesLoading } = useGetMapCategories();
 
   const handleClickPlace = (id: number) => {
     const clickedPlace = placeInfos.find(
@@ -47,10 +41,10 @@ const PlaceInfos = ({ placeInfos, setCurrentCoords }: PlaceInfosProps) => {
     setCurrentCoords({ lat, lng });
   };
 
-  if (!categoryLoading && mapCategory.code !== SUCCESS_GET_CATEGORIES)
+  if (!mapCategoriesLoading && mapCategories.code !== SUCCESS_GET_CATEGORIES)
     return <div>API Error</div>;
 
-  if (categoryLoading) return <LoadingSpinner size="medium" />;
+  if (mapCategoriesLoading) return <LoadingSpinner size="medium" />;
 
   return (
     placeInfos && (
@@ -88,14 +82,14 @@ const PlaceInfos = ({ placeInfos, setCurrentCoords }: PlaceInfosProps) => {
               </div>
             </Card>
           ))}
-        {mapCategory && isOpenGlobalModal && (
+        {mapCategories && isOpenGlobalModal && (
           <GlobalModal
             size="large"
             handleCancelClick={() => setIsOpenGlobalModal(false)}
           >
             <SearchModalContent
               placeInfo={placeInfo as PlaceType}
-              mapCategory={mapCategory.data}
+              mapCategories={mapCategories.data}
             />
           </GlobalModal>
         )}

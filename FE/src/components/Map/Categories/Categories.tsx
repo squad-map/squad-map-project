@@ -1,13 +1,11 @@
-import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
-import { getMapCategories } from '@/apis/category';
 import CreateCategoryModalInfo from '@/components/Category/CreateCategoryModalInfo';
 import Button from '@/components/common/Button';
 import GlobalModal from '@/components/common/GlobalModal';
 import Text from '@/components/common/Text';
 import { SUCCESS_GET_CATEGORIES } from '@/constants/code';
-import { useGetMapId } from '@/hooks/useGetMapId';
+import useGetMapCategories from '@/hooks/query/useGetMapCategories';
 import { CategoryType } from '@/interfaces/Category';
 import theme from '@/styles/theme';
 import { MapHeaderType } from '@/types/map';
@@ -18,15 +16,11 @@ interface CategoriesProps {
 }
 
 const Categories = ({ headerData, handleCategoryClick }: CategoriesProps) => {
-  const mapId = useGetMapId();
   const [isCategoryModal, setIsCategoryModal] = useState(false);
 
-  const { data: mapCategories, isLoading: headerLoading } = useQuery(
-    ['MapCategories', mapId],
-    () => getMapCategories(mapId)
-  );
+  const { mapCategories, mapCategoriesLoading } = useGetMapCategories();
 
-  if (!headerLoading && mapCategories.code !== SUCCESS_GET_CATEGORIES)
+  if (!mapCategoriesLoading && mapCategories.code !== SUCCESS_GET_CATEGORIES)
     return <div>API Error</div>;
 
   return (
